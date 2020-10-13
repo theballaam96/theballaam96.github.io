@@ -57,7 +57,7 @@ function printData()
 	local pointers = populatePointers();
 	local actor_counts = {};
 	local objm2_counts = {};
-	local actor_cap = #actor_types;
+	local actor_cap = 343;
 	local objm2_cap = #object_types;
 	local map_value = mainmemory.read_u32_be(0x76A0A8)
 	local map_name = maps[map_value + 1] or "Unknown 0x"..bizstring.hex(map_value);
@@ -65,10 +65,13 @@ function printData()
 	writeToFile("{");
 	writeToFile("\"map\": \""..map_name.."\",")
 	writeToFile("\"obj\": [");
+	--print("First Actor: 0x"..bizstring.hex(list_data[3]))
 	if #pointers > 0 then
 		for i = 1, #pointers do
 			local focused_pointer = pointers[i];
+			--print("0x"..bizstring.hex(focused_pointer))
 			if focused_pointer < list_data[3] then
+				--print("Obj M2")
 				-- Object Model Two
 				local id = mainmemory.read_u16_be(focused_pointer + 0x28);
 				if objm2_counts[id] == nil then
@@ -77,8 +80,9 @@ function printData()
 					objm2_counts[id] = objm2_counts[id] + 1;
 				end
 			else
+				--print("Actor")
 				-- Object Model One / Actor
-				local id = mainmemory.read_u16_be(focused_pointer + 0x32) + 0x16;
+				local id = mainmemory.read_u16_be(focused_pointer + 0x32) + 16;
 				if actor_counts[id] == nil then
 					actor_counts[id] = 1;
 				else
@@ -125,7 +129,7 @@ function printData()
 					type_secondary = 0x63;
 				end
 			end
-			print("Type P: 0x"..type_primary..", Type S: 0x"..type_secondary)
+			--print("Type P: 0x"..type_primary..", Type S: 0x"..type_secondary)
 			if type_primary == type_secondary then
 				if enemy_counts[type_primary] == nil then
 					enemy_counts[type_primary] = 1;
@@ -1438,7 +1442,8 @@ object_types = { -- "-" means that spawning this object crashes the game
 };
 
 createFile();
-writeToFile("{\"data\": [")
+writeToFile("{")
+writeToFile("\"data\": [")
 for k = 0, 215 do
 	savestate.loadslot(3)
 	local has_transition = false;
