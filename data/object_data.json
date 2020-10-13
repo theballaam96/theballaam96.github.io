@@ -33,11 +33,6 @@
       {
          "map":"DK Arcade",
          "obj":[
-            {
-               "name":"Kasplat (DK)",
-               "type":"character",
-               "count":1
-            }
          ]
       },
       {
@@ -778,11 +773,6 @@
       {
          "map":"Jetpac",
          "obj":[
-            {
-               "name":"Kasplat (DK)",
-               "type":"character",
-               "count":1
-            }
          ]
       },
       {
