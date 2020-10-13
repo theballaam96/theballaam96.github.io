@@ -1,0 +1,295 @@
+<html>
+	<head>
+		<title>Any% - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="../style/nav.css">
+		<link rel="stylesheet" href="../style/main.css">
+		<link rel="stylesheet" href="../style/categories.css">
+		<meta name="description" content="" />
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="box">
+			<div class="category_info">
+				<h1>Any%</h1>
+				<div class="category_wr_container">
+					<a id="wiiuwr" class="wr">
+
+					</a>
+				</div>
+				<div class="category_wr_container">
+					<a id="n64wr" class="wr">
+
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="box">
+			<div class="category_info">
+				<h2>Overview</h2>
+				<div class="indent">
+					<h3>Rules</h3>
+					<div class="description">
+						An 'Any%' run aims to beat the game as fast as possible. There are no restrictions of what you can do in-game to achieve this target outside of the general ruleset of Donkey Kong 64 speedruns.
+					</div>
+					<br>
+					<h3>Any% 5-kong</h3>
+					<div class="description">
+						The most beginner-friendly version of Any% which revolves around freeing all 5 kongs, acquiring the keys to unlock King K. Rool and purchasing the moves needed to beat the game. This route is a little more than 10 minutes slower than the world record Any% route, but is significantly easier and a solid way to learn how to speedrun Donkey Kong 64.
+						<br><br>
+						<div class="indent">
+							<a href="https://www.youtube.com/watch?v=qPMAk8XhhXo">Example run by TJ Blakely</a><br>
+							<a href="#">Route</a><br>
+							<a href="https://www.twitch.tv/videos/48945450/">Video Tutorial by 2dos</a><br>
+						</div>
+					</div>
+					<br>
+					<h3>Any% 1-kong (2014 Route)</h3>
+					<div class="description">
+						The easier of the two 'Any% 1-kong' routes. In this route, you perform the majority of the run as DK collecting the keys necessary to unlock the King K. Rool fight. Instead of the moves being purchased from the various shops in the game, the moves are copied to your file from a main menu boss using a glitch called 'Main Menu Mode'.
+						This route is around 2 minutes slower than the fastest route.
+						<br><br>
+						<div class="indent">
+							<a href="https://www.youtube.com/watch?v=l1WUlJTkGaw">Example run by EmoArbiter</a><br>
+							<a href="#">Route</a><br>
+							<a href="https://docs.google.com/document/d/1GHJMfpSWSD4Ao5acqLS6hTW-f7oSsLytu9Jb8BxWGF0/edit?usp=sharing">Written Guide</a><br>
+						</div>
+					</div>
+					<br>
+					<h3>Any% 1-kong (2015 Route)</h3>
+					<div class="description">
+						The fastest route for Any%. The basic principals of this run are similar to those of the '2014 Route', but with some additional complexities:
+						<ul>
+							<li>The entirety of Helm is done under the Intro Story Timer</li>
+							<li>The run file isn't examined, meaning various measures need to be taken to consistently load the right file</li>
+							<li>You must enter Helm without triggering the B-Locker's Text</li>
+						</ul>
+						<div class="indent">
+							<a href="https://www.twitch.tv/videos/602220310?t=0h0m1s">Example run by SigNa</a><br>
+							<a href="#">Route</a><br>
+							<a href="https://docs.google.com/document/d/1k_GVT-2mVRijSgREsKfUmQSsFquTqSIkXEdAiWgZDL0/edit">2015 MMM Document</a><br>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../script/nav.js"></script>
+	<script>
+		var platforms = [
+			{
+				"name": "Wii U VC",
+				"shortname": "wiiu",
+				"id": "v06dr394",
+			},
+			{
+				"name": "Nintendo 64",
+				"shortname": "n64",
+				"id": "w89rwelk",
+			}
+		];
+		var leaderboard_attributes = [
+			{
+				"category": "Any% (N64)",
+				"game": "9d385g1l",
+				"category_id": "n2y7472o",
+				"variable_id": "",
+				"variable_value": "",
+				"platform_id": "w89rwelk",
+			},
+			{
+				"category": "Any% (Wii U)",
+				"game": "9d385g1l",
+				"category_id": "n2y7472o",
+				"variable_id": "",
+				"variable_value": "",
+				"platform_id": "v06dr394",
+			},
+		];
+		var world_records = [];
+		var users = [];
+		var usernames = [];
+		var raw_data = [];
+		var users_counter = 0;
+		var main_pulled = false;
+		var wrholder_pulled = false;
+		var userdata_pulled = false;
+
+		function parseTime(time) {
+			var shortened_time = time.substring(2,time.length);
+			var split_time = shortened_time.replace("H",":").replace("M",":").replace("S","").split(":");
+			var final_time = [];
+			split_time.forEach(timeInterval => {
+				if (timeInterval < 10) {
+					timeInterval = "0" + timeInterval;
+				}
+				final_time.push(timeInterval)
+			});
+			return final_time.join(":");
+		}
+
+		function userTimeout_stageTwo(condition,counter) {
+			//console.log("User Name Lookup Timeout #" + (counter + 1) + " | Users: " + users.length + " vs " + usernames.length);
+			limit = 25;
+			if (!condition) {
+				if (counter > limit) {
+					condition = true;
+					// indicator of failed attempt to pull data
+					console.log("Failed")
+					load_failed = true;
+				};
+				if (users.length > 0 && usernames.length > 0 && usernames.length == users.length) {
+					if (!userdata_pulled) {
+						console.log("WR Holder Name Pulled")
+						userdata_pulled = true;
+					}
+					condition = true;
+				}
+				if (!condition) {
+					counter += 1;
+					setTimeout(() => {userTimeout_stageTwo(condition,counter)}, 100)
+				} else {
+					userTimeout_stageTwo(condition,counter);
+				}
+			} else {
+				if (counter <= limit) {
+					//console.log("Success!")
+					world_records = [];
+					leaderboard_attributes.forEach(lb_cat => {
+						wrJSON = raw_data.find(wr => {
+							if (wr.category == lb_cat.category_id) {
+								if (lb_cat.platform_id != "") {
+									if (wr.platform == lb_cat.platform_id) {
+										return true;
+									}
+								} else {
+									return true;
+								}
+							}
+							return false;
+						});
+						//console.log(wrJSON)
+						if (wrJSON.runs.length > 0) { // Has WR
+							world_records.push({
+								"category": lb_cat.category,
+								"time": parseTime(wrJSON.runs[0].run.times.primary),
+								"runner": usernames.find(user => user.id == wrJSON.runs[0].run.players[0].id).name,
+								"weblink": wrJSON.runs[0].run.weblink,
+								"platform": wrJSON.platform,
+								"platform_short": platforms.find(platform => platform.id == wrJSON.platform).shortname
+							})
+						} else { // Doesn't have WR
+							world_records.push({
+								"category": lb_cat.category,
+								"time": "-",
+								"runner": "-",
+								"weblink": "#",
+								"platform": lb_cat.platform_id,
+								"platform_short": platforms.find(platform => platform.id == lb_cat.platform_id).shortname
+							})
+						}
+					});
+					// hide loading
+					world_records.forEach(wr => {
+						var link_node = document.getElementById(wr.platform_short + "wr");
+							link_node.setAttribute("href",wr.weblink);
+							var platform_name = platforms.find(platform => platform.id == wr.platform).name;
+							var link_textnode = document.createTextNode(platform_name + " WR by " + wr.runner + " in " + wr.time)
+						link_node.appendChild(link_textnode)
+					})
+				}
+			}
+		}
+		function userTimeout(condition,counter) {
+			//console.log("WR Lookup Timeout #" + (counter + 1))
+			limit = 25;
+			if (!condition) {
+				if (counter > limit) {
+					condition = true;
+					// indicator of failed pull
+					console.log("Failed")
+					load_failed = true;
+				};
+				if (raw_data.filter(data => data.weblink.includes("dk64#")).length > 0 && !main_pulled) {
+					console.log("Main Leaderboards Pulled");
+					main_pulled = true;
+				}
+				if (users_counter > 0 && raw_data.length > 0 && raw_data.length == users_counter && !wrholder_pulled) {
+					console.log("WR Holders Pulled");
+					wrholder_pulled = true;
+				}
+
+
+				if (users_counter > 0 && raw_data.length > 0 && raw_data.length == users_counter) { // Amount of users matches records
+					//console.log("Users Match")
+					if (raw_data.filter(data => data.weblink.includes("dk64#")).length > 0) { // Main Boards Pulled
+						//console.log("Main Boards Pulled")
+						condition = true;
+					}
+				}
+				if (!condition) {
+					counter += 1;
+					setTimeout(() => {userTimeout(condition,counter)}, 100)
+				} else {
+					userTimeout(condition,counter);
+				}
+			} else {
+				if (counter <= limit) {
+					var xhttp_runner = [];
+					// Initiate XML Requests
+					users.forEach(user => {
+						xhttp_runner.push(new XMLHttpRequest());
+					})
+					// define state change
+					xhttp_runner.forEach((xhr, index) => {
+						xhr.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								responseJSON = JSON.parse(xhr.responseText).data;
+								usernames.push({
+									"id": responseJSON.id,
+									"name": responseJSON.names.international
+								})
+							}
+						}
+						xhr.open("GET", users[index], true);
+						xhr.send(null)
+					});
+					userTimeout_stageTwo(false,0);
+				}
+			}
+		}
+
+		function getLBData() {
+			var platform_counter = 0;
+			var apicall_url = "";
+			// Main Leaderboards
+			var xhttp_runs = [];
+			
+			platforms.forEach(platform => {
+				xhttp_runs.push(new XMLHttpRequest());
+			});
+			xhttp_runs.forEach(xhr => {
+				xhr.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						responseJSON = JSON.parse(xhr.responseText).data
+						raw_data.push(responseJSON);
+						if (!users.includes(responseJSON.runs[0].run.players[0].uri)) {
+							users.push(responseJSON.runs[0].run.players[0].uri);
+						}
+						users_counter += 1;
+					}
+				}
+				apicall_url = "https://www.speedrun.com/api/v1/leaderboards/" + leaderboard_attributes[0].game + "/category/" + leaderboard_attributes[0].category_id + "?platform=" + platforms[platform_counter].id + "&top=1"
+				platform_counter += 1;
+				// Main Runs
+				xhr.open("GET", apicall_url, true);
+				xhr.send(null);
+			});
+			userTimeout(false,0);
+		}
+
+		getLBData();
+	</script>
+</html>

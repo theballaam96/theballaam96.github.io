@@ -1,0 +1,398 @@
+<html>
+	<head>
+		<title>Home - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<meta name="description" content="" />
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="flexsplitter">
+			<div id="wrbox" class="flex40 homebox">
+				<div class="header">
+					<strong>World Records</strong>
+				</div>
+				<div id="wrcontainer">
+					<div id="wrs_loading">
+						<div id="wrs_loading_icon" class="inProgress">
+						</div>
+						<div id="wrs_loading_inprogress" class="loading_caption">
+							Pulling from SRC
+						</div>
+						<div id="wrs_loading_failed" class="loading_caption hide">
+							Pull failed :(
+						</div>
+					</div>
+					<!-- <div class="wrentry">
+						<a href="http://www.speedrun.com">
+							<div class="flexsplitter wrinfo">
+								<div class="flex30">
+									Any%
+								</div>
+								<div class="flex30">
+									24:39
+								</div>
+								<div class="flex40">
+									SignaKong
+								</div>
+							</div>
+						</a>
+					</div> -->
+				</div>
+			</div>
+			<div class="flex40 homebox">
+
+			</div>
+			<div class="flex30 homebox">
+
+			</div>
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		var world_records = [];
+		var users = [];
+		var usernames = [];
+		var users_counter = 0;
+		var load_failed = false;
+		var raw_data = [];
+		var tag_pulled = false;
+		var ce_pulled = false;
+		var glitchless_pulled = false;
+		var main_pulled = false;
+		var wrholder_pulled = false;
+		var userdata_pulled = false;
+		var leaderboard_attributes = [
+			{
+				"category": "Any%",
+				"game": "9d385g1l",
+				"category_id": "n2y7472o",
+				"variable_id": "",
+				"variable_value": "",
+			},
+			{
+				"category": "No Levels Early",
+				"game": "9d385g1l",
+				"category_id": "xk98yv20",
+				"variable_id": "",
+				"variable_value": "",
+			},
+			{
+				"category": "101%",
+				"game": "9d385g1l",
+				"category_id": "7kj153k3",
+				"variable_id": "",
+				"variable_value": "",
+			},
+			{
+				"category": "Any% No ISG",
+				"game": "9dow9lk1",
+				"category_id": "9kvozlj2",
+				"variable_id": "",
+				"variable_value": "",
+			},
+			{
+				"category": "Any% All Keys",
+				"game": "9dow9lk1",
+				"category_id": "xd1gpqrd",
+				"variable_id": "",
+				"variable_value": "",
+			},
+			{
+				"category": "100GBs Moveless",
+				"game": "9dow9lk1",
+				"category_id": "rkllyzqk",
+				"variable_id": "",
+				"variable_value": "",
+			},
+			{
+				"category": "Tag Anywhere NLE",
+				"game": "9dow9lk1",
+				"category_id": "vdo87n1k",
+				"variable_id": "wlexzvk8",
+				"variable_value": "jq6374oq",
+			},
+			{
+				"category": "Tag Anywhere 101%",
+				"game": "9dow9lk1",
+				"category_id": "vdo87n1k",
+				"variable_id": "wlexzvk8",
+				"variable_value": "5lmznx0q",
+			},
+			{
+				"category": "Glitchess Any%",
+				"game": "9dow9lk1",
+				"category_id": "02q3ywyk",
+				"variable_id": "68k4ddyl",
+				"variable_value": "21dr9o3q",
+			},
+			{
+				"category": "Glitchess 101%",
+				"game": "9dow9lk1",
+				"category_id": "02q3ywyk",
+				"variable_id": "68k4ddyl",
+				"variable_value": "5q85jrrq",
+			},
+		];
+		function parseTime(time) {
+			var shortened_time = time.substring(2,time.length);
+			var split_time = shortened_time.replace("H",":").replace("M",":").replace("S","").split(":");
+			var final_time = [];
+			split_time.forEach(timeInterval => {
+				if (timeInterval < 10) {
+					timeInterval = "0" + timeInterval;
+				}
+				final_time.push(timeInterval)
+			});
+			return final_time.join(":");
+		}
+		function userTimeout_stageTwo(condition,counter) {
+			//console.log("User Name Lookup Timeout #" + (counter + 1) + " | Users: " + users.length + " vs " + usernames.length);
+			limit = 25;
+			if (!condition) {
+				if (counter > limit) {
+					condition = true;
+					document.getElementById("wrs_loading_icon").classList.add("loadingFailed");
+					document.getElementById("wrs_loading_inprogress").classList.add("hide");
+					document.getElementById("wrs_loading_failed").classList.remove("hide");
+					console.log("Failed")
+					load_failed = true;
+				};
+				if (users.length > 0 && usernames.length > 0 && usernames.length == users.length) {
+					if (!userdata_pulled) {
+						console.log("WR Holder Name Pulled")
+						userdata_pulled = true;
+					}
+					condition = true;
+				}
+				if (!condition) {
+					counter += 1;
+					setTimeout(() => {userTimeout_stageTwo(condition,counter)}, 100)
+				} else {
+					userTimeout_stageTwo(condition,counter);
+				}
+			} else {
+				if (counter <= limit) {
+					//console.log("Success!")
+					world_records = [];
+					leaderboard_attributes.forEach(lb_cat => {
+						wrJSON = raw_data.find(wr => {
+							if (wr.category == lb_cat.category_id) {
+								if (lb_cat.variable_id != "") {
+									if (wr.values[lb_cat.variable_id] == lb_cat.variable_value) {
+										return true;
+									}
+								} else {
+									return true;
+								}
+							}
+							return false;
+						});
+						//console.log(wrJSON)
+						if (wrJSON.runs.length > 0) { // Has WR
+							world_records.push({
+								"category": lb_cat.category,
+								"time": parseTime(wrJSON.runs[0].run.times.primary),
+								"runner": usernames.find(user => user.id == wrJSON.runs[0].run.players[0].id).name,
+								"weblink": wrJSON.runs[0].run.weblink
+							})
+						} else { // Doesn't have WR
+							world_records.push({
+								"category": lb_cat.category,
+								"time": "-",
+								"runner": "-",
+								"weblink": "#"
+							})
+						}
+					});
+					document.getElementById("wrs_loading").classList.add("hide");
+					world_records.forEach(wr => {
+						//console.log(wr)
+						var wrentry_node = document.createElement("div");
+							wrentry_node.classList.add("wrentry");
+						var link_node = document.createElement("a");
+							link_node.setAttribute("href", wr.weblink);
+						var flex_node = document.createElement("div");
+							flex_node.classList.add("flexsplitter");
+							flex_node.classList.add("wrinfo");
+						var category_node = document.createElement("div");
+							category_node.classList.add("flex40");
+							var category_textnode = document.createTextNode(wr.category);
+							category_node.appendChild(category_textnode);
+						var time_node = document.createElement("div");
+							time_node.classList.add("flex30");
+							var time_textnode = document.createTextNode(wr.time);
+							time_node.appendChild(time_textnode);
+						var user_node = document.createElement("div");
+							user_node.classList.add("flex30");
+							var user_textnode = document.createTextNode(wr.runner);
+						user_node.appendChild(user_textnode);
+						flex_node.appendChild(category_node);
+						flex_node.appendChild(time_node);
+						flex_node.appendChild(user_node);
+						link_node.appendChild(flex_node);
+						wrentry_node.appendChild(link_node);
+						document.getElementById("wrcontainer").appendChild(wrentry_node)
+					})
+				}
+			}
+		}
+		function userTimeout(condition,counter) {
+			//console.log("WR Lookup Timeout #" + (counter + 1))
+			limit = 25;
+			if (!condition) {
+				if (counter > limit) {
+					condition = true;
+					document.getElementById("wrs_loading_icon").classList.add("loadingFailed");
+					document.getElementById("wrs_loading_inprogress").classList.add("hide");
+					document.getElementById("wrs_loading_failed").classList.remove("hide");
+					console.log("Failed")
+					load_failed = true;
+				};
+				if (raw_data.filter(data => data.weblink.includes("#Tag_Anywhere")).length > 2 && !tag_pulled) {
+					console.log("Tag Anywhere Sub-Leaderboards Pulled");
+					tag_pulled = true;
+				}
+				if (raw_data.filter(data => data.weblink.includes("#No_ISG")).length > 0 && !ce_pulled) {
+					console.log("Category Extensions Leaderboards Pulled");
+					ce_pulled = true;
+				}
+				if (raw_data.filter(data => data.weblink.includes("#Glitchless")).length > 2 && !glitchless_pulled) {
+					console.log("Glitchless Sub-Leaderboards Pulled");
+					glitchless_pulled = true;
+				}
+				if (raw_data.filter(data => data.weblink.includes("dk64#")).length > 0 && !main_pulled) {
+					console.log("Main Leaderboards Pulled");
+					main_pulled = true;
+				}
+				if (users_counter > 0 && raw_data.length > 0 && raw_data.length == users_counter && !wrholder_pulled) {
+					console.log("WR Holders Pulled");
+					wrholder_pulled = true;
+				}
+
+
+				if (users_counter > 0 && raw_data.length > 0 && raw_data.length == users_counter) { // Amount of users matches records
+					//console.log("Users Match")
+					if (raw_data.filter(data => data.weblink.includes("#Tag_Anywhere")).length > 2) { // All Tag Anywhere WRs pulled/CE Boards Pulled
+						//console.log("Tag Anywhere Pulled")
+						if (raw_data.filter(data => data.weblink.includes("#Glitchless")).length > 2) { // All Glitchless WRs pulled/CE Boards Pulled
+							//console.log("Glitchless Pulled")
+							if (raw_data.filter(data => data.weblink.includes("dk64#")).length > 0) { // Main Boards Pulled
+								//console.log("Main Boards Pulled")
+								condition = true;
+							}
+						}
+					}
+				}
+				if (!condition) {
+					counter += 1;
+					setTimeout(() => {userTimeout(condition,counter)}, 100)
+				} else {
+					userTimeout(condition,counter);
+				}
+			} else {
+				if (counter <= limit) {
+					var xhttp_runner = [];
+					// Initiate XML Requests
+					users.forEach(user => {
+						xhttp_runner.push(new XMLHttpRequest());
+					})
+					// define state change
+					xhttp_runner.forEach((xhr, index) => {
+						xhr.onreadystatechange = function() {
+							if (this.readyState == 4 && this.status == 200) {
+								responseJSON = JSON.parse(xhr.responseText).data;
+								usernames.push({
+									"id": responseJSON.id,
+									"name": responseJSON.names.international
+								})
+							}
+						}
+						xhr.open("GET", users[index], true);
+						xhr.send(null)
+					});
+					userTimeout_stageTwo(false,0);
+				}
+			}
+		}
+		function getLBData() {
+			var apicall_mainlb = "https://www.speedrun.com/api/v1/games/9d385g1l/records?top=1";
+			var apicall_extlb = "https://www.speedrun.com/api/v1/games/9dow9lk1/records?top=1";
+			world_records = [];
+			users = [];
+			usernames = [];
+			raw_data = [];
+			users_counter = 0;
+			// Main Leaderboards
+			var xhttp_runs = new XMLHttpRequest();
+			xhttp_runs.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					responseArray = JSON.parse(xhttp_runs.responseText).data
+					raw_data.push(...responseArray);
+					responseArray.forEach(cat => {
+						if (cat.runs.length > 0) {
+							if (!users.includes(cat.runs[0].run.players[0].uri)) {
+								users.push(cat.runs[0].run.players[0].uri);
+							}
+						}
+						users_counter += 1;
+					})
+				}
+			}
+			// CE Leaderboards
+			var xhttp_extruns = new XMLHttpRequest();
+			xhttp_extruns.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					responseArray = JSON.parse(xhttp_extruns.responseText).data
+					raw_data.push(...responseArray);
+					responseArray.forEach(cat => {
+						if (cat.runs.length > 0) {
+							if (!users.includes(cat.runs[0].run.players[0].uri)) {
+								users.push(cat.runs[0].run.players[0].uri);
+							}
+						}
+						users_counter += 1;
+					})
+				}
+			}
+			var xhttp_solorun = [];
+			var links_solorun = [];
+			// Initiate XML Requests
+			leaderboard_attributes.forEach(lb_cat => {
+				if (lb_cat.variable_id != "") {
+					xhttp_solorun.push(new XMLHttpRequest());
+					links_solorun.push("https://www.speedrun.com/api/v1/leaderboards/" + lb_cat.game + "/category/" + lb_cat.category_id + "?var-" + lb_cat.variable_id + "=" + lb_cat.variable_value + "&top=1");
+				}
+			})
+			// define state change
+			xhttp_solorun.forEach((xhr, index) => {
+				xhr.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						responseJSON = JSON.parse(xhr.responseText).data;
+						raw_data.push(responseJSON);
+						if (responseJSON.runs.length > 0) {
+							if (!users.includes(responseJSON.runs[0].run.players[0].uri)) {
+								users.push(responseJSON.runs[0].run.players[0].uri);
+							}
+						}
+						users_counter += 1;
+					}
+				}
+				xhr.open("GET", links_solorun[index], true);
+				xhr.send(null)
+			})
+			// Main Runs
+			xhttp_runs.open("GET", apicall_mainlb, true);
+			xhttp_runs.send(null);
+			// Main Runs
+			xhttp_extruns.open("GET", apicall_extlb, true);
+			xhttp_extruns.send(null);
+			userTimeout(false,0);
+		}
+		getLBData()
+	</script>
+</html>

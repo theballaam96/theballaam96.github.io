@@ -1,0 +1,73 @@
+.noselect {
+  	-webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.navbar {
+	height: 40px;
+	position: absolute;
+	width: 100%;
+	top:0;
+	left:0;
+	z-index:1000;
+	background-color: rgba(0,0,0,0.8);
+	border-bottom: gold solid 2px;
+}
+
+.navbar .items {
+	display: flex;
+	position:absolute;
+	top:0%;
+	width:100%;
+	max-height: inherit;
+	/*max-height: inherit;*/
+}
+
+.navbar .items .logo {
+	flex: 31%;
+}
+
+.navbar .items .links {
+	flex: 69%;
+}
+
+.navbar .items .links .container {
+	text-align: right;
+	padding-right:1%;
+}
+
+.navbar .items .links .container li {
+	display:inline-block;
+	margin-left: 3%;
+	color: white;
+	font-size: 100%;
+	cursor: default;
+	transition:0.5s;
+}
+
+.navbar .items .links .container li:after {
+ 	display:block;
+ 	content: '';
+ 	color: gold;
+	border-bottom: 2px solid gold; 
+ 	transform: scaleX(0);  
+	transition: transform 250ms ease-in-out;
+}
+
+.navbar .items .links .container li:hover:after {
+	transform: scaleX(1);
+}
+
+.navbar .items .links .container li a {
+	text-decoration: none;
+	color: white;
+	font-family: Arial;
+}
+
+.v_spacer {
+	height: 40px;
+}
