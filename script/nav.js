@@ -6,7 +6,7 @@ var navHtml = "\
 			<div class='links'>\
 				<ul class='container text noselect'>\
 					<li>\
-						<a href='./home.html'>\
+						<a href='./home.html' class='nav_link'>\
 							<span>\
 								<strong>\
 									Home\
@@ -15,16 +15,7 @@ var navHtml = "\
 						</a>\
 					</li>\
 					<li>\
-						<a href='./about.html'>\
-							<span>\
-								<strong>\
-									About Us\
-								</strong>\
-							</span>\
-						</a>\
-					</li>\
-					<li>\
-						<a href='https://www.speedrun.com/dk64'>\
+						<a href='https://www.speedrun.com/dk64' class='nav_link'>\
 							<span>\
 								<strong>\
 									SRC Leaderboards\
