@@ -33,21 +33,12 @@
       {
          "map":"DK Arcade",
          "obj":[
+            
          ]
       },
       {
          "map":"K. Rool Barrel: Lanky's Maze",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Grey Switch",
                "type":"modeltwo",
@@ -61,6 +52,16 @@
             {
                "name":"Unknown 0x241",
                "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
                "count":1
             },
             {
@@ -169,6 +170,16 @@
                "count":3
             },
             {
+               "name":"Minecart",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Beaver",
                "type":"character",
                "count":3
@@ -214,11 +225,6 @@
          "map":"Jungle Japes: Minecart",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":4
-            },
-            {
                "name":"Flame",
                "type":"modeltwo",
                "count":4
@@ -252,6 +258,11 @@
                "name":"DK coin",
                "type":"modeltwo",
                "count":97
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":4
             },
             {
                "name":"Krash",
@@ -288,86 +299,6 @@
       {
          "map":"Jungle Japes",
          "obj":[
-            {
-               "name":"Rambi Crate",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":17
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Yellow Flowers",
                "type":"modeltwo",
@@ -694,6 +625,86 @@
                "count":1
             },
             {
+               "name":"Rambi Crate",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Cannon",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":17
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Beaver",
                "type":"character",
                "count":11
@@ -773,6 +784,7 @@
       {
          "map":"Jetpac",
          "obj":[
+            
          ]
       },
       {
@@ -788,11 +800,6 @@
       {
          "map":"Stealthy Snoop! (normal, no logo)",
          "obj":[
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Golden Banana",
                "type":"modeltwo",
@@ -859,6 +866,11 @@
                "count":1
             },
             {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -873,11 +885,6 @@
       {
          "map":"Jungle Japes: Shell",
          "obj":[
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"CB Single (Tiny)",
                "type":"modeltwo",
@@ -954,6 +961,11 @@
                "count":8
             },
             {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Zinger",
                "type":"character",
                "count":3
@@ -968,11 +980,6 @@
       {
          "map":"Jungle Japes: Lanky's Cave",
          "obj":[
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Banana Coin (Lanky)",
                "type":"modeltwo",
@@ -1021,6 +1028,11 @@
             {
                "name":"Unknown 0x241",
                "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
                "count":1
             },
             {
@@ -1148,21 +1160,6 @@
       {
          "map":"Angry Aztec: Tiny's Temple",
          "obj":[
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"CB Single (Diddy)",
                "type":"modeltwo",
@@ -1409,6 +1406,21 @@
                "count":3
             },
             {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Klobber",
                "type":"character",
                "count":2
@@ -1443,31 +1455,6 @@
       {
          "map":"Hideout Helm",
          "obj":[
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":5
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel (Hideout Helm)",
-               "type":"actor",
-               "count":10
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":4
-            },
             {
                "name":"Tree",
                "type":"modeltwo",
@@ -1699,6 +1686,31 @@
                "count":19
             },
             {
+               "name":"Vine",
+               "type":"actor",
+               "count":5
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel (Hideout Helm)",
+               "type":"actor",
+               "count":10
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
                "name":"Klump",
                "type":"character",
                "count":4
@@ -1738,11 +1750,6 @@
       {
          "map":"Angry Aztec: Five Door Temple (DK)",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
             {
                "name":"Banana Coin (DK)",
                "type":"modeltwo",
@@ -1784,6 +1791,11 @@
                "count":3
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
                "name":"Kaboom",
                "type":"character",
                "count":6
@@ -1803,41 +1815,6 @@
       {
          "map":"Angry Aztec: Llama Temple",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -2029,6 +2006,41 @@
                "count":1
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Cutscene Lanky",
                "type":"character",
                "count":1
@@ -2064,16 +2076,6 @@
          "map":"Angry Aztec: Five Door Temple (Diddy)",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":5
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Banana Coin (Diddy)",
                "type":"modeltwo",
                "count":2
@@ -2097,6 +2099,16 @@
                "name":"Peanut Switch",
                "type":"modeltwo",
                "count":2
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":5
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Klobber",
@@ -2123,16 +2135,6 @@
       {
          "map":"Angry Aztec: Five Door Temple (Tiny)",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Banana Coin (Tiny)",
                "type":"modeltwo",
@@ -2174,6 +2176,16 @@
                "count":8
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Zinger",
                "type":"character",
                "count":8
@@ -2193,16 +2205,6 @@
       {
          "map":"Angry Aztec: Five Door Temple (Lanky)",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Orange",
                "type":"modeltwo",
@@ -2234,6 +2236,16 @@
                "count":14
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Klump",
                "type":"character",
                "count":3
@@ -2248,21 +2260,6 @@
       {
          "map":"Angry Aztec: Five Door Temple (Chunky)",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Banana Coin (Chunky)",
                "type":"modeltwo",
@@ -2292,6 +2289,21 @@
                "name":"Torch",
                "type":"modeltwo",
                "count":23
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Klobber",
@@ -2338,16 +2350,6 @@
       {
          "map":"Frantic Factory",
          "obj":[
-            {
-               "name":"Unknown 0x10",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -2894,6 +2896,71 @@
                "count":1
             },
             {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":5
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":5
+            },
+            {
+               "name":"Kremling (Red)",
+               "type":"actor",
+               "count":6
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":8
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Cutscene Chunky",
                "type":"character",
                "count":1
@@ -3233,81 +3300,6 @@
       {
          "map":"Gloomy Galleon",
          "obj":[
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Cannon Ball",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":8
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Headphones",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Enguarde Crate",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -3709,6 +3701,81 @@
                "count":1
             },
             {
+               "name":"Cannon",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Cannon Ball",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Cannon",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":8
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Enguarde Crate",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Klobber",
                "type":"character",
                "count":1
@@ -3784,11 +3851,6 @@
          "map":"Gloomy Galleon: K. Rool's Ship",
          "obj":[
             {
-               "name":"Cannon",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Banana Coin (Chunky)",
                "type":"modeltwo",
                "count":3
@@ -3834,6 +3896,11 @@
                "count":5
             },
             {
+               "name":"Cannon",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Cannon (Seasick Chunky)",
                "type":"character",
                "count":8
@@ -3849,16 +3916,6 @@
       {
          "map":"Jungle Japes: Chunky's Cave",
          "obj":[
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":6
-            },
             {
                "name":"Flame",
                "type":"modeltwo",
@@ -3910,6 +3967,16 @@
                "count":1
             },
             {
+               "name":"Cannon",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":6
+            },
+            {
                "name":"Kasplat (Chunky)",
                "type":"character",
                "count":1
@@ -3919,51 +3986,6 @@
       {
          "map":"DK Isles Overworld",
          "obj":[
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":6
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -4205,6 +4227,51 @@
                "count":1
             },
             {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":6
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Cannon",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Beaver",
                "type":"character",
                "count":3
@@ -4240,16 +4307,6 @@
          "map":"K. Rool Barrel: DK's Target Game",
          "obj":[
             {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Metal box/platform",
                "type":"modeltwo",
                "count":1
@@ -4280,6 +4337,16 @@
                "count":4
             },
             {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -4289,16 +4356,6 @@
       {
          "map":"Frantic Factory: Crusher Room",
          "obj":[
-            {
-               "name":"Strong Kong Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Banana Coin (Lanky)",
                "type":"modeltwo",
@@ -4340,6 +4397,16 @@
                "count":1
             },
             {
+               "name":"Strong Kong Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Fireball Spawner",
                "type":"character",
                "count":2
@@ -4349,11 +4416,6 @@
       {
          "map":"Jungle Japes: Barrel Blast",
          "obj":[
-            {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":9
-            },
             {
                "name":"Banana Coin (DK)",
                "type":"modeltwo",
@@ -4370,6 +4432,11 @@
                "count":1
             },
             {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":9
+            },
+            {
                "name":"Squawks",
                "type":"character",
                "count":5
@@ -4379,86 +4446,6 @@
       {
          "map":"Angry Aztec",
          "obj":[
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":15
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Strong Kong Barrel",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vase (O)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vase (:)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vase (Triangle)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vase (+)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Headphones",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Tree",
                "type":"modeltwo",
@@ -4795,6 +4782,86 @@
                "count":1
             },
             {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":15
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Strong Kong Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vase (O)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vase (:)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vase (Triangle)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vase (+)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Zinger",
                "type":"character",
                "count":3
@@ -4900,30 +4967,20 @@
          "map":"Angry Aztec: Barrel Blast",
          "obj":[
             {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":10
-            },
-            {
                "name":"DK Star",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":10
             }
          ]
       },
       {
          "map":"Troff 'n' Scoff",
          "obj":[
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"B. Locker",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Kong Pad",
                "type":"modeltwo",
@@ -4990,6 +5047,16 @@
                "count":1
             },
             {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"B. Locker",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Padlock (T&S)",
                "type":"character",
                "count":1
@@ -5009,11 +5076,6 @@
       {
          "map":"Gloomy Galleon: Shipwreck (Diddy, Lanky, Chunky)",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"CB Single (Diddy)",
                "type":"modeltwo",
@@ -5057,6 +5119,11 @@
             {
                "name":"CB Bunch (Diddy)",
                "type":"modeltwo",
+               "count":2
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
                "count":2
             },
             {
@@ -5125,11 +5192,6 @@
          "map":"Gloomy Galleon: Shipwreck (DK, Tiny)",
          "obj":[
             {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"CB Single (DK)",
                "type":"modeltwo",
                "count":10
@@ -5180,6 +5242,11 @@
                "count":2
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Spotlight Fish",
                "type":"character",
                "count":4
@@ -5199,16 +5266,6 @@
       {
          "map":"Gloomy Galleon: Shipwreck (Lanky, Tiny)",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Enguarde Crate",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"CB Single (Lanky)",
                "type":"modeltwo",
@@ -5250,6 +5307,16 @@
                "count":4
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Enguarde Crate",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Spotlight Fish",
                "type":"character",
                "count":3
@@ -5264,101 +5331,6 @@
       {
          "map":"Fungi Forest",
          "obj":[
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Strong Kong Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":6
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":16
-            },
-            {
-               "name":"Race Checkpoint",
-               "type":"actor",
-               "count":16
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"K. Lumsy's Cage",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Beanstalk",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Headphones",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Apple",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -5745,6 +5717,101 @@
                "count":1
             },
             {
+               "name":"Cannon",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Strong Kong Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":6
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":16
+            },
+            {
+               "name":"Race Checkpoint",
+               "type":"actor",
+               "count":16
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"K. Lumsy's Cage",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Beanstalk",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Apple",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Squawks",
                "type":"character",
                "count":2
@@ -5813,16 +5880,6 @@
          "map":"Gloomy Galleon: Lighthouse",
          "obj":[
             {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Flame",
                "type":"modeltwo",
                "count":9
@@ -5875,6 +5932,16 @@
             {
                "name":"Machine",
                "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
                "count":1
             },
             {
@@ -5983,11 +6050,6 @@
          "map":"Fungi Forest: Ant Hill",
          "obj":[
             {
-               "name":"Cannon",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Nothing",
                "type":"modeltwo",
                "count":1
@@ -6008,6 +6070,11 @@
                "count":1
             },
             {
+               "name":"Cannon",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Klaptrap (Purple)",
                "type":"character",
                "count":4
@@ -6018,14 +6085,14 @@
          "map":"Battle Arena: Beaver Brawl!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Beaver",
@@ -6043,11 +6110,6 @@
          "map":"Gloomy Galleon: Barrel Blast",
          "obj":[
             {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":14
-            },
-            {
                "name":"Banana Coin (DK)",
                "type":"modeltwo",
                "count":2
@@ -6061,27 +6123,17 @@
                "name":"DK Star",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":14
             }
          ]
       },
       {
          "map":"Fungi Forest: Minecart",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":6
-            },
-            {
-               "name":"Minecart",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Boulder Debris",
-               "type":"actor",
-               "count":12
-            },
             {
                "name":"Flame",
                "type":"modeltwo",
@@ -6168,6 +6220,21 @@
                "count":5
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":6
+            },
+            {
+               "name":"Minecart",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Boulder Debris",
+               "type":"actor",
+               "count":12
+            },
+            {
                "name":"Krash",
                "type":"character",
                "count":5
@@ -6238,16 +6305,6 @@
          "map":"Fungi Forest: Diddy's Attic",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Homing Ammo Crate",
                "type":"modeltwo",
                "count":5
@@ -6283,6 +6340,16 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Bat",
                "type":"character",
                "count":1
@@ -6292,11 +6359,6 @@
       {
          "map":"Fungi Forest: Lanky's Attic",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Homing Ammo Crate",
                "type":"modeltwo",
@@ -6338,6 +6400,11 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
                "name":"Bat",
                "type":"character",
                "count":3
@@ -6347,21 +6414,6 @@
       {
          "map":"Fungi Forest: DK's Barn",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":3
-            },
             {
                "name":"Banana Coin (DK)",
                "type":"modeltwo",
@@ -6403,6 +6455,21 @@
                "count":1
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":3
+            },
+            {
                "name":"Banana Fairy",
                "type":"character",
                "count":1
@@ -6417,11 +6484,6 @@
       {
          "map":"Fungi Forest: Spider",
          "obj":[
-            {
-               "name":"Spider Web",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Small plant",
                "type":"modeltwo",
@@ -6440,6 +6502,11 @@
             {
                "name":"CB Bunch (Tiny)",
                "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Spider Web",
+               "type":"actor",
                "count":1
             },
             {
@@ -6462,31 +6529,6 @@
       {
          "map":"Fungi Forest: Front Part of Mill",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Steel Keg Spawner",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -6568,6 +6610,31 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Steel Keg Spawner",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Zinger",
                "type":"character",
                "count":1
@@ -6577,21 +6644,6 @@
       {
          "map":"Fungi Forest: Rear Part of Mill",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Steel Keg Spawner",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Homing Ammo Crate",
                "type":"modeltwo",
@@ -6633,6 +6685,21 @@
                "count":3
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Steel Keg Spawner",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Zinger",
                "type":"character",
                "count":1
@@ -6642,16 +6709,6 @@
       {
          "map":"Fungi Forest: Mushroom Puzzle",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Door",
                "type":"modeltwo",
@@ -6691,16 +6748,6 @@
                "name":"CB Bunch (Lanky)",
                "type":"modeltwo",
                "count":1
-            }
-         ]
-      },
-      {
-         "map":"Fungi Forest: Giant Mushroom",
-         "obj":[
-            {
-               "name":"Cannon",
-               "type":"actor",
-               "count":3
             },
             {
                "name":"Bonus Barrel",
@@ -6708,25 +6755,15 @@
                "count":1
             },
             {
-               "name":"Vine",
-               "type":"actor",
-               "count":5
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Headphones",
+               "name":"Swinging Light",
                "type":"actor",
                "count":1
-            },
+            }
+         ]
+      },
+      {
+         "map":"Fungi Forest: Giant Mushroom",
+         "obj":[
             {
                "name":"CB Single (Diddy)",
                "type":"modeltwo",
@@ -6833,6 +6870,36 @@
                "count":1
             },
             {
+               "name":"Cannon",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":5
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Klump",
                "type":"character",
                "count":1
@@ -6923,11 +6990,6 @@
          "map":"Stash Snatch! (normal)",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"DK coin",
                "type":"modeltwo",
                "count":16
@@ -6936,6 +6998,11 @@
                "name":"Small Torch",
                "type":"modeltwo",
                "count":10
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Zinger",
@@ -6993,14 +7060,14 @@
          "map":"Mad Maze Maul! (normal)",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Small Torch",
                "type":"modeltwo",
                "count":14
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -7078,16 +7145,6 @@
          "map":"Fungi Forest: Shooting Game",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Homing Ammo Crate",
                "type":"modeltwo",
                "count":3
@@ -7123,6 +7180,16 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Zinger",
                "type":"character",
                "count":1
@@ -7132,71 +7199,6 @@
       {
          "map":"Crystal Caves",
          "obj":[
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":8
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Headphones",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -7453,6 +7455,71 @@
                "count":1
             },
             {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":8
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Beaver",
                "type":"character",
                "count":1
@@ -7538,14 +7605,14 @@
          "map":"Battle Arena: Kritter Karnage!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -7744,11 +7811,6 @@
          "map":"Crystal Caves: Beetle Race",
          "obj":[
             {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Flame",
                "type":"modeltwo",
                "count":14
@@ -7769,6 +7831,11 @@
                "count":8
             },
             {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Beetle",
                "type":"character",
                "count":1
@@ -7779,13 +7846,13 @@
          "map":"Fungi Forest: Dogadon",
          "obj":[
             {
-               "name":"TNT Barrel Spawner (Dogadon)",
-               "type":"actor",
+               "name":"Dogadon Arena Background",
+               "type":"modeltwo",
                "count":1
             },
             {
-               "name":"Dogadon Arena Background",
-               "type":"modeltwo",
+               "name":"TNT Barrel Spawner (Dogadon)",
+               "type":"actor",
                "count":1
             },
             {
@@ -7803,11 +7870,6 @@
       {
          "map":"Crystal Caves: Igloo (Tiny)",
          "obj":[
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Flame",
                "type":"modeltwo",
@@ -7839,6 +7901,11 @@
                "count":1
             },
             {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"GETOUT Controller",
                "type":"character",
                "count":1
@@ -7858,11 +7925,6 @@
       {
          "map":"Crystal Caves: Igloo (Lanky)",
          "obj":[
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Flame",
                "type":"modeltwo",
@@ -7894,6 +7956,11 @@
                "count":1
             },
             {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Beaver",
                "type":"character",
                "count":2
@@ -7908,11 +7975,6 @@
       {
          "map":"Crystal Caves: Igloo (DK)",
          "obj":[
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"CB Single (DK)",
                "type":"modeltwo",
@@ -7944,6 +8006,11 @@
                "count":1
             },
             {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kosha",
                "type":"character",
                "count":2
@@ -7953,46 +8020,6 @@
       {
          "map":"Creepy Castle",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bridge (Castle)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Headphones",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
@@ -8194,6 +8221,46 @@
                "count":1
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bridge (Castle)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Headphones",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kasplat (Lanky)",
                "type":"character",
                "count":1
@@ -8223,21 +8290,6 @@
       {
          "map":"Creepy Castle: Ballroom",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -8304,6 +8356,21 @@
                "count":1
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Krossbones",
                "type":"character",
                "count":2
@@ -8344,11 +8411,6 @@
          "map":"Crystal Caves: Shack (Chunky)",
          "obj":[
             {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Film",
                "type":"modeltwo",
                "count":6
@@ -8377,6 +8439,11 @@
                "name":"Light",
                "type":"modeltwo",
                "count":2
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"GETOUT Controller",
@@ -8429,11 +8496,6 @@
          "map":"Crystal Caves: Shack (Diddy, middle part)",
          "obj":[
             {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"CB Single (Diddy)",
                "type":"modeltwo",
                "count":5
@@ -8464,6 +8526,11 @@
                "count":1
             },
             {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Klobber",
                "type":"character",
                "count":4
@@ -8489,16 +8556,6 @@
          "map":"Crystal Caves: Shack (Tiny)",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Golden Banana",
                "type":"modeltwo",
                "count":1
@@ -8507,6 +8564,16 @@
                "name":"CB Bunch (Tiny)",
                "type":"modeltwo",
                "count":2
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Klaptrap (Purple)",
@@ -8518,11 +8585,6 @@
       {
          "map":"Crystal Caves: Lanky's Hut",
          "obj":[
-            {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Metal Floor",
                "type":"modeltwo",
@@ -8554,6 +8616,11 @@
                "count":1
             },
             {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kosha",
                "type":"character",
                "count":2
@@ -8564,13 +8631,13 @@
          "map":"Crystal Caves: Igloo (Chunky)",
          "obj":[
             {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
+               "name":"Golden Banana",
+               "type":"modeltwo",
                "count":1
             },
             {
-               "name":"Golden Banana",
-               "type":"modeltwo",
+               "name":"Balloon (Chunky)",
+               "type":"actor",
                "count":1
             },
             {
@@ -8614,16 +8681,6 @@
          "map":"K. Lumsy",
          "obj":[
             {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Nothing",
                "type":"modeltwo",
                "count":1
@@ -8659,6 +8716,16 @@
                "count":8
             },
             {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"K. Lumsy",
                "type":"character",
                "count":1
@@ -8668,11 +8735,6 @@
       {
          "map":"Crystal Caves: Ice Castle",
          "obj":[
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Flame",
                "type":"modeltwo",
@@ -8704,6 +8766,11 @@
                "count":16
             },
             {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Ice Tomato",
                "type":"character",
                "count":1
@@ -8713,11 +8780,6 @@
       {
          "map":"Speedy Swing Sortie! (easy)",
          "obj":[
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":9
-            },
             {
                "name":"Yellow Flowers",
                "type":"modeltwo",
@@ -8759,6 +8821,11 @@
                "count":9
             },
             {
+               "name":"Vine",
+               "type":"actor",
+               "count":9
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -8768,6 +8835,21 @@
       {
          "map":"Crystal Caves: Igloo (Diddy)",
          "obj":[
+            {
+               "name":"Golden Banana",
+               "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Crystal Coconut",
+               "type":"modeltwo",
+               "count":10
+            },
+            {
+               "name":"Igloo Door",
+               "type":"modeltwo",
+               "count":1
+            },
             {
                "name":"Balloon (Diddy)",
                "type":"actor",
@@ -8801,21 +8883,6 @@
             {
                "name":"6 Pad (Diddy 5DI)",
                "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Golden Banana",
-               "type":"modeltwo",
-               "count":1
-            },
-            {
-               "name":"Crystal Coconut",
-               "type":"modeltwo",
-               "count":10
-            },
-            {
-               "name":"Igloo Door",
-               "type":"modeltwo",
                "count":1
             },
             {
@@ -8879,16 +8946,6 @@
          "map":"Creepy Castle: Tower",
          "obj":[
             {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Large Iron Bars Panel",
                "type":"modeltwo",
                "count":1
@@ -8914,6 +8971,16 @@
                "count":3
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kritter-in-a-Sheet",
                "type":"character",
                "count":5
@@ -8923,11 +8990,6 @@
       {
          "map":"Creepy Castle: Minecart",
          "obj":[
-            {
-               "name":"Minecart",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Flame",
                "type":"modeltwo",
@@ -8962,6 +9024,11 @@
                "name":"Skull Gate (Minecart)",
                "type":"modeltwo",
                "count":3
+            },
+            {
+               "name":"Minecart",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Squawks",
@@ -9018,21 +9085,6 @@
       {
          "map":"Creepy Castle: Crypt (Lanky, Tiny)",
          "obj":[
-            {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":7
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -9104,6 +9156,21 @@
                "count":1
             },
             {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":7
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Krossbones",
                "type":"character",
                "count":3
@@ -9164,11 +9231,6 @@
          "map":"Frantic Factory: Barrel Blast",
          "obj":[
             {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":8
-            },
-            {
                "name":"Nothing",
                "type":"modeltwo",
                "count":1
@@ -9187,6 +9249,11 @@
                "name":"Race Checkpoint",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":8
             }
          ]
       },
@@ -9228,26 +9295,6 @@
       {
          "map":"Creepy Castle: Crypt (DK, Diddy, Chunky)",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
@@ -9374,6 +9421,26 @@
                "count":4
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Krossbones",
                "type":"character",
                "count":8
@@ -9388,31 +9455,6 @@
       {
          "map":"Creepy Castle: Museum",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
@@ -9474,6 +9516,31 @@
                "count":3
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Banana Fairy",
                "type":"character",
                "count":1
@@ -9493,16 +9560,6 @@
       {
          "map":"Creepy Castle: Library",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Strong Kong Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
@@ -9562,6 +9619,16 @@
                "name":"Library Door (Revolving?)",
                "type":"modeltwo",
                "count":2
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Strong Kong Barrel",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Book",
@@ -9882,14 +9949,14 @@
          "map":"Splish-Splash Salvage! (easy)",
          "obj":[
             {
-               "name":"Vine",
-               "type":"actor",
-               "count":3
-            },
-            {
                "name":"DK coin",
                "type":"modeltwo",
                "count":8
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":3
             },
             {
                "name":"Minigame Controller",
@@ -9911,11 +9978,6 @@
       {
          "map":"Speedy Swing Sortie! (normal)",
          "obj":[
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":10
-            },
             {
                "name":"Yellow Flowers",
                "type":"modeltwo",
@@ -9947,6 +10009,11 @@
                "count":14
             },
             {
+               "name":"Vine",
+               "type":"actor",
+               "count":10
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -9956,11 +10023,6 @@
       {
          "map":"Speedy Swing Sortie! (hard)",
          "obj":[
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":10
-            },
             {
                "name":"Yellow Flowers",
                "type":"modeltwo",
@@ -9995,6 +10057,11 @@
                "name":"DK coin",
                "type":"modeltwo",
                "count":6
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":10
             },
             {
                "name":"Zinger",
@@ -10182,21 +10249,6 @@
          "map":"Creepy Castle: Dungeon",
          "obj":[
             {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":2
-            },
-            {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
                "count":2
@@ -10250,6 +10302,21 @@
                "name":"Troff'n'Scoff Portal",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":2
             },
             {
                "name":"Kasplat (Chunky)",
@@ -10517,14 +10584,14 @@
          "map":"Battle Arena: Arena Ambush!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10547,14 +10614,14 @@
          "map":"Battle Arena: More Kritter Karnage!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10572,14 +10639,14 @@
          "map":"Battle Arena: Forest Fracas!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10607,14 +10674,14 @@
          "map":"Battle Arena: Bish Bash Brawl!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10642,14 +10709,14 @@
          "map":"Battle Arena: Kamikaze Kremlings!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10677,14 +10744,14 @@
          "map":"Battle Arena: Plinth Panic!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10712,14 +10779,14 @@
          "map":"Battle Arena: Pinnacle Palaver!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kasplat (Diddy)",
@@ -10747,14 +10814,14 @@
          "map":"Battle Arena: Shockwave Showdown!",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Spotlight (Crown Arena?)",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -10786,36 +10853,6 @@
       {
          "map":"Creepy Castle: Basement",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Balloon (Lanky)",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Chain",
-               "type":"actor",
-               "count":5
-            },
             {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
@@ -10912,6 +10949,36 @@
                "count":6
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Balloon (Lanky)",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Chain",
+               "type":"actor",
+               "count":5
+            },
+            {
                "name":"Krossbones",
                "type":"character",
                "count":1
@@ -10926,26 +10993,6 @@
       {
          "map":"Creepy Castle: Tree",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (DK)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Banana Coin (Chunky)",
                "type":"modeltwo",
@@ -11027,6 +11074,26 @@
                "count":1
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (DK)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kasplat (DK)",
                "type":"character",
                "count":1
@@ -11087,11 +11154,6 @@
          "map":"Creepy Castle: Chunky's Toolshed",
          "obj":[
             {
-               "name":"Balloon (Chunky)",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Homing Ammo Crate",
                "type":"modeltwo",
                "count":4
@@ -11120,6 +11182,11 @@
                "name":"Fluorescent Tube",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Balloon (Chunky)",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Bat",
@@ -11172,11 +11239,6 @@
          "map":"Creepy Castle: Greenhouse",
          "obj":[
             {
-               "name":"Orangstand Sprint Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Yellow Flowers",
                "type":"modeltwo",
                "count":6
@@ -11222,6 +11284,11 @@
                "count":1
             },
             {
+               "name":"Orangstand Sprint Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"GETOUT Controller",
                "type":"character",
                "count":1
@@ -11231,31 +11298,6 @@
       {
          "map":"Jungle Japes Lobby",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"B. Locker",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -11327,24 +11369,19 @@
                "count":1
             },
             {
-               "name":"Beaver",
-               "type":"character",
-               "count":2
-            }
-         ]
-      },
-      {
-         "map":"Hideout Helm Lobby",
-         "obj":[
-            {
-               "name":"Bonus Barrel",
+               "name":"Swinging Light",
                "type":"actor",
                "count":1
             },
             {
-               "name":"Vine",
+               "name":"Swinging Light",
                "type":"actor",
-               "count":9
+               "count":1
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Tag Barrel",
@@ -11356,6 +11393,16 @@
                "type":"actor",
                "count":1
             },
+            {
+               "name":"Beaver",
+               "type":"character",
+               "count":2
+            }
+         ]
+      },
+      {
+         "map":"Hideout Helm Lobby",
+         "obj":[
             {
                "name":"Homing Ammo Crate",
                "type":"modeltwo",
@@ -11392,6 +11439,26 @@
                "count":2
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":9
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"B. Locker",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kasplat (DK)",
                "type":"character",
                "count":1
@@ -11402,13 +11469,13 @@
          "map":"DK's House",
          "obj":[
             {
-               "name":"Boombox",
-               "type":"actor",
+               "name":"Hammock",
+               "type":"modeltwo",
                "count":1
             },
             {
-               "name":"Hammock",
-               "type":"modeltwo",
+               "name":"Boombox",
+               "type":"actor",
                "count":1
             },
             {
@@ -11431,26 +11498,6 @@
       {
          "map":"Angry Aztec Lobby",
          "obj":[
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"B. Locker",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -11532,19 +11579,14 @@
                "count":1
             },
             {
-               "name":"Zinger",
-               "type":"character",
-               "count":2
-            }
-         ]
-      },
-      {
-         "map":"Gloomy Galleon Lobby",
-         "obj":[
-            {
-               "name":"Mini Monkey Barrel",
+               "name":"Hunky Chunky Barrel",
                "type":"actor",
-               "count":2
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Tag Barrel",
@@ -11556,6 +11598,16 @@
                "type":"actor",
                "count":1
             },
+            {
+               "name":"Zinger",
+               "type":"character",
+               "count":2
+            }
+         ]
+      },
+      {
+         "map":"Gloomy Galleon Lobby",
+         "obj":[
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -11612,17 +11664,7 @@
                "count":1
             },
             {
-               "name":"Kasplat (Chunky)",
-               "type":"character",
-               "count":1
-            }
-         ]
-      },
-      {
-         "map":"Frantic Factory Lobby",
-         "obj":[
-            {
-               "name":"Swinging Light",
+               "name":"Mini Monkey Barrel",
                "type":"actor",
                "count":2
             },
@@ -11636,6 +11678,16 @@
                "type":"actor",
                "count":1
             },
+            {
+               "name":"Kasplat (Chunky)",
+               "type":"character",
+               "count":1
+            }
+         ]
+      },
+      {
+         "map":"Frantic Factory Lobby",
+         "obj":[
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -11702,6 +11754,21 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"B. Locker",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kasplat (Tiny)",
                "type":"character",
                "count":1
@@ -11721,26 +11788,6 @@
       {
          "map":"Training Grounds",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":3
-            },
-            {
-               "name":"Training Barrel",
-               "type":"actor",
-               "count":4
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":2
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -11850,6 +11897,26 @@
                "name":"Unknown 0x241",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":3
+            },
+            {
+               "name":"Training Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":2
             }
          ]
       },
@@ -11866,21 +11933,6 @@
       {
          "map":"Fungi Forest Lobby",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":2
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"B. Locker",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -11937,6 +11989,21 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":2
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"B. Locker",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Banana Fairy",
                "type":"character",
                "count":1
@@ -11946,16 +12013,6 @@
       {
          "map":"Gloomy Galleon: Submarine",
          "obj":[
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":3
-            },
             {
                "name":"Orange",
                "type":"modeltwo",
@@ -11997,6 +12054,16 @@
                "count":1
             },
             {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":3
+            },
+            {
                "name":"Pufftup",
                "type":"character",
                "count":4
@@ -12022,25 +12089,20 @@
          "map":"Barrel Barrel",
          "obj":[
             {
-               "name":"Barrel",
-               "type":"actor",
-               "count":5
-            },
-            {
                "name":"Tree",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Barrel",
+               "type":"actor",
+               "count":5
             }
          ]
       },
       {
          "map":"Vine Barrel",
          "obj":[
-            {
-               "name":"Vine",
-               "type":"actor",
-               "count":3
-            },
             {
                "name":"Tree",
                "type":"modeltwo",
@@ -12055,32 +12117,17 @@
                "name":"Coin Powerup?",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Vine",
+               "type":"actor",
+               "count":3
             }
          ]
       },
       {
          "map":"Creepy Castle: Crypt",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Diddy)",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Balloon (Tiny)",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Large Wooden Panel",
                "type":"modeltwo",
@@ -12177,6 +12224,26 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Diddy)",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Balloon (Tiny)",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kasplat (Diddy)",
                "type":"character",
                "count":1
@@ -12222,11 +12289,6 @@
          "map":"Creepy Castle: Car Race",
          "obj":[
             {
-               "name":"K. Lumsy's Cage",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Golden Banana",
                "type":"modeltwo",
                "count":1
@@ -12242,6 +12304,11 @@
                "count":12
             },
             {
+               "name":"K. Lumsy's Cage",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Enemy Car",
                "type":"character",
                "count":1
@@ -12251,21 +12318,6 @@
       {
          "map":"Crystal Caves: Barrel Blast",
          "obj":[
-            {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":26
-            },
-            {
-               "name":"Barrel Spawner",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -12285,17 +12337,27 @@
                "name":"Race Checkpoint",
                "type":"modeltwo",
                "count":1
+            },
+            {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":26
+            },
+            {
+               "name":"Barrel Spawner",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
             }
          ]
       },
       {
          "map":"Creepy Castle: Barrel Blast",
          "obj":[
-            {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":11
-            },
             {
                "name":"Banana Coin (DK)",
                "type":"modeltwo",
@@ -12310,22 +12372,17 @@
                "name":"Race Checkpoint",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":11
             }
          ]
       },
       {
          "map":"Fungi Forest: Barrel Blast",
          "obj":[
-            {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":24
-            },
-            {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"CB Bunch (DK)",
                "type":"modeltwo",
@@ -12335,6 +12392,16 @@
                "name":"Race Checkpoint",
                "type":"modeltwo",
                "count":2
+            },
+            {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":24
+            },
+            {
+               "name":"Bonus Barrel",
+               "type":"actor",
+               "count":1
             }
          ]
       },
@@ -12487,31 +12554,6 @@
          "map":"Creepy Castle Lobby",
          "obj":[
             {
-               "name":"Bonus Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Boulder",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Tag Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"B. Locker",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rainbow Coin Patch",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Nothing",
                "type":"modeltwo",
                "count":1
@@ -12572,27 +12614,7 @@
                "count":1
             },
             {
-               "name":"Kasplat (Diddy)",
-               "type":"character",
-               "count":1
-            },
-            {
-               "name":"Kosha",
-               "type":"character",
-               "count":3
-            }
-         ]
-      },
-      {
-         "map":"Crystal Caves Lobby",
-         "obj":[
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Strong Kong Barrel",
+               "name":"Bonus Barrel",
                "type":"actor",
                "count":1
             },
@@ -12611,6 +12633,26 @@
                "type":"actor",
                "count":1
             },
+            {
+               "name":"Rainbow Coin Patch",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Kasplat (Diddy)",
+               "type":"character",
+               "count":1
+            },
+            {
+               "name":"Kosha",
+               "type":"character",
+               "count":3
+            }
+         ]
+      },
+      {
+         "map":"Crystal Caves Lobby",
+         "obj":[
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -12682,6 +12724,31 @@
                "count":1
             },
             {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Strong Kong Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Boulder",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Tag Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"B. Locker",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kasplat (Lanky)",
                "type":"character",
                "count":1
@@ -12691,6 +12758,21 @@
       {
          "map":"DK Isles: Snide's Room",
          "obj":[
+            {
+               "name":"Snide's HQ",
+               "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Simian Spring Pad",
+               "type":"modeltwo",
+               "count":1
+            },
+            {
+               "name":"Battle Crown Pad",
+               "type":"modeltwo",
+               "count":1
+            },
             {
                "name":"Bonus Barrel",
                "type":"actor",
@@ -12715,21 +12797,6 @@
                "name":"Tag Barrel",
                "type":"actor",
                "count":1
-            },
-            {
-               "name":"Snide's HQ",
-               "type":"modeltwo",
-               "count":1
-            },
-            {
-               "name":"Simian Spring Pad",
-               "type":"modeltwo",
-               "count":1
-            },
-            {
-               "name":"Battle Crown Pad",
-               "type":"modeltwo",
-               "count":1
             }
          ]
       },
@@ -12737,13 +12804,13 @@
          "map":"Crystal Caves: Army Dillo",
          "obj":[
             {
-               "name":"TNT Barrel Spawner",
-               "type":"actor",
+               "name":"Metal Door",
+               "type":"modeltwo",
                "count":1
             },
             {
-               "name":"Metal Door",
-               "type":"modeltwo",
+               "name":"TNT Barrel Spawner",
+               "type":"actor",
                "count":1
             },
             {
@@ -12762,13 +12829,13 @@
          "map":"Angry Aztec: Dogadon",
          "obj":[
             {
-               "name":"TNT Barrel Spawner (Dogadon)",
-               "type":"actor",
+               "name":"Dogadon Arena Outer",
+               "type":"modeltwo",
                "count":1
             },
             {
-               "name":"Dogadon Arena Outer",
-               "type":"modeltwo",
+               "name":"TNT Barrel Spawner (Dogadon)",
+               "type":"actor",
                "count":1
             },
             {
@@ -12786,11 +12853,6 @@
       {
          "map":"Training Grounds (End Sequence)",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -12847,6 +12909,11 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Cutscene Object",
                "type":"character",
                "count":26
@@ -12887,11 +12954,6 @@
          "map":"Crystal Caves: Shack (Diddy, upper part)",
          "obj":[
             {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Thin Flame?",
                "type":"modeltwo",
                "count":3
@@ -12922,6 +12984,11 @@
                "count":1
             },
             {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Banana Fairy",
                "type":"character",
                "count":1
@@ -12936,11 +13003,6 @@
       {
          "map":"K. Rool Barrel: Diddy's Rocketbarrel Game",
          "obj":[
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Grey Switch",
                "type":"modeltwo",
@@ -12967,6 +13029,11 @@
                "count":5
             },
             {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -12981,11 +13048,6 @@
       {
          "map":"K. Rool Barrel: Lanky's Shooting Game",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Metal Platform",
                "type":"modeltwo",
@@ -13012,6 +13074,11 @@
                "count":2
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -13026,11 +13093,6 @@
       {
          "map":"K. Rool Fight: DK Phase",
          "obj":[
-            {
-               "name":"Cannon Barrel",
-               "type":"actor",
-               "count":4
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -13062,6 +13124,11 @@
                "count":4
             },
             {
+               "name":"Cannon Barrel",
+               "type":"actor",
+               "count":4
+            },
+            {
                "name":"Cutscene Object",
                "type":"character",
                "count":15
@@ -13076,11 +13143,6 @@
       {
          "map":"K. Rool Fight: Diddy Phase",
          "obj":[
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -13117,6 +13179,11 @@
                "count":4
             },
             {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Cutscene Object",
                "type":"character",
                "count":11
@@ -13131,11 +13198,6 @@
       {
          "map":"K. Rool Fight: Lanky Phase",
          "obj":[
-            {
-               "name":"Banana Barrel Spawner",
-               "type":"actor",
-               "count":4
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -13197,6 +13259,11 @@
                "count":1
             },
             {
+               "name":"Banana Barrel Spawner",
+               "type":"actor",
+               "count":4
+            },
+            {
                "name":"Cutscene Object",
                "type":"character",
                "count":7
@@ -13211,11 +13278,6 @@
       {
          "map":"K. Rool Fight: Tiny Phase",
          "obj":[
-            {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -13247,6 +13309,11 @@
                "count":4
             },
             {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Cutscene Object",
                "type":"character",
                "count":15
@@ -13261,21 +13328,6 @@
       {
          "map":"K. Rool Fight: Chunky Phase",
          "obj":[
-            {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rocketbarrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Rope",
-               "type":"actor",
-               "count":1
-            },
             {
                "name":"Nothing",
                "type":"modeltwo",
@@ -13315,6 +13367,21 @@
                "name":"Spotlight",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rocketbarrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Rope",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Cutscene Object",
@@ -13367,16 +13434,6 @@
          "map":"K. Rool Barrel: Chunky's Hidden Kremling Game",
          "obj":[
             {
-               "name":"Hunky Chunky Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Metal platform",
                "type":"modeltwo",
                "count":2
@@ -13402,6 +13459,16 @@
                "count":2
             },
             {
+               "name":"Hunky Chunky Barrel",
+               "type":"actor",
+               "count":1
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
+            },
+            {
                "name":"Kremling",
                "type":"character",
                "count":4
@@ -13416,11 +13483,6 @@
       {
          "map":"K. Rool Barrel: Tiny's Pony Tail Twirl Game",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":4
-            },
             {
                "name":"Grey Switch",
                "type":"modeltwo",
@@ -13442,6 +13504,11 @@
                "count":1
             },
             {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":4
+            },
+            {
                "name":"Minigame Controller",
                "type":"character",
                "count":1
@@ -13451,11 +13518,6 @@
       {
          "map":"K. Rool Barrel: Chunky's Shooting Game",
          "obj":[
-            {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":3
-            },
             {
                "name":"Unknown 0x241",
                "type":"modeltwo",
@@ -13470,6 +13532,11 @@
                "name":"Blast-O-Matic",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":3
             },
             {
                "name":"Kremling",
@@ -13487,11 +13554,6 @@
          "map":"K. Rool Barrel: DK's Rambi Game",
          "obj":[
             {
-               "name":"Swinging Light",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Light",
                "type":"modeltwo",
                "count":4
@@ -13500,6 +13562,11 @@
                "name":"Blast-O-Matic",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Swinging Light",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Kremling",
@@ -13542,11 +13609,6 @@
          "map":"K. Rool's Arena",
          "obj":[
             {
-               "name":"Mini Monkey Barrel",
-               "type":"actor",
-               "count":1
-            },
-            {
                "name":"Nothing",
                "type":"modeltwo",
                "count":2
@@ -13580,6 +13642,11 @@
                "name":"Spotlight",
                "type":"modeltwo",
                "count":4
+            },
+            {
+               "name":"Mini Monkey Barrel",
+               "type":"actor",
+               "count":1
             },
             {
                "name":"Cutscene Object",

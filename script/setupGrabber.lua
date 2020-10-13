@@ -41,6 +41,45 @@ function getActorFromEnemyType(index)
 	return actor_types[behaviorIndex] or "Unknown 0x"..bizstring.hex(behaviorIndex);
 end
 
+function getSpawnerCount()
+	endpoint_found = false;
+	actorSpawner_header = mainmemory.read_u32_be(0x7FC400);
+	count = 0;
+	nextSpawner = actorSpawner_header;
+	if actorSpawner_header > 0x7FFFFFFF and actorSpawner_header < 0x80800000 then
+		actorSpawner_header = actorSpawner_header - 0x80000000;
+		nextSpawner = actorSpawner_header;
+		while not endpoint_found do
+			count = count + 1;
+			nextSpawner = mainmemory.read_u32_be(nextSpawner + 0x68);
+			if nextSpawner < 0x80000000 or nextSpawner > 0x807FFFFF then
+				endpoint_found = true;
+			 	return count;
+			end
+			nextSpawner = nextSpawner - 0x80000000;
+			emu.yield();
+		end
+	end
+	return 0;
+end
+
+function populateActorSpawnerPointers()
+	local actorSpawnerArray = mainmemory.read_u32_be(0x7FC400);
+	mapObjectSetup_objM1_offset = 0x10;
+	actor_spawners = {};
+	if actorSpawnerArray > 0x7FFFFFFF and actorSpawnerArray < 0x80800000 then
+		actorSpawnerArray = actorSpawnerArray - 0x80000000;
+		local spawnerCount = getSpawnerCount();
+		local nextSpawner = actorSpawnerArray;
+		for i = 1, spawnerCount do
+			local slotBase = nextSpawner;
+			nextSpawner = mainmemory.read_u32_be(slotBase + 0x68) - 0x80000000;
+			table.insert(actor_spawners, slotBase);
+		end
+	end
+	return actor_spawners
+end
+
 function createFile()
 	file = io.open("object_data.json", "w+")
 	file:close(file)
@@ -66,23 +105,56 @@ function printData()
 	writeToFile("\"map\": \""..map_name.."\",")
 	writeToFile("\"obj\": [");
 	--print("First Actor: 0x"..bizstring.hex(list_data[3]))
-	if #pointers > 0 then
-		for i = 1, #pointers do
-			local focused_pointer = pointers[i];
-			--print("0x"..bizstring.hex(focused_pointer))
-			if focused_pointer < list_data[3] then
-				--print("Obj M2")
-				-- Object Model Two
-				local id = mainmemory.read_u16_be(focused_pointer + 0x28);
-				if objm2_counts[id] == nil then
-					objm2_counts[id] = 1;
+	if map_value ~= 2 and map_value ~= 9 then
+		if #pointers > 0 then
+			for i = 1, #pointers do
+				local focused_pointer = pointers[i];
+				--print("0x"..bizstring.hex(focused_pointer))
+				if focused_pointer < list_data[3] then
+					--print("Obj M2")
+					-- Object Model Two
+					local id = mainmemory.read_u16_be(focused_pointer + 0x28);
+					if objm2_counts[id] == nil then
+						objm2_counts[id] = 1;
+					else
+						objm2_counts[id] = objm2_counts[id] + 1;
+					end
 				else
-					objm2_counts[id] = objm2_counts[id] + 1;
+					--[[
+					--print("Actor")
+					-- Object Model One / Actor
+					local id = mainmemory.read_u16_be(focused_pointer + 0x32) + 16;
+					if actor_counts[id] == nil then
+						actor_counts[id] = 1;
+					else
+						actor_counts[id] = actor_counts[id] + 1;
+					end
+					]]--
 				end
-			else
-				--print("Actor")
-				-- Object Model One / Actor
-				local id = mainmemory.read_u16_be(focused_pointer + 0x32) + 16;
+			end
+			--[[
+			for i = 0, actor_cap do
+				if actor_counts[i] ~= nil then
+					if actor_counts[i] > 0 then
+						local name = actor_types[i] or "Unknown 0x"..bizstring.hex(i);
+						writeToFile("{\"name\": \""..name.."\", \"type\": \"actor\", \"count\": "..actor_counts[i].."},")
+					end
+				end
+			end
+			]]--
+			for i = 0, objm2_cap do
+				if objm2_counts[i] ~= nil then
+					if objm2_counts[i] > 0 then
+						local name = object_types[i] or "Unknown 0x"..bizstring.hex(i);
+						writeToFile("{\"name\": \""..name.."\", \"type\": \"modeltwo\", \"count\": "..objm2_counts[i].."},")
+					end
+				end
+			end
+		end
+		local actor_pointers = populateActorSpawnerPointers();
+		if #actor_pointers > 0 then
+			for i = 1, #actor_pointers do
+				local id = mainmemory.read_u16_be(actor_pointers[i]) + 0x10
 				if actor_counts[id] == nil then
 					actor_counts[id] = 1;
 				else
@@ -98,82 +170,75 @@ function printData()
 				end
 			end
 		end
-		for i = 0, objm2_cap do
-			if objm2_counts[i] ~= nil then
-				if objm2_counts[i] > 0 then
-					local name = object_types[i] or "Unknown 0x"..bizstring.hex(i);
-					writeToFile("{\"name\": \""..name.."\", \"type\": \"modeltwo\", \"count\": "..objm2_counts[i].."},")
-				end
-			end
-		end
-	end
-	local enemyRespawnObject = mainmemory.read_u32_be(0x7FDC8C);
-	local enemySlotSize = 0x48;
-	local enemy_counts = {};
-	dual_enemy_counts = {};
-	dual_enemy_indexes = {};
-	local max_enemy_index = 0x70;
-	if enemyRespawnObject > 0x7FFFFFFF and enemyRespawnObject < 0x80800000 then
-		enemyRespawnObject = enemyRespawnObject - 0x80000000
-		local numberOfEnemies = mainmemory.read_u16_be(0x7FDC88);
-		for i = 1, numberOfEnemies do
-			local slotBase = enemyRespawnObject + (i - 1) * enemySlotSize;
-			local type_primary = mainmemory.readbyte(slotBase);
-			local type_secondary = mainmemory.readbyte(slotBase + 0x44);
-			if map_value == 48 then -- Fungi Forest
-				if type_secondary == 0x2C then
-					type_secondary = 0x67;
-				elseif type_secondary == 0x9 then
-					type_secondary = 0x54;
-				elseif type_secondary == 0x1C then
-					type_secondary = 0x63;
-				end
-			end
-			--print("Type P: 0x"..type_primary..", Type S: 0x"..type_secondary)
-			if type_primary == type_secondary then
-				if enemy_counts[type_primary] == nil then
-					enemy_counts[type_primary] = 1;
-				else
-					enemy_counts[type_primary] = enemy_counts[type_primary] + 1;
-				end
-			else
-				local code = (type_primary * 256) + type_secondary;
-				if #dual_enemy_indexes > 0 then
-					local index_found = false
-					for j = 1, #dual_enemy_indexes do
-						if dual_enemy_indexes[j] == code then
-							index_found = true;
-						end
-					end
-					if index_found then
-						dual_enemy_counts[code] = dual_enemy_counts[code] + 1;
-					else
-						dual_enemy_counts[code] = 1;
-						table.insert(dual_enemy_indexes, code)
-					end
-				else
-					table.insert(dual_enemy_indexes, code)
-					dual_enemy_counts[code] = 1;
-				end
 
-			end
-		end
-		for i = 0, max_enemy_index do
-			if enemy_counts[i] ~= nil then
-				if enemy_counts[i] > 0 then
-					local name = getActorFromEnemyType(i)
-					writeToFile("{\"name\": \""..name.."\", \"type\": \"character\", \"count\": "..enemy_counts[i].."},")
+		local enemyRespawnObject = mainmemory.read_u32_be(0x7FDC8C);
+		local enemySlotSize = 0x48;
+		local enemy_counts = {};
+		dual_enemy_counts = {};
+		dual_enemy_indexes = {};
+		local max_enemy_index = 0x70;
+		if enemyRespawnObject > 0x7FFFFFFF and enemyRespawnObject < 0x80800000 then
+			enemyRespawnObject = enemyRespawnObject - 0x80000000
+			local numberOfEnemies = mainmemory.read_u16_be(0x7FDC88);
+			for i = 1, numberOfEnemies do
+				local slotBase = enemyRespawnObject + (i - 1) * enemySlotSize;
+				local type_primary = mainmemory.readbyte(slotBase);
+				local type_secondary = mainmemory.readbyte(slotBase + 0x44);
+				if map_value == 48 then -- Fungi Forest
+					if type_secondary == 0x2C then
+						type_secondary = 0x67;
+					elseif type_secondary == 0x9 then
+						type_secondary = 0x54;
+					elseif type_secondary == 0x1C then
+						type_secondary = 0x63;
+					end
+				end
+				--print("Type P: 0x"..type_primary..", Type S: 0x"..type_secondary)
+				if type_primary == type_secondary then
+					if enemy_counts[type_primary] == nil then
+						enemy_counts[type_primary] = 1;
+					else
+						enemy_counts[type_primary] = enemy_counts[type_primary] + 1;
+					end
+				else
+					local code = (type_primary * 256) + type_secondary;
+					if #dual_enemy_indexes > 0 then
+						local index_found = false
+						for j = 1, #dual_enemy_indexes do
+							if dual_enemy_indexes[j] == code then
+								index_found = true;
+							end
+						end
+						if index_found then
+							dual_enemy_counts[code] = dual_enemy_counts[code] + 1;
+						else
+							dual_enemy_counts[code] = 1;
+							table.insert(dual_enemy_indexes, code)
+						end
+					else
+						table.insert(dual_enemy_indexes, code)
+						dual_enemy_counts[code] = 1;
+					end
+
 				end
 			end
-		end
-		if #dual_enemy_indexes > 0 then
-			for i = 1, #dual_enemy_indexes do
-				local focused_index = dual_enemy_indexes[i];
-				local type_secondary = focused_index % 256;
-				local type_primary = (focused_index - type_secondary) / 256;
-				local name_primary = getActorFromEnemyType(type_primary);
-				local name_secondary = getActorFromEnemyType(type_secondary);
-				writeToFile("{\"name\": \""..name_primary.."\", \"altname\": \""..name_secondary.."\", \"type\": \"character\", \"count\": "..dual_enemy_counts[focused_index].."},")
+			for i = 0, max_enemy_index do
+				if enemy_counts[i] ~= nil then
+					if enemy_counts[i] > 0 then
+						local name = getActorFromEnemyType(i)
+						writeToFile("{\"name\": \""..name.."\", \"type\": \"character\", \"count\": "..enemy_counts[i].."},")
+					end
+				end
+			end
+			if #dual_enemy_indexes > 0 then
+				for i = 1, #dual_enemy_indexes do
+					local focused_index = dual_enemy_indexes[i];
+					local type_secondary = focused_index % 256;
+					local type_primary = (focused_index - type_secondary) / 256;
+					local name_primary = getActorFromEnemyType(type_primary);
+					local name_secondary = getActorFromEnemyType(type_secondary);
+					writeToFile("{\"name\": \""..name_primary.."\", \"altname\": \""..name_secondary.."\", \"type\": \"character\", \"count\": "..dual_enemy_counts[focused_index].."},")
+				end
 			end
 		end
 	end
