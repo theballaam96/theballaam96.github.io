@@ -1,0 +1,426 @@
+<html>
+	<head>
+		<title>Map Data - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<link rel="stylesheet" href="style/maps.css">
+		<meta name="description" content="" />
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="flexsplitter">
+			<div class="flex40 homebox">
+				<div class="homebox_internal">
+					<div class="header" style="text-align:left">
+						<strong>Search by Map</strong>
+					</div>
+					<input type="text" id="maplookup" class="lookup" oninput="updateList();alignFloat('maplookup','mapFloat')">
+				</div>
+			</div>
+			<div class="flex40 homebox">
+				<div class="homebox_internal">
+					<div class="header" style="text-align:left">
+						<strong>Search by Object</strong>
+					</div>
+					<input type="text" id="maplookup_object" class="lookup" oninput="updateList_object();alignFloat('maplookup_object','objFloat')">
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter" id="section_splitter">
+			<div class="homebox">
+				<div class="homebox_internal">
+					<div class="header" style="text-align:left">
+						<strong id="info_title"></strong>
+					</div>
+					<div class="content">
+						<strong id="info_header"></strong>
+						<div id="object_display">
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="mapFloat" class="float" onload="alignFloat('maplookup','mapFloat')">
+			<table id="lookup_results" class="results_list" style="background-color: white">
+				<thead>
+					<tr>
+						<th class="left_justified">Map Name</th>
+						<th class="left_justified">Map Value (Dec)</th>
+						<th class="left_justified">Map Value (Hex)</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<div class="results_more" id="mapMore">
+			</div>
+		</div>
+		<div id="objFloat" class="float" onload="alignFloat('maplookup_object','objFloat')">
+			<table id="lookup_results_object" class="results_list" style="background-color: white">
+				<thead>
+					<tr>
+						<th class="left_justified">Object Name</th>
+						<th class="left_justified">Type</th>
+						<th class="left_justified">Total Count</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+			<div class="results_more" id="objMore">
+			</div>
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		var xhttp = new XMLHttpRequest();
+		var mapData = [];
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				responseJSON = JSON.parse(xhttp.responseText).data;
+				//console.log(responseJSON[4].obj[16].count)
+				mapData = [...responseJSON];
+				generateObjectList();
+				responseJSON = JSON.parse(xhttp.responseText).data
+				mapData = [...responseJSON];
+				//console.log(responseJSON[4].obj[16].count)
+				goThroughParameters();
+			}
+		}
+		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/DKSR/main/data/object_data.json", true);
+		xhttp.send(null)
+
+		function updateList() {
+			var input_value = document.getElementById("maplookup").value;
+			var display_cap = 11;
+			var display_count = 0;
+			if (input_value !== "") {
+				document.getElementById("mapFloat").style.display = "";
+				var display_list = document.getElementById("lookup_results").getElementsByTagName("tbody")[0]
+				display_list.innerHTML = "";
+				mapData.slice().forEach((entry, index) => {
+					if (entry.map.toLowerCase().includes(input_value.toLowerCase())) {
+						display_count += 1;
+						if (display_count < display_cap) {
+							newRow = document.createElement("tr");
+							newRow.setAttribute("onclick","goToMap('" + entry.map + "')")
+
+							newTDName = document.createElement("td");
+							newTDName_text = document.createTextNode(entry.map);
+							newTDName.appendChild(newTDName_text);
+							newRow.appendChild(newTDName)
+
+							newTDDec = document.createElement("td");
+							newTDDec_text = document.createTextNode(index);
+							newTDDec.appendChild(newTDDec_text);
+							newRow.appendChild(newTDDec)
+
+							newTDHex = document.createElement("td");
+							newTDHex_text = document.createTextNode("0x" + index.toString(16).toUpperCase());
+							newTDHex.appendChild(newTDHex_text);
+							newRow.appendChild(newTDHex)
+
+							display_list.appendChild(newRow)
+							document.getElementById("mapMore").style.display = "none";
+						} else {
+							document.getElementById("mapMore").style.display = "";
+							document.getElementById("mapMore").innerText = "And " + (display_count - 10) + " more";
+						}
+					}
+				})
+				if (display_count == 0) {
+					document.getElementById("mapMore").style.display = "";
+					document.getElementById("mapMore").innerText = "No results found!";
+				}
+			} else {
+				document.getElementById("mapFloat").style.display = "none";
+			}
+		}
+		updateList()
+
+		var object_list = [];
+		function addToObjectList(new_object) {
+			var object_listed = false;
+			var object_list_copy = [...object_list];
+			object_list_copy.forEach((obj, index) => {
+				if (obj.name == new_object.name && obj.type == new_object.type) {
+					object_listed = true;
+					object_list_copy[index].count += new_object.count;
+					//console.log("Mid Run: " + mapData[4].obj[16].count)
+					//console.log(object_list_copy)
+				}
+			})
+			if (!object_listed) {
+				object_list_copy.push(new_object)
+			}
+			object_list = [...object_list_copy]
+		}
+
+		function generateObjectList() {
+			//console.log(mapData[4].obj[16].count)
+			mapData.slice().forEach((focused_map, index) => {
+				//console.log("Map Index: " + index + ", Count: " + mapData[4].obj[16].count)
+				var selected_map_objects = focused_map.obj.slice() 
+				selected_map_objects.slice().forEach(focused_object => {
+					addToObjectList(focused_object);
+				})
+			})
+			//console.log(mapData[4].obj[16].count)
+		}
+
+		var type_table = {
+			"actor": "Actor (Object Model 1)",
+			"modeltwo": "Object Model 2",
+			"character": "Character",
+		}
+
+		function updateList_object() {
+			var input_value_object = document.getElementById("maplookup_object").value;
+			var display_cap = 11;
+			var display_count = 0;
+			if (input_value_object !== "") {
+				document.getElementById("objFloat").style.display = "";
+				var display_list = document.getElementById("lookup_results_object").getElementsByTagName("tbody")[0];
+				display_list.innerHTML = "";
+				object_list.slice().forEach(obj => {
+					if (obj.name.toLowerCase().includes(input_value_object.toLowerCase())) {
+						display_count += 1;
+						if (display_count < display_cap) {
+							//console.log(obj.name)
+							newRow = document.createElement("tr");
+							newRow.setAttribute("onclick","goToObj(" + JSON.stringify(obj) + ")")
+
+							newTDName = document.createElement("td");
+							newTDName_text = document.createTextNode(obj.name);
+							newTDName.appendChild(newTDName_text);
+							newRow.appendChild(newTDName)
+
+							newTDType = document.createElement("td");
+							newTDType_text = document.createTextNode(type_table[obj.type]);
+							newTDType.appendChild(newTDType_text);
+							newRow.appendChild(newTDType)
+
+							newTDDec = document.createElement("td");
+							newTDDec_text = document.createTextNode(obj.count);
+							newTDDec.appendChild(newTDDec_text);
+							newRow.appendChild(newTDDec)
+
+							display_list.appendChild(newRow)
+							document.getElementById("objMore").style.display = "none";
+						} else {
+							document.getElementById("objMore").style.display = "";
+							document.getElementById("objMore").innerText = "And " + (display_count - 10) + " more";
+						}
+					}
+				})
+				if (display_count == 0) {
+					document.getElementById("objMore").style.display = "";
+					document.getElementById("objMore").innerText = "No results found!";
+				}
+			} else {
+				document.getElementById("objFloat").style.display = "none";
+			}
+		}
+		updateList_object()
+
+		function alignFloat(target_id,move_id) {
+			var target = document.getElementById(target_id);
+			var move = document.getElementById(move_id);
+			var targetData = target.getBoundingClientRect();
+			move.style.top = targetData.bottom;
+			move.style.left = targetData.left;
+			move.style.width = targetData.width;
+			move.getElementsByTagName("table")[0].style.width = targetData.width;
+		}
+
+		function goToObj(obj) {
+			var params = [
+				{
+					"param": "object",
+					"value": encodeURI(obj.name)
+				},
+				{
+					"param": "type",
+					"value": encodeURI(obj.type)
+				},
+			]
+			reloadPageWithParams(params)
+		}
+
+		function goToMap(map) {
+			var params = [
+				{
+					"param": "map",
+					"value": encodeURI(map)
+				}
+			];
+			reloadPageWithParams(params)
+		}
+
+		function reloadPageWithParams(params) {
+			var baseURL = window.location.pathname;
+			var params_mashed = [];
+			params.slice().forEach(prm => {
+				params_mashed.push(prm.param + "=" + prm.value)
+			});
+			var newURL = baseURL;
+			if (params_mashed.length > 0) {
+				newURL = baseURL + "?" + params_mashed.join("&");
+			}
+			window.location.href = newURL
+		}
+
+		function goThroughParameters() {
+			var queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString)
+			const object_name = urlParams.get("object");
+			const object_type = urlParams.get("type");
+			const map_name = urlParams.get("map");
+			//console.log([object_name, object_type, map_name])
+			if (!object_name && !map_name) {
+				document.getElementById("section_splitter").style.display = "none";
+			}
+			if (object_name) {
+				console.log("Object");
+				document.getElementById("maplookup_object").value = object_name;
+				document.getElementById("info_title").innerText = object_name;
+				document.getElementById("info_header").innerText = "'" + object_name + "' is found in the following levels:";
+				var maps_containing_object = [];
+				mapData.forEach(entry => {
+					var obj_in_map_data = entry.obj.find(object_listing => object_listing.name == object_name);
+					if (obj_in_map_data) {
+						maps_containing_object.push({
+							"map": entry.map,
+							"count": obj_in_map_data.count
+						})
+					}
+				})
+				console.log(maps_containing_object)
+				if (maps_containing_object.length > 0) {
+					var newTable = document.createElement("table");
+
+					// Table Header
+					var newTHead = document.createElement("thead");
+					var newTHeadRow = document.createElement("tr");
+
+					var newTHeadMapName = document.createElement("th");
+					newTHeadMapName.classList.add("left_justified")
+					var newTHeadMapName_text = document.createTextNode("Map Name")
+					newTHeadMapName.appendChild(newTHeadMapName_text)
+					newTHeadRow.appendChild(newTHeadMapName)
+
+					var newTHeadMapCount = document.createElement("th");
+					newTHeadMapCount.classList.add("left_justified")
+					var newTHeadMapCount_text = document.createTextNode("Object Count")
+					newTHeadMapCount.appendChild(newTHeadMapCount_text)
+					newTHeadRow.appendChild(newTHeadMapCount)
+
+					// Construct Table Header
+					newTHead.appendChild(newTHeadRow);
+
+					// Table Body	
+					var newTBody = document.createElement("tbody");
+
+					maps_containing_object.forEach(selected_map => {
+						var newTBodyRow = document.createElement("tr");
+
+						var newTBodyMapName = document.createElement("td");
+						var newTBodyMapName_text = document.createTextNode(selected_map.map)
+						newTBodyMapName.appendChild(newTBodyMapName_text);
+						newTBodyRow.appendChild(newTBodyMapName);
+
+						var newTBodyMapCount = document.createElement("td");
+						//newTBodyMapCount.classList.add("right_justified")
+						var newTBodyMapCount_text = document.createTextNode(selected_map.count)
+						newTBodyMapCount.appendChild(newTBodyMapCount_text);
+						newTBodyRow.appendChild(newTBodyMapCount);
+
+						newTBody.appendChild(newTBodyRow);
+					});
+
+					// Compile Table
+					newTable.appendChild(newTHead);
+					newTable.appendChild(newTBody);
+					document.getElementById("object_display").appendChild(newTable)
+				} else {
+					document.getElementById("object_display").innerText = "No maps containing object"
+				}
+
+			} else if (map_name) {
+				console.log("Map")
+				document.getElementById("maplookup").value = map_name;
+				document.getElementById("info_title").innerText = map_name;
+				document.getElementById("info_header").innerText = "The following objects are found in '" + map_name + "':";
+				const selected_map_data = mapData.slice().find(entry => entry.map == map_name);
+				console.log(selected_map_data)
+				if (selected_map_data) {
+					if (selected_map_data.obj.length > 0) {
+						var newTable = document.createElement("table");
+
+						// Table Header
+						var newTHead = document.createElement("thead");
+						var newTHeadRow = document.createElement("tr");
+
+						var newTHeadObjName = document.createElement("th");
+						newTHeadObjName.classList.add("left_justified")
+						var newTHeadObjName_text = document.createTextNode("Object Name")
+						newTHeadObjName.appendChild(newTHeadObjName_text)
+						newTHeadRow.appendChild(newTHeadObjName)
+
+						var newTHeadObjType = document.createElement("th");
+						newTHeadObjType.classList.add("left_justified")
+						var newTHeadObjType_text = document.createTextNode("Object Type")
+						newTHeadObjType.appendChild(newTHeadObjType_text)
+						newTHeadRow.appendChild(newTHeadObjType)
+
+						var newTHeadObjCount = document.createElement("th");
+						newTHeadObjCount.classList.add("left_justified")
+						var newTHeadObjCount_text = document.createTextNode("Object Count")
+						newTHeadObjCount.appendChild(newTHeadObjCount_text)
+						newTHeadRow.appendChild(newTHeadObjCount)
+
+						// Construct Table Header
+						newTHead.appendChild(newTHeadRow);
+
+						// Table Body	
+						var newTBody = document.createElement("tbody");
+
+						selected_map_data.obj.forEach(selected_object => {
+							var newTBodyRow = document.createElement("tr");
+
+							var newTBodyObjName = document.createElement("td");
+							var newTBodyObjName_text = document.createTextNode(selected_object.name)
+							newTBodyObjName.appendChild(newTBodyObjName_text);
+							newTBodyRow.appendChild(newTBodyObjName);
+
+							var newTBodyObjType = document.createElement("td");
+							var newTBodyObjType_text = document.createTextNode(type_table[selected_object.type])
+							newTBodyObjType.appendChild(newTBodyObjType_text);
+							newTBodyRow.appendChild(newTBodyObjType);
+
+							var newTBodyObjCount = document.createElement("td");
+							//newTBodyObjCount.classList.add("right_justified")
+							var newTBodyObjCount_text = document.createTextNode(selected_object.count)
+							newTBodyObjCount.appendChild(newTBodyObjCount_text);
+							newTBodyRow.appendChild(newTBodyObjCount);
+
+							newTBody.appendChild(newTBodyRow);
+						});
+
+						// Compile Table
+						newTable.appendChild(newTHead);
+						newTable.appendChild(newTBody);
+						document.getElementById("object_display").appendChild(newTable)
+					} else {
+						document.getElementById("object_display").innerText = "No Objects in Map"
+					}
+				} 
+			}
+		}
+	</script>
+</html>
