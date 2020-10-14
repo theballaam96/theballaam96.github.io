@@ -13,6 +13,13 @@
 
 		</div>
 		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="header master_header">
+					<strong>Object Locations</strong>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
 			<div class="flex40 homebox">
 				<div class="homebox_internal">
 					<div class="header" style="text-align:left">
@@ -108,7 +115,7 @@
 						display_count += 1;
 						if (display_count < display_cap) {
 							newRow = document.createElement("tr");
-							newRow.setAttribute("onclick","goToMap('" + entry.map + "')")
+							newRow.setAttribute("onclick","goToMap('" + encodeURI(entry.map).split("'").join("&quot;") + "')")
 
 							newTDName = document.createElement("td");
 							newTDName_text = document.createTextNode(entry.map);
@@ -193,7 +200,7 @@
 						if (display_count < display_cap) {
 							//console.log(obj.name)
 							newRow = document.createElement("tr");
-							newRow.setAttribute("onclick","goToObj(" + JSON.stringify(obj) + ")")
+							newRow.setAttribute("onclick","goToObj(" + JSON.stringify(obj).split("'").join("&quot;") + ")")
 
 							newTDName = document.createElement("td");
 							newTDName_text = document.createTextNode(obj.name);
@@ -239,24 +246,28 @@
 		}
 
 		function goToObj(obj) {
+			console.log(obj)
+			var newObj = JSON.parse(JSON.stringify(obj).split("&quot;").join("'"));
 			var params = [
 				{
 					"param": "object",
-					"value": encodeURI(obj.name)
+					"value": encodeURI(newObj.name)
 				},
 				{
 					"param": "type",
-					"value": encodeURI(obj.type)
+					"value": encodeURI(newObj.type)
 				},
 			]
 			reloadPageWithParams(params)
 		}
 
 		function goToMap(map) {
+			console.log(map)
+			var newMap = decodeURI(map.split("&quot;").join("'"))
 			var params = [
 				{
 					"param": "map",
-					"value": encodeURI(map)
+					"value": encodeURI(newMap)
 				}
 			];
 			reloadPageWithParams(params)

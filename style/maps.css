@@ -63,3 +63,23 @@
 	text-align: center;
 	padding: 10px;
 }
+
+.crash {
+	background-color: rgba(255,0,0,0.3);
+}
+
+.does_action {
+	padding: 10px;
+}
+
+.does_action.true {
+	background-color: rgba(0,255,0,0.2);
+}
+
+.does_action.false {
+	background-color: rgba(255,0,0,0.2);
+}
+
+.comment_column {
+	width: 25%;
+}

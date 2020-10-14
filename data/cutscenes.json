@@ -68,7 +68,6 @@
                "name":"BBlast FTT (Testing?)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
@@ -129,7 +128,6 @@
                "name":"You should go see Cranky before you leave this area",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
@@ -269,294 +267,252 @@
                "name":"Instrument",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Success",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Instrument",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Instrument",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Instrument",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Instrument",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Heres Cranky Text (BBlast)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK, Warp",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK, Warp",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pause",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Far away still",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Warp FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Far away Side-View",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Moving Still (Softlock)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Main Menu Intro",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Go see Cranky Text",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Cancel Barrel Move FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pause",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Battle Arena FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Kong FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pan around DK (Softlock)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Front View (Softlock)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Spin In",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Spin Out",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Spin In",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Pause",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Rainbow Coin FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Front View (Still)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Moving Still (Softlock)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Rambi FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Enguarde FTT",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Still (Warp)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Still (Warp)",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Unused Text?",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":false,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -690,7 +646,6 @@
                "name":"Spawn Bridge",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -698,7 +653,6 @@
                "name":"Slow Conveyors",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -706,7 +660,6 @@
                "name":"'No Chimpy Charge' Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -714,7 +667,6 @@
                "name":"Slam GB Pad",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -830,7 +782,6 @@
                "name":"Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -838,7 +789,6 @@
                "name":"Minecart Failure (<50 Coins)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -846,7 +796,6 @@
                "name":"Minecart Success (50+ Coins)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -860,7 +809,6 @@
                "name":"Open first gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -875,7 +823,6 @@
                "name":"Open Cave Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -883,7 +830,6 @@
                "name":"Open Shellhive Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -891,7 +837,6 @@
                "name":"Open DK GB Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -899,7 +844,6 @@
                "name":"First Two 'Free Diddy' Switches",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -907,7 +851,6 @@
                "name":"Free Diddy",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -915,7 +858,6 @@
                "name":"Open Diddy GB Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -923,7 +865,6 @@
                "name":"Open Tiny GB Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -931,7 +872,6 @@
                "name":"Open Lanky GB Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -939,7 +879,6 @@
                "name":"Open Chunky GB Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -947,7 +886,6 @@
                "name":"Open Mountain",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -962,7 +900,6 @@
                "name":"Spawn Mountain GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -970,7 +907,6 @@
                "name":"Diddy 'Help Me' Pan",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -978,7 +914,6 @@
                "name":"Open Stump",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -986,7 +921,6 @@
                "name":"Open Gates to Cranky's",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -994,7 +928,6 @@
                "name":"Spawn 'Free Diddy' Switches",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1002,7 +935,6 @@
                "name":"Japes First-Time Cutscene",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -1010,7 +942,6 @@
                "name":"Open Rambi Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1018,7 +949,6 @@
                "name":"Break pad to Underground",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1033,7 +963,6 @@
                "name":"Cannon to Diddy",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1056,7 +985,6 @@
                "name":"Battle Arena First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1064,7 +992,6 @@
                "name":"Open Painting Room",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1072,7 +999,6 @@
                "name":"Here's Cranky",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1080,7 +1006,6 @@
                "name":"Battle Arena First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1088,7 +1013,6 @@
                "name":"Pan over starting area vines",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1124,7 +1048,6 @@
                "name":"Kong Unlock First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1132,22 +1055,12 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Log Entrance",
                "crash":false,
                "used":true,
-               "link":"",
-               "in_lz_transition":false,
-               "does_action":false
-            },
-            {
-               "name":"Log Entrance",
-               "crash":false,
-               "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1155,7 +1068,6 @@
                "name":"Log Entrance",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1163,7 +1075,13 @@
                "name":"Log Entrance",
                "crash":false,
                "used":true,
-               "link":"",
+               "in_lz_transition":false,
+               "does_action":false
+            },
+            {
+               "name":"Log Entrance",
+               "crash":false,
+               "used":true,
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1171,35 +1089,30 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -1212,7 +1125,6 @@
                "name":"Short Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -1220,7 +1132,6 @@
                "name":"Long Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1228,7 +1139,6 @@
                "name":"Key Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1236,7 +1146,6 @@
                "name":"Damage",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1244,7 +1153,6 @@
                "name":"Camera Lock",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1252,7 +1160,6 @@
                "name":"Final Explosion",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1260,7 +1167,6 @@
                "name":"Damage",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1268,7 +1174,6 @@
                "name":"Death",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1276,7 +1181,6 @@
                "name":"Army Dillo Running Away",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1284,7 +1188,6 @@
                "name":"Damage (Up to Rocket Destruction)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1292,7 +1195,6 @@
                "name":"Damage",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1300,7 +1202,6 @@
                "name":"Damage (Head Movement)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1308,7 +1209,6 @@
                "name":"Damage (Up to Rocket Destruction)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1316,7 +1216,6 @@
                "name":"Damage (Head Movement)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -1368,7 +1267,6 @@
                "name":"Open Gate to Area 2",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1376,7 +1274,6 @@
                "name":"Open Gate to Area 3",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -1390,7 +1287,6 @@
                "name":"Open Painting",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1398,7 +1294,6 @@
                "name":"Spawn Zingers",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1406,7 +1301,6 @@
                "name":"Squawks Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -1420,7 +1314,6 @@
                "name":"Long Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -1428,7 +1321,6 @@
                "name":"Race Win (50+ Coins)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1436,7 +1328,6 @@
                "name":"Race Win (<50 Coins)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1444,7 +1335,6 @@
                "name":"Race Loss",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1452,7 +1342,6 @@
                "name":"Race Loss (Fall off the slide)",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1460,7 +1349,6 @@
                "name":"Short Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -1910,7 +1798,6 @@
                "name":"Fairy Tunnel Entrance",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1918,7 +1805,6 @@
                "name":"Fairy Tunnel Entrance",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1926,7 +1812,6 @@
                "name":"Other Tunnel Entrance",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -1934,7 +1819,6 @@
                "name":"Other Tunnel Entrance",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -2659,7 +2543,6 @@
                "name":"Pan around DK",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -2702,7 +2585,6 @@
                "name":"Vines to GB Spawned",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2710,7 +2592,6 @@
                "name":"Vines to BP Spawned",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2718,7 +2599,6 @@
                "name":"Cannon Shot",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -2732,7 +2612,6 @@
                "name":"Squawks Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2740,7 +2619,6 @@
                "name":"Fungi Cannon",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2748,7 +2626,6 @@
                "name":"Open Tiny Cage GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2756,7 +2633,6 @@
                "name":"Open DK Cage GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2764,7 +2640,6 @@
                "name":"Open Caves",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2772,7 +2647,6 @@
                "name":"Open Fungi",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2780,7 +2654,6 @@
                "name":"Open Galleon",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2788,7 +2661,6 @@
                "name":"Open Factory",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2796,7 +2668,6 @@
                "name":"Open Aztec",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2804,7 +2675,6 @@
                "name":"Open Japes",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2812,7 +2682,6 @@
                "name":"Open Diddy Cage GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2820,7 +2689,6 @@
                "name":"Open Lanky Cage GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2828,7 +2696,6 @@
                "name":"Open Chunky Cage GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2836,7 +2703,6 @@
                "name":"Spawn Chunky Instrument GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2844,7 +2710,6 @@
                "name":"Spawn Diddy Rocketbarrel",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2852,7 +2717,6 @@
                "name":"Spawn Tiny Instrument GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2860,7 +2724,6 @@
                "name":"Spawn Hunky Chunky Barrel",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2868,7 +2731,6 @@
                "name":"Open Castle",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2876,7 +2738,6 @@
                "name":"Open Helm / Attempt to Open Helm",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2884,7 +2745,6 @@
                "name":"Castle Cannon",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -2892,7 +2752,6 @@
                "name":"Slam Big X",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2900,7 +2759,6 @@
                "name":"Game Over",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2908,8 +2766,7 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
-               "in_lz_transition":false,
+               "in_lz_transition":true,
                "lz_transition":"Enter K. Rool",
                "does_action":false
             },
@@ -2917,7 +2774,6 @@
                "name":"Return from Castle Lobby",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2926,7 +2782,6 @@
                "indexOverride":29,
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -2959,7 +2814,6 @@
                "name":"Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -2973,7 +2827,6 @@
                "name":"Open Llama Temple",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2981,7 +2834,6 @@
                "name":"Open Tiny Temple",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2989,7 +2841,6 @@
                "name":"Raise Gong Tower",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -2997,7 +2848,6 @@
                "name":"Vase GB Spawn",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3005,7 +2855,6 @@
                "name":"Lift Chunky Bonus Cage",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3013,7 +2862,6 @@
                "name":"Chunky Cage?",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3021,7 +2869,6 @@
                "name":"Awaken Totem",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3029,7 +2876,6 @@
                "name":"Spawn 5DT Switches",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3037,7 +2883,6 @@
                "name":"Open Tiny 5DT",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3045,7 +2890,6 @@
                "name":"Open Lanky 5DT",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3053,7 +2897,6 @@
                "name":"Open Chunky 5DT",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3061,7 +2904,6 @@
                "name":"Open DK 5DT",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3069,7 +2911,6 @@
                "name":"Open Diddy 5DT",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3077,7 +2918,6 @@
                "name":"Starts Free Vulture?",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -3085,7 +2925,6 @@
                "name":"Free Llama & GB Spawn",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -3093,7 +2932,6 @@
                "name":"Open Vase Room",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3101,7 +2939,6 @@
                "name":"Open BP Room",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3109,7 +2946,6 @@
                "name":"Open Stealthy Snoop Tunnel",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3117,7 +2953,6 @@
                "name":"Spawn Tiny Instrument Pad",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3125,7 +2960,6 @@
                "name":"Aztec First-Time Cutscene",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -3133,7 +2967,6 @@
                "name":"Spawn Vulture Race GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3141,7 +2974,6 @@
                "name":"Free Vulture",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -3149,7 +2981,6 @@
                "name":"Spawn Tunnel Warp 5",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3157,7 +2988,6 @@
                "name":"Spawn Llama Temple Switches",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3165,7 +2995,6 @@
                "name":"Open 'Guitar' Stone Door",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3173,7 +3002,6 @@
                "name":"Llama 'Help Me'",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3181,7 +3009,6 @@
                "name":"Start Vulture Race",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3189,14 +3016,12 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Vulture 'Try Again'",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -3204,21 +3029,18 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -3231,21 +3053,18 @@
                "name":"Race Finish",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"GB Spawn",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -3276,7 +3095,6 @@
                "name":"Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -3327,7 +3145,6 @@
                "name":"All Pearls",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -3621,7 +3438,6 @@
                "name":"Lighthouse Turn On",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -3629,7 +3445,6 @@
                "name":"GB Spawned",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -3637,7 +3452,6 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -3670,7 +3484,6 @@
                "name":"Pan on DK",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -3715,7 +3528,6 @@
                "name":"Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -3770,7 +3582,6 @@
                "name":"Fairy Spawn",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -3783,7 +3594,6 @@
                "name":"Winching",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -4994,7 +4804,6 @@
                "name":"Key Turn In",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -5002,7 +4811,6 @@
                "name":"K. Lumsy Celebration",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -5010,7 +4818,6 @@
                "name":"Introductions",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -5018,7 +4825,6 @@
                "name":"Return from Opening Japes",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -5026,7 +4832,6 @@
                "name":"Open GB Cage",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6515,21 +6320,18 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Spawn Lanky Instrument GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -6543,14 +6345,12 @@
                "name":"Spawn Bridge",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Spawn Vines",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false,
                "comment":"Due to index, this cutscene is also used for B. Locker First-Time Text"
@@ -6559,7 +6359,6 @@
                "name":"Front Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -6572,7 +6371,6 @@
                "name":"End of Intro Story",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -6650,21 +6448,18 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Open Stone Door",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6672,7 +6467,6 @@
                "name":"Spawn Hunky Chunky Barrel",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6680,7 +6474,6 @@
                "name":"Spin Green Wrinkly Door",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6688,7 +6481,6 @@
                "name":"Open Trapdoor to Bonus Barrel",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6711,21 +6503,18 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Open Mini Monkey Gate",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6739,21 +6528,18 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Activate Elevator",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6761,7 +6547,6 @@
                "name":"Break ? Box",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6769,7 +6554,6 @@
                "name":"Spawn DK Instrument GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
@@ -6783,7 +6567,6 @@
                "name":"Waterfall",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6791,7 +6574,6 @@
                "name":"Spawn Training Barrels",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6799,7 +6581,6 @@
                "name":"Open Gate to DK Isles",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6807,7 +6588,6 @@
                "name":"Training Barrels Complete",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6821,7 +6601,6 @@
                "name":"Intro",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6835,14 +6614,12 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
@@ -6858,7 +6635,6 @@
                "name":"Open Banana Fairy Door",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -6866,7 +6642,6 @@
                "name":"Open Gorilla Gone Door",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6887,7 +6662,6 @@
                "name":"Intro",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6901,7 +6675,6 @@
                "name":"Intro",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -6915,7 +6688,6 @@
                "name":"Intro",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             }
@@ -7013,7 +6785,6 @@
                "name":"Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -7026,7 +6797,6 @@
                "name":"Talk to Queen for Camera/Shockwave",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":false
             },
@@ -7034,7 +6804,6 @@
                "name":"Open Rareware Door",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -7066,7 +6835,6 @@
                "name":"Walk In",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             }
          ]
@@ -7111,14 +6879,12 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
@@ -7134,7 +6900,6 @@
                "name":"Nothing",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":true,
                "lz_transition":"Exit Castle Lobby"
             }
@@ -7148,21 +6913,18 @@
                "name":"Side-Camera",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"B. Locker First-Time Text",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Spawn Diddy Instrument GB",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -7375,7 +7137,6 @@
                "name":"Short Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -7383,63 +7144,54 @@
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Unknown",
                "crash":true,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Damage",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Unknown",
                "crash":true,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Dogadon Death",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
@@ -7453,7 +7205,6 @@
                "name":"Long Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             },
@@ -7461,63 +7212,54 @@
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Underside of Area",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false
             },
             {
                "name":"Short Introduction",
                "crash":false,
                "used":true,
-               "link":"",
                "in_lz_transition":false,
                "does_action":true
             }
