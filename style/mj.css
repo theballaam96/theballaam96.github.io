@@ -1,0 +1,89 @@
+.mad_jack_board {
+	width: -webkit-fill-available;
+}
+
+.mad_jack_board tbody tr td {
+	border: 5px solid grey;
+	/*height: 100px;*/
+}
+
+.mad_jack_board tbody tr:nth-child(2n) td:nth-child(2n) {
+	background: cornflowerblue;
+}
+
+.mad_jack_board tbody tr:nth-child(2n) td:nth-child(2n+1) {
+	background: white;
+}
+
+.mad_jack_board tbody tr:nth-child(2n+1) td:nth-child(2n+1) {
+	background: cornflowerblue;
+}
+
+.mad_jack_board tbody tr:nth-child(2n+1) td:nth-child(2n) {
+	background: white;
+}
+
+.mad_jack_board tbody tr td .icons {
+	height: 50%;
+}
+
+.mad_jack_board tbody tr td .countDisplay {
+	text-align: center;
+	font-weight: bold;
+}
+
+.mad_jack_board tbody tr td .icons .flex40.has_mj {
+	background-image: url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/mj_board/jack.png');
+	background-position: center center;
+	background-size: auto 75%;
+	background-repeat: no-repeat;
+}
+
+.mad_jack_board tbody tr td .icons .flex40.has_kong {
+	background-image: url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/mj_board/kong.png');
+	background-position: center center;
+	background-size: auto 75%;
+	background-repeat: no-repeat;
+}
+
+.mad_jack_board tbody tr td .icons .flex40.adj_to_kong {
+	background-image: url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/mj_board/invalid.png');
+	background-position: center center;
+	background-size: auto 75%;
+	background-repeat: no-repeat;
+}
+
+.input_info {
+	padding: 10px;
+}
+
+.input_info .label {
+	color: white;
+}
+
+.input_info .hint {
+	color: white;
+	font-size: 12px;
+}
+
+.input_info select {
+	padding: 5px;
+}
+
+.input_info input {
+	padding: 5px;
+}
+
+
+.button_container {
+	padding: 10px;
+	margin-top: 10px;
+}
+
+.start_button {
+	padding: 10px;
+	border: 2px solid gold;
+	color: white;
+	background-color: rgba(0,0,0,0);
+	width: -webkit-fill-available;
+}

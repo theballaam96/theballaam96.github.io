@@ -1,0 +1,412 @@
+<html>
+	<head>
+		<title>Mad Jack Luck Calculator - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<link rel="stylesheet" href="style/mj.css">
+		<meta name="description" content="" />
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="header master_header">
+					<strong>Mad Jack Luck Calculator</strong>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox" style="padding: 20px">
+				<table class="mad_jack_board">
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="homebox">
+					<div class="input_info">
+						<!-- Mad Jack -->
+						<h4 class="label">
+							Mad Jack Location
+						</h4>
+						<div class="flexsplitter">
+							<div class="flex40">
+								<span class="label">Column: </span>
+								<select id="mjCol" onchange="update()">
+									<option value="0">Column 1</option>
+									<option value="1">Column 2</option>
+									<option value="2">Column 3</option>
+									<option value="3">Column 4</option>
+								</select>
+							</div>
+							<div class="flex40">
+								<span class="label">Row: </span>
+								<select id="mjRow" onchange="update()">
+									<option value="0">Row 1</option>
+									<option value="1">Row 2</option>
+									<option value="2">Row 3</option>
+									<option value="3">Row 4</option>
+								</select>
+							</div>
+						</div>
+						<!-- Kong -->
+						<h4 class="label">
+							Kong Location
+						</h4>
+						<div class="flexsplitter">
+							<div class="flex40">
+								<span class="label">Column: </span>
+								<select id="kongCol" onchange="update()">
+									<option value="0">Column 1</option>
+									<option value="1">Column 2</option>
+									<option value="2">Column 3</option>
+									<option value="3">Column 4</option>
+								</select>
+							</div>
+							<div class="flex40">
+								<span class="label">Row: </span>
+								<select id="kongRow" onchange="update()">
+									<option value="0">Row 1</option>
+									<option value="1">Row 2</option>
+									<option value="2">Row 3</option>
+									<option value="3">Row 4</option>
+								</select>
+							</div>
+						</div>
+						<!-- RNG -->
+						<h4 class="label">
+							RNG
+						</h4>
+						<div class="flexsplitter">
+							<div class="flex40">
+								<span class="label">Starting RNG (Hex): 0x</span>
+								<input type="text" maxlength="8" placeholder="E32B6F7" id="startingHex" oninput="checkForHex()">
+								<div class="hint">(Default is 0xE32B6F7 as this is what is set upon entering DKTV)</div>
+							</div>
+							<div class="flex40">
+								<span class="label">How many cycles to search: </span>
+								<input type="number" maxlength="8" min="10" max="10000000" id="checkCount">
+							</div>
+						</div>
+						<div class="button_container">
+							<button class="start_button" onclick="start()">
+								Start
+							</button>
+						</div>
+					</div>
+				</div>
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		function startingPresets() {
+			var allSquares = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("td");
+			for (i = 0; i < allSquares.length; i++) {
+				var width = allSquares[i].clientWidth
+				allSquares[i].style.height = width;
+				allSquares[i].style["min-height"] = width;
+				allSquares[i].style["max-height"] = width;
+				allSquares[i].style.width = width;
+				allSquares[i].style["min-width"] = width;
+				allSquares[i].style["max-width"] = width;
+			}
+			document.getElementById("startingHex").value = "E32B6F7";
+			document.getElementById("checkCount").value = "10000";
+		}
+		startingPresets()
+		function checkForHex() {
+			var startingHex = document.getElementById("startingHex").value;
+			var startingHexArray = startingHex.split("");
+			startingHexArray.forEach((character,index) => {
+				var focusedUnicode = startingHex.charCodeAt(index)
+				if (focusedUnicode < 48) {
+					startingHexArray[index] = "";
+				} else if (focusedUnicode > 57 && focusedUnicode < 65) {
+					startingHexArray[index] = "";
+				} else if (focusedUnicode > 70 && focusedUnicode < 97) {
+					startingHexArray[index] = "";
+				} else if (focusedUnicode > 102) {
+					startingHexArray[index] = "";
+				}
+			})
+			var newHex = startingHexArray.join("");
+			document.getElementById("startingHex").value = newHex;
+		}
+		function update() {
+			var allSquares = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("td");
+			for (i = 0; i < allSquares.length; i++) {
+				allSquares[i].innerHTML = "<div class='flexsplitter icons'></div>"
+				allSquares[i].childNodes[0].classList.remove("has_mj")
+				allSquares[i].childNodes[0].classList.remove("has_kong");
+				allSquares[i].childNodes[0].classList.remove("adj_to_kong");
+			}
+			var mjCol = document.getElementById("mjCol").value;
+			var mjRow = document.getElementById("mjRow").value;
+			var mjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - mjRow].getElementsByTagName("td")[mjCol];
+			var newDiv = document.createElement("div")
+			newDiv.classList.add("has_mj");
+			newDiv.classList.add("flex40");
+			mjSquare.childNodes[0].appendChild(newDiv)
+
+			var kongCol = document.getElementById("kongCol").value;
+			var kongRow = document.getElementById("kongRow").value;
+			var kongSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[kongCol];
+			var newDiv = document.createElement("div")
+			newDiv.classList.add("has_kong");
+			newDiv.classList.add("flex40");
+			kongSquare.childNodes[0].appendChild(newDiv)
+
+			// Rows
+			if (kongRow < 3) {
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[2 - kongRow].getElementsByTagName("td")[kongCol];
+				var newDiv = document.createElement("div")
+				newDiv.classList.add("adj_to_kong");
+				newDiv.classList.add("flex40");
+				kongAdjSquare.childNodes[0].appendChild(newDiv)
+			}
+			if (kongRow > 0) {
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[4 - kongRow].getElementsByTagName("td")[kongCol];
+				var newDiv = document.createElement("div")
+				newDiv.classList.add("adj_to_kong");
+				newDiv.classList.add("flex40");
+				kongAdjSquare.childNodes[0].appendChild(newDiv)
+			}
+			// Cols
+			if (kongCol < 3) {
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[parseInt(kongCol) + 1];
+				var newDiv = document.createElement("div")
+				newDiv.classList.add("adj_to_kong");
+				newDiv.classList.add("flex40");
+				kongAdjSquare.childNodes[0].appendChild(newDiv)
+			}
+			if (kongCol > 0) {
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[parseInt(kongCol) - 1];
+				var newDiv = document.createElement("div")
+				newDiv.classList.add("adj_to_kong");
+				newDiv.classList.add("flex40");
+				kongAdjSquare.childNodes[0].appendChild(newDiv)
+			}
+		}
+		update()
+
+		var setRNG = 0;
+		function start() {
+			counts = [];
+			var startHex = parseInt(document.getElementById("startingHex").value,16);
+			var searchCount = parseInt(document.getElementById("checkCount").value);
+			setRNG = startHex;
+			RNG = setRNG;
+			var countDisplays = document.getElementsByClassName("countDisplay")
+			for (i = 0; i < countDisplays.length; i++) {
+				countDisplays[i].style.display = "none";
+			}
+
+			// Determine MJ & Kong Position
+			var mjCol = document.getElementById("mjCol").value;
+			var mjRow = document.getElementById("mjRow").value;
+			var mjCode = parseInt(mjRow).toString(2);
+			if (mjCode.length == 1) {
+				mjCode = "0" + mjCode;
+			}
+			var appendedCode = parseInt(mjCol).toString(2);
+			if (appendedCode.length == 1) {
+				appendedCode = "0" + appendedCode;
+			}
+			mjPosition = parseInt(mjCode + appendedCode,2);
+
+			var kongCol = document.getElementById("kongCol").value;
+			var kongRow = document.getElementById("kongRow").value;
+			var kongCode = parseInt(kongRow).toString(2);
+			if (kongCode.length == 1) {
+				kongCode = "0" + kongCode;
+			}
+			var appendedKCode = parseInt(kongCol).toString(2);
+			if (appendedKCode.length == 1) {
+				appendedKCode = "0" + appendedKCode;
+			}
+			kongPosition = parseInt(kongCode + appendedKCode,2);
+
+			console.log("--------------")
+			console.log("Jack: " + mjPosition.toString(4))
+			console.log("Kong: " + kongPosition.toString(4))
+
+			for (searchIndex = 0; searchIndex < searchCount; searchIndex++) {
+				setRNG = RNG;
+				//console.log("------------------------")
+				//console.log("Investigating RNG Value 0x" + setRNG.toString(16))
+				determineSwitches(setRNG);
+				RNG = setRNG;
+				cycleRNG();
+			}
+			var displayed = [];
+			for (i = 16; i < 32; i++) {
+				if (counts[i] == undefined) {
+					displayed.push(0)
+				} else {
+					displayed.push(counts[i])
+				}
+			}
+			console.log("-----------------------")
+			displayed.forEach((count, index) => {
+				var betterIndex = index.toString(4)
+				if (betterIndex.length == 1) {
+					betterIndex = "0" + betterIndex
+				}
+				console.log("[" + betterIndex + "] " + count)
+			})
+			console.log(displayed)
+			displayResults(displayed.slice(), searchCount)
+		}
+
+		function displayResults(resultsArray, searchCount) {
+			resultsArray.forEach((count, posCode) => {
+				var betterIndex = posCode.toString(4)
+				if (betterIndex.length == 1) {
+					betterIndex = "0" + betterIndex
+				}
+				var row = parseInt(betterIndex.substring(0,1));
+				var col = parseInt(betterIndex.substring(1,2));
+				var newDiv = document.createElement("div");
+				newDiv.classList.add("countDisplay")
+				var percent = Math.round((count / searchCount) * 10000) / 100;
+				var newText = document.createTextNode("Count: " + count + " (" + percent + "%)");
+				newDiv.appendChild(newText);
+				document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - row].getElementsByTagName("td")[col].appendChild(newDiv);
+			})
+		}
+
+		var RNG = 0xE32B6F7;
+		function determineSwitches(startRNG) {
+			RNG = startRNG;
+			switchProcess("white");
+		}
+
+		function bitwiseMultiply(a,b) {
+			// Written by Isotarge
+			var c = 0;
+			while (b > 0) {
+				if ((b & 1) > 0) {
+					c = c + a;
+				} else {
+					c = c + 0;
+				}
+				a = a << 1;
+				b = b >> 1;
+			}
+			return c;
+		}
+
+		function Bit32Representation(hex) {
+			var splitHex = hex.split("")
+			var snipped = splitHex.filter((value,index) => index > splitHex.length - 9)
+			return snipped.join("");
+		}
+
+		function convertMultToHex(value) {
+			if (value < 0) {
+				return Bit32Representation((0x100000000 - (0 - value)).toString(16));
+			}
+			return Bit32Representation(value.toString(16));
+		}
+
+		function cycleRNG() {
+			var multResult = bitwiseMultiply(RNG,0x1DF5E0D)
+			var asHex = convertMultToHex(multResult); // Automatically pushes to lower 32
+			var new32 = parseInt(Bit32Representation((parseInt(asHex,16) + 1).toString(16)),16);
+			RNG = new32;
+			return new32
+		}
+
+		var decidedSwitches = {
+			"white": 0,
+			"blue": 0,
+		};
+		var mjPosition = 0;
+		var kongPosition = 0;
+
+		var switchData = {
+			"white": 	[0x10, 0x12, 0x15, 0x17, 0x18, 0x1A, 0x1D, 0x1F],
+			"blue": 	[0x11, 0x13, 0x14, 0x16, 0x19, 0x1B, 0x1C, 0x1E],
+		}
+
+		var counts = [];
+
+		function addToProbabilities() {
+			var whiteSwitch = decidedSwitches["white"];
+			var blueSwitch = decidedSwitches["blue"];
+			if (counts[whiteSwitch] == undefined) {
+				counts[whiteSwitch] = 1;
+			} else {
+				counts[whiteSwitch] = counts[whiteSwitch] + 1;
+			}
+			if (counts[blueSwitch] == undefined) {
+				counts[blueSwitch] = 1;
+			} else {
+				counts[blueSwitch] = counts[blueSwitch] + 1;
+			}
+		}
+
+		function switchProcess(switchType) {
+			cycleRNG();
+			//console.log("[0x" + setRNG.toString(16) + "-" + switchType + "] Rolling (RNG: 0x" + RNG.toString(16) + " | " + RNG.toString(2) + ")")
+			var binString = RNG.toString(2);
+			var reversedBinString = binString.split("").reverse();
+			//console.log(reversedBinString)
+			var reversed3Bits = reversedBinString.filter((value, index) => index > 14 && index < 18)
+			//console.log(reversed3Bits)
+			var determinedIndex = parseInt(reversed3Bits.reverse().join(""),2)
+			//console.log("Determined Index: " + determinedIndex)
+			var determinedSwitch = switchData[switchType][determinedIndex];
+			var banned_positions = [
+				mjPosition + 16,
+				kongPosition + 16,
+				kongPosition + 15,
+				kongPosition + 17,
+				kongPosition + 12,
+				kongPosition + 20
+			];
+			var valid = banned_positions.filter(position => position == determinedSwitch) == 0;
+			if (valid) {
+				decidedSwitches[switchType] = determinedSwitch
+				//console.log("DECIDED: " + determinedSwitch.toString(4).substring(1,3))
+				if (switchType == "white") {
+					switchProcess("blue");
+				} else {
+					addToProbabilities()
+				}
+			} else {
+				//console.log("INVALID: " + parseInt(banned_positions.filter(position => position == determinedSwitch)[0]).toString(4).substring(1,3))
+				switchProcess(switchType);
+			}
+		}
+		document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
+	</script>
+</html>
