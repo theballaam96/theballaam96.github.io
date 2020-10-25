@@ -30,6 +30,7 @@
 .mad_jack_board tbody tr td .countDisplay {
 	text-align: center;
 	font-weight: bold;
+	padding: 10px;
 }
 
 .mad_jack_board tbody tr td .icons .flex40.has_mj {

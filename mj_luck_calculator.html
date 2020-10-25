@@ -287,6 +287,43 @@
 		}
 
 		function displayResults(resultsArray, searchCount) {
+			var min_percent_blue = 101;
+			var max_percent_blue = -1;
+			var min_percent_white = 101;
+			var max_percent_white = -1;
+			resultsArray.forEach((count, posCode) => {
+				// Colour
+				var betterIndex = posCode.toString(4)
+				if (betterIndex.length == 1) {
+					betterIndex = "0" + betterIndex
+				}
+				var row = parseInt(betterIndex.substring(0,1));
+				var col = parseInt(betterIndex.substring(1,2));
+				var colour = "white";
+				if (((row + col) % 2) == 1) {
+					colour = "blue";
+				}
+
+				// Percent Calc
+				var percent = Math.round((count / searchCount) * 10000) / 100;
+				if (colour == "white") {
+					if (percent < min_percent_white && percent > 0) {
+						min_percent_white = percent;
+					}
+					if (percent > max_percent_white && percent > 0) {
+						max_percent_white = percent;
+					}
+				} else {
+					if (percent < min_percent_blue && percent > 0) {
+						min_percent_blue = percent;
+					}
+					if (percent > max_percent_blue && percent > 0) {
+						max_percent_blue = percent;
+					}
+				}
+			})
+			var relative_range_white = max_percent_white - min_percent_white;
+			var relative_range_blue = max_percent_blue - min_percent_blue;
 			resultsArray.forEach((count, posCode) => {
 				var betterIndex = posCode.toString(4)
 				if (betterIndex.length == 1) {
@@ -294,9 +331,23 @@
 				}
 				var row = parseInt(betterIndex.substring(0,1));
 				var col = parseInt(betterIndex.substring(1,2));
+				var colour = "white";
+				if (((row + col) % 2) == 1) {
+					colour = "blue";
+				}
 				var newDiv = document.createElement("div");
 				newDiv.classList.add("countDisplay")
 				var percent = Math.round((count / searchCount) * 10000) / 100;
+				if (percent > 0) {
+					if (colour == "white") {
+						var diff_to_min = percent - min_percent_white;
+						var relative_percent = Math.round((diff_to_min / relative_range_white) * 10000) / 100;
+					} else {
+						var diff_to_min = percent - min_percent_blue;
+						var relative_percent = Math.round((diff_to_min / relative_range_blue) * 10000) / 100;
+					}
+					newDiv.style["backgroundColor"] = "rgba(" + 255 * (1 - (relative_percent/100)) + "," + 255 * (relative_percent / 100) + ",0,1)";
+				}
 				var newText = document.createTextNode("Count: " + count + " (" + percent + "%)");
 				newDiv.appendChild(newText);
 				document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - row].getElementsByTagName("td")[col].appendChild(newDiv);
