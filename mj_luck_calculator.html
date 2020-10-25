@@ -121,12 +121,32 @@
 								Start
 							</button>
 						</div>
+						<div class="stat">
+							<span class="label">
+								<strong>Average Distance to Switch: </strong>
+							</span>
+							<span id="avgDist" class="label"></span>
+						</div>
 					</div>
 				</div>
 		</div>
 	</body>
 	<script src="script/nav.js"></script>
 	<script>
+		function showStats() {
+			var stat_els = document.getElementsByClassName("stat")
+			for (s = 0; s < stat_els.length; s++) {
+				stat_els[s].style.display = "";
+			}
+		}
+		function hideStats() {
+			var stat_els = document.getElementsByClassName("stat")
+			for (s = 0; s < stat_els.length; s++) {
+				stat_els[s].style.display = "none";
+			}
+		}
+
+
 		function startingPresets() {
 			var allSquares = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("td");
 			for (i = 0; i < allSquares.length; i++) {
@@ -140,6 +160,7 @@
 			}
 			document.getElementById("startingHex").value = "E32B6F7";
 			document.getElementById("checkCount").value = "10000";
+			hideStats();
 		}
 		startingPresets()
 		function checkForHex() {
@@ -168,6 +189,7 @@
 				allSquares[i].childNodes[0].classList.remove("has_kong");
 				allSquares[i].childNodes[0].classList.remove("adj_to_kong");
 			}
+			hideStats();
 			var mjCol = document.getElementById("mjCol").value;
 			var mjRow = document.getElementById("mjRow").value;
 			var mjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - mjRow].getElementsByTagName("td")[mjCol];
@@ -220,6 +242,7 @@
 		var setRNG = 0;
 		function start() {
 			counts = [];
+			hideStats();
 			var startHex = parseInt(document.getElementById("startingHex").value,16);
 			var searchCount = parseInt(document.getElementById("checkCount").value);
 			setRNG = startHex;
@@ -228,6 +251,7 @@
 			for (i = 0; i < countDisplays.length; i++) {
 				countDisplays[i].style.display = "none";
 			}
+			document.getElementById("avgDist").innerText = "";
 
 			// Determine MJ & Kong Position
 			var mjCol = document.getElementById("mjCol").value;
@@ -291,6 +315,11 @@
 			var max_percent_blue = -1;
 			var min_percent_white = 101;
 			var max_percent_white = -1;
+			var avgDist = 0;
+			var mjCol = parseInt(document.getElementById("mjCol").value);
+			var mjRow = parseInt(document.getElementById("mjRow").value);
+			var kongCol = parseInt(document.getElementById("kongCol").value);
+			var kongRow = parseInt(document.getElementById("kongRow").value);
 			resultsArray.forEach((count, posCode) => {
 				// Colour
 				var betterIndex = posCode.toString(4)
@@ -321,7 +350,21 @@
 						max_percent_blue = percent;
 					}
 				}
+
+				var mjColour = "white";
+				if (((mjRow + mjCol) % 2) == 1) {
+					mjColour = "blue";
+				}
+
+				if (mjColour == colour) {
+					var dCol = col - kongCol;
+					var dRow = row - kongRow;
+					var dist = Math.sqrt(Math.pow(dCol,2) + Math.pow(dRow,2));
+					avgDist += (dist * (percent / 100))
+				}
 			})
+			document.getElementById("avgDist").innerText = (Math.floor(avgDist * 1000) / 1000) + " squares";
+			showStats();
 			var relative_range_white = max_percent_white - min_percent_white;
 			var relative_range_blue = max_percent_blue - min_percent_blue;
 			resultsArray.forEach((count, posCode) => {
