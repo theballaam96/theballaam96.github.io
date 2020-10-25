@@ -52,7 +52,13 @@
 				</table>
 			</div>
 			<div class="homebox">
+				
 					<div class="input_info">
+						<div class="mj_calc_desc">
+							<h2>The Calculator</h2>
+						</div>	
+
+
 						<!-- Mad Jack -->
 						<h4 class="label">
 							Mad Jack Location
@@ -126,6 +132,33 @@
 								<strong>Average Distance to Switch: </strong>
 							</span>
 							<span id="avgDist" class="label"></span>
+						</div>
+						<div class="mj_calc_desc">
+							<h2>
+								What is this?
+							</h2>
+							<div class="desc">
+								This tool displays the chance of the switches in the Mad Jack boss fight appearing on certain squares. Where a switch appears depends on an algorithm based on the RNG value. Where the kong and where Mad Jack are result in certain possibilities not working.
+								<br><br>
+								This tool starts from a specified RNG Value and calculates based on the in-game algorithm where the switches would appear. From here, it takes that initial RNG value and goes to the next RNG value in the cycle (based on the in-game cycle RNG algorithm). This does this a specified amount of times and displays the chances of each square based on those outcomes.
+							</div>
+
+							<h2>
+								How to use
+							</h2>
+							<div class="desc">
+								Select the kong position and Mad Jack position using the dropdown menus below. Enter the RNG value in Hex (Accepts only A-F, a-f and 0-9 as input characters). Enter the amount of cycles you want and then click start to begin the brute-force process.
+							</div>
+
+							<h2>
+								Credits
+							</h2>
+							<div class="desc">
+								<strong>Isotarge</strong> - Bitwise multiplication algorithm that performs an accurate multiplication of two large numbers and bypasses floating point number restrictions.
+								<br>
+								<strong>Bismuth</strong> - Overhead DK & Mad Jack images
+							</div>
+							<br><br>
 						</div>
 					</div>
 				</div>

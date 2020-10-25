@@ -88,3 +88,12 @@
 	background-color: rgba(0,0,0,0);
 	width: -webkit-fill-available;
 }
+
+.mj_calc_desc h2 {
+	color: white;
+	margin-top: 20px;
+}
+
+.mj_calc_desc .desc {
+	color: white;
+}
