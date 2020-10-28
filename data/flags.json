@@ -1,0 +1,259 @@
+{
+	"data": [
+		{
+			"section": "mysteryMenu",
+			"flags": [
+				{
+					"name": "Mystery Menu Unlocked",
+					"type": "global",
+					"byte": "0",
+					"bit": "0",
+				},
+				{
+					"name": "Cutscene Menu Unlocked",
+					"type": "global",
+					"byte": "0",
+					"bit": "1",
+				},
+				{
+					"name": "Cutscene Menu: Japes Intro",
+					"type": "global",
+					"byte": "0",
+					"bit": "2",
+				},
+				{
+					"name": "Cutscene Menu: Aztec Intro",
+					"type": "global",
+					"byte": "0",
+					"bit": "3",
+				},
+				{
+					"name": "Cutscene Menu: Factory Intro",
+					"type": "global",
+					"byte": "0",
+					"bit": "4",
+				},
+				{
+					"name": "Cutscene Menu: Galleon Intro",
+					"type": "global",
+					"byte": "0",
+					"bit": "5",
+				},
+				{
+					"name": "Cutscene Menu: Fungi Intro",
+					"type": "global",
+					"byte": "0",
+					"bit": "6",
+				},
+				{
+					"name": "Cutscene Menu: Caves Intro",
+					"type": "global",
+					"byte": "0",
+					"bit": "7",
+				},
+				{
+					"name": "Cutscene Menu: Castle Intro",
+					"type": "global",
+					"byte": "1",
+					"bit": "0",
+				},
+				{
+					"name": "Cutscene Menu: Enter Hideout",
+					"type": "global",
+					"byte": "1",
+					"bit": "1",
+				},
+				{
+					"name": "Cutscene Menu: K. Rool Press Button",
+					"type": "global",
+					"byte": "1",
+					"bit": "2",
+				},
+				{
+					"name": "Cutscene Menu: K. Rool Takeoff",
+					"type": "global",
+					"byte": "1",
+					"bit": "3",
+				},
+				{
+					"name": "Cutscene Menu: Game Over",
+					"type": "global",
+					"byte": "1",
+					"bit": "4",
+				},
+				{
+					"name": "Cutscene Menu: End Sequence",
+					"type": "global",
+					"byte": "1",
+					"bit": "5",
+				},
+				{
+					"name": "Minigame Menu Unlocked",
+					"type": "global",
+					"byte": "1",
+					"bit": "6",
+				},
+				{
+					"name": "Minigame Menu: Rambi Arena",
+					"type": "global",
+					"byte": "1",
+					"bit": "7",
+				},
+				{
+					"name": "Minigame Menu: Enguarde Arena",
+					"type": "global",
+					"byte": "2",
+					"bit": "0",
+				},
+				{
+					"name": "Minigame Menu: DK Arcade",
+					"type": "global",
+					"byte": "2",
+					"bit": "1",
+				},
+				{
+					"name": "Minigame Menu: Jetpac",
+					"type": "global",
+					"byte": "2",
+					"bit": "2",
+				},
+				{
+					"name": "Bosses Menu Unlocked",
+					"type": "global",
+					"byte": "2",
+					"bit": "3",
+				},
+				{
+					"name": "Bosses Menu: Japes Boss",
+					"type": "global",
+					"byte": "2",
+					"bit": "4",
+				},
+				{
+					"name": "Bosses Menu: Aztec Boss",
+					"type": "global",
+					"byte": "2",
+					"bit": "5",
+				},
+				{
+					"name": "Bosses Menu: Factory Boss",
+					"type": "global",
+					"byte": "2",
+					"bit": "6",
+				},
+				{
+					"name": "Bosses Menu: Galleon Boss",
+					"type": "global",
+					"byte": "2",
+					"bit": "7",
+				},
+				{
+					"name": "Bosses Menu: Fungi Boss",
+					"type": "global",
+					"byte": "3",
+					"bit": "0",
+				},
+				{
+					"name": "Bosses Menu: Caves Boss",
+					"type": "global",
+					"byte": "3",
+					"bit": "1",
+				},
+				{
+					"name": "Bosses Menu: Castle Boss",
+					"type": "global",
+					"byte": "3",
+					"bit": "2",
+				},
+				{
+					"name": "Bosses Menu: The Main Event",
+					"type": "global",
+					"byte": "3",
+					"bit": "3",
+				},
+				{
+					"name": "Krusha Menu Unlocked",
+					"type": "global",
+					"byte": "4",
+					"bit": "1",
+				},
+				{
+					"name": "Cheats Menu Unlocked",
+					"type": "global",
+					"byte": "4",
+					"bit": "2",
+				},
+			]
+		},
+		{
+			"section": "multiplayerMenu",
+			"flags": [
+				{
+					"name": "Multiplayer Menu Unlocked",
+					"type": "global",
+					"byte": "3",
+					"bit": "4",
+				},
+				{
+					"name": "Multiplayer: Diddy Unlocked",
+					"type": "global",
+					"byte": "3",
+					"bit": "5",
+				},
+				{
+					"name": "Multiplayer: Lanky Unlocked",
+					"type": "global",
+					"byte": "3",
+					"bit": "6",
+				},
+				{
+					"name": "Multiplayer: Tiny Unlocked",
+					"type": "global",
+					"byte": "3",
+					"bit": "7",
+				},
+				{
+					"name": "Multiplayer: Chunky Unlocked",
+					"type": "global",
+					"byte": "4",
+					"bit": "0",
+				},
+			]
+		},
+		{
+			"section": "kongs",
+			"flags": [
+				{
+					"name": "Kong: DK Freed",
+					"type": "story",
+					"byte": "48",
+					"bit": "1",
+				},
+				{
+					"name": "Kong: Diddy Freed",
+					"type": "story",
+					"byte": "0",
+					"bit": "6",
+				},
+				{
+					"name": "Kong: Lanky Freed",
+					"type": "story",
+					"byte": "8",
+					"bit": "6",
+				},
+				{
+					"name": "Kong: Tiny Freed",
+					"type": "story",
+					"byte": "8",
+					"bit": "2",
+				},
+				{
+					"name": "Kong: Chunky Freed",
+					"type": "story",
+					"byte": "14",
+					"bit": "5",
+				},
+			]
+		}
+	]
+}
