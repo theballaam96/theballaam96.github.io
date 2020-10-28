@@ -2,6 +2,7 @@
    "data":[
       {
          "section":"mysteryMenu",
+         "columns":"3",
          "flags":[
             {
                "name":"Mystery Menu Unlocked",
@@ -187,6 +188,7 @@
       },
       {
          "section":"multiplayerMenu",
+         "columns":"3",
          "flags":[
             {
                "name":"Multiplayer Menu Unlocked",
@@ -222,6 +224,7 @@
       },
       {
          "section":"kongs",
+         "columns":"3",
          "flags":[
             {
                "name":"Kong: DK Freed",
@@ -253,6 +256,282 @@
                "byte":"14",
                "bit":"5"
             }
+         ]
+      },
+      {
+         "section":"collectable_counts",
+         "columns":"5",
+         "addresses_int":[
+            {
+               "name":"GBs: DK Japes",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC992"
+            },
+            {
+               "name":"GBs: Diddy Japes",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9F0"
+            },
+            {
+               "name":"GBs: Lanky Japes",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA4E"
+            },
+            {
+               "name":"GBs: Tiny Japes",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAAC"
+            },
+            {
+               "name":"GBs: Chunky Japes",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB0A"
+            },
+            {
+               "name":"GBs: DK Aztec",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC994"
+            },
+            {
+               "name":"GBs: Diddy Aztec",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9F2"
+            },
+            {
+               "name":"GBs: Lanky Aztec",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA50"
+            },
+            {
+               "name":"GBs: Tiny Aztec",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAAE"
+            },
+            {
+               "name":"GBs: Chunky Aztec",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB0C"
+            },
+            {
+               "name":"GBs: DK Factory",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC996"
+            },
+            {
+               "name":"GBs: Diddy Factory",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9F4"
+            },
+            {
+               "name":"GBs: Lanky Factory",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA52"
+            },
+            {
+               "name":"GBs: Tiny Factory",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAB0"
+            },
+            {
+               "name":"GBs: Chunky Factory",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB0E"
+            },
+            {
+               "name":"GBs: DK Galleon",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC998"
+            },
+            {
+               "name":"GBs: Diddy Galleon",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9F6"
+            },
+            {
+               "name":"GBs: Lanky Galleon",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA54"
+            },
+            {
+               "name":"GBs: Tiny Galleon",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAB2"
+            },
+            {
+               "name":"GBs: Chunky Galleon",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB10"
+            },
+            {
+               "name":"GBs: DK Fungi",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC99A"
+            },
+            {
+               "name":"GBs: Diddy Fungi",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9F8"
+            },
+            {
+               "name":"GBs: Lanky Fungi",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA56"
+            },
+            {
+               "name":"GBs: Tiny Fungi",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAB4"
+            },
+            {
+               "name":"GBs: Chunky Fungi",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB12"
+            },
+            {
+               "name":"GBs: DK Caves",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC99C"
+            },
+            {
+               "name":"GBs: Diddy Caves",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9FA"
+            },
+            {
+               "name":"GBs: Lanky Caves",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA58"
+            },
+            {
+               "name":"GBs: Tiny Caves",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAB6"
+            },
+            {
+               "name":"GBs: Chunky Caves",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB14"
+            },
+            {
+               "name":"GBs: DK Castle",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC99E"
+            },
+            {
+               "name":"GBs: Diddy Castle",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9FC"
+            },
+            {
+               "name":"GBs: Lanky Castle",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA5A"
+            },
+            {
+               "name":"GBs: Tiny Castle",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCAB8"
+            },
+            {
+               "name":"GBs: Chunky Castle",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB16"
+            },
+            {
+               "name":"GBs: DK Isles",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9A0"
+            },
+            {
+               "name":"GBs: Diddy Isles",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9FE"
+            },
+            {
+               "name":"GBs: Lanky Isles",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA5C"
+            },
+            {
+               "name":"GBs: Tiny Isles",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCABA"
+            },
+            {
+               "name":"GBs: Chunky Isles",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCB18"
+            },
+            {
+               "name":"Coins: DK",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC956"
+            },
+            {
+               "name":"Coins: Diddy",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FC9B4"
+            },
+            {
+               "name":"Coins: Lanky",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA12"
+            },
+            {
+               "name":"Coins: Tiny",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCA70"
+            },
+            {
+               "name":"Coins: Chunky",
+               "type":"address",
+               "bitcount":"16",
+               "address":"0x7FCACE"
+            },
          ]
       }
    ]
