@@ -1,0 +1,217 @@
+<html>
+	<head>
+		<title>Next RNG Values - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<link rel="stylesheet" href="style/mj.css">
+		<meta name="description" content="" />
+		<style>
+			.pre_text {
+				color: white;
+			}
+			.input_container {
+				padding: 10px;
+			}
+			.input_container .value_input {
+				padding: 10px;
+				padding-left: 20px;
+				width: 100%;
+				background-color: rgba(0,0,0,0);
+				border: 2px solid gold;
+				border-radius: 5px;
+				color: white;
+				font-size: 18px;
+			}
+
+			#results_table {
+				color: white;
+				width: 100%;
+				border: 2px solid white;
+				border-collapse: collapse;
+			} 
+
+			#results_table tr td {
+				border: 2px solid white;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="header master_header">
+					<strong>Next RNG Values</strong>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox" style="padding: 20px">
+				<div class="flexsplitter">
+					<div class="flex40">
+						<div class="pre_text">
+							Starting RNG:
+						</div>
+						<div class="input_container">
+							<input type="text" class="value_input" id="startingHex">
+						</div>
+					</div>
+					<div class="flex40">
+						<div class="pre_text">
+							RNG Cycles:
+						</div>
+						<div class="input_container">
+							<input type="number" class="value_input" min="2" maxlength="8" id="cycleCount">
+						</div>
+					</div>
+					<div class="flex40">
+						<div class="pre_text">
+							Columns:
+						</div>
+						<div class="input_container">
+							<input type="number" class="value_input" id="columnCount">
+						</div>
+					</div>
+					<div class="flex40">
+						<div class="pre_text">
+							Values per Column:
+						</div>
+						<div class="input_container">
+							<input type="number" class="value_input" id="valuePerColumnCount">
+						</div>
+					</div>
+					<div class="flex30" style="flex:10%">
+						<div class="pre_text" style="color:rgba(0,0,0,0)">
+							&nbsp;
+						</div>
+						<div class="input_container">
+							<button onclick="listRNGValues()">
+								Go
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox" id="results" style="padding: 20px;display:none">
+				<table id="results_table">
+				</table>
+			</div>
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		document.getElementById("startingHex").value = "E32B6F7";
+		document.getElementById("cycleCount").value = "2";
+		document.getElementById("columnCount").value = "5";
+		document.getElementById("valuePerColumnCount").value = "100";
+		function checkForHex() {
+			var startingHex = document.getElementById("startingHex").value;
+			var startingHexArray = startingHex.split("");
+			startingHexArray.forEach((character,index) => {
+				var focusedUnicode = startingHex.charCodeAt(index)
+				if (focusedUnicode < 48) {
+					startingHexArray[index] = "";
+				} else if (focusedUnicode > 57 && focusedUnicode < 65) {
+					startingHexArray[index] = "";
+				} else if (focusedUnicode > 70 && focusedUnicode < 97) {
+					startingHexArray[index] = "";
+				} else if (focusedUnicode > 102) {
+					startingHexArray[index] = "";
+				}
+			})
+			var newHex = startingHexArray.join("");
+			document.getElementById("startingHex").value = newHex;
+		}
+
+		var RNG = 0xE32B6F7;
+		function bitwiseMultiply(a,b) {
+			// Written by Isotarge
+			var c = 0;
+			while (b > 0) {
+				if ((b & 1) > 0) {
+					c = c + a;
+				} else {
+					c = c + 0;
+				}
+				a = a << 1;
+				b = b >> 1;
+			}
+			return c;
+		}
+
+		function Bit32Representation(hex) {
+			var splitHex = hex.split("")
+			var snipped = splitHex.filter((value,index) => index > splitHex.length - 9)
+			return snipped.join("");
+		}
+
+		function convertMultToHex(value) {
+			if (value < 0) {
+				return Bit32Representation((0x100000000 - (0 - value)).toString(16));
+			}
+			return Bit32Representation(value.toString(16));
+		}
+
+		function cycleRNG() {
+			var multResult = bitwiseMultiply(RNG,0x1DF5E0D)
+			var asHex = convertMultToHex(multResult); // Automatically pushes to lower 32
+			var new32 = parseInt(Bit32Representation((parseInt(asHex,16) + 1).toString(16)),16);
+			RNG = new32;
+			return new32
+		}
+
+		function listRNGValues() {
+			RNG = parseInt(document.getElementById("startingHex").value,16);
+			Count = parseInt(document.getElementById("cycleCount").value)
+			document.getElementById("results").style.display = "";
+			var rng_values = [RNG];
+			for (r = 1; r < Count; r++) {
+				RNG = cycleRNG();
+				rng_values.push(RNG)
+			}
+			console.log(rng_values)
+			document.getElementById("results_table").innerHTML = "";
+			var tr;
+			var td;
+			var ol;
+			var max_columns = parseInt(document.getElementById("columnCount").value);
+			var max_values_per_column = parseInt(document.getElementById("valuePerColumnCount").value);
+			rng_values.forEach((value,index) => {
+				if (index % (max_columns * max_values_per_column) == 0) {
+					tr = document.createElement("tr");
+				}
+				if (index % max_values_per_column == 0) {
+					td = document.createElement("td");
+					ol = document.createElement("ol");
+					ol.setAttribute("start",(index + 1).toString())
+				}
+				var li = document.createElement("li");
+				var hex = value.toString(16).toUpperCase();
+				if (hex.length < 8) {
+					for (i =  0; i < (8 - hex.length); i++) {
+						hex = "0" + hex;
+					}
+				}
+				var li_text = document.createTextNode("0x" + hex)
+
+				li.appendChild(li_text);
+				ol.appendChild(li);
+				if (index % max_values_per_column == (max_values_per_column - 1) || index == (rng_values.length - 1)) {
+					td.appendChild(ol);
+					tr.appendChild(td);
+				}
+				if (index % (max_columns * max_values_per_column) == ((max_columns * max_values_per_column) - 1) || index == (rng_values.length - 1)) {
+					document.getElementById("results_table").appendChild(tr);
+				}
+			})
+		}
+		document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
+	</script>
+</html>
