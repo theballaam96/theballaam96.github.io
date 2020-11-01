@@ -217,15 +217,17 @@
 		function update() {
 			var allSquares = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("td");
 			for (i = 0; i < allSquares.length; i++) {
-				allSquares[i].innerHTML = "<div class='flexsplitter icons'></div>"
-				allSquares[i].childNodes[0].classList.remove("has_mj")
-				allSquares[i].childNodes[0].classList.remove("has_kong");
-				allSquares[i].childNodes[0].classList.remove("adj_to_kong");
+				allSquares[i].innerHTML = "<div class='square'><div class='flexsplitter icons'></div></div>"
+				allSquares[i].childNodes[0].childNodes[0].classList.remove("has_mj")
+				allSquares[i].childNodes[0].childNodes[0].classList.remove("has_kong");
+				allSquares[i].childNodes[0].childNodes[0].classList.remove("adj_to_kong");
+				allSquares[i].childNodes[0].classList.remove("lit");
 			}
 			hideStats();
 			var mjCol = document.getElementById("mjCol").value;
 			var mjRow = document.getElementById("mjRow").value;
-			var mjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - mjRow].getElementsByTagName("td")[mjCol];
+			var mjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - mjRow].getElementsByTagName("td")[mjCol].childNodes[0];
+			mjSquare.classList.add("lit");
 			var newDiv = document.createElement("div")
 			newDiv.classList.add("has_mj");
 			newDiv.classList.add("flex40");
@@ -233,7 +235,8 @@
 
 			var kongCol = document.getElementById("kongCol").value;
 			var kongRow = document.getElementById("kongRow").value;
-			var kongSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[kongCol];
+			var kongSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[kongCol].childNodes[0];
+			kongSquare.classList.add("lit");
 			var newDiv = document.createElement("div")
 			newDiv.classList.add("has_kong");
 			newDiv.classList.add("flex40");
@@ -241,14 +244,14 @@
 
 			// Rows
 			if (kongRow < 3) {
-				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[2 - kongRow].getElementsByTagName("td")[kongCol];
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[2 - kongRow].getElementsByTagName("td")[kongCol].childNodes[0];
 				var newDiv = document.createElement("div")
 				newDiv.classList.add("adj_to_kong");
 				newDiv.classList.add("flex40");
 				kongAdjSquare.childNodes[0].appendChild(newDiv)
 			}
 			if (kongRow > 0) {
-				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[4 - kongRow].getElementsByTagName("td")[kongCol];
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[4 - kongRow].getElementsByTagName("td")[kongCol].childNodes[0];
 				var newDiv = document.createElement("div")
 				newDiv.classList.add("adj_to_kong");
 				newDiv.classList.add("flex40");
@@ -256,14 +259,14 @@
 			}
 			// Cols
 			if (kongCol < 3) {
-				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[parseInt(kongCol) + 1];
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[parseInt(kongCol) + 1].childNodes[0];
 				var newDiv = document.createElement("div")
 				newDiv.classList.add("adj_to_kong");
 				newDiv.classList.add("flex40");
 				kongAdjSquare.childNodes[0].appendChild(newDiv)
 			}
 			if (kongCol > 0) {
-				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[parseInt(kongCol) - 1];
+				kongAdjSquare = document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - kongRow].getElementsByTagName("td")[parseInt(kongCol) - 1].childNodes[0];
 				var newDiv = document.createElement("div")
 				newDiv.classList.add("adj_to_kong");
 				newDiv.classList.add("flex40");
@@ -426,7 +429,7 @@
 				}
 				var newText = document.createTextNode("Count: " + count + " (" + percent + "%)");
 				newDiv.appendChild(newText);
-				document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - row].getElementsByTagName("td")[col].appendChild(newDiv);
+				document.getElementsByClassName("mad_jack_board")[0].getElementsByTagName("tr")[3 - row].getElementsByTagName("td")[col].childNodes[0].appendChild(newDiv);
 			})
 		}
 
