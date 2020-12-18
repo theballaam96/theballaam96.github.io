@@ -1,0 +1,867 @@
+<html>
+	<head>
+		<title>Pufftoss Viewer - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<link rel="stylesheet" href="style/mj.css">
+		<link rel="stylesheet" href="style/pufftoss.css">
+		<meta name="description" content="" />
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="header master_header">
+					<strong>Pufftoss Viewer</strong>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox" style="padding: 20px">
+				<div id="arena_hook" class="pufftoss backdrop">
+					<div class="pufftoss arena">
+						<div id="stars_box" class="pufftoss viewbox">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="homebox">
+					<div class="input_info">
+						<div class="mj_calc_desc">
+							<h2>The Viewer</h2>
+						</div>
+						<!-- Phases -->
+						<div class="flexsplitter">
+							<div class="flex40">
+								<h4 class="label">
+									Phase Filters
+								</h4>
+							</div>
+							<div class="flex40" style="text-align: right">
+								<button style="width: fit-content; font-size: 14px" onclick="selectAllPhases()">
+									Select All
+								</button>
+								<button style="width: fit-content; font-size: 14px" onclick="deselectAllPhases()">
+									Deselect All
+								</button>
+							</div>
+						</div>
+						<div class="flexsplitter">
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Phase 1: </span>
+										</td>
+										<td>
+											<input type="checkbox" class="pfilterCheckbox" phase="1">
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Phase 2: </span>
+										</td>
+										<td>
+											<input type="checkbox" class="pfilterCheckbox" phase="2">
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Phase 3: </span>
+										</td>
+										<td>
+											<input type="checkbox" class="pfilterCheckbox" phase="3">
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Phase 4: </span>										
+										</td>
+										<td>
+											<input type="checkbox" class="pfilterCheckbox" phase="4">											
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Phase 5: </span>										
+										</td>
+										<td>
+											<input type="checkbox" class="pfilterCheckbox" phase="5">											
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						<br><br>	
+						<!-- Styling -->
+						<div class="flexsplitter">
+							<div class="flex40">
+								<h4 class="label">
+									Stylings
+								</h4>
+							</div>
+							<!-- <div class="flex40" style="text-align: right">
+								<button style="width: fit-content; font-size: 14px" onclick="selectAllStylings()">
+									Select All
+								</button>
+								<button style="width: fit-content; font-size: 14px" onclick="deselectAllStylings()">
+									Deselect All
+								</button>
+							</div> -->
+						</div>
+						<div class="flexsplitter">
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Phase Colouring: </span>
+										</td>
+										<td>
+											<input type="checkbox" id="phasecolouring" class="stylingCheckbox">
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Show Lines: </span>
+										</td>
+										<td>
+											<input type="checkbox" id="showLines" class="stylingCheckbox">
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Line Colouring: </span>
+										</td>
+										<td>
+											<input type="checkbox" id="linecolouring" class="stylingCheckbox">
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Display Pufftoss: </span>										
+										</td>
+										<td>
+											<input type="checkbox" id="showCentre" class="stylingCheckbox" checked>											
+										</td>
+									</tr>
+								</table>
+							</div>
+							<div class="flex40">
+								<table>
+									<tr>
+										<td>
+											<span class="label">Display Rods: </span>										
+										</td>
+										<td>
+											<input type="checkbox" id="showRods" class="stylingCheckbox">											
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+						</div>
+						<div class="mj_calc_desc">
+							<h2>
+								What is this?
+							</h2>
+							<div class="desc">
+								This tool displays all the key elements in the "pufftoss" boss fight in relation to the map as a whole. This can assist in visualising where star locations are, assist in routing and learning. With this tool, the following elements can be plotted onto the map:
+								<ul>
+									<li>Star Locations</li>
+									<li>Pufftoss</li>
+									<li>Lightning Rods</li>
+								</ul>
+								Additionally, lines between each star location can be toggled on and off. Whilst, at the time of writing (18-DEC-2020), pufftoss cannot be driven through during the fight, and therefore the lines do not 100% reflect the path to take during the fight, the lines given indication of the curve that will need to be taken for an optimal pufftoss fight.
+							</div>
+
+							<h2>
+								How to use
+							</h2>
+							<div class="desc">
+								Select the various checkboxes to display, hide and stylize various elements of the fight that fall into certain categories.
+								<br><br>
+								Hover over a node or line to display information on that node or line.
+							</div>
+							<br><br>
+						</div>
+					</div>
+				</div>
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		var xhttp = new XMLHttpRequest();
+		var mapData = [];
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				responseJSON = JSON.parse(xhttp.responseText).data;
+				star_data = responseJSON.stars.slice();
+				pufftoss = responseJSON.pufftoss.slice()[0];
+				rod_data = responseJSON.rods.slice();
+				response_data = responseJSON;
+				console.log(responseJSON)
+				getImageDimensions()
+			}
+		}
+		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/pufftoss_stara.json", true);
+		xhttp.send(null)
+
+		var response_data = {}
+		var star_data = [];
+		var pufftoss = {};
+		var rod_data = [];
+		var scale_factor = {
+			"w": 1,
+			"h": 1,
+		}
+
+		function getImageDimensions() {
+			var box = document.getElementById("arena_hook");
+			var box_data = {
+				"w": box.clientWidth,
+				"h": box.clientHeight,
+			}
+			var image_data = {
+				"w": 715,
+				"h": 766,
+			}
+			// Assume image is scaled to fit box width, what would height be?
+			var scaled_height = (box_data["w"] / image_data["w"]) * image_data["h"]
+			// Assume image is scaled to fit box height, what would width be?
+			var scaled_width = (box_data["h"] / image_data["h"]) * image_data["w"];
+			var scaled_image = {
+				"w": 0,
+				"h": 0,
+			}
+			if (scaled_height > box_data["h"]) {
+				// Snapping to width causes problem, snap to height, take scaled width
+				scaled_image["w"] = scaled_width;
+				scaled_image["h"] = box_data["h"];
+			} else {
+				scaled_image["w"] = box_data["w"];
+				scaled_image["h"] = scaled_height;
+			}
+			scale_factor["w"] = scaled_image["w"] / box_data["w"];
+			scale_factor["h"] = scaled_image["h"] / box_data["h"];
+			clearStars()
+			drawStars(response_data)
+		}
+
+		function clearStars() {
+			var hook = document.getElementById("stars_box");
+			hook.innerHTML = "";
+		}
+
+		var arena = {
+			"x": {
+				"min": 683.822,
+				"max": 1731.809,
+				"center": 1207.8155,
+				"scale": 1047.987,
+				"force_scale": 0.75,
+				"shift": 0,
+			},
+			"z": {
+				"min": 866.703,
+				"max": 2008.406,
+				"center": 1437.5545,
+				"scale": 1141.703,
+				"force_scale": 0.8,
+				"shift": -2,
+			},
+		}
+
+		function drawStars(data) {
+			var hook = document.getElementById("stars_box");
+
+			var node = document.createElement("span");
+			node.setAttribute("x", pufftoss.x);
+			node.setAttribute("y", pufftoss.y);
+			node.setAttribute("z", pufftoss.z);
+			node.setAttribute("node_type","center")
+			node.classList.add("pufftoss")
+			node.classList.add("center_location")
+			node.setAttribute("id","center_location")
+			var center_x_diff = pufftoss.x - arena.x.center;
+			var center_z_diff = pufftoss.z - arena.z.center;
+			var x_offset = 100 * (center_x_diff / arena.x.scale) * scale_factor["w"] * arena.x.force_scale;
+			var z_offset = 100 * (center_z_diff / arena.z.scale) * scale_factor["h"] * arena.z.force_scale;
+			var x_perc = 50 + x_offset + arena.x.shift;
+			var z_perc = 50 + z_offset + arena.z.shift;
+			node.style.top = z_perc + "%";
+			node.style.left = x_perc + "%";
+			var lineText = document.createTextNode("P")
+			node.style.color = "white";
+			node.style["background-color"] = "darkslategray"
+			node.appendChild(lineText)
+
+			node.addEventListener("mouseover", function(){spawnInfoBox(node, "node", event);})
+			node.addEventListener("mouseout", function(){clearInfoBox("center",0)})
+			hook.appendChild(node)
+
+			data.stars.forEach((star, index) => {
+				var node = document.createElement("span");
+				node.setAttribute("phase",star.phase);
+				node.setAttribute("phase_star",star.star);
+				node.setAttribute("x",star.x);
+				node.setAttribute("y",star.y);
+				node.setAttribute("z",star.z);
+				node.setAttribute("star_index",index);
+				node.setAttribute("star_scale",star.scale);
+				node.setAttribute("node_type","star")
+				node.classList.add("pufftoss")
+				node.classList.add("star_location")
+				var center_x_diff = star.x - arena.x.center;
+				var center_z_diff = star.z - arena.z.center;
+				var x_offset = 100 * (center_x_diff / arena.x.scale) * scale_factor["w"] * arena.x.force_scale;
+				var z_offset = 100 * (center_z_diff / arena.z.scale) * scale_factor["h"] * arena.z.force_scale;
+				var x_perc = 50 + x_offset + arena.x.shift;
+				var z_perc = 50 + z_offset + arena.z.shift;
+				node.style.top = z_perc + "%";
+				node.style.left = x_perc + "%";
+				//var lineText = document.createTextNode(".")
+				var lineText = document.createTextNode((index + 1).toString())
+				node.style.color = "black";
+				node.appendChild(lineText)
+
+				node.addEventListener("mouseover", function(){spawnInfoBox(node, "node", event);})
+				node.addEventListener("mouseout", function(){clearInfoBox("star",index)})
+
+				hook.appendChild(node)
+
+				if (index != 0) {
+					// Visible
+					var line = document.createElement("div")
+					line.setAttribute("star_in",index - 1);
+					line.setAttribute("star_out", index)
+					line.setAttribute("phase_in", Math.floor((index - 1) / 5) + 1)
+					line.setAttribute("phase_out", star.phase);
+					line.setAttribute("line_index", index - 1)
+					line.setAttribute("node_type","line");
+					line.classList.add("pufftoss")
+					line.classList.add("line")
+					line.classList.add("hidden")
+					hook.appendChild(line)
+					line.addEventListener("mouseover", function(){spawnInfoBox(line, "cursor", event);})
+					line.addEventListener("mouseout", function(){clearInfoBox("line",index - 1)})
+					drawLine(index - 1, index, index - 1)
+				}
+			})
+
+			data.rods.forEach((rod, index) => {
+				var node = document.createElement("span");
+				node.setAttribute("x",rod.x);
+				node.setAttribute("y",rod.y);
+				node.setAttribute("z",rod.z);
+				node.setAttribute("rod_index",index);
+				node.setAttribute("rod_scale",rod.scale);
+				node.setAttribute("node_type","rod")
+				node.classList.add("pufftoss");
+				node.classList.add("rod_location");
+				node.classList.add("hidden");
+				var center_x_diff = rod.x - arena.x.center;
+				var center_z_diff = rod.z - arena.z.center;
+				var x_offset = 100 * (center_x_diff / arena.x.scale) * scale_factor["w"] * arena.x.force_scale;
+				var z_offset = 100 * (center_z_diff / arena.z.scale) * scale_factor["h"] * arena.z.force_scale;
+				var x_perc = 50 + x_offset + arena.x.shift;
+				var z_perc = 50 + z_offset + arena.z.shift;
+				node.style.top = z_perc + "%";
+				node.style.left = x_perc + "%";
+				//var lineText = document.createTextNode(".")
+				var lineText = document.createTextNode("R" + (index + 1).toString())
+				node.style.color = "black";
+				node.appendChild(lineText)
+
+				node.addEventListener("mouseover", function(){spawnInfoBox(node, "node", event);})
+				node.addEventListener("mouseout", function(){clearInfoBox("rod",index)})
+
+				hook.appendChild(node)
+			})
+		}
+
+		function spawnInfoBox(focal_el, focus_point, event) {
+			var boxes = document.getElementsByClassName("infobox");
+			for (i = 0; i < boxes.length; i++) {
+				boxes[i].classList.add("fading")
+			}
+			var node_type = focal_el.getAttribute("node_type")
+			var viewbox = document.getElementById("stars_box").getBoundingClientRect()
+
+			// Container
+			var box = document.createElement("span")
+			if (focus_point == "node") {
+				box.style.top = focal_el.style.top;
+				box.style.left = focal_el.style.left;
+			} else if (focus_point == "cursor") {
+				box.style.top = event.clientY - viewbox.top;
+				box.style.left = event.clientX - viewbox.left;
+			}
+			box.classList.add("pufftoss")
+			box.classList.add("infobox")
+			box.setAttribute("id","center_info")
+			if (node_type == "star") {
+				var star_index = focal_el.getAttribute("star_index")
+				box.setAttribute("star_index", star_index)
+			} else if (node_type == "line") {
+				var line_index = focal_el.getAttribute("line_index")
+				box.setAttribute("line_index", line_index)
+			} else if (node_type == "rod") {
+				var rod_index = focal_el.getAttribute("rod_index");
+				box.setAttribute("rod_index", rod_index)
+			}
+			
+			// Title
+			var title_box = document.createElement("div");
+			title_box.classList.add("title")
+			if (node_type == "star") {
+				var title = document.createTextNode("Star " + (parseInt(star_index) + 1))
+			} else if (node_type == "line") {
+				var title = document.createTextNode("Line " + (parseInt(line_index) + 1))
+			} else if (node_type == "center") {
+				var title = document.createTextNode("Pufftoss")
+			} else if (node_type == "rod") {
+				var title = document.createTextNode("Rod " + (parseInt(rod_index) + 1))
+			}
+			title_box.appendChild(title)
+			box.appendChild(title_box)
+
+			// Info
+			var info_bar = document.createElement("div");
+			info_bar.classList.add("info")
+			var info_table = document.createElement("table")
+			if (node_type == "star") {
+				var info_data = {
+					X: focal_el.getAttribute("x"),
+					Y: focal_el.getAttribute("y"),
+					Z: focal_el.getAttribute("z"),
+					Scale: focal_el.getAttribute("star_scale"),
+				}
+				info_keys = Object.keys(info_data).slice()
+				info_data["Phase " + focal_el.getAttribute("phase")] = "Star " + focal_el.getAttribute("phase_star");
+				info_keys.unshift("Phase " + focal_el.getAttribute("phase"))
+			} else if (node_type=="line") {
+				var stars = document.getElementsByClassName("star_location")
+				var star0index = parseInt(focal_el.getAttribute("star_in"));
+				var star1index = parseInt(focal_el.getAttribute("star_out"));
+				for (s = 0; s < stars.length; s++) {
+					var selected_index = parseInt(stars[s].getAttribute("star_index"));
+					if (selected_index == star0index) {
+						var x0 = parseInt(stars[s].getAttribute("x"))
+						var y0 = parseInt(stars[s].getAttribute("z"));
+					} else if (selected_index == star1index) {
+						var x1 = parseInt(stars[s].getAttribute("x"))
+						var y1 = parseInt(stars[s].getAttribute("z"));
+					}
+				}
+				var gradient = (y1 - y0) / (x1 - x0);
+				var yintercept = y0 - (gradient * x0)
+				var normal_gradient = -1 / gradient;
+				var normal_yintercept = pufftoss.z - (normal_gradient * pufftoss.x);
+				var intercept_x = (normal_yintercept - yintercept) / (gradient - normal_gradient);
+				var intercept_y = (normal_gradient * intercept_x) + normal_yintercept;
+				var line_offset = "Intersect"
+				if (intercept_x > pufftoss.x) {
+					line_offset = "Right"
+				} else if (intercept_x < pufftoss.x) {
+					line_offset = "Left"
+				} else if (intercept_y > pufftoss.z) {
+					line_offset = "Top"
+				} else if (intercept_y < pufftoss.z) {
+					line_offset = "Bottom"
+				}
+				var info_data = {
+					"Star In": parseInt(focal_el.getAttribute("star_in")) + 1,
+					"Star Out": parseInt(focal_el.getAttribute("star_out")) + 1,
+					"Relative to Pufftoss": line_offset,
+				}
+				info_keys = Object.keys(info_data).slice()
+				console.log(info_data["Star In"])
+				var phase_star_in = ((info_data["Star In"] - 1) % 5) + 1;
+				var phase_star_out = ((info_data["Star Out"] - 1) % 5) + 1;
+				info_data["Phase " + focal_el.getAttribute("phase_in") + " Star " + phase_star_in.toString() + ":"] = "Phase " + focal_el.getAttribute("phase_out") + " Star " + phase_star_out.toString();
+				info_keys.unshift("Phase " + focal_el.getAttribute("phase_in") + " Star " + phase_star_in.toString() + ":")
+			} else if (node_type=="center") {
+				var info_data = {
+					X: focal_el.getAttribute("x"),
+					Y: focal_el.getAttribute("y"),
+					Z: focal_el.getAttribute("z"),
+				}
+				info_keys = Object.keys(info_data).slice()
+				info_data["Pufftoss"] = "";
+				info_keys.unshift("Pufftoss")
+			} else if (node_type=="rod") {
+				var info_data = {
+					X: focal_el.getAttribute("x"),
+					Y: focal_el.getAttribute("y"),
+					Z: focal_el.getAttribute("z"),
+					Scale: focal_el.getAttribute("rod_scale"),
+				}
+				info_keys = Object.keys(info_data).slice()
+				info_data["Rod"] = parseInt(rod_index) + 1;
+				info_keys.unshift("Rod")
+			}
+			info_keys.forEach((item, index) =>  {
+				var tr = document.createElement("tr");
+				var td_head = document.createTextNode(item);
+				var td_data = document.createTextNode(info_data[item]);
+
+				if (index == 0) {
+					var head = document.createElement("thead");
+					var td_left = document.createElement("th");
+					var td_right = document.createElement("th");
+				} else {
+					var td_left = document.createElement("td");
+					var td_right = document.createElement("td");
+				}
+				td_left.appendChild(td_head);
+				td_right.appendChild(td_data);
+				tr.appendChild(td_left);
+				tr.appendChild(td_right);
+				if (index == 0) {
+					head.appendChild(tr);
+					info_table.appendChild(head)
+				} else {
+					info_table.appendChild(tr);
+				}
+			}) 
+			info_bar.appendChild(info_table);
+			box.appendChild(info_bar)
+			
+			document.getElementById("stars_box").appendChild(box)
+		}
+
+		function clearInfoBox(type,star_index) {
+			if (type == "center") {
+				document.getElementById("center_info").classList.add("fading")
+			} else if (type == "line") {
+				var boxes = document.getElementsByClassName("infobox");
+				for (i = 0; i < boxes.length; i++) {
+					var idx = boxes[i].getAttribute("line_index");
+					if (idx == star_index) {
+						boxes[i].classList.add("fading")
+					}
+				}
+			} else if (type == "rod") {
+				var boxes = document.getElementsByClassName("infobox");
+				for (i = 0; i < boxes.length; i++) {
+					var idx = boxes[i].getAttribute("rod_index");
+					if (idx == star_index) {
+						boxes[i].classList.add("fading")
+					}
+				}
+			} else if (type == "star") {
+				var boxes = document.getElementsByClassName("infobox");
+				for (i = 0; i < boxes.length; i++) {
+					var idx = boxes[i].getAttribute("star_index");
+					if (idx == star_index) {
+						boxes[i].classList.add("fading")
+					}
+				}
+			}
+			setTimeout(function() {
+				if (type == "center") {
+					document.getElementById("center_info").remove()
+				} else if (type == "line") {
+					var boxes = document.getElementsByClassName("infobox");
+					for (i = 0; i < boxes.length; i++) {
+						var idx = boxes[i].getAttribute("line_index");
+						if (idx == star_index) {
+							boxes[i].remove()
+						}
+					}
+				} else if (type == "rod") {
+					var boxes = document.getElementsByClassName("infobox");
+					for (i = 0; i < boxes.length; i++) {
+						var idx = boxes[i].getAttribute("rod_index");
+						if (idx == star_index) {
+							boxes[i].remove()
+						}
+					}
+				} else if (type == "star") {
+					var boxes = document.getElementsByClassName("infobox");
+					for (i = 0; i < boxes.length; i++) {
+						var idx = boxes[i].getAttribute("star_index");
+						if (idx == star_index) {
+							boxes[i].remove()
+						}
+					}
+				}
+			}, 500)
+		}
+
+		function selectAllPhases() {
+			var checkboxes = document.getElementsByClassName("pfilterCheckbox");
+			for (i = 0; i < checkboxes.length; i++) {
+				if (!checkboxes[i].checked) {
+					checkboxes[i].click()
+				}
+			}
+		}
+
+		function deselectAllPhases() {
+			var checkboxes = document.getElementsByClassName("pfilterCheckbox");
+			for (i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checkboxes[i].click();
+				}
+			}
+		}
+
+		function selectAllStylings() {
+			var checkboxes = document.getElementsByClassName("stylingCheckbox");
+			for (i = 0; i < checkboxes.length; i++) {
+				console.log(checkboxes[i].checked)
+				if (!checkboxes[i].checked) {
+					checkboxes[i].click();
+				}
+			}
+		}
+
+		function deselectAllStylings() {
+			var checkboxes = document.getElementsByClassName("stylingCheckbox");
+			for (i = 0; i < checkboxes.length; i++) {
+				if (checkboxes[i].checked) {
+					checkboxes[i].click();
+				}
+			}
+		}
+
+
+		var phases_coloured = false;
+		function phaseColouring() {
+			var ischecked = document.getElementById("phasecolouring").checked;
+			if (ischecked != phases_coloured) {
+				phases_coloured = ischecked;
+				var stars = document.getElementsByClassName("star_location");
+				if (ischecked) {
+					for (i = 0; i < stars.length; i++) {
+						stars[i].classList.add("coloured");
+					}
+				} else {
+					for (i = 0; i < stars.length; i++) {
+						stars[i].classList.remove("coloured");
+					}
+				}
+			}
+		}
+
+		var lines_coloured = false;
+		function lineColouring() {
+			var ischecked = document.getElementById("linecolouring").checked;
+			if (ischecked != lines_coloured) {
+				lines_coloured = ischecked;
+				var lines = document.getElementsByClassName("line");
+				if (ischecked) {
+					for (i = 0; i < lines.length; i++) {
+						lines[i].classList.add("coloured");
+					}
+				} else {
+					for (i = 0; i < lines.length; i++) {
+						lines[i].classList.remove("coloured");
+					}
+				}
+			}
+		}
+
+		var phases_shown = [true, true, true, true, true]
+		var linesViewable = false;
+		function togglePhase(phase_num) {
+			var phase_cbox = document.getElementsByClassName("pfilterCheckbox")
+			for (p = 0; p < phase_cbox.length; p++) {
+				var el_phase = phase_cbox[p].getAttribute("phase");
+				if (phase_num == el_phase) {
+					var ischecked = phase_cbox[p].checked;
+					if (ischecked != phases_shown[p]) {
+						phases_shown[p] = ischecked;
+						var stars = document.getElementsByClassName("star_location");
+						if (ischecked) {
+							for (s = 0; s < stars.length; s++) {
+								if (parseInt(stars[s].getAttribute("phase")) == (p + 1)) {
+									stars[s].style.display = "";
+								}
+							}
+						} else {
+							for (s = 0; s < stars.length; s++) {
+								if (parseInt(stars[s].getAttribute("phase")) == (p + 1)) {
+									stars[s].style.display = "none";
+								}
+							}
+						}
+						displayLines();
+					}
+				}
+			}
+		}
+		function toggleLines() {
+			var lines_cbox = document.getElementById("showLines");
+			var ischecked = lines_cbox.checked;
+			if (linesViewable != ischecked) {
+				linesViewable = ischecked;
+				displayLines();
+			}
+		}
+
+		function displayLines() {
+			var lines = document.getElementsByClassName("line");
+			for (l = 0; l < lines.length; l++) {
+				var phase_in = parseInt(lines[l].getAttribute("phase_in"))
+				var phase_out = parseInt(lines[l].getAttribute("phase_out"))
+				if (phases_shown[phase_in - 1] && phases_shown[phase_out - 1] && linesViewable) {
+					lines[l].classList.remove("hidden")
+				} else {
+					lines[l].classList.add("hidden")
+				}
+			}
+		}
+
+		var phase_cbox = document.getElementsByClassName("pfilterCheckbox")
+		for (p = 0; p < phase_cbox.length; p++) {
+			phase_cbox[p].checked = true;
+			phase_cbox[p].addEventListener("click", function(){
+				togglePhase(this.getAttribute("phase"))
+			})
+		}
+
+		function lineDistance(x, y, x0, y0) {
+			return Math.sqrt((x -= x0) * x + (y -= y0) * y)
+		}
+
+		function getOffset(element) {
+			if (!element.getClientRects().length) {
+      			return { top: 0, left: 0 };
+    		}
+
+		    let rect = element.getBoundingClientRect();
+		    let win = element.ownerDocument.defaultView;
+		    return (
+		    {
+		      top: rect.top + win.pageYOffset,
+		      left: rect.left + win.pageXOffset
+		    });   
+		}
+
+		function drawLine(a, b, l_index) {
+			var stars = document.getElementsByClassName("star_location");
+			var lines = document.getElementsByClassName("line");
+			var viewbox = document.getElementById("stars_box").getBoundingClientRect()
+
+			var pointA = getOffset(stars[a]);
+			var pointB = getOffset(stars[b]);
+			var pointAcenterX = stars[a].getBoundingClientRect().width / 2;
+			var pointAcenterY = stars[a].getBoundingClientRect().height / 2;
+			var pointBcenterX = stars[b].getBoundingClientRect().width / 2;
+			var pointBcenterY = stars[b].getBoundingClientRect().height / 2;
+			var angle = Math.atan2(pointB.top - pointA.top, pointB.left - pointA.left) * 180 / Math.PI;
+			var distance = lineDistance(pointA.left, pointA.top, pointB.left, pointB.top)
+
+
+			lines[l_index].style.transform = "rotate(" + angle + "deg)";
+			lines[l_index].style.width = distance + "px";
+
+			var movement_size = 1;
+			if (angle < 0) {
+				movement_size = -1
+			}
+			//var y_diff = Math.sin(angle * (Math.PI / 180)) * (distance / 2) * movement_size;
+			var y_diff = 0;
+			// var x_diff = Math.sin(angle * (Math.PI / 180)) * (distance / 2) * movement_size
+			var x_diff = 0;
+			var start_top = Math.min(pointA.top,pointB.top);
+			var start_left = Math.min(pointA.left,pointB.left);
+			var current_center = {
+				x: start_left + (distance / 2),
+				y: start_top,
+			}
+			var destination_center = {
+				x: (pointA.left + pointB.left) / 2,
+				y: (pointA.top + pointB.top) / 2
+			}
+			var x_diff = destination_center.x - current_center.x;
+			var y_diff = destination_center.y - current_center.y;
+			var boundTop = start_top + y_diff - viewbox.top + pointAcenterY;
+			var boundLeft = start_left + x_diff - viewbox.left + pointAcenterX;
+			// if (pointB.left < pointA.left) {
+			// 	var boundTop = pointA.top + pointAcenterY - (1 * viewbox.top) - lines[l_index].getBoundingClientRect().height / 2;
+			// 	var boundLeft = pointB.left + pointBcenterX - (1 * viewbox.left);
+			// } else {
+			// 	var boundTop = pointA.top + pointAcenterY - (1 * viewbox.top) - lines[l_index].getBoundingClientRect().height / 2;
+			// 	var boundLeft = pointA.left + pointAcenterX - (1 * viewbox.left);
+			// }
+			lines[l_index].style.top = boundTop + "px";
+			lines[l_index].style.left = boundLeft + "px";
+		}
+
+		var center_shown = true;
+		function toggleCenter() {
+			var ischecked = document.getElementById("showCentre").checked;
+			if (ischecked != center_shown) {
+				center_shown = ischecked;
+				if (ischecked) {
+					document.getElementById("center_location").classList.remove("hidden")
+				} else {
+					document.getElementById("center_location").classList.add("hidden")
+				}
+			}
+		}
+
+		var rods_shown = false;
+		function toggleRods() {
+			var ischecked = document.getElementById("showRods").checked;
+			if (ischecked != rods_shown) {
+				rods_shown = ischecked;
+				var rods = document.getElementsByClassName("rod_location")
+				if (ischecked) {
+					for (r = 0; r < rods.length; r++) {
+						rods[r].classList.remove("hidden")
+					}
+				} else {
+					for (r = 0; r < rods.length; r++) {
+						rods[r].classList.add("hidden")
+					}
+				}
+			}
+		}
+
+		window.addEventListener("resize", getImageDimensions);
+		document.getElementById("phasecolouring").addEventListener("click", phaseColouring)
+		document.getElementById("linecolouring").addEventListener("click", lineColouring)
+		document.getElementById("showLines").addEventListener("click", toggleLines)
+		document.getElementById("showCentre").addEventListener("click", toggleCenter)
+		document.getElementById("showRods").addEventListener("click", toggleRods)
+		document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
+	</script>
+</html>
