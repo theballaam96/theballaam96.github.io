@@ -49,6 +49,38 @@
 	background-color: white;
 	width: 100%;
 	height: 3px;
+	border-radius: 2px;
+	border: 1px solid black;
+}
+
+.pufftoss.line .pufftoss.line_head {
+	max-width: 10px;
+	width: 33%;
+	height: 3px;
+	background-color: white;
+	right: 10px;
+	position: absolute;
+	border-radius: 2px;
+}
+
+.pufftoss.line .pufftoss.line_head.upper {
+	transform: rotate(-20deg);
+	margin-top: 3px;
+	z-index: 9;
+	border: 1px solid black;
+}
+
+.pufftoss.line_head.lower {
+	transform: rotate(20deg);
+	margin-top: -5px;
+	z-index: 9;
+	border: 1px solid black;
+}
+
+.pufftoss.line_head.center {
+	z-index: 10;
+	border-width: 0px;
+	max-height: 1px;
 }
 
 .pufftoss.star_location.coloured[phase="1"] {
@@ -71,23 +103,23 @@
 	background-color: mediumaquamarine;
 }
 
-.pufftoss.line.coloured[phase_in="1"] {
+.pufftoss.line.coloured[phase_in="1"], .pufftoss.line.coloured[phase_in="1"] .pufftoss.line_head {
 	background-color: darkgoldenrod;
 }
 
-.pufftoss.line.coloured[phase_in="2"] {
+.pufftoss.line.coloured[phase_in="2"], .pufftoss.line.coloured[phase_in="2"] .pufftoss.line_head {
 	background-color: firebrick;
 }
 
-.pufftoss.line.coloured[phase_in="3"] {
+.pufftoss.line.coloured[phase_in="3"], .pufftoss.line.coloured[phase_in="3"] .pufftoss.line_head {
 	background-color: dodgerblue;
 }
 
-.pufftoss.line.coloured[phase_in="4"] {
+.pufftoss.line.coloured[phase_in="4"], .pufftoss.line.coloured[phase_in="4"] .pufftoss.line_head {
 	background-color: indigo;
 }
 
-.pufftoss.line.coloured[phase_in="5"] {
+.pufftoss.line.coloured[phase_in="5"], .pufftoss.line.coloured[phase_in="5"] .pufftoss.line_head {
 	background-color: green;
 }
 

@@ -374,7 +374,26 @@
 					line.setAttribute("node_type","line");
 					line.classList.add("pufftoss")
 					line.classList.add("line")
-					line.classList.add("hidden")
+					line.classList.add("hidden");
+
+					var upper_head = document.createElement("div")
+					upper_head.classList.add("pufftoss")
+					upper_head.classList.add("line_head")
+					upper_head.classList.add("upper")
+					line.appendChild(upper_head)
+
+					var lower_head = document.createElement("div")
+					lower_head.classList.add("pufftoss")
+					lower_head.classList.add("line_head")
+					lower_head.classList.add("lower")
+					line.appendChild(lower_head)
+
+					var center_head = document.createElement("div")
+					center_head.classList.add("pufftoss")
+					center_head.classList.add("line_head")
+					center_head.classList.add("center")
+					line.appendChild(center_head)
+
 					hook.appendChild(line)
 					line.addEventListener("mouseover", function(){spawnInfoBox(line, "cursor", event);})
 					line.addEventListener("mouseout", function(){clearInfoBox("line",index - 1)})
