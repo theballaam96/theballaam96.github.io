@@ -1,0 +1,49 @@
+{
+   "data":{
+      "versions":[
+         {
+            "version":"0.1",
+            "release_date":"16-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_1/DK64%20Practice%20ROM%20V0_1%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_1/DK64%20Practice%20ROM%20V0_1%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V0_1.asm",
+            "changelog":[
+               "First version",
+               "OSD (Broken on N64)",
+               "Position Warping",
+               "All kongs/moves unlocked",
+               "Tag Anywhere",
+               "Alternate kong colours"
+            ]
+         },
+         {
+            "version":"0.2",
+            "release_date":"18-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_2/DK64%20Practice%20ROM%20V0_2%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_2/DK64%20Practice%20ROM%20V0_2%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V0_2.asm",
+            "changelog":[
+               "OSD Shifted to pause screen",
+               "Save & load flags",
+               "Tiny and Chunky's colours changed",
+               "Dinosaur-related easter egg",
+               "Facing Angle, velocities and acceleration added to position storage",
+               "[Bug fix] OSD no longer crashes",
+               "[Bug fix] Moves granted to every kong"
+            ]
+         },
+         {
+            "version":"1.0",
+            "release_date":"18-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_0/DK64%20Practice%20ROM%20V1_0%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_0/DK64%20Practice%20ROM%20V1_0%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_0.asm",
+            "changelog":[
+               "Position warping works only when the storage took place on the same map",
+               "All collectables granted at the start",
+               "[Bug fix] Pause menu action + D-Up causes softlock"
+            ]
+         }
+      ]
+   }
+}
