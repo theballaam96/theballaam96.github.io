@@ -1,0 +1,190 @@
+<html>
+	<head>
+		<title>Home - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<link rel="stylesheet" href="style/maps.css">
+		<link rel="stylesheet" href="style/mj.css">
+		<meta name="description" content="" />
+		<style>
+			.homebox {
+				transition: 0.5s ease-in-out;
+			}
+			.homebox.clickable:hover {
+				border-color:red;
+			}
+			.changelog.container {
+				color: white;
+				padding-left: 20px;
+			}
+			.changelog.version {
+				font-weight: bold;
+			}
+			.buttoncontainer {
+				padding: 10px;
+				flex: 33%;
+			}
+			.ytcontainer {
+				margin-left: auto;
+				margin-right: auto;
+				width: fit-content;
+				padding: 15px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="header master_header">
+					<strong>Donkey Kong 64 Practice ROM</strong>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="ytcontainer">
+					<iframe width="560" height="315" src="https://www.youtube.com/embed/6bliW6-loGY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+			</div>
+		</div>
+		<div id="versions_container">
+
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		var xhttp = new XMLHttpRequest();
+		var romData = [];
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				responseJSON = JSON.parse(xhttp.responseText).data;
+				romData = responseJSON.versions.slice();
+				console.log(romData)
+				populate()
+			}
+		}
+		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/practicerom_versions.json", true);
+		xhttp.send(null)
+
+		function populate() {
+			var hook = document.getElementById("versions_container")
+			var inverseROMData = romData.slice().reverse()
+			inverseROMData.forEach(romVersion => {
+				var flex = document.createElement("div")
+				flex.classList.add("flexsplitter")
+
+				var box = document.createElement("div")
+				box.classList.add("homebox")
+				box.classList.add("clickable")
+				box.setAttribute("onclick","toggleBox('" + romVersion.version + "')")
+
+				var title_container = document.createElement("div")
+				title_container.classList.add("header")
+				title_container.classList.add("master_header")
+
+				var strong = document.createElement("strong")
+				var strong_text = document.createTextNode("Version " + romVersion.version)
+				strong.appendChild(strong_text)
+				title_container.appendChild(strong)
+				box.appendChild(title_container)
+
+				var togglable_container = document.createElement("div")
+				togglable_container.classList.add("toggleable")
+				togglable_container.setAttribute("tiedVersion",romVersion.version)
+				togglable_container.classList.add("hide")
+
+				// Changelog
+				var changelog_container = document.createElement("div")
+				changelog_container.classList.add("changelog")
+				changelog_container.classList.add("container")
+				
+				// Changelog Version
+				var changelog_version = document.createElement("div")
+				changelog_version.classList.add("changelog")
+				changelog_version.classList.add("version")
+				var changelog_version_text = document.createTextNode("Version " + romVersion.version)
+				changelog_version.appendChild(changelog_version_text)
+				changelog_container.appendChild(changelog_version)
+
+				// Changelog Date
+				var changelog_date = document.createElement("div")
+				changelog_date.classList.add("changelog")
+				changelog_date.classList.add("date")
+				var changelog_date_text = document.createTextNode("Release Date: " + romVersion.release_date)
+				changelog_date.appendChild(changelog_date_text)
+				changelog_container.appendChild(changelog_date)
+
+				// Changelog Changes
+				var changelog_ul = document.createElement("ul")
+				changelog_ul.classList.add("changelog")
+				changelog_ul.classList.add("_ul")
+				romVersion.changelog.forEach(change => {
+					var changelog_li = document.createElement("li")
+					changelog_li.classList.add("changelog")
+					changelog_li.classList.add("_li")
+					var changelog_li_text = document.createTextNode(change)
+					changelog_li.appendChild(changelog_li_text)
+					changelog_ul.appendChild(changelog_li)
+				})
+				changelog_container.appendChild(changelog_ul)
+				togglable_container.appendChild(changelog_container)
+
+				// Buttons
+				var buttons_container = document.createElement("div")
+				buttons_container.style.display = "flex";
+
+				var container_beat = document.createElement("div")
+				container_beat.classList.add("buttoncontainer")
+				var button_beat = document.createElement("button")
+				button_beat.setAttribute("onclick", "goTo('" + romVersion.beat + "')")
+				var text_beat = document.createTextNode("Download (Beat)")
+				button_beat.appendChild(text_beat)
+				container_beat.appendChild(button_beat)
+				buttons_container.appendChild(container_beat)
+
+				var container_lunar = document.createElement("div")
+				container_lunar.classList.add("buttoncontainer")
+				var button_lunar = document.createElement("button")
+				button_lunar.setAttribute("onclick", "goTo('" + romVersion.lunar + "')")
+				var text_lunar = document.createTextNode("Download (Lunar IPS)")
+				button_lunar.appendChild(text_lunar)
+				container_lunar.appendChild(button_lunar)
+				buttons_container.appendChild(container_lunar)
+
+				var container_source = document.createElement("div")
+				container_source.classList.add("buttoncontainer")
+				var button_source = document.createElement("button")
+				button_source.setAttribute("onclick", "goTo('" + romVersion.source + "')")
+				var text_source = document.createTextNode("View Source Code")
+				button_source.appendChild(text_source)
+				container_source.appendChild(button_source)
+				buttons_container.appendChild(container_source)
+
+				togglable_container.appendChild(buttons_container)
+				box.appendChild(togglable_container)
+				flex.appendChild(box)
+				hook.appendChild(flex)
+			})
+		}
+
+		function goTo(url) {
+			window.location.href = url
+		}
+
+		function toggleBox(indic) {
+			var toggleBoxes = document.getElementsByClassName("toggleable")
+			for (i = 0; i < toggleBoxes.length; i++) {
+				var focusId = toggleBoxes[i].getAttribute("tiedVersion")
+				if (focusId == indic) {
+					toggleBoxes[i].classList.toggle("hide")
+				}
+			}
+		}
+
+		document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
+	</script>
+</html>
