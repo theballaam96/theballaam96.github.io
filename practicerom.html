@@ -10,12 +10,14 @@
 		<style>
 			.homebox {
 				transition: 0.5s ease-in-out;
+				cursor: default;
 			}
 			.homebox.clickable:hover {
 				border-color:red;
 			}
 			.changelog.container {
 				color: white;
+				padding-top: 10px;
 				padding-left: 20px;
 			}
 			.changelog.version {
@@ -30,6 +32,9 @@
 				margin-right: auto;
 				width: fit-content;
 				padding: 15px;
+			}
+			a {
+				color: darkgoldenrod;
 			}
 		</style>
 	</head>
@@ -46,6 +51,76 @@
 		</div>
 		<div class="flexsplitter">
 			<div class="homebox">
+				<div class="changelog container">
+					<div class="changelog version">
+						Features list
+					</div>
+					<ul>
+						<li>Quality of life features</li>
+						<ul>
+							<li>All moves & kongs unlocked from the start</li>
+							<li>Inventory items (eg. Crystals, Oranges) refilled every loading zone</li>
+							<li>Story Skip locked to on</li>
+							<li>Entire Mystery Menu unlocked from the start</li>
+						</ul>
+						<li>Tag Anywhere with D-Down</li>
+						<li>D-Up on the pause menu main screen to access more functions</li>
+						<ul>
+							<li>Option to warp to the following levels</li>
+							<ul>
+								<li>The primary 7 levels</li>
+								<li>DK Isles</li>
+								<li>Hideout Helm</li>
+								<li>The 5 phases of K. Rool</li>
+							</ul>
+							<li>Store permanent flags to load later. When you load, it warps you to the map you stored the savestate in, from the entrance that you entered that map from, with the kong you were when you stored the state</li>
+						</ul>
+						<li>Position Warping</li>
+						<ul>
+							<li>L + D-Right to store a position</li>
+							<li>L + D-Left to warp to that stored position, if you are on the same map you stored the position in</li>
+						</ul>
+					</ul>
+				</div>
+				<br>
+				<div class="changelog container">
+					<div class="changelog version">
+						Installation guide
+					</div>
+					<ol>
+						<li>You will need an N64 everdrive</li>
+						<ul>
+							<li>There is no known way to patch this onto Wii U without crashing the game</li>
+							<li>Emulators are not great with DK64 ROM Hacks right now. <a href="https://github.com/Isotarge/ScriptHawk">ScriptHawk</a> & <a href="http://tasvideos.org/Bizhawk.html">BizHawk's</a> 10 savestates provide ample support for anything the ROM Hack could provide</li>
+						</ul>
+						<li>You will need a ROM of the US Version of Donkey Kong 64</li>
+						<ul>
+							<li>I will not provide you this. You will need to go about this yourself</li>
+							<li>The ROM will need to have the following ROM Hash</li>
+							<ul>
+								<li>SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50</li>
+							</ul>
+						</ul>
+						<li>With either <a href="https://www.romhacking.net/utilities/893/">Beat</a> or <a href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>, patch in the practice ROM. You will only need to download one patch file, which one depends on the patching program you are using</li>
+						<ul>
+							<li>For Beat</li>
+							<ol>
+								<li>Select <em>"Apply Patch"</em></li>
+								<li>Select the .bps file as the patch file</li>
+								<li>Select the .z64 DK64 ROM as the original file</li>
+								<li>Enter a file save location for your practice rom .z64 file</li>
+								<li>Click <em>"Apply"</em></li>
+							</ol>
+							<li>For Lunar IPS</li>
+							<ol>
+								<li>Select <em>"Apply IPS Patch"</em></li>
+								<li>Select the .ips file as the patch file</li>
+								<li>Select the .z64 DK64 ROM as the original file</li>
+								<li>Enter a file save location for your practice rom .z64 file</li>
+							</ol>
+						</ul>
+					</ol>
+				</div>
 				<div class="ytcontainer">
 					<iframe width="560" height="315" src="https://www.youtube.com/embed/6bliW6-loGY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
@@ -65,6 +140,7 @@
 				romData = responseJSON.versions.slice();
 				console.log(romData)
 				populate()
+				checkParams()
 			}
 		}
 		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/practicerom_versions.json", true);
@@ -96,6 +172,7 @@
 				togglable_container.classList.add("toggleable")
 				togglable_container.setAttribute("tiedVersion",romVersion.version)
 				togglable_container.classList.add("hide")
+				togglable_container.setAttribute("id",romVersion.version)
 
 				// Changelog
 				var changelog_container = document.createElement("div")
@@ -169,6 +246,14 @@
 				flex.appendChild(box)
 				hook.appendChild(flex)
 			})
+		}
+
+		function checkParams() {
+			var queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString)
+			const versionnum = urlParams.get("version");
+			console.log("Detected Version: " + versionnum)
+			toggleBox(versionnum)
 		}
 
 		function goTo(url) {
