@@ -43,6 +43,22 @@
                "All collectables granted at the start",
                "[Bug fix] Pause menu action + D-Up causes softlock"
             ]
+         },
+         {
+            "version":"1.1",
+            "release_date":"19-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1/DK64%20Practice%20ROM%20V1_1%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1/DK64%20Practice%20ROM%20V1_1%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_1.asm",
+            "changelog":[
+               "The Blast-O-Matic is back on again! (Prevents a bug with the medals in Helm)",
+               "3 Melons-worth of health are now granted to you on every loading zone",
+               "Position saving & loading are now activated by pressing D-Right or D-Left. The L button is no longer required",
+               "Fixed a bug regarding the game crashing warping to a pause menu level when in a map with a map value higher than 0xCF",
+               "Savestates now store counts of main collectables (Golden Bananas, Coloured Bananas, Coloured Bananas turned into Troff 'n' Scoff, Coins)",
+               "Savestating can no longer be performed in global maps (Bonus Barrels, Troff n Scoff, Character shops, Battle Crowns) due to a bug regarding null parent maps. Loading a state can still be performed",
+               "Lanky Kong is still, unfortunately, in the game"
+            ]
          }
       ]
    }
