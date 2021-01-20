@@ -33,6 +33,9 @@
 				width: fit-content;
 				padding: 15px;
 			}
+			.sidebutton_container {
+				padding: 5px;
+			}
 			a {
 				color: darkgoldenrod;
 			}
@@ -50,8 +53,8 @@
 			</div>
 		</div>
 		<div class="flexsplitter">
-			<div class="homebox">
-				<div class="changelog container">
+			<div class="homebox" style="flex:80%">
+				<div class="changelog container infoContainer" box="feature_list">
 					<div class="changelog version">
 						Features list
 					</div>
@@ -82,8 +85,7 @@
 						</ul>
 					</ul>
 				</div>
-				<br>
-				<div class="changelog container">
+				<div class="changelog container infoContainer hide" box="installation_guide">
 					<div class="changelog version">
 						Installation guide
 					</div>
@@ -121,8 +123,25 @@
 						</ul>
 					</ol>
 				</div>
-				<div class="ytcontainer">
+				<div class="changelog container infoContainer ytcontainer hide" box="trailer">
 					<iframe width="560" height="315" src="https://www.youtube.com/embed/6bliW6-loGY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				</div>
+			</div>
+			<div class="homebox" style="flex:20%">
+				<div class="sidebutton_container">
+					<button onclick="toggleInfo('feature_list')">
+						Feature List
+					</button>
+				</div>
+				<div class="sidebutton_container">
+					<button onclick="toggleInfo('installation_guide')">
+						Installation Guide
+					</button>
+				</div>
+				<div class="sidebutton_container">
+					<button onclick="toggleInfo('trailer')">
+						Trailer
+					</button>
 				</div>
 			</div>
 		</div>
@@ -266,6 +285,18 @@
 				var focusId = toggleBoxes[i].getAttribute("tiedVersion")
 				if (focusId == indic) {
 					toggleBoxes[i].classList.toggle("hide")
+				}
+			}
+		}
+
+		function toggleInfo(indic) {
+			var toggleBoxes = document.getElementsByClassName("infoContainer")
+			for (i = 0; i < toggleBoxes.length; i++) {
+				var focusId = toggleBoxes[i].getAttribute("box")
+				if (focusId == indic) {
+					toggleBoxes[i].classList.remove("hide")
+				} else {
+					toggleBoxes[i].classList.add("hide")
 				}
 			}
 		}
