@@ -48,7 +48,7 @@ a {
 	color: white;
 }
 
-a:not(.nav_link):hover {
+a:not(.nav_link):not(.linkcontroller):not(.excluded_link):hover {
 	background-color: rgba(100,100,100,0.8);
 }
 

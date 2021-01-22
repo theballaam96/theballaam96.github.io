@@ -1,11 +1,10 @@
-.pufftoss.backdrop {
+.viewmap.backdrop {
 	height: 100%;
 	width: -webkit-fill-available;
 	background-color: black;
 }
 
-.pufftoss.arena {
-	background-image: url("https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/pufftoss/arena.png");
+.viewmap.map {
 	background-repeat: no-repeat;
 	height: 100%;
 	width: -webkit-fill-available;
@@ -15,12 +14,12 @@
 	background-size: contain;
 }
 
-.pufftoss.viewbox {
+.viewmap.viewbox {
 	position: relative;
 	height: 100%;
 }
 
-.pufftoss.star_location, .pufftoss.center_location, .pufftoss.rod_location {
+.viewmap.star_location, .viewmap.center_location, .viewmap.rod_location {
 	position: absolute;
 	width: 20px;
 	height: 20px;
@@ -34,17 +33,17 @@
 	font-size: 0.9em;
 }
 
-.pufftoss.rod_location {
+.viewmap.rod_location {
 	background-color: powderblue;
 	font-size: 0.7em;
 	border-color: teal;
 }
 
-.pufftoss.rod_location.hidden {
+.viewmap.rod_location.hidden {
 	display: none;
 }
 
-.pufftoss.line {
+.viewmap.line {
 	position: absolute;
 	background-color: white;
 	width: 100%;
@@ -53,7 +52,7 @@
 	border: 1px solid black;
 }
 
-.pufftoss.line .pufftoss.line_head {
+.viewmap.line .viewmap.line_head {
 	max-width: 10px;
 	width: 33%;
 	height: 3px;
@@ -63,75 +62,75 @@
 	border-radius: 2px;
 }
 
-.pufftoss.line .pufftoss.line_head.upper {
+.viewmap.line .viewmap.line_head.upper {
 	transform: rotate(-20deg);
 	margin-top: 3px;
 	z-index: 9;
 	border: 1px solid black;
 }
 
-.pufftoss.line_head.lower {
+.viewmap.line_head.lower {
 	transform: rotate(20deg);
 	margin-top: -5px;
 	z-index: 9;
 	border: 1px solid black;
 }
 
-.pufftoss.line_head.center {
+.viewmap.line_head.center {
 	z-index: 10;
 	border-width: 0px;
 	max-height: 1px;
 }
 
-.pufftoss.star_location.coloured[phase="1"] {
+.viewmap.star_location.coloured[phase="1"] {
 	background-color: burlywood;
 }
 
-.pufftoss.star_location.coloured[phase="2"] {
+.viewmap.star_location.coloured[phase="2"] {
 	background-color: indianred;
 }
 
-.pufftoss.star_location.coloured[phase="3"] {
+.viewmap.star_location.coloured[phase="3"] {
 	background-color: cadetblue;
 }
 
-.pufftoss.star_location.coloured[phase="4"] {
+.viewmap.star_location.coloured[phase="4"] {
 	background-color: mediumpurple;
 }
 
-.pufftoss.star_location.coloured[phase="5"] {
+.viewmap.star_location.coloured[phase="5"] {
 	background-color: mediumaquamarine;
 }
 
-.pufftoss.line.coloured[phase_in="1"], .pufftoss.line.coloured[phase_in="1"] .pufftoss.line_head {
+.viewmap.line.coloured[phase_in="1"], .viewmap.line.coloured[phase_in="1"] .viewmap.line_head {
 	background-color: darkgoldenrod;
 }
 
-.pufftoss.line.coloured[phase_in="2"], .pufftoss.line.coloured[phase_in="2"] .pufftoss.line_head {
+.viewmap.line.coloured[phase_in="2"], .viewmap.line.coloured[phase_in="2"] .viewmap.line_head {
 	background-color: firebrick;
 }
 
-.pufftoss.line.coloured[phase_in="3"], .pufftoss.line.coloured[phase_in="3"] .pufftoss.line_head {
+.viewmap.line.coloured[phase_in="3"], .viewmap.line.coloured[phase_in="3"] .viewmap.line_head {
 	background-color: dodgerblue;
 }
 
-.pufftoss.line.coloured[phase_in="4"], .pufftoss.line.coloured[phase_in="4"] .pufftoss.line_head {
+.viewmap.line.coloured[phase_in="4"], .viewmap.line.coloured[phase_in="4"] .viewmap.line_head {
 	background-color: indigo;
 }
 
-.pufftoss.line.coloured[phase_in="5"], .pufftoss.line.coloured[phase_in="5"] .pufftoss.line_head {
+.viewmap.line.coloured[phase_in="5"], .viewmap.line.coloured[phase_in="5"] .viewmap.line_head {
 	background-color: green;
 }
 
-.pufftoss.line.hidden {
+.viewmap.line.hidden {
 	display: none;
 }
 
-.pufftoss.center_location.hidden {
+.viewmap.center_location.hidden {
 	display: none;
 }
 
-.pufftoss.infobox {
+.viewmap.infobox {
 	position:absolute;
 	transform: translate(-40%, -102%);
 	border-radius: 5px;
@@ -164,7 +163,7 @@
 	to {opacity: 1;}
 }
 
-.pufftoss.infobox.fading {
+.viewmap.infobox.fading {
 	-webkit-animation: fadeout 0.5s;
 	-moz-animation: fadeout 0.5s;
 	-ms-animation: fadeout 0.5s;
@@ -192,7 +191,7 @@
 	to {opacity: 0;}
 }
 
-.pufftoss.infobox .title {
+.viewmap.infobox .title {
 	background-color:#333;
 	padding: 10px;
 	color: white;
@@ -201,36 +200,36 @@
 	border-bottom: 3px solid darkgoldenrod;
 }
 
-.pufftoss.infobox .info {
+.viewmap.infobox .info {
 	background-color: white;
 }
 
-.pufftoss.infobox .info table {
+.viewmap.infobox .info table {
 	border-collapse: collapse;
 	font-size: 0.9em;
 	min-width: 200px;
 }
 
 
-.pufftoss.infobox .info table thead {
+.viewmap.infobox .info table thead {
 	background-color: darkslategray;
 	color: white;
 	text-align: left;
 }
 
-.pufftoss.infobox .info table thead tr th {
+.viewmap.infobox .info table thead tr th {
 	padding: 5px;
 }
 
-.pufftoss.infobox .info table tr td {
+.viewmap.infobox .info table tr td {
 	padding: 5px;
 	border-bottom: 3px solid #ddd;
 }
 
-.pufftoss.infobox .info table tr:nth-of-type(even) {
+.viewmap.infobox .info table tr:nth-of-type(even) {
 	background-color: #e5e5e5;
 }
 
-.pufftoss.infobox .info table tr:hover {
+.viewmap.infobox .info table tr:hover {
 	background-color: #ccc;
 }

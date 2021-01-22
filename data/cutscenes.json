@@ -71,7 +71,7 @@
                "in_lz_transition":false
             },
             {
-               "name":"Unknown?",
+               "name":"Unknown? - Causes Void",
                "crash":false,
                "used":true,
                "in_lz_transition":false
@@ -83,7 +83,7 @@
                "in_lz_transition":false
             },
             {
-               "name":"Unknown?",
+               "name":"Exit Tag",
                "crash":false,
                "used":true,
                "in_lz_transition":false
@@ -4393,59 +4393,78 @@
          "name":"Fungi Forest: Dogadon",
          "cutscenes":[
             {
-               "name":"Underside of Arena",
+               "name":"Long Intro",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Long Intro?",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Damage",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Damage?",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Short Intro",
+               "name":"Unknown",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Unknown",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Sinking",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Sinking?",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Underside of Arena",
+               "name":"Fungi Boss Death",
                "crash":false,
                "used":true,
                "in_lz_transition":false
-            }
+            },
+            {
+               "name":"Fungi Boss Death?",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Sunk too far",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Fire Breath",
+               "crash":false,
+               "used":true,
+               "indexOverride":20,
+               "in_lz_transition":false
+            },
          ]
       },
       {
@@ -5069,41 +5088,49 @@
          "name":"Gloomy Galleon: Pufftoss",
          "cutscenes":[
             {
-               "name":"Nothing",
+               "name":"Long Intro",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Nothing",
+               "name":"First Pole Rising",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Nothing",
+               "name":"Damage",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Nothing",
+               "name":"Turn the lights off",
+               "crash":false,
+               "used":false,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Death",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Nothing",
+               "name":"Unknown",
+               "crash":false,
+               "used":false,
+               "in_lz_transition":false,
+               "link":"https://youtu.be/Y0BN4oSNLkc"
+            },
+            {
+               "name":"Short Intro",
+               "indexOverride":20,
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
-            {
-               "name":"Nothing",
-               "crash":false,
-               "used":true,
-               "in_lz_transition":false
-            }
          ]
       },
       {
@@ -6114,13 +6141,13 @@
          "name":"Frantic Factory: Mad Jack",
          "cutscenes":[
             {
-               "name":"Elevator",
+               "name":"Long Intro",
                "crash":false,
                "used":true,
                "in_lz_transition":false
             },
             {
-               "name":"Elevator",
+               "name":"Long Intro",
                "crash":false,
                "used":true,
                "in_lz_transition":false
@@ -6149,6 +6176,36 @@
                "used":true,
                "in_lz_transition":false
             }
+            {
+               "name":"Death",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Unknown",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Elevator",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Elevator",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
+            {
+               "name":"Unknown",
+               "crash":false,
+               "used":true,
+               "in_lz_transition":false
+            },
          ]
       },
       {
@@ -7147,7 +7204,7 @@
                "in_lz_transition":false
             },
             {
-               "name":"Unknown",
+               "name":"Damage",
                "crash":true,
                "used":true,
                "in_lz_transition":false

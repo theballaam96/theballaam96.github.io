@@ -72,6 +72,7 @@
 				<thead>
 					<tr>
 						<th class="left_justified">Object Name</th>
+						<th class="left_justified">Object ID</th>
 						<th class="left_justified">Type</th>
 						<th class="left_justified">Total Count</th>
 					</tr>
@@ -99,7 +100,7 @@
 				goThroughParameters();
 			}
 		}
-		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/object_data.json", true);
+		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/object_data_advanced.json", true);
 		xhttp.send(null)
 
 		function updateList() {
@@ -155,17 +156,25 @@
 			var object_listed = false;
 			var object_list_copy = [...object_list];
 			object_list_copy.forEach((obj, index) => {
-				if (obj.name == new_object.name && obj.type == new_object.type) {
+				if (obj.id == new_object.id && obj.type == new_object.type) {
 					object_listed = true;
-					object_list_copy[index].count += new_object.count;
+					object_list_copy[index].count += 1;
 					//console.log("Mid Run: " + mapData[4].obj[16].count)
 					//console.log(object_list_copy)
 				}
 			})
 			if (!object_listed) {
+				new_object.count = 1;
 				object_list_copy.push(new_object)
 			}
-			object_list = [...object_list_copy]
+			object_list = [...object_list_copy].map(item => {
+				return {
+					"name": item.name,
+					"type": item.type,
+					"id": item.id,
+					"count": item.count,
+				}
+			})
 		}
 
 		function generateObjectList() {
@@ -177,7 +186,7 @@
 					addToObjectList(focused_object);
 				})
 			})
-			//console.log(mapData[4].obj[16].count)
+			console.log(object_list)
 		}
 
 		var type_table = {
@@ -206,6 +215,11 @@
 							newTDName_text = document.createTextNode(obj.name);
 							newTDName.appendChild(newTDName_text);
 							newRow.appendChild(newTDName)
+
+							newTDId = document.createElement("td");
+							newTDId_text = document.createTextNode(obj.id);
+							newTDId.appendChild(newTDId_text);
+							newRow.appendChild(newTDId)
 
 							newTDType = document.createElement("td");
 							newTDType_text = document.createTextNode(type_table[obj.type]);
@@ -251,7 +265,7 @@
 			var params = [
 				{
 					"param": "object",
-					"value": encodeURI(newObj.name)
+					"value": encodeURI(newObj.id)
 				},
 				{
 					"param": "type",
@@ -273,8 +287,48 @@
 			reloadPageWithParams(params)
 		}
 
+		function goToView(map,solo_obj,obj_id,obj_type) {
+			console.log(map)
+			var newMap = decodeURI(map)
+			var newBool = decodeURI(solo_obj)
+			var newObj = decodeURI(obj_id)
+			var newType = decodeURI(obj_type)
+			var params = [
+				{
+					"param": "map",
+					"value": encodeURI(newMap)
+				},
+				{
+					"param": "solo",
+					"value": encodeURI(newBool)
+				},
+				{
+					"param": "obj",
+					"value": encodeURI(newObj)
+				},
+				{
+					"param": "type",
+					"value": encodeURI(newType)
+				},
+			];
+			toPageWithParams("view_map_data.html",params)	
+		}
+
 		function reloadPageWithParams(params) {
 			var baseURL = window.location.pathname;
+			var params_mashed = [];
+			params.slice().forEach(prm => {
+				params_mashed.push(prm.param + "=" + prm.value)
+			});
+			var newURL = baseURL;
+			if (params_mashed.length > 0) {
+				newURL = baseURL + "?" + params_mashed.join("&");
+			}
+			window.location.href = newURL
+		}
+
+		function toPageWithParams(loc,params) {
+			var baseURL = window.location.pathname.substring(0,window.location.pathname.indexOf("map_data.html")) + loc;
 			var params_mashed = [];
 			params.slice().forEach(prm => {
 				params_mashed.push(prm.param + "=" + prm.value)
@@ -289,29 +343,30 @@
 		function goThroughParameters() {
 			var queryString = window.location.search;
 			const urlParams = new URLSearchParams(queryString)
-			const object_name = urlParams.get("object");
+			const object_id = urlParams.get("object");
 			const object_type = urlParams.get("type");
+			var object_name = "";
 			const map_name = urlParams.get("map");
-			//console.log([object_name, object_type, map_name])
-			if (!object_name && !map_name) {
+			//console.log([object_id, object_type, map_name])
+			if (!object_id && !map_name) {
 				document.getElementById("section_splitter").style.display = "none";
 			}
-			if (object_name) {
-				console.log("Object");
+			if (object_id) {
+				console.log("Object: " + object_id + " (Type: " + object_type + ")");
+				var maps_containing_object = [];
+				mapData.forEach(entry => {
+					var obj_in_map_data = entry.obj.filter(object_listing => object_listing.id == object_id && object_listing.type == object_type);
+					if (obj_in_map_data.length > 0) {
+						maps_containing_object.push({
+							"map": entry.map,
+							"count": obj_in_map_data.length
+						})
+						object_name = obj_in_map_data[0].name;
+					}
+				})
 				document.getElementById("maplookup_object").value = object_name;
 				document.getElementById("info_title").innerText = object_name;
 				document.getElementById("info_header").innerText = "'" + object_name + "' is found in the following levels:";
-				var maps_containing_object = [];
-				mapData.forEach(entry => {
-					var obj_in_map_data = entry.obj.find(object_listing => object_listing.name == object_name);
-					if (obj_in_map_data) {
-						maps_containing_object.push({
-							"map": entry.map,
-							"count": obj_in_map_data.count
-						})
-					}
-				})
-				console.log(maps_containing_object)
 				if (maps_containing_object.length > 0) {
 					var newTable = document.createElement("table");
 
@@ -368,9 +423,19 @@
 				document.getElementById("info_title").innerText = map_name;
 				document.getElementById("info_header").innerText = "The following objects are found in '" + map_name + "':";
 				const selected_map_data = mapData.slice().find(entry => entry.map == map_name);
-				console.log(selected_map_data)
-				if (selected_map_data) {
-					if (selected_map_data.obj.length > 0) {
+				var processed_map_data = [];
+				var uniqueObjects = [...new Set(selected_map_data.obj.map(item => [item.name, item.id, item.type].join("###")))]
+				uniqueObjects.forEach(unqObj => {
+					processed_unqObj = unqObj.split("###")
+					processed_map_data.push({
+						"name": processed_unqObj[0],
+						"id": processed_unqObj[1],
+						"type": processed_unqObj[2],
+						"count": selected_map_data.obj.filter(item => item.id == processed_unqObj[1] && item.type == processed_unqObj[2]).length
+					})
+				})
+				if (processed_map_data) {
+					if (processed_map_data.length > 0) {
 						var newTable = document.createElement("table");
 
 						// Table Header
@@ -382,6 +447,12 @@
 						var newTHeadObjName_text = document.createTextNode("Object Name")
 						newTHeadObjName.appendChild(newTHeadObjName_text)
 						newTHeadRow.appendChild(newTHeadObjName)
+
+						var newTHeadObjId = document.createElement("th");
+						newTHeadObjId.classList.add("left_justified")
+						var newTHeadObjId_text = document.createTextNode("Object ID")
+						newTHeadObjId.appendChild(newTHeadObjId_text)
+						newTHeadRow.appendChild(newTHeadObjId)
 
 						var newTHeadObjType = document.createElement("th");
 						newTHeadObjType.classList.add("left_justified")
@@ -401,13 +472,20 @@
 						// Table Body	
 						var newTBody = document.createElement("tbody");
 
-						selected_map_data.obj.forEach(selected_object => {
+						processed_map_data.forEach(selected_object => {
 							var newTBodyRow = document.createElement("tr");
+							newTBodyRow.classList.add("map_data_row");
+							newTBodyRow.setAttribute("onclick","goToView('" + map_name + "'," + "true" + "," + selected_object.id + ",'" + selected_object.type + "')")
 
 							var newTBodyObjName = document.createElement("td");
 							var newTBodyObjName_text = document.createTextNode(selected_object.name)
 							newTBodyObjName.appendChild(newTBodyObjName_text);
 							newTBodyRow.appendChild(newTBodyObjName);
+
+							var newTBodyObjId = document.createElement("td");
+							var newTBodyObjId_text = document.createTextNode(selected_object.id)
+							newTBodyObjId.appendChild(newTBodyObjId_text);
+							newTBodyRow.appendChild(newTBodyObjId);
 
 							var newTBodyObjType = document.createElement("td");
 							var newTBodyObjType_text = document.createTextNode(type_table[selected_object.type])
@@ -434,6 +512,6 @@
 			}
 		}
 
-		document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
+		//document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
 	</script>
 </html>

@@ -8,14 +8,17 @@
 }
 
 .navbar {
-	height: 40px;
 	position: absolute;
 	width: 100%;
 	top:0;
 	left:0;
 	z-index:1000;
-	background-color: rgba(0,0,0,0.8);
-	border-bottom: gold solid 2px;
+	background-color: rgba(0,0,0,0.95);
+	border-bottom: 1px solid gainsboro;
+}
+
+.navbar, .v_spacer {
+	height: 60px;
 }
 
 .navbar .items {
@@ -29,6 +32,13 @@
 
 .navbar .items .logo {
 	flex: 31%;
+	color: white;
+	font-weight: bold;
+	padding-left: 1%;
+}
+
+.navbar .items .logo li {
+	display:inline-block;
 }
 
 .navbar .items .links {
@@ -68,6 +78,34 @@
 	font-family: Arial;
 }
 
-.v_spacer {
-	height: 40px;
+.toolsContainer.container {
+	min-height: 50px;
+	min-width: 170px;
+	background-color: rgba(0,0,0,0.95);
+	position: absolute;
+	right: 0;
+	z-index: 20000;
+}
+
+.toolsContainer.item {
+	color: white;
+	font-weight: bold;
+	padding: 10px;
+	transition: 0.5s ease-in-out;
+}
+
+.toolsContainer.item:hover {
+	background-color: rgba(255,255,255,0.2);
+}
+
+.toolsContainer.item:hover > .toolsContainer.linkcontroller {
+	color: darkgoldenrod;
+}
+
+.toolsContainer.linkcontroller {
+	transition: 0.5s ease-in-out;
+}
+
+.toolsContainer.linkcontroller:hover {
+	color: darkgoldenrod;
 }

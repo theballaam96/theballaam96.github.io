@@ -70,7 +70,7 @@
 			.asm.first {
 				padding-left: 50px;
 			}
-			a {
+			.excluded_link {
 				color: darkgoldenrod;
 			}
 		</style>
@@ -143,7 +143,7 @@
 						<li>You will need an N64 everdrive</li>
 						<ul>
 							<li>There is no known way to patch this onto Wii U without crashing the game</li>
-							<li>Emulators are not great with DK64 ROM Hacks right now. <a href="https://github.com/Isotarge/ScriptHawk">ScriptHawk</a> & <a href="http://tasvideos.org/Bizhawk.html">BizHawk's</a> 10 savestates provide ample support for anything the ROM Hack could provide</li>
+							<li>Emulators are not great with DK64 ROM Hacks right now. <a class="excluded_link" href="https://github.com/Isotarge/ScriptHawk">ScriptHawk</a> & <a class="excluded_link" href="http://tasvideos.org/Bizhawk.html">BizHawk's</a> 10 savestates provide ample support for anything the ROM Hack could provide</li>
 						</ul>
 						<li>You will need a ROM of the US Version of Donkey Kong 64</li>
 						<ul>
@@ -153,7 +153,7 @@
 								<li>SHA1: CF806FF2603640A748FCA5026DED28802F1F4A50</li>
 							</ul>
 						</ul>
-						<li>With either <a href="https://www.romhacking.net/utilities/893/">Beat</a> or <a href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>, patch in the practice ROM. You will only need to download one patch file, which one depends on the patching program you are using</li>
+						<li>With either <a class="excluded_link" href="https://www.romhacking.net/utilities/893/">Beat</a> or <a class="excluded_link" href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>, patch in the practice ROM. You will only need to download one patch file, which one depends on the patching program you are using</li>
 						<ul>
 							<li>For Beat</li>
 							<ol>
@@ -410,7 +410,7 @@
 				var container_beat = document.createElement("div")
 				container_beat.classList.add("buttoncontainer")
 				var button_beat = document.createElement("button")
-				button_beat.setAttribute("onclick", "goTo('" + romVersion.beat + "')")
+				button_beat.setAttribute("onclick", "visit('beat','" + romVersion.version + "')")
 				var text_beat = document.createTextNode("Download (Beat)")
 				button_beat.appendChild(text_beat)
 				container_beat.appendChild(button_beat)
@@ -419,7 +419,7 @@
 				var container_lunar = document.createElement("div")
 				container_lunar.classList.add("buttoncontainer")
 				var button_lunar = document.createElement("button")
-				button_lunar.setAttribute("onclick", "goTo('" + romVersion.lunar + "')")
+				button_lunar.setAttribute("onclick", "visit('lunar','" + romVersion.version + "')")
 				var text_lunar = document.createTextNode("Download (Lunar IPS)")
 				button_lunar.appendChild(text_lunar)
 				container_lunar.appendChild(button_lunar)
@@ -428,7 +428,7 @@
 				var container_source = document.createElement("div")
 				container_source.classList.add("buttoncontainer")
 				var button_source = document.createElement("button")
-				button_source.setAttribute("onclick", "goTo('" + romVersion.source + "')")
+				button_source.setAttribute("onclick", "visit('source','" + romVersion.version + "')")
 				var text_source = document.createTextNode("View Source Code")
 				button_source.appendChild(text_source)
 				container_source.appendChild(button_source)
@@ -451,6 +451,19 @@
 
 		function goTo(url) {
 			window.location.href = url
+		}
+
+		function visit(linkType, version) {
+			var focusObj = romData.find(item => item.version == version)
+			var toggleBoxes = document.getElementsByClassName("toggleable")
+			for (i = 0; i < toggleBoxes.length; i++) {
+				var focusId = toggleBoxes[i].getAttribute("tiedVersion")
+				if (focusId == version) {
+					toggleBoxes[i].classList.add("hide")
+				}
+			}
+			var url = focusObj[linkType]
+			goTo(url)
 		}
 
 		function toggleBox(indic) {
