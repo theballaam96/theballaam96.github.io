@@ -85,6 +85,16 @@
                "K. Lumsy easter egg has been removed to make space for the above",
                "Code has been compacted by over 600 bytes!"
             ]
+         },
+         {
+            "version":"1.1.3",
+            "release_date":"22-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_3/DK64%20Practice%20ROM%20V1_1_3%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_3/DK64%20Practice%20ROM%20V1_1_3%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_1_3.asm",
+            "changelog":[
+               "Fixed a bug regarding the game crashing when loading a stored position"
+            ]
          }
       ]
    }
