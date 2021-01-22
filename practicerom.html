@@ -23,6 +23,13 @@
 			.changelog.version {
 				font-weight: bold;
 			}
+			.changelog.asmHeader {
+				font-weight: bold;
+				margin-top: 10px;
+			}
+			.changelog.docbox {
+				padding: 10px;
+			}
 			.buttoncontainer {
 				padding: 10px;
 				flex: 33%;
@@ -35,6 +42,33 @@
 			}
 			.sidebutton_container {
 				padding: 5px;
+			}
+			.asm.pad {
+				height: 15px;
+			}
+			.asm.label {
+				color: darkcyan;
+			}
+			.asm.comment {
+				color: gainsboro;
+			}
+			.asm.func {
+				color: firebrick;
+			}
+			.asm.param {
+				color: orange;
+			}
+			.asm.hex {
+				color: mediumaquamarine;
+			}
+			.asm.pointer {
+				color: cornflowerblue;
+			}
+			.asm.array {
+				color: salmon;
+			}
+			.asm.first {
+				padding-left: 50px;
 			}
 			a {
 				color: darkgoldenrod;
@@ -77,27 +111,27 @@
 								<li>The 5 phases of K. Rool</li>
 							</ul>
 							<li>Store permanent flags to load later. When you load, it warps you to the map you stored the savestate in, from the entrance that you entered that map from, with the kong you were when you stored the state</li>
+							<li>Option to toggle some late game moves</li>
+							<ul>
+								<li>Toggle between the 4 levels of 'Simian Slam'</li>
+								<ul>
+									<li>No Slam</li>
+									<li>Simian Slam</li>
+									<li>Super Simian Slam</li>
+									<li>Super Duper Simian Slam</li>
+								</ul>
+								<li>Toggle 'Sniper Scope' on or off</li>
+							</ul>
+							<li>Option to display a lagometer</li>
+							<ul>
+								<li>This shows under all circumstances except when something else covers the lagometer (like the transition spin)</li>
+								<li>If you are in K Rool, and the Lagometer is on, the K. Rool timer will shift to the right side of the screen</li>
+							</ul>
 						</ul>
 						<li>Position Warping</li>
 						<ul>
 							<li>D-Right to store a position</li>
 							<li>D-Left to warp to that stored position, if you are on the same map you stored the position in</li>
-						</ul>
-						<li>Option to toggle some late game moves</li>
-						<ul>
-							<li>Toggle between the 4 levels of 'Simian Slam'</li>
-							<ul>
-								<li>No Slam</li>
-								<li>Simian Slam</li>
-								<li>Super Simian Slam</li>
-								<li>Super Duper Simian Slam</li>
-							</ul>
-							<li>Toggle 'Sniper Scope' on or off</li>
-						</ul>
-						<li>Option to display a lagometer</li>
-						<ul>
-							<li>This shows under all circumstances except when something else covers the lagometer (like the transition spin)</li>
-							<li>If you are in K Rool, and the Lagometer is on, the K. Rool timer will shift to the right side of the screen</li>
 						</ul>
 					</ul>
 				</div>
@@ -142,6 +176,125 @@
 				<div class="changelog container infoContainer ytcontainer hide" box="trailer">
 					<iframe width="560" height="315" src="https://www.youtube.com/embed/6bliW6-loGY" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
+				<div class="changelog container infoContainer hide" box="documentation">
+					<div class="changelog version">
+						Assembler Documentation
+					</div>
+					<div class="changelog docbox" asm="changecolour">
+						<div class="changelog asmHeader">
+							Change Kong Colour
+						</div>
+						<div class="asmcode">
+								ChangeColour:
+									SW 		$ra, @ReturnAddress
+									LUI  		$a0, 0x8069	
+									SB 		$r0, 0xA62F($a0) // 0x8068A62F // Enable colouring for 1-player gameplay
+									SW 		$r0, 0xA450($a0) // 0x8068A450 // Cancel the call of a function which changes the player model to a low poly version
+									JAL 		0x8068A508 // Adjust player colour function
+									SW 		$r0, 0xA458($a0) // 0x8068A458 // Cancel a variable write that relies on the earlier function call. Would crash otherwise
+									LA 		$a0, KongColours // Kong Colours is an array of assigned colour indexes for each kong
+									LBU 		$a1, @Character // Character is an address which indicates kong value, where 0 is DK, 1 is Diddy (...) and 4 is Chunky
+									ADD 		$a0, $a0, $a1
+									LBU 		$a1, 0x0 ($a0)
+									SW 		$a1, @PlayerOneColour // Player's colour is controlled by Player 1 colour address (US: 0x807552F4)
+									LW 		$ra, @ReturnAddress
+									JR 		$ra
+									NOP
+
+								.align
+								KongColours:
+									.byte 	0x02 // DK - Green Body
+									.byte 	0x02 // Diddy - Yellow Cap
+									.byte 	0x01 // Lanky - Green Straps
+									.byte 	0x02 // Tiny - Purple Suit
+									.byte 	0x01 // Chunky - Red Suit
+						</div>
+					</div>
+					<div class="changelog docbox" asm="changecolour">
+						<div class="changelog asmHeader">
+							Save Flag Block
+						</div>
+						<div class="asmcode">
+							SaveFlags:
+								SW 		$ra, @ReturnAddress
+								JAL 	@GetFlagBlockAddress // Grabs the flag block address (US: 0x8060E25C)
+								ADDIU 	$a0, $r0, 0 // Flag Type 0 (Permanent)
+								LI 		$a0, 0x13C // Permanent flag block limit, 0x13C bytes
+								ADDIU 	$a3, $v0, 0 // The output address of GetFlagBlockAddress is v0. Copy to a3 for manipulation
+								LI 		$a1, @SavedPermanentFlags // SavedPermanentFlags would be wherever you are saving your flag block to
+
+									ReadFlags:
+										LW 		$a2, 0x0($a3) // Loads 4-byte value in the flag block into $a2 register
+										SW 		$a2, 0x0($a1) // Stores 4-byte value in save location 
+										BEQZ 	$a0, Return // If counter ($a0) is equal to 0, finish copying
+										ADDI 	$a0, $a0, -4 // Counter lowered 4 bytes
+										ADDIU 	$a3, $a3, 4 // Focused 4-byte slot in the flag block address is shifted along 4 bytes
+										B 		ReadFlags // Sends back to the loop
+										ADDIU 	$a1, $a1, 4 // Shifts the focused 4-byte save slot along 4 bytes
+
+								Return:
+									LW 	$ra, @ReturnAddress
+									JR 	$ra
+									NOP
+						</div>
+					</div>
+					<div class="changelog docbox" asm="changecolour">
+						<div class="changelog asmHeader">
+							Variable Display
+						</div>
+						<div class="asmcode">
+							HijackHelmTimer:
+								// The way we are displaying this will be through the helm timer
+								// This does sacrifice the display working in Helm in conjunction with the primary helm timer
+								// In the future, it would be better to have this working with the timer object (Actor 176)							
+								SW 		$ra, @ReturnAddress
+								SB 		$r0, 0x80713C9B // Code overwrite to prevent a flag being set to unpause the Helm Timer
+								SW 		$r0, 0x80713DE0 // NOP out a line so that helm timeout is prevented
+								LBU 	$a0, @VariableDisplayOn // If you want display to be toggleable, store the boolean as a variable
+								BEQZ 	$a0, DisplayOff // If you want the variable to not display, skip any formatting
+								LUI 	$a3, 0x42FA // Store 125 as a float in the $a3 register
+								// Change Helm Timer Format
+								LI 		$a0, 0x4C414700 // Encoded ASCII text, must end with "00", so limited to 3 characters. Example here is "LAG"
+								SW 		$a0, 0x80759F50 // Store ASCII text as the format for the minutes portion of the Helm Timer
+								LI 		$a0, 0x203A2000 // Encoded ASCII text for the delimiter. I would advise " : " (as shown in example)
+								SW 		$a0, 0x80759F4C // Store ASCII text as the delimiter portion of the Helm Timer
+								LW 		$a0, @VariableValue // Load variable value into $a0 register
+								SW 		$a0, @HelmTimerDisplay // Set the displayed Helm Timer value (US: 0x80755348) as your variable value
+								LI 		$a0, 1
+								SB 		$a0, @HelmTimerShown // Set Helm timer as shown (US: 0x80755350)
+								B 		HandleKRoolTimer // Helm timer does collide with the timer in K Rool. Branch to HandleKRoolTimer to solve this
+								LUI 	$a3, 0x435C // Store 220 as a float in the $a3 register
+
+								DisplayOff:
+									SB 		$r0, @HelmTimerShown // Set Helm timer as hidden (US: 0x80755350)
+									LI 		$a0, 0x25326400 // Restore old ASCII (%2d) for minutes section
+									SW 		$a0, 0x80759F50 // Store old ASCII for minutes section of the Helm Timer
+									LUI		$a0, 0x3A00 // Restore old ASCII (:) for the delimiter section
+									SW 		$a0, 0x80759F4C // Store old ASCII for delimiter section of the Helm Timer
+
+								HandleKRoolTimer:
+									// K Rool Check
+									LW 		$a0, @CurrentMap // Grab current map
+									SLTI 	$a1, $a0, 0xCB
+									BNEZ 	$a1, Return // If map value is less than 0xCB, you are not in K Rool, therefore you can skip to end
+									SLTI 	$a2, $a0, 0xD0
+									BEQZ 	$a2, Return // If map value is not less than 0xD0, then you are not in K Rool, and therefore you can skip to end
+									NOP
+									LW 		$a0, @Player // Load Player Object (US: 0x807FBB4C)
+									BEQZ 	$a0, Return // If player object isn't loaded, skip
+									NOP
+									LW 		$a1, 0x328($a0) // Load pointer located at 0x328 in player (Pointer to K Rool Timer)
+									BEQZ 	$a1, Return // If pointer isn't loaded in, skip
+									NOP
+									SW 		$a3, 0x7C($a1) // Set timer X (Position on screen) as $a3. If the timer is on, we have shifted this to the right
+
+								Return:
+									LW 	$ra, @ReturnAddress
+									JR 	$ra
+									NOP
+						</div>
+					</div>
+				</div>
 			</div>
 			<div class="homebox" style="flex:20%">
 				<div class="sidebutton_container">
@@ -157,6 +310,11 @@
 				<div class="sidebutton_container">
 					<button onclick="toggleInfo('trailer')">
 						Trailer
+					</button>
+				</div>
+				<div class="sidebutton_container">
+					<button onclick="toggleInfo('documentation')">
+						Assembler Documentation
 					</button>
 				</div>
 			</div>
@@ -316,6 +474,213 @@
 				}
 			}
 		}
+
+		function formatASMCode() {
+			var codeBlocks = document.getElementsByClassName("asmcode")
+			for (i = 0; i < codeBlocks.length; i++) {
+				var init = codeBlocks[i].innerHTML;
+				var init_array = init.split("\n").filter(item => item != "").map(item => item.trim())
+				var codeAsObjs = []
+				init_array.forEach(line => {
+					var splitLine = line.split("	").filter(item => item != "").map(item => item.trim())
+					var isLabel = line.substring(line.length - 1) == ":"
+					var isComment = line.substring(0,2) == "//"
+					if (splitLine.length == 2) {
+						var commentLocation = splitLine[1].indexOf("//") - 1
+						var nonFunc = [];
+						if (commentLocation > -2) {
+							nonFunc = [splitLine[1].substring(0,commentLocation),splitLine[1].substring(commentLocation)]
+						} else {
+							nonFunc = [splitLine[1]]
+						}
+						//nonFunc[0] = nonFunc[0].split(", ")
+						splitLine = [splitLine[0],nonFunc]
+					}
+					var lineType = ""
+					var funcList = {}
+					var isAlign = false;
+					if (line == ".align") {
+						isAlign = true;
+					}
+					if (isLabel) {
+						lineType = "label"
+					} else if (isComment) {
+						lineType = "comment"
+					} else if (isAlign) {
+						lineType = "align"
+					} else {
+						lineType = "func"
+						var paramsLine = []
+						var commentLine = ""
+						if (splitLine[1]) {
+							if (splitLine[1][0]) {
+								paramsLine = splitLine[1][0].split(", ")
+								commentLine = splitLine[1][1]
+							} else {
+								paramsLine = splitLine[1].split(", ")
+							}
+						}
+						funcList = {
+							"func": splitLine[0],
+							"params": paramsLine,
+							"comment": commentLine,
+						}
+					}
+					if (line != "") {
+						codeAsObjs.push({
+							"fullLine": line,
+							"lineType": lineType,
+							"funcDetails": funcList,
+
+						})
+					}
+				})
+				console.log(codeAsObjs)
+				codeBlocks[i].innerHTML = ""
+				var preTag = document.createElement("pre")
+				var codeTag = document.createElement("code")
+				var indentLevel = 0;
+				codeAsObjs.forEach(line => {
+					if (line.lineType == "label") {
+						if (indentLevel > 0) {
+							var codePad = document.createElement("div")
+							codePad.classList.add("asm")
+							codePad.classList.add("pad")
+							codeTag.appendChild(codePad)
+						}
+						if (indentLevel > 1) {
+							indentLevel = 1;
+						}
+					}
+					if (line.lineType == "align") {
+						var codePad = document.createElement("div")
+						codePad.classList.add("asm")
+						codePad.classList.add("pad")
+						codeTag.appendChild(codePad)
+						indentLevel = 0
+					}
+					var codeContainer = document.createElement("div")
+					var indentPad = (20 * indentLevel) + "px"
+					codeContainer.style["padding-left"] = indentPad
+					if (line.lineType == "label" || line.lineType == "align") {
+						var span = document.createElement("span")
+						span.classList.add("asm")
+						span.classList.add("label")
+						var spanText = document.createTextNode(line.fullLine)
+						// Cleanup
+						if (line.lineType == "label") {
+							indentLevel += 1;
+						} else {
+							indentLevel = 0;
+						}
+						span.appendChild(spanText)
+						codeContainer.appendChild(span)
+					}
+					if (line.lineType == "comment") {
+						var span = document.createElement("span")
+						span.classList.add("asm")
+						span.classList.add("comment")
+						var spanText = document.createTextNode(line.fullLine)
+						// Cleanup
+						span.appendChild(spanText)
+						codeContainer.appendChild(span)
+					}
+					if (line.lineType == "func") {
+						// Function
+						var spanFunc = document.createElement("span")
+						spanFunc.classList.add("asm")
+						spanFunc.classList.add("func")
+						var spanFuncText = document.createTextNode(line.funcDetails.func)
+						// Function Cleanup
+						spanFunc.appendChild(spanFuncText)
+						codeContainer.appendChild(spanFunc)
+
+						// Parameters
+						if (line.funcDetails.params) {
+							line.funcDetails.params.forEach((param, index) => {
+								var splitParam = param.split("(")
+								var spanParam = document.createElement("span")
+								spanParam.classList.add("asm")
+								if (splitParam[0].substring(0,1) == "-" || !isNaN(parseInt(splitParam[0].substring(0,1)))) {
+									spanParam.classList.add("hex")
+								} else if (splitParam[0].substring(0,1) == "@") {
+									spanParam.classList.add("pointer")
+								} else if (splitParam[0].substring(0,1) == "$") {
+									spanParam.classList.add("param")
+								} else {
+									spanParam.classList.add("array")
+								}
+								if (index == 0) {
+									spanParam.classList.add("first")
+									var funcLength = line.funcDetails.func.length
+									var paramOffset = (7 - funcLength) * 7
+									spanParam.style["margin-left"] = paramOffset + "px"
+								}
+								var spanParamText = document.createTextNode(splitParam[0])
+								// Cleanup
+								spanParam.appendChild(spanParamText)
+								codeContainer.appendChild(spanParam)
+								if (splitParam.length > 1) {
+									// Open Bracket
+									var spanOpenBracket = document.createElement("span")
+									spanOpenBracket.classList.add("asm")
+									spanOpenBracket.classList.add("delimiter")
+									var spanOpenBracketText = document.createTextNode(" (")
+									// Cleanup
+									spanOpenBracket.appendChild(spanOpenBracketText)
+									codeContainer.appendChild(spanOpenBracket)
+									// Bracketed Param
+									var innerParam = splitParam[1].substring(0, splitParam[1].length - 1)
+									var spanInnerParam = document.createElement("span")
+									spanInnerParam.classList.add("asm")
+									spanInnerParam.classList.add("param")
+									var spanInnerParamText = document.createTextNode(innerParam)
+									// Cleanup
+									spanInnerParam.appendChild(spanInnerParamText)
+									codeContainer.appendChild(spanInnerParam)
+									// Close Bracket
+									var spanCloseBracket = document.createElement("span")
+									spanCloseBracket.classList.add("asm")
+									spanCloseBracket.classList.add("delimiter")
+									var spanCloseBracketText = document.createTextNode(")")
+									// Cleanup
+									spanCloseBracket.appendChild(spanCloseBracketText)
+									codeContainer.appendChild(spanCloseBracket)
+								}
+
+								// Comma Check
+								if (index != line.funcDetails.params.length - 1) {
+									var spanComma = document.createElement("span")
+									spanComma.classList.add("asm")
+									spanComma.classList.add("delimiter")
+									var spanCommaText = document.createTextNode(", ")
+									// Cleanup
+									spanComma.appendChild(spanCommaText)
+									codeContainer.appendChild(spanComma)
+								}
+							})
+
+							// Comment
+							if (line.funcDetails.comment) {
+								var spanComment = document.createElement("span")
+								spanComment.classList.add("asm")
+								spanComment.classList.add("comment")
+								var spanCommentText = document.createTextNode(line.funcDetails.comment)
+								// Cleanup
+								spanComment.appendChild(spanCommentText)
+								codeContainer.appendChild(spanComment)
+							}
+						}
+						
+						
+					}
+					codeTag.appendChild(codeContainer)
+				})
+				preTag.appendChild(codeTag)
+				codeBlocks[i].appendChild(preTag)
+			}
+		}
+		formatASMCode()
 
 		document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
 	</script>
