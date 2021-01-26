@@ -95,8 +95,7 @@
 					<ul>
 						<li>Quality of life features</li>
 						<ul>
-							<li>All moves & kongs unlocked from the start</li>
-							<li>Inventory items (eg. Crystals, Oranges) refilled every loading zone</li>
+							
 							<li>Story Skip locked to on</li>
 							<li>Entire Mystery Menu unlocked from the start</li>
 						</ul>
@@ -122,16 +121,46 @@
 								</ul>
 								<li>Toggle 'Sniper Scope' on or off</li>
 							</ul>
-							<li>Option to display a lagometer</li>
+							<li>Option to display various Statistics</li>
 							<ul>
+								<li>These are the following statistics you can display:</li>
+								<ul>
+									<li>Lagometer</li>
+									<li>Lagometer (Cumulative)</li>
+									<ul>
+										<li>Press L to reset to 0</li>
+									</ul>
+									<li>Intro Story Timer</li>
+									<li>Speed</li>
+								</ul>
 								<li>This shows under all circumstances except when something else covers the lagometer (like the transition spin)</li>
 								<li>If you are in K Rool, and the Lagometer is on, the K. Rool timer will shift to the right side of the screen</li>
 							</ul>
+							<li>Option to set up the flags necessary to practice "Takeoff Skip"</li>
+							<ul>
+								<li>Sets all "Key turned in" flags (excl. Key 3 & 8)</li>
+								<li>Clears the "Key 3 turned in" and "Key 8 turned in" flags</li>
+								<li>Sets the flags for having Keys 3 & 8</li>
+								<li>Clears Rainbow Coin First Time Text flag</li>
+								<li>Clears the flag for having acquired the Rainbow Coin behind K. Lumsy</li>
+							</ul>
+							<li>Option to grant all moves and kongs</li>
+							<li>Option to restock inventory items (eg. Crystals, Oranges)</li>
+							<li>Option to gift the player 50 coins to all kongs to enable easy purchase of a particular set of moves</li>
 						</ul>
 						<li>Position Warping</li>
 						<ul>
 							<li>D-Right to store a position</li>
 							<li>D-Left to warp to that stored position, if you are on the same map you stored the position in</li>
+							<li>Various stats will also be stored with this:</li>
+							<ul>
+								<li>Your X, Y and Z co-ordinates</li>
+								<li>Your "Stored Position" (in the context of TBS)</li>
+								<li>Your facing angle</li>
+								<li>Your Z Rotation (AKA "Skew angle")</li>
+								<li>Your velocity & acceleration both horizontally and vertically</li>
+								<li>Your floor height</li>
+							</ul>
 						</ul>
 					</ul>
 				</div>
@@ -211,7 +240,7 @@
 									.byte 	0x01 // Chunky - Red Suit
 						</div>
 					</div>
-					<div class="changelog docbox" asm="changecolour">
+					<div class="changelog docbox" asm="saveflagblock">
 						<div class="changelog asmHeader">
 							Save Flag Block
 						</div>
@@ -239,7 +268,7 @@
 									NOP
 						</div>
 					</div>
-					<div class="changelog docbox" asm="changecolour">
+					<div class="changelog docbox" asm="variabledisplay">
 						<div class="changelog asmHeader">
 							Variable Display
 						</div>
@@ -293,6 +322,59 @@
 									LW 	$ra, @ReturnAddress
 									JR 	$ra
 									NOP
+						</div>
+					</div>
+					<div class="changelog docbox" asm="isgtimer">
+						<div class="changelog asmHeader">
+							Turn Intro Story Timer into seconds
+						</div>
+						<div class="asmcode">
+							ConvertISGTimer:
+								LBU 	$a1, @ISGActive // Boolean value dictating whether Intro Story is playing (US: 0x80755070)
+								BEQZ 	$a1, Return // If intro story not playing, skip any math
+								LI 		$a1, 0 // Default time when Intro story not playing
+								LD 		$a2, @CurrentTimestamp // Load current timestamp (US: 0x80014FE0)
+								LD 		$a1, @ISGTimestamp // Load Intro Story start timestamp (US: 0x807F5CE0)
+								DSUBU 	$a1, $a2, $a1 // Get difference between timestamps
+								LI 		$a3, @ISGTimer // Load address of temporary storage of doubleword timestamp difference
+								SD 		$a1, 0x0($a3) // Store doubleword timestamp difference
+								LW 		$a2, 0x0($a3) // Grab major component
+								LW 		$a1, 0x4($a3) // Grab minor component
+								MTC1 	$a2, $f0 // Transfer major to floating point register $f0
+								MTC1 	$a1, $f1 // Transfer minor to floating point register $f1
+								CVT.S.W 	$f0, $f0 // Major as float
+								CVT.S.W 	$f1, $f1 // Minor as float
+								LI 		$a2, 0x4F800000 // 2^32 as float
+								MTC1 	$a2, $f6 
+								LI 		$a2, 0x41AF4B60 // 21.9118 as float
+								MTC1 	$a2, $f2
+								LI 		$a3, 0x3089705F // 10^-9 as float
+								MTC1 	$a3, $f4
+								LI 		$a3, 0x42BC3891 // If the hex of the minor reads 0x80000000, the float conversion will be negative. Under this scenario, we add an offset to correct this.
+								MTC1 	$a3, $f7
+								MTC1 	$r0, $f8 // Storing 0 as a float in the floating point register
+								MUL.S 	$f0, $f0, $f4 // Major * magnitude
+								MUL.S 	$f1, $f1, $f4 // Minor * ticks
+								MUL.S 	$f0, $f0, $f2 // Major * magnitude * ticks
+								MUL.S 	$f1, $f1, $f2 // Minor * magnitude * ticks
+								MUL.S 	$f0, $f0, $f6 // Major * magnitude * ticks * 2^32
+								C.LE.S 	$f1, $f8
+								BC1F 	AddISGStamps // If minor > 0, then ignore offset correction 
+								NOP
+								ADD.S 	$f1, $f1, $f7 // Offset correction
+
+							AddISGStamps:
+								ADD.S 	$f0, $f0, $f1 // Major + Minor
+								LUI 	$a2, 0x3EFF // 0.498 (Close to 0.5). If this was 0.5, then it would cause some frames to round incorrectly
+								MTC1 	$a2, $f1
+								SUB.S 	$f0, $f0, $f1
+								CVT.W.S 	$f0, $f0 // Skip this if you want your timer to remain as a float. This line converts it into an int
+								MFC1 	$a1, $f0
+
+							Return:
+								// Any method you want to display your ISG timer here
+								JR 		$ra
+								NOP
 						</div>
 					</div>
 				</div>
