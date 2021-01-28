@@ -132,6 +132,11 @@
 									</ul>
 									<li>Intro Story Timer</li>
 									<li>Speed</li>
+									<li>Timer</li>
+									<ul>
+										<li>Timer is displayed in frames, where there are 60 frames that occur each second (whether they are lag frames or not)</li>
+										<li>L to Start timer. Press again to stop timer. Press again to reset timer back to 0</li>
+									</ul>
 								</ul>
 								<li>This shows under all circumstances except when something else covers the lagometer (like the transition spin)</li>
 								<li>If you are in K Rool, and the Lagometer is on, the K. Rool timer will shift to the right side of the screen</li>
@@ -346,11 +351,11 @@
 								CVT.S.W 	$f1, $f1 // Minor as float
 								LI 		$a2, 0x4F800000 // 2^32 as float
 								MTC1 	$a2, $f6 
-								LI 		$a2, 0x41AF4B60 // 21.9118 as float
+								LI 		$a2, 0x41AA7302 // 21.306156 as float
 								MTC1 	$a2, $f2
 								LI 		$a3, 0x3089705F // 10^-9 as float
 								MTC1 	$a3, $f4
-								LI 		$a3, 0x42BC3891 // If the hex of the minor reads 0x80000000, the float conversion will be negative. Under this scenario, we add an offset to correct this.
+								LI 		$a3, 0x42B704BC // If the hex of the minor reads 0x80000000, the float conversion will be negative. Under this scenario, we add an offset to correct this.
 								MTC1 	$a3, $f7
 								MTC1 	$r0, $f8 // Storing 0 as a float in the floating point register
 								MUL.S 	$f0, $f0, $f4 // Major * magnitude

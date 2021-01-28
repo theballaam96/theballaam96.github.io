@@ -128,6 +128,17 @@
                "Lag/Cumulative Lag watches fixed to display lag rather than lag boost",
                "Stored Position will not load from 'Load Position' if the kong is visible, preventing a graphical spike"
             ]
+         },
+         {
+            "version":"1.2.2",
+            "release_date":"28-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_2/DK64%20Practice%20ROM%20V1_2_2%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_2/DK64%20Practice%20ROM%20V1_2_2%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_2.asm",
+            "changelog":[
+               "Intro Story Timer inaccurracies fixed",
+               "Ability to display a timer in frames"
+            ]
          }
       ]
    }
