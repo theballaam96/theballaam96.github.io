@@ -4464,7 +4464,7 @@
                "used":true,
                "indexOverride":20,
                "in_lz_transition":false
-            },
+            }
          ]
       },
       {
@@ -5130,7 +5130,7 @@
                "crash":false,
                "used":true,
                "in_lz_transition":false
-            },
+            }
          ]
       },
       {
@@ -6175,7 +6175,7 @@
                "crash":false,
                "used":true,
                "in_lz_transition":false
-            }
+            },
             {
                "name":"Death",
                "crash":false,
@@ -6205,7 +6205,7 @@
                "crash":false,
                "used":true,
                "in_lz_transition":false
-            },
+            }
          ]
       },
       {
