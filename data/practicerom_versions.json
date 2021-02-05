@@ -139,6 +139,34 @@
                "Intro Story Timer inaccurracies fixed",
                "Ability to display a timer in frames"
             ]
+         },
+         {
+            "version":"1.2.3",
+            "release_date":"29-JAN-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_3/DK64%20Practice%20ROM%20V1_2_3%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_3/DK64%20Practice%20ROM%20V1_2_3%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_3.asm",
+            "changelog":[
+               "Fixed a critical bug in 1.2.2 regarding kong colour and text due to the framebuffer overwriting data"
+            ]
+         },
+         {
+            "version":"1.2.4",
+            "release_date":"05-FEB-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_4/DK64%20Practice%20ROM%20V1_2_4%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_4/DK64%20Practice%20ROM%20V1_2_4%20(Lunar%20IPS).ips",
+            "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_4.asm",
+            "changelog":[
+               "On boot, after the Rareware Logo, you will be warped to the Main Menu",
+               "On selecting game over, after the game over cutscene, you will be warped to the Main Menu",
+               "New files start in DK Isles",
+               "After a vote, the ISG Timer functionality has been removed",
+               "K. Rool Round is now random",
+               "Lagometer has been improved to be more accurate, now pulling the lag directly from the lag calculation function",
+               "Melons/Health now granted for unlocking all moves on the menu rather than give collectables",
+               "You will no longer be able to warp out (Load State/Main Map Warp) of Global Maps, Battle Crowns, Bosses and Bonus Barrels",
+               "Some minor text hacks (IF YOU ARE PATCHING VIA LUNAR, THIS WON'T WORK)"
+            ]
          }
       ]
    }
