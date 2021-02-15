@@ -23,6 +23,11 @@
 			.changelog.version {
 				font-weight: bold;
 			}
+			.changelog.warning {
+				padding-top: 5px;
+				padding-bottom: 5px;
+				color: red;
+			}
 			.changelog.asmHeader {
 				font-weight: bold;
 				margin-top: 10px;
@@ -187,7 +192,7 @@
 							</ul>
 							<li>The PAL, JP and Kiosk versions will not work with the ROM yet</li>
 						</ul>
-						<li>With either <a class="excluded_link" href="https://www.romhacking.net/utilities/893/">Beat</a> or <a class="excluded_link" href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>, patch in the practice ROM. You will only need to download one patch file, which one depends on the patching program you are using</li>
+						<li>With either <a class="excluded_link" href="https://www.romhacking.net/utilities/893/">Beat (N64 Only)</a> or <a class="excluded_link" href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>, patch in the practice ROM. You will only need to download one patch file, which one depends on the patching program you are using</li>
 						<ul>
 							<li>For Beat</li>
 							<ol>
@@ -497,6 +502,16 @@
 				var changelog_date_text = document.createTextNode("Release Date: " + romVersion.release_date)
 				changelog_date.appendChild(changelog_date_text)
 				changelog_container.appendChild(changelog_date)
+				
+				// Changelog Warning, if applicable (Regarding text changes)
+				if (romVersion.lunar_warning) {
+					var changelog_warning = document.createElement("div")
+					changelog_warning.classList.add("changelog")
+					changelog_warning.classList.add("warning")
+					var changelog_warning_text = document.createTextNode("This version will not display text changes with the Lunar IPS patch")
+					changelog_warning.appendChild(changelog_warning_text)
+					changelog_container.appendChild(changelog_warning)
+				}
 
 				// Changelog Changes
 				var changelog_ul = document.createElement("ul")
