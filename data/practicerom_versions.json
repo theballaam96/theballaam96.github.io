@@ -7,6 +7,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_1/DK64%20Practice%20ROM%20V0_1%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_1/DK64%20Practice%20ROM%20V0_1%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V0_1.asm",
+            "lunar_warning":false,
             "changelog":[
                "First version",
                "OSD (Broken on N64)",
@@ -22,6 +23,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_2/DK64%20Practice%20ROM%20V0_2%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/0_2/DK64%20Practice%20ROM%20V0_2%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V0_2.asm",
+            "lunar_warning":false,
             "changelog":[
                "OSD Shifted to pause screen",
                "Save & load flags",
@@ -38,6 +40,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_0/DK64%20Practice%20ROM%20V1_0%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_0/DK64%20Practice%20Rom%20V1_0%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_0.asm",
+            "lunar_warning":false,
             "changelog":[
                "Position warping works only when the storage took place on the same map",
                "All collectables granted at the start",
@@ -50,6 +53,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1/DK64%20Practice%20ROM%20V1_1%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1/DK64%20Practice%20ROM%20V1_1%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_1.asm",
+            "lunar_warning":false,
             "changelog":[
                "The Blast-O-Matic is back on again! (Prevents a bug with the medals in Helm)",
                "3 Melons-worth of health are now granted to you on every loading zone",
@@ -66,6 +70,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_1/DK64%20Practice%20ROM%20V1_1_1%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_1/DK64%20Practice%20ROM%20V1_1_1%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_1_1.asm",
+            "lunar_warning":false,
             "changelog":[
                "Temporary Flags are now stored by savestates",
                "Lanky Kong can still, unfortunately, be freed from Angry Aztec"
@@ -77,6 +82,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_2/DK64%20Practice%20ROM%20V1_1_2%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_2/DK64%20Practice%20ROM%20V1_1_2%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_1_2.asm",
+            "lunar_warning":false,
             "changelog":[
                "Option to toggle 'Simian Slam' level between 0 and 3 (No Slam, 'Simian Slam', 'Super Simian Slam', 'Super Duper Simian Slam')",
                "Option to toggle 'Sniper Scope' on or off",
@@ -92,6 +98,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_3/DK64%20Practice%20ROM%20V1_1_3%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_1_3/DK64%20Practice%20ROM%20V1_1_3%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_1_3.asm",
+            "lunar_warning":false,
             "changelog":[
                "Fixed a bug regarding the game crashing when loading a stored position"
             ]
@@ -102,6 +109,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2/DK64%20Practice%20ROM%20V1_2%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2/DK64%20Practice%20ROM%20V1_2%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2.asm",
+            "lunar_warning":false,
             "changelog":[
                "Position storage/loading feature now handles the 'Stored Positions' that are relevant to TBS tricks",
                "Button that sets up the flags for Takeoff skip (No excuses now Zoru)",
@@ -120,6 +128,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_1/DK64%20Practice%20ROM%20V1_2_1%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_1/DK64%20Practice%20ROM%20V1_2_1%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_1.asm",
+            "lunar_warning":false,
             "changelog":[
                "Fixed a bug which caused the speed watch to crash",
                "Fixed a bug which caused problems with the Intro Story timer watch",
@@ -135,6 +144,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_2/DK64%20Practice%20ROM%20V1_2_2%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_2/DK64%20Practice%20ROM%20V1_2_2%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_2.asm",
+            "lunar_warning":false,
             "changelog":[
                "Intro Story Timer inaccurracies fixed",
                "Ability to display a timer in frames"
@@ -146,6 +156,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_3/DK64%20Practice%20ROM%20V1_2_3%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_3/DK64%20Practice%20ROM%20V1_2_3%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_3.asm",
+            "lunar_warning":false,
             "changelog":[
                "Fixed a critical bug in 1.2.2 regarding kong colour and text due to the framebuffer overwriting data"
             ]
@@ -156,6 +167,7 @@
             "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_4/DK64%20Practice%20ROM%20V1_2_4%20(Beat).bps",
             "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_4/DK64%20Practice%20ROM%20V1_2_4%20(Lunar%20IPS).ips",
             "source":"https://raw.githubusercontent.com/Isotarge/ScriptHawk/master/Docs/DK64%20ASM%20Hacking/Practice%20ROM/Practice%20V1_2_4.asm",
+            "lunar_warning":true,
             "changelog":[
                "On boot, after the Rareware Logo, you will be warped to the Main Menu",
                "On selecting game over, after the game over cutscene, you will be warped to the Main Menu",
@@ -166,6 +178,20 @@
                "Melons/Health now granted for unlocking all moves on the menu rather than give collectables",
                "You will no longer be able to warp out (Load State/Main Map Warp) of Global Maps, Battle Crowns, Bosses and Bonus Barrels",
                "Some minor text hacks (IF YOU ARE PATCHING VIA LUNAR, THIS WON'T WORK)"
+            ]
+         },
+         {
+            "version":"1.2.5",
+            "release_date":"15-FEB-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_5/DK64%20Practice%20ROM%20V1_2_5%20(Beat).bps",
+            "lunar":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_2_5/DK64%20Practice%20ROM%20V1_2_5%20(Lunar%20IPS).ips",
+            "source":"https://github.com/theballaam96/theballaam96.github.io/tree/master/practicerom/1_2_5/Source",
+            "lunar_warning":true,
+            "changelog":[
+               "Fixed a bug which presented a 1-in-12 chance of auto kicking you out of K. Rool",
+               "Option to disable the D-Left/D-Right buttons calling anything regarding position saving/loading",
+               "Wrinkly has learned how to glitch Donkey Kong 64, and will provide you hints and tips on how to improve your game",
+               "Three other text changes for the fun of things"
             ]
          }
       ]
