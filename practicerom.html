@@ -532,6 +532,7 @@
 				var buttons_container = document.createElement("div")
 				buttons_container.style.display = "flex";
 
+				// Beat
 				var container_beat = document.createElement("div")
 				container_beat.classList.add("buttoncontainer")
 				var button_beat = document.createElement("button")
@@ -541,15 +542,29 @@
 				container_beat.appendChild(button_beat)
 				buttons_container.appendChild(container_beat)
 
-				var container_lunar = document.createElement("div")
-				container_lunar.classList.add("buttoncontainer")
-				var button_lunar = document.createElement("button")
-				button_lunar.setAttribute("onclick", "visit('lunar','" + romVersion.version + "')")
-				var text_lunar = document.createTextNode("Download (Lunar IPS)")
-				button_lunar.appendChild(text_lunar)
-				container_lunar.appendChild(button_lunar)
-				buttons_container.appendChild(container_lunar)
+				// Lunar
+				if (romVersion.lunar != "") {
+					var container_lunar = document.createElement("div")
+					container_lunar.classList.add("buttoncontainer")
+					var button_lunar = document.createElement("button")
+					button_lunar.setAttribute("onclick", "visit('lunar','" + romVersion.version + "')")
+					var text_lunar = document.createTextNode("Download (Lunar IPS)")
+					button_lunar.appendChild(text_lunar)
+					container_lunar.appendChild(button_lunar)
+					buttons_container.appendChild(container_lunar)
+				}
 
+				// Web Patcher
+				var container_webpatcher = document.createElement("div")
+				container_webpatcher.classList.add("buttoncontainer")
+				var button_webpatcher = document.createElement("button")
+				button_webpatcher.setAttribute("onclick", "visit('web','" + romVersion.version + "')")
+				var text_webpatcher = document.createTextNode("Download (Web Patcher)")
+				button_webpatcher.appendChild(text_webpatcher)
+				container_webpatcher.appendChild(button_webpatcher)
+				buttons_container.appendChild(container_webpatcher)
+
+				// Source
 				var container_source = document.createElement("div")
 				container_source.classList.add("buttoncontainer")
 				var button_source = document.createElement("button")
@@ -579,7 +594,6 @@
 		}
 
 		function visit(linkType, version) {
-			var focusObj = romData.find(item => item.version == version)
 			var toggleBoxes = document.getElementsByClassName("toggleable")
 			for (i = 0; i < toggleBoxes.length; i++) {
 				var focusId = toggleBoxes[i].getAttribute("tiedVersion")
@@ -587,7 +601,13 @@
 					toggleBoxes[i].classList.add("hide")
 				}
 			}
-			var url = focusObj[linkType]
+			if (linkType != "web") {
+				var focusObj = romData.find(item => item.version == version)
+				var url = focusObj[linkType]
+			} else {
+				var url = "https://patch.wedarobi.com/dk_practice_rom";
+			}
+
 			goTo(url)
 		}
 
