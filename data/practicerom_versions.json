@@ -193,6 +193,23 @@
                "Wrinkly has learned how to glitch Donkey Kong 64, and will provide you hints and tips on how to improve your game",
                "Three other text changes for the fun of things"
             ]
+         },
+         {
+            "version":"1.3",
+            "release_date":"28-FEB-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_3/Donkey%20Kong%2064%20Practice%20ROM%20V1_3.bps",
+            "lunar":"",
+            "source":"https://github.com/theballaam96/theballaam96.github.io/tree/master/practicerom/1_2_5/Source",
+            "lunar_warning":false,
+            "changelog":[
+               "Hired a boy genius and his robot dog to shrink the DK64 heap",
+               "Map warping expanded from 14 maps to 102 maps",
+               "Ability to toggle some important flags that may be useful for emulating certain scenarios",
+               "Tools Menu is now split up into slides, which can be navigated with Z/R",
+               "Fixed the python text generation script, which fixes a typographical error with Diddy's Aztec Wrinkly Text",
+               "Fixed a bug where exiting a level without watching the B. Locker FTT would instantly warp you back to the level",
+               "Fixed a bug where the slam level/sniper scope would cause Cranky move purchase issues"
+            ]
          }
       ]
    }
