@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Practice ROM Features - Donkey Kong 64 Speedruns</title>
+	<link rel="stylesheet" href="../style/nav.css">
+	<link rel="stylesheet" href="../style/main.css">
+	<link rel="stylesheet" href="../style/home.css">
+	<link rel="stylesheet" href="../style/maps.css">
+	<link rel="stylesheet" href="../style/mj.css">
+	<link rel="stylesheet" href="../style/tree.css">
+	<link rel="stylesheet" href="../style/n64buttons.css">
+	<meta name="description" content="" />
+	<style type="text/css">
+		.homebox {
+			transition: 0.5s ease-in-out;
+			cursor: default;
+		}
+		.homebox.clickable:hover {
+			border-color:red;
+		}
+		.hide {
+			display: none;
+		}
+		.treebox {
+			color: white;
+			padding: 10px;
+		}
+		.treebox .treebox_head {
+			font-weight: bold;
+			padding-bottom: 10px;
+		}
+		.treebox .treebox_body {
+			padding-left: 10px;
+		}
+		td, th {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-right: 10px;
+			padding-left: 5px;
+		}
+		.bordertable td, .bordertable th {
+			border: 1px solid white;
+		}
+		.bordertable {
+			border-collapse: collapse;
+		}
+		.alternatingtable {
+			border-collapse: collapse;
+		}
+		.alternatingtable tbody tr:nth-child(2n+1) td:not(.level) {
+			background-color: rgba(100,100,100,0.3);
+		}
+		.alternatingtable td, .alternatingtable th {
+			padding: 7px;
+			padding-left: 12px;
+		}
+		td.level {
+			text-align: center;
+		}
+		td.level.japes {
+			background-color: rgba(0,100,0,0.4);
+		}
+		td.level.aztec {
+			background-color: rgba(100,100,0,0.4);
+		}
+		td.level.factory {
+			background-color: rgba(50,50,50,0.6);
+		}
+		td.level.galleon {
+			background-color: rgba(0,0,255,0.2);
+		}
+		td.level.fungi {
+			background-color: rgba(100,0,0,0.4);
+		}
+		td.level.caves {
+			background-color: rgba(50,50,100,0.4);
+		}
+		td.level.castle {
+			background-color: rgba(100,0,100,0.4);
+		}
+		td.level.helmrool {
+			background-color: rgba(150,150,150,0.3);
+		}
+		td.level.isles {
+			background-color: rgba(100,50,0,0.4);
+		}
+	</style>
+</head>
+<body>
+	<nav id="navigation"></nav>
+	<div class="v_spacer">
+	</div>
+	<div class="flexsplitter">
+		<div class="homebox">
+			<div class="header master_header">
+				<strong>Practice ROM Features</strong>
+			</div>
+		</div>
+	</div>
+	<div class="flexsplitter">
+		<div class="homebox" style="flex:25%">
+			<ul class="tree">
+				<li><a class="excluded_link hovergold" onclick="treeshow('toolsmenu_controls')">Tools Menu Controls</a></li>
+				<li>
+					<span class="caret">Position Storage</span>
+					<ul class="nested">
+						<li><a class="excluded_link hovergold" onclick="treeshow('positionstorage_controls')">Controls</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('positionstorage_information')">Information stored with position storage</a></li>
+					</ul>
+				</li>
+				<li>
+					<span class="caret">Map Warping</span>
+					<ul class="nested">
+						<li><a class="excluded_link hovergold" onclick="treeshow('mapwarp_controls')">Controls</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('mapwarp_warptree')">Warp Tree</a></li>
+					</ul>
+				</li>
+				<li>
+					<span class="caret">Quality of Life</span>
+					<ul class="nested">
+						<li><a class="excluded_link hovergold" onclick="treeshow('storyskip')">Story Skip</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('mysterymenu')">Mystery Menu</a></li>
+						<li>
+							<span class="caret">Tag Anywhere</span>
+							<ul class="nested">
+								<li><a class="excluded_link hovergold" onclick="treeshow('taganywhere')">How it works</a></li>
+								<li><a class="excluded_link hovergold" onclick="treeshow('taganywhere_diffs')">Differences from the Tag Anywhere Mod</a></li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="homebox" style="flex:75%">
+			<div class="treebox hide" tree-id="storyskip">
+				<div class="treebox_head">Story Skip</div>
+				<div class="treebox_body">
+					Story Skip is set to be permanently on by default, which gets rid of any chance of forgetting to turn it on. Attempting to change this will set story skip back to on.
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="mysterymenu">
+				<div class="treebox_head">Mystery Menu</div>
+				<div class="treebox_body">
+					All permanent cartridge unlocks (that are awarded to the player during gameplay) are unlocked by default. This includes:
+					<ul>
+						<li>Cutscene Menu</li>
+						<ul>
+							<li>Intro Story</li>
+							<li>All Level "K. Rool Intros"</li>
+							<li>K. Rool Press Button</li>
+							<li>K. Rool Takeoff</li>
+							<li>Game Over</li>
+							<li>End Sequence</li>
+						</ul>
+						<li>Minigames Menu</li>
+						<ul>
+							<li>Rambi & Enguarde Arena</li>
+							<li>DK Arcade</li>
+							<li>Jetpac</li>
+						</ul>
+						<li>Bosses Menu</li>
+						<ul>
+							<li>All 7 Level Bosses</li>
+							<li>The Final Battle (Unused beta feature)</li>
+						</ul>
+						<li>Krusha Menu</li>
+						<li>Default Cheats Menu</li>
+						<li>Multiplayer Menu</li>
+					</ul>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="taganywhere">
+				<div class="treebox_head">Simple Tag Anywhere</div>
+				<div class="treebox_body">
+					Kongs can be changed with the press of the <span class="n64buttons ddown">D-Down</span> button unless the pause menu is open. This functionality can be manually disabled with the "Disable Tag Anywhere" toggle in the <em>Tools Menu</em>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="taganywhere_diffs">
+				<div class="treebox_head">Differences between the Practice ROM 'Tag Anywhere' and the dedicated 'Tag Anywhere' Mod</div>
+				<div class="treebox_body">
+					The goal of the 'Tag Anywhere' in the Practice ROM and the goal of the dedicated 'Tag Anywhere' ROM Hack are different. The Practice ROM's implementation is with the goal to support any glitches that can happen when a tag interrupts a game event. The dedicated 'Tag Anywhere' ROM Hack has more protections on when you can perform a tag to prevent disruptions to intended gameplay mechanics (usually these disruptions occur when a tag coincides with a game event).
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="toolsmenu_controls">
+				<div class="treebox_head">Tools Menu Controls</div>
+				<div class="treebox_body">
+					<span class="n64buttons dup">&nbsp;</span>
+					<span class="n64buttons ddown">&nbsp;</span>
+					<span class="n64buttons dleft">&nbsp;</span>
+					<span class="n64buttons dright">&nbsp;</span>
+					<span class="n64buttons cup">&nbsp;</span>
+					<span class="n64buttons cdown">&nbsp;</span>
+					<span class="n64buttons cleft">&nbsp;</span>
+					<span class="n64buttons cright">&nbsp;</span>
+					<span class="n64buttons a">&nbsp;</span>
+					<span class="n64buttons b">&nbsp;</span>
+					<span class="n64buttons start">&nbsp;</span>
+					<span class="n64buttons z">&nbsp;</span>
+					<span class="n64buttons l">&nbsp;</span>
+					<span class="n64buttons r">&nbsp;</span>
+					<span class="n64buttons analog">&nbsp;</span>
+					<table>
+						<tr>
+							<td>
+								<span class="n64buttons dup">&nbsp;</span>
+							</td>
+							<td>
+								Opens and closes the tools menu when the pause menu is pulled up
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons z">&nbsp;</span>
+							</td>
+							<td>
+								Goes to previous tools menu screen
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons r">&nbsp;</span>
+							</td>
+							<td>
+								Goes to next tools menu screen
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons a">&nbsp;</span>
+							</td>
+							<td>
+								Select tools menu option
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons analog">&nbsp;</span>
+							</td>
+							<td>
+								Navigate up/down/left/right on the tools menu
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons l">&nbsp;</span>
+							</td>
+							<td>
+								Changes left/right scrolling cooldown from 6 frames to 2 frames
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons b">&nbsp;</span> / <span class="n64buttons start">&nbsp;</span>
+							</td>
+							<td>
+								Exit out of the pause menu
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="positionstorage_controls">
+				<div class="treebox_head">Position Storage Controls</div>
+				<div class="treebox_body">
+					<table>
+						<tr>
+							<td>
+								<span class="n64buttons dright">&nbsp;</span>
+							</td>
+							<td>
+								Stores position information
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons dleft">&nbsp;</span>
+							</td>
+							<td>
+								Loads position information if on the same map as the stored information
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="positionstorage_information">
+				<div class="treebox_head">Information stored with position storage</div>
+				<div class="treebox_body">
+					Various pieces of information are stored when a position is stored with the Practice ROM. These pieces of information are loaded back in as soon as you load back up your saved position.
+					<br>
+					These variables are stored:
+					<ul>
+						<li>X, Y and Z Co-ordinates of the Kong</li>
+						<li>"Stored Positions"
+						<ul>
+							<li>In context of Tag Barrel Storage and Telegrabbing</li>
+						</ul>
+						<li>Facing Angle</li>
+						<li>Horizontal & vertical speed components</li>
+						<li>Vertical acceleration (AKA gravity)</li>
+						<li>Floor height</li>
+						<li>Map</li>
+						<ul>
+							<li>This is for the purpose of detecting whether you are in the same map when you attempt to load the position up</li>
+						</ul>
+					</ul>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="mapwarp_controls">
+				<div class="treebox_head">Map Warping Controls</div>
+				<div class="treebox_body">
+					The following controls only apply when you are on the map warp screen:
+					<table>
+						<tr>
+							<td>
+								<span class="n64buttons analog">&nbsp;</span>
+							</td>
+							<td>
+								(When highlighting level) Changes selected level
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons analog">&nbsp;</span>
+							</td>
+							<td>
+								(When highlighting map) Changes selected map
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<span class="n64buttons a">&nbsp;</span>
+							</td>
+							<td>
+								Warp to selected map
+							</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="mapwarp_warptree">
+				<div class="treebox_head">Warp Tree</div>
+				<div class="treebox_body">
+					There are many locations which you can warp to instantly with the usage of the practice ROM. The following table shows every location both in terms of what the practice ROM shows and the behind the scenes of these warps.
+					<table class="alternatingtable">
+						<thead>
+							<tr>
+								<th>Level</th>
+								<th>Map Text</th>
+								<th>Map Value</th>
+								<th>Exit Value</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- JAPES -->
+							<tr>
+								<td rowspan="12" class="level japes">Jungle Japes</td>
+								<td>Main - Portal</td>
+								<td>Japes (0x7)</td>
+								<td>Portal (0xF)</td>
+							</tr>
+							<tr>
+								<td>Main - Intro</td>
+								<td>Japes (0x7)</td>
+								<td>Japes Intro (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - River Lower</td>
+								<td>Japes (0x7)</td>
+								<td>DK Title Demo (0x10)</td>
+							</tr>
+							<tr>
+								<td>Main - River Upper</td>
+								<td>Japes (0x7)</td>
+								<td>Mountain (0x2)</td>
+							</tr>
+							<tr>
+								<td>Main - Storm Area</td>
+								<td>Japes (0x7)</td>
+								<td>Cranky's (0x3)</td>
+							</tr>
+							<tr>
+								<td>Main - Zinger Area</td>
+								<td>Japes (0x7)</td>
+								<td>Shell (0x1)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Course</td>
+								<td>Japes BBlast (0x25)</td>
+								<td>From Japes (0x0)</td>
+							</tr>
+							<tr>
+								<td>Minecart</td>
+								<td>Japes Minecart (0x6)</td>
+								<td>From Japes (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mountain</td>
+								<td>Mountain (0x4)</td>
+								<td>From Japes (0x0)</td>
+							</tr>
+							<tr>
+								<td>Painting Room</td>
+								<td>Painting Room (0xD)</td>
+								<td>From Japes (0x0)</td>
+							</tr>
+							<tr>
+								<td>Shellhive</td>
+								<td>Shellhive (0xC)</td>
+								<td>From Japes (0x0)</td>
+							</tr>
+							<tr>
+								<td>Underground</td>
+								<td>Underground (0x21)</td>
+								<td>From Japes (0x0)</td>
+							</tr>
+							<!-- AZTEC -->
+							<tr>
+								<td rowspan="13" class="level aztec">Angry Aztec</td>
+								<td>Main - Portal</td>
+								<td>Aztec (0x26)</td>
+								<td>Portal (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - Feed Me Totem</td>
+								<td>Aztec (0x26)</td>
+								<td>Funky's (0x12)</td>
+							</tr>
+							<tr>
+								<td>Main - Oasis</td>
+								<td>Aztec (0x26)</td>
+								<td>Candy's (0x8)</td>
+							</tr>
+							<tr>
+								<td>Main - Snake Road</td>
+								<td>Aztec (0x26)</td>
+								<td>Cranky's (0xA)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Course</td>
+								<td>Aztec BBlast (0x29)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Beetle Race</td>
+								<td>Aztec Beetle Race (0xE)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Temple - DK</td>
+								<td>DK 5DT (0x13)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Temple - Diddy</td>
+								<td>Diddy 5DT (0x15)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Temple - Lanky</td>
+								<td>Lanky 5DT (0x17)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Temple - Tiny</td>
+								<td>Tiny 5DT (0x16)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Temple - Chunky</td>
+								<td>Chunky 5DT (0x18)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Llama Temple</td>
+								<td>Llama Temple (0x14)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<tr>
+								<td>Tiny Temple</td>
+								<td>Tiny Temple (0x10)</td>
+								<td>From Aztec (0x0)</td>
+							</tr>
+							<!-- FACTORY -->
+							<tr>
+								<td rowspan="14" class="level factory">Frantic Factory</td>
+								<td>Main - Portal</td>
+								<td>Factory (0x1A)</td>
+								<td>Portal (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - Arcade Room</td>
+								<td>Factory (0x1A)</td>
+								<td>Arcade T&S (0xA)</td>
+							</tr>
+							<tr>
+								<td>Main - Block Tower</td>
+								<td>Factory (0x1A)</td>
+								<td>Block Tower T&S (0x9)</td>
+							</tr>
+							<tr>
+								<td>Main - Candy Area</td>
+								<td>Factory (0x1A)</td>
+								<td>Candy's (0x11)</td>
+							</tr>
+							<tr>
+								<td>Main - Funky Area</td>
+								<td>Factory (0x1A)</td>
+								<td>Funky's (0x6)</td>
+							</tr>
+							<tr>
+								<td>Main - Production Room</td>
+								<td>Factory (0x1A)</td>
+								<td>Production Room T&S (0xC)</td>
+							</tr>
+							<tr>
+								<td>Main - Research and Dev</td>
+								<td>Factory (0x1A)</td>
+								<td>R&D T&S (0xB)</td>
+							</tr>
+							<tr>
+								<td>Main - Snides Room</td>
+								<td>Factory (0x1A)</td>
+								<td>Snide's (0x5)</td>
+							</tr>
+							<tr>
+								<td>Main - Storage Room</td>
+								<td>Factory (0x1A)</td>
+								<td>R&D Hatch (0x4)</td>
+							</tr>
+							<tr>
+								<td>Arcade</td>
+								<td>DK Arcade (0x2)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Course</td>
+								<td>Factory BBlast (0x6E)</td>
+								<td>From Factory (0x0)</td>
+							</tr>
+							<tr>
+								<td>Car Race</td>
+								<td>Factory Car Race (0x1B)</td>
+								<td>From Factory (0x0)</td>
+							</tr>
+							<tr>
+								<td>Crusher Room</td>
+								<td>Crusher Room (0x24)</td>
+								<td>From Factory (0x0)</td>
+							</tr>
+							<tr>
+								<td>Power Shed</td>
+								<td>Factory (0x1D)</td>
+								<td>From Factory (0x0)</td>
+							</tr>
+							<!-- GALLEON -->
+							<tr>
+								<td rowspan="19" class="level galleon">Gloomy Galleon</td>
+								<td>Main - Portal</td>
+								<td>Galleon (0x1E)</td>
+								<td>Portal (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - Cranky Area</td>
+								<td>Galleon (0x1E)</td>
+								<td>Cranky T&S (0xD)</td>
+							</tr>
+							<tr>
+								<td>Main - Lighthouse Side</td>
+								<td>Galleon (0x1E)</td>
+								<td>Seasick Ship (0xB)</td>
+							</tr>
+							<tr>
+								<td>Main - Shipwreck Side</td>
+								<td>Galleon (0x1E)</td>
+								<td>DK 5DS (0x7)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Course</td>
+								<td>Galleon BBlast (0x36)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Ship - DK</td>
+								<td>5DS (DK/Tiny) (0x2E)</td>
+								<td>DK Entrance (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Ship - Diddy</td>
+								<td>5DS (Diddy/Lanky/Chunky) (0x2B)</td>
+								<td>Diddy Entrance (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Ship - Lanky</td>
+								<td>5DS (Diddy/Lanky/Chunky) (0x2B)</td>
+								<td>Lanky Entrance (0x2)</td>
+							</tr>
+							<tr>
+								<td>Five Door Ship - Tiny</td>
+								<td>5DS (DK/Tiny) (0x2E)</td>
+								<td>Tiny Entrance (0x1)</td>
+							</tr>
+							<tr>
+								<td>Five Door Ship - Chunky</td>
+								<td>5DS (Diddy/Lanky/Chunky) (0x2B)</td>
+								<td>Chunky Entrance (0x1)</td>
+							</tr>
+							<tr>
+								<td>K. Rools Ship</td>
+								<td>Seasick Ship (0x1F)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lighthouse</td>
+								<td>Lighthouse (0x31)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mermaid Palace</td>
+								<td>Mermaid Palace (0x2D)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mechanical Fish</td>
+								<td>Mechanical Fish (0x33)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Seal Race</td>
+								<td>Seal Race (0x27)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Submarine</td>
+								<td>Submarine (0xB3)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Treasure Chest</td>
+								<td>Treasure Chest (0x2C)</td>
+								<td>From Galleon (0x0)</td>
+							</tr>
+							<tr>
+								<td>Two Door Ship - Lanky</td>
+								<td>2DS (0x2F)</td>
+								<td>Lanky Entrance (0x1)</td>
+							</tr>
+							<tr>
+								<td>Two Door Ship - Tiny</td>
+								<td>2DS (0x2F)</td>
+								<td>Tiny Entrance (0x0)</td>
+							</tr>
+							<!-- FUNGI -->
+							<tr>
+								<td rowspan="22" class="level fungi">Fungi Forest</td>
+								<td>Main - Portal</td>
+								<td>Fungi (0x30)</td>
+								<td>Portal (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - Apple Side</td>
+								<td>Fungi (0x30)</td>
+								<td>Funky's (0x12)</td>
+							</tr>
+							<tr>
+								<td>Main - Mill Side</td>
+								<td>Fungi (0x30)</td>
+								<td>Mill: Front (0x6)</td>
+							</tr>
+							<tr>
+								<td>Main - Mushroom Side</td>
+								<td>Fungi (0x30)</td>
+								<td>Giant Mushroom: Lower (0x8)</td>
+							</tr>
+							<tr>
+								<td>Main - Owl Tree</td>
+								<td>Fungi (0x30)</td>
+								<td>Anthill (0x17)</td>
+							</tr>
+							<tr>
+								<td>Main - Top of Mushroom</td>
+								<td>Fungi (0x30)</td>
+								<td>Giant Mushroom T&S (0x18)</td>
+							</tr>
+							<tr>
+								<td>Anthill</td>
+								<td>Fungi (0x34)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Bourse</td>
+								<td>Fungi (0xBC)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Barn</td>
+								<td>DK's Barn (0x3B)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Dark Attic</td>
+								<td>Dark Attic (0x38)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Face Puzzle</td>
+								<td>Fungi Face Puzzle (0x47)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Giant Mushroom - Bottom</td>
+								<td>Inside the Giant Mushroom (0x40)</td>
+								<td>Lowest Entrance (0x0)</td>
+							</tr>
+							<tr>
+								<td>Giant Mushroom - Middle</td>
+								<td>Inside the Giant Mushroom (0x40)</td>
+								<td>Middle Entrance (0x1)</td>
+							</tr>
+							<tr>
+								<td>Giant Mushroom - Top</td>
+								<td>Inside the Giant Mushroom (0x40)</td>
+								<td>Highest Entrance (0x4)</td>
+							</tr>
+							<tr>
+								<td>Lanky's Attic</td>
+								<td>Lanky's Attic (0x3A)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mill - Front</td>
+								<td>Mill: Front (0x3D)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mill - Rear</td>
+								<td>Mill: Rear (0x3E)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Minecart</td>
+								<td>Fungi Minecart (0x37)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mushroom Top - Light Room</td>
+								<td>Mushroom Light Room (0x3F)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Mushroom Top - Dark Room</td>
+								<td>Mushroom Dark Room (0x46)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Spider Boss</td>
+								<td>Spider Boss (0x3C)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<tr>
+								<td>Winch Room</td>
+								<td>Winch Room (0x39)</td>
+								<td>From Fungi (0x0)</td>
+							</tr>
+							<!-- CAVES -->
+							<tr>
+								<td rowspan="21" class="level caves">Crystal Caves</td>
+								<td>Main - Portal</td>
+								<td>Caves (0x48)</td>
+								<td>Portal (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - Cabins</td>
+								<td>Caves (0x48)</td>
+								<td>Beta 5DC T&S (0x9)</td>
+							</tr>
+							<tr>
+								<td>Main - Giant Boulder</td>
+								<td>Caves (0x48)</td>
+								<td>Giant Boulder T&S (0x1A)</td>
+							</tr>
+							<tr>
+								<td>Main - Ice Castle</td>
+								<td>Caves (0x48)</td>
+								<td>Beetle Race (0x6)</td>
+							</tr>
+							<tr>
+								<td>Main - Igloos</td>
+								<td>Caves (0x48)</td>
+								<td>Beta 5DI T&S (0xB)</td>
+							</tr>
+							<tr>
+								<td>Main - Waterfall</td>
+								<td>Caves (0x48)</td>
+								<td>Sprint Cabin (0x14)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Course</td>
+								<td>Caves BBlast (0xBA)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Beetle Race</td>
+								<td>Caves Beetle Race (0x52)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Cabin - DK</td>
+								<td>5DC - DK (0x5B)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Cabin - Diddy Candles</td>
+								<td>5DC - Diddy Candles (0xC8)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Cabin - Diddy Enemies</td>
+								<td>5DC - Diddy Enemies (0x5C)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Cabin - Tiny</td>
+								<td>5DC - Tiny (0x5D)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Cabin - Chunky</td>
+								<td>5DC - Chunky (0x5A)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Igloo - DK</td>
+								<td>5DI - DK (0x56)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Igloo - Diddy</td>
+								<td>5DI - Diddy (0x64)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Igloo - Lanky</td>
+								<td>5DI - Lanky (0x55)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Igloo - Tiny</td>
+								<td>5DI - Tiny (0x54)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Five Door Igloo - Chunky</td>
+								<td>5DI - Chunky (0x5F)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Ice Castle</td>
+								<td>Tile Flip Game (0x62)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Rotating Room</td>
+								<td>Rotating Room (0x59)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<tr>
+								<td>Sprint Cabin</td>
+								<td>Sprint Cabin (0x5E)</td>
+								<td>From Caves (0x0)</td>
+							</tr>
+							<!-- CASTLE -->
+							<tr>
+								<td rowspan="23" class="level castle">Creepy Castle</td>
+								<td>Main - Portal</td>
+								<td>Castle (0x57)</td>
+								<td>Portal (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - Intro</td>
+								<td>Castle (0x57)</td>
+								<td>Castle Intro (0x1)</td>
+							</tr>
+							<tr>
+								<td>Main - Top</td>
+								<td>Castle (0x57)</td>
+								<td>Wind Tower (0xE)</td>
+							</tr>
+							<tr>
+								<td>Main - Warp 2</td>
+								<td>Castle (0x57)</td>
+								<td>Warp 2 T&S (0x3)</td>
+							</tr>
+							<tr>
+								<td>Main - Warp 4</td>
+								<td>Castle (0x57)</td>
+								<td>Warp 4 T&S (0xA)</td>
+							</tr>
+							<tr>
+								<td>Baboon Blast Course</td>
+								<td>Castle BBlast (0xBB)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Ballroom</td>
+								<td>Ballroom (0x58)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Car Race</td>
+								<td>Castle Car Race (0xB9)</td>
+								<td>From Museum (0x0)</td>
+							</tr>
+							<tr>
+								<td>Crypt - DK, Diddy, Chunky</td>
+								<td>Crypt: DK, Diddy, Chunky (0x70)</td>
+								<td>From Crypt Hub (0x0)</td>
+							</tr>
+							<tr>
+								<td>Crypt - Lanky, Tiny</td>
+								<td>Crypt: Lanky, Tiny (0x6C)</td>
+								<td>From Crypt Hub (0x0)</td>
+							</tr>
+							<tr>
+								<td>Crypt - Hub</td>
+								<td>Crypt: Hub (0xB7)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Dungeon</td>
+								<td>Dungeon (0xA3)</td>
+								<td>From Dungeon Tunnel (0x0)</td>
+							</tr>
+							<tr>
+								<td>Dungeon Tunnel - Near</td>
+								<td>Dungeon Tunnel (0x97)</td>
+								<td>From Castle: Near World Entry (0x0)</td>
+							</tr>
+							<tr>
+								<td>Dungeon Tunnel - Far</td>
+								<td>Dungeon Tunnel (0x97)</td>
+								<td>From Castle: Near Crypt Entry (0x2)</td>
+							</tr>
+							<tr>
+								<td>Greenhouse</td>
+								<td>Greenhouse (0xA8)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Jetpac</td>
+								<td>Jetpac (0x9)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<tr>
+								<td>Library</td>
+								<td>Library (0x72)</td>
+								<td>From Castle: Entrance (0x0)</td>
+							</tr>
+							<tr>
+								<td>Minecart</td>
+								<td>Castle Minecart (0x6A)</td>
+								<td>From Crypt: DK, Diddy, Chunky (0x0)</td>
+							</tr>
+							<tr>
+								<td>Museum</td>
+								<td>Museum (0x71)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Shed</td>
+								<td>Shed (0xA6)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Tree</td>
+								<td>Tree (0xA4)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Trash Can</td>
+								<td>Trash Can (0xA7)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<tr>
+								<td>Wind Tower</td>
+								<td>Wind Tower (0x69)</td>
+								<td>From Castle (0x0)</td>
+							</tr>
+							<!-- HELM & K ROOL -->
+							<tr>
+								<td rowspan="8" class="level helmrool">Hideout Helm and K. Rool</td>
+								<td>Helm - Entrance</td>
+								<td>Hideout Helm (0x11)</td>
+								<td>From Helm Lobby (0x0)</td>
+							</tr>
+							<tr>
+								<td>Helm - BoM Room</td>
+								<td>Hideout Helm (0x11)</td>
+								<td>Near Lever (0x3)</td>
+							</tr>
+							<tr>
+								<td>Helm - Navigation Room</td>
+								<td>Hideout Helm (0x11)</td>
+								<td>K. Rool Press Button (0x4)</td>
+							</tr>
+							<tr>
+								<td>K. Rool - DK Phase</td>
+								<td>K. Rool Fight: DK Phase (0xCB)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<tr>
+								<td>K. Rool - Diddy Phase</td>
+								<td>K. Rool Fight: Diddy Phase (0xCC)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<tr>
+								<td>K. Rool - Lanky Phase</td>
+								<td>K. Rool Fight: Lanky Phase (0xCD)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<tr>
+								<td>K. Rool - Tiny Phase</td>
+								<td>K. Rool Fight: Tiny Phase (0xCE)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<tr>
+								<td>K. Rool - Chunky Phase</td>
+								<td>K. Rool Fight: Chunky Phase (0xCF)</td>
+								<td>Default (0x0)</td>
+							</tr>
+							<!-- ISLES -->
+							<tr>
+								<td rowspan="18" class="level isles">DK Isles</td>
+								<td>Main - Escape</td>
+								<td>DK Isles (0x22)</td>
+								<td>Training Grounds (0x0)</td>
+							</tr>
+							<tr>
+								<td>Main - BFI</td>
+								<td>DK Isles (0x22)</td>
+								<td>Banana Fairy Island (0x8)</td>
+							</tr>
+							<tr>
+								<td>Main - Warp 3</td>
+								<td>DK Isles (0x22)</td>
+								<td>K. Rool (0xC)</td>
+							</tr>
+							<tr>
+								<td>Main - Kroc Isle</td>
+								<td>DK Isles (0x22)</td>
+								<td>Factory Lobby (0x4)</td>
+							</tr>
+							<tr>
+								<td>Main - Top of DK Isle</td>
+								<td>DK Isles (0x22)</td>
+								<td>Fungi Lobby (0x6)</td>
+							</tr>
+							<tr>
+								<td>Banana Fairy Island</td>
+								<td>Banana Fairy Island (0xBD)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>K. Lumsy</td>
+								<td>K. Lumsy (0x61)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Jungle Japes</td>
+								<td>Jungle Japes Lobby (0xA9)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Angry Aztec</td>
+								<td>Angry Aztec Lobby (0xAD)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Frantic Factory</td>
+								<td>Frantic Factory Lobby (0xAF)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Gloomy Galleon</td>
+								<td>Gloomy Galleon Lobby (0xAE)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Fungi Forest</td>
+								<td>Fungi Forest Lobby (0xB2)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Crystal Caves</td>
+								<td>Crystal Caves Lobby (0xC2)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Creepy Castle</td>
+								<td>Creepy Castle Lobby (0xC1)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Lobby - Hideout Helm</td>
+								<td>Hideout Helm Lobby (0xAA)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Snides Room</td>
+								<td>DK Isles: Snide's Room (0xC3)</td>
+								<td>From Isles (0x0)</td>
+							</tr>
+							<tr>
+								<td>Training Grounds</td>
+								<td>Training Grounds (0xB0)</td>
+								<td>Treehouse (0x1)</td>
+							</tr>
+							<tr>
+								<td>Treehouse</td>
+								<td>Treehouse (0xAB)</td>
+								<td>From Intro Story (0x2)</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../script/nav.js"></script>
+	<script src="../script/tree.js"></script>
+	<script>
+		function treeshow(treeid) {
+			var treeboxes = document.getElementsByClassName("treebox")
+			var t;
+
+			for (t = 0; t < treeboxes.length; t++) {
+				var found_treeid = treeboxes[t].getAttribute("tree-id")
+				if (found_treeid == treeid) {
+					treeboxes[t].classList.remove("hide")
+				} else {
+					treeboxes[t].classList.add("hide")
+				}
+			}
+		}
+	</script>
+</body>
+</html>
