@@ -38,3 +38,7 @@ a.hovergold:hover {
 .active {
 	display: block;
 }
+
+.tree li {
+	padding-top: 1px;
+}

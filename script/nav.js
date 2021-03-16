@@ -2,7 +2,7 @@ var navHtml = "\
 	<div class='navbar' id='navbar'>\
 		<div class='items'>\
 			<div class='logo'>\
-				<a href='./index.html'>\
+				<a href='/index.html'>\
 					<ul>\
 						<li>\
 							Ballaam's DK64 Tools\
@@ -13,7 +13,7 @@ var navHtml = "\
 			<div class='links'>\
 				<ul class='container text noselect'>\
 					<li>\
-						<a href='./index.html' class='nav_link'>\
+						<a href='/index.html' class='nav_link'>\
 							<span>\
 								<strong>\
 									Home\
@@ -48,37 +48,37 @@ document.getElementById("navigation").innerHTML = navHtml;
 document.getElementById("tools_hover").addEventListener("click", toggleDropdown)
 
 function homewarp() {
-	window.location = "./home.html"
+	window.location = "/home.html"
 }
 
 var toolbar_items = [
 	{
 		"text": "Object Locations",
-		"link": "./map_data.html"
+		"link": "/map_data.html"
 	},
 	{
 		"text": "Cutscene Data",
-		"link": "./cutscene_data.html"
+		"link": "/cutscene_data.html"
 	},
 	{
 		"text": "Mad Jack Luck Calculator",
-		"link": "./mj_luck_calculator.html"
+		"link": "/mj_luck_calculator.html"
 	},
 	{
 		"text": "List RNG Values",
-		"link": "./next_rng_values.html"
+		"link": "/next_rng_values.html"
 	},
 	{
 		"text": "Main Menu Event Calculator",
-		"link": "./menu_events.html"
+		"link": "/menu_events.html"
 	},
 	{
 		"text": "Pufftoss Viewer",
-		"link": "./pufftoss_viewer.html"
+		"link": "/pufftoss_viewer.html"
 	},
 	{
 		"text": "DK64 Practice ROM",
-		"link": "./practicerom.html"
+		"link": "/practicerom.html"
 	}
 ];
 

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Installation Guide | Donkey Kong 64 Practice ROM</title>
+	<link rel="stylesheet" href="../style/nav.css">
+	<link rel="stylesheet" href="../style/main.css">
+	<link rel="stylesheet" href="../style/home.css">
+	<link rel="stylesheet" href="../style/maps.css">
+	<link rel="stylesheet" href="../style/mj.css">
+	<link rel="stylesheet" href="../style/tree.css">
+	<link rel="stylesheet" href="../style/n64buttons.css">
+	<meta name="description" content="" />
+	<style type="text/css">
+		.homebox {
+			transition: 0.5s ease-in-out;
+			cursor: default;
+		}
+		.homebox.clickable:hover {
+			border-color:red;
+		}
+		.hide {
+			display: none;
+		}
+		.treebox {
+			color: white;
+			padding: 10px;
+		}
+		.treebox .treebox_head {
+			font-weight: bold;
+			padding-bottom: 10px;
+			margin-top:10px;
+		}
+		.treebox .treebox_body {
+			padding-top: 10px;
+			/*padding-left: 10px;*/
+		}
+		td, th {
+			padding-top: 5px;
+			padding-bottom: 5px;
+			padding-right: 10px;
+			padding-left: 5px;
+		}
+		.bordertable td, .bordertable th {
+			border: 1px solid white;
+		}
+		.bordertable {
+			border-collapse: collapse;
+		}
+		.alternatingtable {
+			border-collapse: collapse;
+		}
+		.alternatingtable tbody tr:nth-child(2n+1) td:not(.level) {
+			background-color: rgba(100,100,100,0.3);
+		}
+		.alternatingtable td, .alternatingtable th {
+			padding: 7px;
+			padding-left: 12px;
+		}
+		download-buttons {
+			display: block;
+			padding: 10px;
+		}
+		download-buttons .isdownload::before {
+			content: "\203A";
+			cursor: pointer;
+			user-select: none;
+			color: darkgoldenrod;
+			display: inline-block;
+		}
+		.changelog {
+			list-style-type: none;
+			margin:0;
+			padding:0;
+			padding-left: 10px;
+		}
+		.warning {
+			color: red;
+		}
+		hr {
+			border-color: darkgoldenrod;
+		}
+	</style>
+</head>
+<body>
+	<nav id="navigation"></nav>
+	<div class="v_spacer">
+	</div>
+	<div class="flexsplitter">
+		<div class="homebox">
+			<div class="header master_header">
+				<strong>Practice ROM Installation Guide</strong>
+			</div>
+		</div>
+	</div>
+	<div class="flexsplitter">
+		<div class="homebox" style="flex:25%">
+			<ul class="tree">
+				<li>
+					<span class="caret">Pre-requisites</span>
+					<ul class="nested">
+						<li><a class="excluded_link hovergold" onclick="treeshow('req_n64')">N64</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('req_wiiu')">Wii U VC</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('req_emu')">Emulators</a></li>
+					</ul>
+				</li>
+				<li>
+					<span class="caret">Patching</span>
+					<ul class="nested">
+						<li><a class="excluded_link hovergold" onclick="treeshow('patch_beat')">Beat</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('patch_web')">Web Patcher</a></li>
+						<li><a class="excluded_link hovergold" onclick="treeshow('patch_lunar')">Lunar IPS</a></li>
+					</ul>
+				</li>
+				<li><a class="excluded_link hovergold isversion" onclick="treeshow('wii_inject')">Inject to Wii U</a></li>		
+			</ul>
+		</div>
+		<div class="homebox" style="flex:75%">
+			<div class="treebox hide" tree-id="req_n64">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">N64 Requirements</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					If you would like to play this on Nintendo 64, you will need to purchase an <a class="excluded_link hovergold" href="https://krikzz.com/store/">Everdrive</a>. The Everdrive purchased needs to be version 2.5 or higher.
+					<br><br>
+					You will need to possess a vanilla <strong>.z64</strong> US Donkey Kong 64 ROM. We cannot provide/assist you with this, you will need to source this yourself. The ROM will need to have the following ROM Hash: <em>CF806FF2603640A748FCA5026DED28802F1F4A50</em>. The PAL, Japanese and Kiosk/'Not for Resale' ROMs are not currently supported.
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="req_wiiu">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Wii U Requirements</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					If you would like to play this on Wii U, your Wii U will need to be homebrewed to enable custom software to be booted on it. Tutorials on performing the homebrew process can be found here:<br>
+					<ul>
+						<li><a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=LW5QVxAlDoY&ab_channel=JackSorrell">Tutorial 1</a></li>
+						<li><a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=3-qnzaxL7Bg">Tutorial 2</a></li>
+					</ul>
+					You will need to possess a vanilla <strong>.z64</strong> US Donkey Kong 64 ROM. We cannot provide/assist you with this, you will need to source this yourself. The ROM will need to have the following ROM Hash: <em>CF806FF2603640A748FCA5026DED28802F1F4A50</em>. The PAL, Japanese and Kiosk/'Not for Resale' ROMs are not currently supported.
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="req_emu">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Emulator Requirements</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					If you wish to play this on an emulator, we would recommend that you use TASVideos's emulator <a class="excluded_link hovergold" href="http://tasvideos.org/BizHawk.html">BizHawk</a>. Project64 doesn't seem to respond correctly to the Practice ROM. <strong>Make sure you set your ROM size to 8MB</strong>.
+					<br><br>
+					You will need to possess a vanilla <strong>.z64</strong> US Donkey Kong 64 ROM. We cannot provide/assist you with this, you will need to source this yourself. The ROM will need to have the following ROM Hash: <em>CF806FF2603640A748FCA5026DED28802F1F4A50</em>. The PAL, Japanese and Kiosk/'Not for Resale' ROMs are not currently supported.
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="patch_beat">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Patching the Practice ROM with Beat</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					Download Beat: <a class="excluded_link hovergold" href="https://www.romhacking.net/utilities/893/">Beat</a>
+					<br><br>
+					To convert your vanilla DK64 ROM to a Practice ROM with Beat, you will need to perform the following steps:
+					<ol>
+						<li>Select <em>"Apply Patch"</em></li>
+						<li>Select the .bps file as the patch file</li>
+						<li>Select the vanilla DK64 .z64 ROM as the original file</li>
+						<li>Enter a file save location for your Practice ROM .z64 file</li>
+						<li>Click <em>"Apply"</em></li>
+					</ol>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="patch_web">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Patching the Practice ROM with Patcharobi</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					Link to Wedarobi's Web Patcher: <a class="excluded_link hovergold" href="https://patch.wedarobi.com/dk_practice_rom">Patcharobi</a>
+					<br><br>
+					To convert your vanilla DK64 ROM to a Practice ROM with Patcharobi, you will need to perform the following steps:
+					<ol>
+						<li>Drag your .z64 DK64 ROM onto the web patcher</li>
+						<li>Select the version of the Practice ROM you wish to download</li>
+						<li>Click the green bar at the bottom to download your patched .z64 file</li>
+					</ol>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="patch_lunar">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Patching the Practice ROM with Lunar IPS</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					<span class="warning"><strong>NOTE: </strong>Lunar IPS is not supported v1.3+ and will likely produce a non-functioning Practice ROM if attempted on a v1.3+ patch</span><br><br>
+					Download Lunar IPS: <a class="excluded_link hovergold" href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>
+					<br><br>
+					To convert your vanilla DK64 ROM to a Practice ROM with Lunar IPS, you will need to perform the following steps:
+					<ol>
+						<li>Select <em>"Apply IPS Patch"</em></li>
+						<li>Select the .ips file as the patch file</li>
+						<li>Select the vanilla DK64 .z64 ROM as the original file</li>
+						<li>Enter a file save location for your Practice ROM .z64 file</li>
+					</ol>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="wii_inject">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Injecting the Practice ROM to Wii U</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button style="width:fit-content;padding:5px;padding-bottom: 2px" class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					Download PhacoxsInjector: <a class="excluded_link hovergold" href="https://gbatemp.net/threads/release-phacoxs-injector-nes-snes-n64-gba-nds-for-wii-u.554521/">PhacoxsInjector</a><br>
+					Download the DK64 Base: <a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=B7xxMJIFK8M">DK64 Base</a></li><br>
+					Download the DK64 Config File: <a class="excluded_link hovergold" href="http://phacoxcll.blogspot.com/2019/09/archivos-ini-de-la-consola-virtual-de.html">DK64 Config</a><br>
+
+					<br>
+					To convert your patched Practice ROM to a Wii U inject, you will need to perform the following steps:
+					<ol>
+						<li>Homebrew your Nintendo Wii U. Tutorials for how to do so can be found <a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=LW5QVxAlDoY">here</a> and <a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=3-qnzaxL7Bg">here</a></li>
+						<li>Open PhacoxsInjector</li>
+						<li>Click "Choose" and select your modified ROM that has been converted with any of the above methods</li>
+						<li>Click "Load Base" and select the DK64 Base
+						<li>Go to Config file and select the .ini file</li>
+						<li>Add the Wii U "Common Key", which can be found with a Google search</li>
+						<li>Go to injecting and select "Do pack" to start the injection</li>
+						<li>Select the install folder on your FAT32 SD Card. Your SD card will also need the following folders correctly set up:</li>
+						<ul>
+							<li>apps</li>
+							<li>hax chi</li>
+							<li>Nintendo</li>
+							<li>saves</li>
+							<li>wiiu</li>
+						</ul>
+						<li>Insert the SD Card into your Wii U</li>
+						<li>Select the Haxchi app on your Wii U. Hold A or B to use custom firmware, then go to "WUP Installer"</li>
+						<li>Select the name of your hack, and click "Install"</li>
+						<li>Select NAND</li>
+						<li>Go back to the Wii U Menu to run the injected hack</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="../script/nav.js"></script>
+	<script src="../script/tree.js"></script>
+	<script>
+		function treeshow(treeid) {
+			if (treeid == "latest") {
+				var versions = document.getElementsByClassName("isversion")
+				var versionFunc = versions[0].getAttribute("onclick");
+				var versionFuncArray = versionFunc.split("'");
+				treeid = versionFuncArray[1];
+			}
+			var treeboxes = document.getElementsByClassName("treebox")
+			var t;
+
+			for (t = 0; t < treeboxes.length; t++) {
+				var found_treeid = treeboxes[t].getAttribute("tree-id")
+				if (found_treeid == treeid) {
+					treeboxes[t].classList.remove("hide")
+					window.history.replaceState(null, null, "?guide=" + found_treeid)
+				} else {
+					treeboxes[t].classList.add("hide")
+				}
+			}
+		}
+
+		function goTo(url) {
+			window.location.href = url;
+		}
+
+		function copyToClipboard(text) {
+		    var dummy = document.createElement("textarea");
+		    document.body.appendChild(dummy);
+		    dummy.value = text;
+		    dummy.select();
+		    document.execCommand("copy");
+		    document.body.removeChild(dummy);
+		}
+
+		function getLink(param) {
+			window.history.replaceState(null, null, param)
+			copyToClipboard(window.location.origin + window.location.pathname + param)
+		}
+
+		function goThroughParams() {
+			var queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString)
+			const detected_guide = urlParams.get("guide");
+			console.log("Detected Guide: " + detected_guide)
+			var treeboxes = document.getElementsByClassName("treebox")
+			var t;
+			var version = "";
+
+			for (t = 0; t < treeboxes.length; t++) {
+				treeid = treeboxes[t].getAttribute("tree-id")
+				if (treeid == detected_guide) {
+					treeboxes[t].classList.remove("hide")
+				} else {
+					treeboxes[t].classList.add("hide")
+				}
+			}
+		}
+		goThroughParams();
+
+		function toggleImage(el,hover) {
+			var img_node = el.getElementsByTagName("img")[0]
+			var new_img = "../assets/link.png";
+			if (hover) {
+				new_img = "../assets/link_black.png"
+			}
+			img_node.setAttribute("src",new_img)
+		}
+
+		function editButtonClickEvent() {
+			var treeboxes = document.getElementsByClassName("treebox")
+			var t;
+			var version = "";
+
+			for (t = 0; t < treeboxes.length; t++) {
+				found_guide = treeboxes[t].getAttribute("tree-id")
+				var link_button = treeboxes[t].getElementsByTagName("link-button")[0]
+				link_button.childNodes[1].setAttribute("onclick","getLink('" + "?guide=" + found_guide + "')");
+			}
+		}
+		editButtonClickEvent()
+	</script>
+</body>
+</html>
