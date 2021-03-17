@@ -95,8 +95,9 @@ function toggleDropdown() {
 		toolsContainer.classList.add("container")
 		toolsContainer.setAttribute("id","navToolsContainer")
 		var navhook = document.getElementById("navbar")
+		console.log(navhook.getBoundingClientRect())
 		var top_offset = navhook.getBoundingClientRect().bottom - 1
-		toolsContainer.style.top = top_offset;
+		toolsContainer.style.top = top_offset + "px";
 
 		toolbar_items.forEach(item => {
 			var toolItem = document.createElement("div")
