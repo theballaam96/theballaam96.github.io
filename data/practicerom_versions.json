@@ -269,6 +269,17 @@
                "Fixed a critical bug where exiting submaps into a main map (after visiting that main map) would sometimes crash the game",
                "L can be used to start/stop/reset the timer regardless of the start/stop triggers (in cases of accidental timer starts)"
             ]
+         },
+         {
+            "version":"1.3.3",
+            "release_date":"28-MAR-2021",
+            "beat":"https://github.com/theballaam96/theballaam96.github.io/raw/master/practicerom/1_3_3/Donkey%20Kong%2064%20Practice%20ROM%20V1_3_3.bps",
+            "lunar":"",
+            "source":"https://github.com/theballaam96/theballaam96.github.io/tree/master/practicerom/1_3_3/Source",
+            "lunar_warning":false,
+            "changelog":[
+               
+            ]
          }
       ]
    }
