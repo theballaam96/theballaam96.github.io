@@ -9,6 +9,15 @@
 	<link rel="stylesheet" href="../style/mj.css">
 	<link rel="stylesheet" href="../style/tree.css">
 	<link rel="stylesheet" href="../style/n64buttons.css">
+	<link rel="stylesheet" href="../style/manual.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+	<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+	<link rel="manifest" href="../site.webmanifest">
+	<link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
 	<meta name="description" content="" />
 	<style type="text/css">
 		.homebox {
@@ -20,41 +29,6 @@
 		}
 		.hide {
 			display: none;
-		}
-		.treebox {
-			color: white;
-			padding: 10px;
-		}
-		.treebox .treebox_head {
-			font-weight: bold;
-			padding-bottom: 10px;
-			margin-top:10px;
-		}
-		.treebox .treebox_body {
-			padding-top: 10px;
-			/*padding-left: 10px;*/
-		}
-		td, th {
-			padding-top: 5px;
-			padding-bottom: 5px;
-			padding-right: 10px;
-			padding-left: 5px;
-		}
-		.bordertable td, .bordertable th {
-			border: 1px solid white;
-		}
-		.bordertable {
-			border-collapse: collapse;
-		}
-		.alternatingtable {
-			border-collapse: collapse;
-		}
-		.alternatingtable tbody tr:nth-child(2n+1) td:not(.level) {
-			background-color: rgba(100,100,100,0.3);
-		}
-		.alternatingtable td, .alternatingtable th {
-			padding: 7px;
-			padding-left: 12px;
 		}
 		download-buttons {
 			display: block;
@@ -73,41 +47,21 @@
 			padding:0;
 			padding-left: 10px;
 		}
-		.warning {
-			color: red;
-		}
-		hr {
-			border-color: darkgoldenrod;
-		}
-
 		.link_button {
 			width:fit-content;
 			width:-moz-fit-content;
 			padding:5px;
-			padding-bottom: 2px
+			padding-bottom: 2px;
+			display:none;
 		}
-		.ytcontainer {
-			margin-left: auto;
-			margin-right: auto;
-			width: fit-content;
-			width: -moz-fit-content;
-			padding: 15px;
-		}
+		
 	</style>
 </head>
 <body>
 	<nav id="navigation"></nav>
-	<div class="v_spacer">
-	</div>
-	<div class="flexsplitter">
-		<div class="homebox">
-			<div class="header master_header">
-				<strong>Practice ROM Installation Guide</strong>
-			</div>
-		</div>
-	</div>
-	<div class="flexsplitter">
-		<div class="homebox" style="flex:25%">
+	<div class="flexsplitter max">
+		<div class="leftbox" style="flex:20%">
+			<div class="v_spacer"></div>
 			<ul class="tree">
 				<li>
 					<span class="caret">Pre-requisites</span>
@@ -125,10 +79,12 @@
 						<li><a class="excluded_link hovergold" onclick="treeshow('patch_lunar')">Lunar IPS</a></li>
 					</ul>
 				</li>
-				<li><a class="excluded_link hovergold isversion" onclick="treeshow('wii_inject')">Inject to Wii U</a></li>		
+				<li><a class="excluded_link hovergold isversion" onclick="treeshow('wii_inject')">Inject to Wii U</a></li>
+				<li><a class="excluded_link hovergold isversion" onclick="treeshow('support')">Support</a></li>		
 			</ul>
 		</div>
-		<div class="homebox" style="flex:75%">
+		<div class="rightbox" style="flex:80%">
+			<div class="v_spacer"></div>
 			<div class="treebox hide" tree-id="req_n64">
 				<div class="flexsplitter">
 					<div style="flex:50%">
@@ -143,9 +99,19 @@
 					</div>
 				</div>
 				<div class="treebox_body">
-					If you would like to play this on Nintendo 64, you will need to purchase an <a class="excluded_link hovergold" href="https://krikzz.com/store/">Everdrive</a>. The Everdrive purchased needs to be version 2.5 or higher.
-					<br><br>
-					You will need to possess a vanilla <strong>.z64</strong> US Donkey Kong 64 ROM. We cannot provide/assist you with this, you will need to source this yourself. The ROM will need to have the following ROM Hash: <em>CF806FF2603640A748FCA5026DED28802F1F4A50</em>. The PAL, Japanese and Kiosk/'Not for Resale' ROMs are not currently supported.
+					<ul>
+						<li><strong>N64 Everdrive: </strong>If you would like to play this on Nintendo 64, you will need to purchase an Everdrive. The Everdrive purchased needs to be version 2.5 or higher.</li>
+						<ul>
+							<li>Krikzz Store: <a class="excluded_link hovergold" href="https://krikzz.com/store/">Link</a></li>
+						</ul>
+						<li><strong>Donkey Kong 64 ROM: </strong>You will need to possess a vanilla US Donkey Kong 64 ROM.</li>
+						<ul>
+							<li>The ROM will need to have the .z64 file format. The .n64 and .v64 file formats will not work</li>
+							<li>We <strong>cannot</strong> provide this for you. You will need to source this yourself.</li>
+							<li>The ROM will need to have the following ROM Hash: <span class="highlight">CF806FF2603640A748FCA5026DED28802F1F4A50</span>.</li>
+							<li>The 3 other releases (PAL, Japanese & Kiosk/NFR) are not currently supported with the Practice ROM.</li>
+						</ul>
+					</ul>
 				</div>
 			</div>
 			<div class="treebox hide" tree-id="req_wiiu">
@@ -162,12 +128,20 @@
 					</div>
 				</div>
 				<div class="treebox_body">
-					If you would like to play this on Wii U, your Wii U will need to be homebrewed to enable custom software to be booted on it. Tutorials on performing the homebrew process can be found here:<br>
 					<ul>
-						<li><a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=LW5QVxAlDoY&ab_channel=JackSorrell">Tutorial 1</a></li>
-						<li><a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=3-qnzaxL7Bg">Tutorial 2</a></li>
+						<li><strong>Homebrewed Wii U: </strong>If you would like to play this on Wii U, your Wii U will need to be homebrewed to enable custom software to be booted on it. Tutorials on performing the homebrew process can be found here:</li>
+						<ul>
+							<li><a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=LW5QVxAlDoY&ab_channel=JackSorrell">Tutorial 1</a></li>
+							<li><a class="excluded_link hovergold" href="https://www.youtube.com/watch?v=3-qnzaxL7Bg">Tutorial 2</a></li>
+						</ul>
+						<li><strong>Donkey Kong 64 ROM: </strong>You will need to possess a vanilla US Donkey Kong 64 ROM.</li>
+						<ul>
+							<li>The ROM will need to have the .z64 file format. The .n64 and .v64 file formats will not work</li>
+							<li>We <strong>cannot</strong> provide this for you. You will need to source this yourself.</li>
+							<li>The ROM will need to have the following ROM Hash: <span class="highlight">CF806FF2603640A748FCA5026DED28802F1F4A50</span>.</li>
+							<li>The 3 other releases (PAL, Japanese & Kiosk/NFR) are not currently supported with the Practice ROM.</li>
+						</ul>
 					</ul>
-					You will need to possess a vanilla <strong>.z64</strong> US Donkey Kong 64 ROM. We cannot provide/assist you with this, you will need to source this yourself. The ROM will need to have the following ROM Hash: <em>CF806FF2603640A748FCA5026DED28802F1F4A50</em>. The PAL, Japanese and Kiosk/'Not for Resale' ROMs are not currently supported.
 				</div>
 			</div>
 			<div class="treebox hide" tree-id="req_emu">
@@ -184,15 +158,31 @@
 					</div>
 				</div>
 				<div class="treebox_body">
-					If you wish to play this on an emulator, we would recommend that you use TASVideos's emulator <a class="excluded_link hovergold" href="http://tasvideos.org/BizHawk.html">BizHawk</a>. Project64 doesn't seem to respond correctly to the Practice ROM. <strong>Make sure you set your ROM size to 8MB</strong>.
-					<br><br>
-					You will need to possess a vanilla <strong>.z64</strong> US Donkey Kong 64 ROM. We cannot provide/assist you with this, you will need to source this yourself. The ROM will need to have the following ROM Hash: <em>CF806FF2603640A748FCA5026DED28802F1F4A50</em>. The PAL, Japanese and Kiosk/'Not for Resale' ROMs are not currently supported.
+					<div class="warning">Since the Practice ROM is different from a vanilla DK64 ROM, old emulation-exclusive bugs will occur when running on any emulator, such as the "Graphical Spiking" bug</div>
+					<ul>
+						<li>
+							<strong>An N64 Emulator: </strong>
+							If you wish to play this on an emulator, we would recommend that you use TASVideos's emulator, BizHawk. A link for BizHawk can be found below:
+							<ul>
+								<li>BizHawk: <a class="excluded_link hovergold" href="http://tasvideos.org/BizHawk.html">Link</a></li>
+								<li>Project64 does not seem to respond correctly to the Practice ROM from testing.</li>
+								<li>Make sure to set your ROM size to 8MB</li>
+							</ul>
+						</li>
+						<li><strong>Donkey Kong 64 ROM: </strong>You will need to possess a vanilla US Donkey Kong 64 ROM.</li>
+						<ul>
+							<li>The ROM will need to have the .z64 file format. The .n64 and .v64 file formats will not work</li>
+							<li>We <strong>cannot</strong> provide this for you. You will need to source this yourself.</li>
+							<li>The ROM will need to have the following ROM Hash: <span class="highlight">CF806FF2603640A748FCA5026DED28802F1F4A50</span>.</li>
+							<li>The 3 other releases (PAL, Japanese & Kiosk/NFR) are not currently supported with the Practice ROM.</li>
+						</ul>
+					</ul>
 				</div>
 			</div>
 			<div class="treebox hide" tree-id="patch_beat">
 				<div class="flexsplitter">
 					<div style="flex:50%">
-						<h2 class="treebox_head">Patching the Practice ROM with Beat</h2>
+						<h2 class="treebox_head">Patching: Beat</h2>
 					</div>
 					<div style="flex:50%;text-align: right;">
 						<link-button>
@@ -203,7 +193,7 @@
 					</div>
 				</div>
 				<div class="treebox_body">
-					Download Beat: <a class="excluded_link hovergold" href="https://www.romhacking.net/utilities/893/">Beat</a>
+					Download: <a class="excluded_link hovergold" href="https://www.romhacking.net/utilities/893/">Beat</a>
 					<br><br>
 					To convert your vanilla DK64 ROM to a Practice ROM with Beat, you will need to perform the following steps:
 					<ol>
@@ -218,7 +208,7 @@
 			<div class="treebox hide" tree-id="patch_web">
 				<div class="flexsplitter">
 					<div style="flex:50%">
-						<h2 class="treebox_head">Patching the Practice ROM with Patcharobi</h2>
+						<h2 class="treebox_head">Patching: Patcharobi</h2>
 					</div>
 					<div style="flex:50%;text-align: right;">
 						<link-button>
@@ -229,7 +219,7 @@
 					</div>
 				</div>
 				<div class="treebox_body">
-					Link to Wedarobi's Web Patcher: <a class="excluded_link hovergold" href="https://patch.wedarobi.com/dk_practice_rom">Patcharobi</a>
+					Visit: <a class="excluded_link hovergold" href="https://patch.wedarobi.com/dk_practice_rom">Patcharobi</a>
 					<br><br>
 					To convert your vanilla DK64 ROM to a Practice ROM with Patcharobi, you will need to perform the following steps:
 					<ol>
@@ -242,7 +232,7 @@
 			<div class="treebox hide" tree-id="patch_lunar">
 				<div class="flexsplitter">
 					<div style="flex:50%">
-						<h2 class="treebox_head">Patching the Practice ROM with Lunar IPS</h2>
+						<h2 class="treebox_head">Patching: Lunar IPS</h2>
 					</div>
 					<div style="flex:50%;text-align: right;">
 						<link-button>
@@ -253,8 +243,8 @@
 					</div>
 				</div>
 				<div class="treebox_body">
-					<span class="warning"><strong>NOTE: </strong>Lunar IPS is not supported v1.3+ and will likely produce a non-functioning Practice ROM if attempted on a v1.3+ patch</span><br><br>
-					Download Lunar IPS: <a class="excluded_link hovergold" href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>
+					<span class="warning">Lunar IPS is not supported v1.3+ and will likely produce a non-functioning Practice ROM if attempted on a v1.3+ patch</span><br><br>
+					Download: <a class="excluded_link hovergold" href="https://www.romhacking.net/utilities/240/">Lunar IPS</a>
 					<br><br>
 					To convert your vanilla DK64 ROM to a Practice ROM with Lunar IPS, you will need to perform the following steps:
 					<ol>
@@ -312,6 +302,32 @@
 					<div class="ytcontainer">
 						<iframe width="560" height="315" src="https://www.youtube.com/embed/h6Ta6cAFzEc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 					</div>
+				</div>
+			</div>
+			<div class="treebox hide" tree-id="support">
+				<div class="flexsplitter">
+					<div style="flex:50%">
+						<h2 class="treebox_head">Support</h2>
+					</div>
+					<div style="flex:50%;text-align: right;">
+						<link-button>
+							<button class="link_button" onmouseover="toggleImage(this,true)" onmouseleave="toggleImage(this,false)">
+								<img src="../assets/link.png" height="20px">
+							</button>
+						</link-button>
+					</div>
+				</div>
+				<div class="treebox_body">
+					If you need any additional support in setting up the Practice ROM on your console or platform of choice, then it is advised that you join the Donkey Kong 64 speedrunning discord and post your problem in the <span class="highlight">#practice-rom</span> channel.
+					<uL>
+						<li>Donkey Kong 64 Discord: <a class="excluded_link hovergold" href="https://discord.gg/955MmbtQBP">Link</a></li>
+					</uL>
+					Response times are usually very quick (within an hour), however may take longer depending on time of day/other circumstances. To assist us as much as possible, please mention the following in your post:
+					<ul>
+						<li>What platform are you trying to set up the Practice ROM on (Wii U, Nintendo 64, Emulator).</li>
+						<li>What problem you are experiencing.</li>
+						<li>What patching method (Beat, Lunar, Web Patcher) & version of the Practice ROM you are trying to use.</li>
+					</ul>
 				</div>
 			</div>
 		</div>

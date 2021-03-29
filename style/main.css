@@ -69,3 +69,13 @@ button:hover {
 	color: black;
 	background-color: gold;
 }
+.hovergold {
+	cursor: default;
+}
+.ytcontainer {
+	margin-left: auto;
+	margin-right: auto;
+	width: fit-content;
+	width: -moz-fit-content;
+	padding: 15px;
+}

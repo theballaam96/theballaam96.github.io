@@ -9,6 +9,15 @@
 	<link rel="stylesheet" href="../style/mj.css">
 	<link rel="stylesheet" href="../style/tree.css">
 	<link rel="stylesheet" href="../style/n64buttons.css">
+	<link rel="stylesheet" href="../style/manual.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
+	<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico">
+	<link rel="manifest" href="../site.webmanifest">
+	<link rel="mask-icon" href="../safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
 	<meta name="description" content="" />
 	<style type="text/css">
 		.homebox {
@@ -20,41 +29,6 @@
 		}
 		.hide {
 			display: none;
-		}
-		.treebox {
-			color: white;
-			padding: 10px;
-		}
-		.treebox .treebox_head {
-			font-weight: bold;
-			padding-bottom: 10px;
-			margin-top:10px;
-		}
-		.treebox .treebox_body {
-			padding-top: 10px;
-			/*padding-left: 10px;*/
-		}
-		td, th {
-			padding-top: 5px;
-			padding-bottom: 5px;
-			padding-right: 10px;
-			padding-left: 5px;
-		}
-		.bordertable td, .bordertable th {
-			border: 1px solid white;
-		}
-		.bordertable {
-			border-collapse: collapse;
-		}
-		.alternatingtable {
-			border-collapse: collapse;
-		}
-		.alternatingtable tbody tr:nth-child(2n+1) td:not(.level) {
-			background-color: rgba(100,100,100,0.3);
-		}
-		.alternatingtable td, .alternatingtable th {
-			padding: 7px;
-			padding-left: 12px;
 		}
 		download-buttons {
 			display: block;
@@ -73,34 +47,13 @@
 			padding:0;
 			padding-left: 10px;
 		}
-		.warning {
-			color: red;
-		}
-		hr {
-			border-color: darkgoldenrod;
-		}
-
-		.link_button {
-			width:fit-content;
-			width:-moz-fit-content;
-			padding:5px;
-			padding-bottom: 2px
-		}
 	</style>
 </head>
 <body>
 	<nav id="navigation"></nav>
-	<div class="v_spacer">
-	</div>
-	<div class="flexsplitter">
-		<div class="homebox">
-			<div class="header master_header">
-				<strong>Practice ROM Versions</strong>
-			</div>
-		</div>
-	</div>
-	<div class="flexsplitter">
-		<div class="homebox" style="flex:25%">
+	<div class="flexsplitter max">
+		<div class="leftbox" style="flex:20%">
+			<div class="v_spacer"></div>
 			<ul class="tree">
 				<li><a class="excluded_link hovergold" onclick="treeshow('latest')">Latest</a></li>
 				<li>
@@ -147,7 +100,8 @@
 				</li>				
 			</ul>
 		</div>
-		<div class="homebox" style="flex:75%">
+		<div class="rightbox" style="flex:80%">
+			<div class="v_spacer"></div>
 			<div class="treebox hide" tree-id="version_010" version="0.1">
 				<div class="flexsplitter">
 					<div style="flex:50%">
@@ -163,6 +117,7 @@
 				</div>
 				<release-date></release-date>
 				<div class="treebox_body">
+					<span class="warning">The OSD in this version crashes on N64</span>
 					<h3>Changelog</h3>
 					<ul class="changelog">
 						<li><strong>First Version</strong></li>
@@ -172,7 +127,6 @@
 							<li>On-Screen Display</li>
 							<ul>
 								<li>Warp to Map</li>
-								<li><span class="warning">Crashes on N64</span></li>
 							</ul>
 							<li>All kongs/moves unlocked by default</li>
 							<li>Basic Tag Anywhere</li>
@@ -839,8 +793,8 @@
 
 			for (t = 0; t < treeboxes.length; t++) {
 				version = treeboxes[t].getAttribute("version")
-				var link_button = treeboxes[t].getElementsByTagName("link-button")[0]
-				link_button.childNodes[1].setAttribute("onclick","getLink('" + "?version=" + version + "')");
+				// var link_button = treeboxes[t].getElementsByTagName("link-button")[0]
+				// link_button.childNodes[1].setAttribute("onclick","getLink('" + "?version=" + version + "')");
 				var list_items = [
 					{
 						"text": "Web Patcher",
