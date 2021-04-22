@@ -1,0 +1,108 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,3,200)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+xC_successful = 0
+xC_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+xC_focusedPlayerNumber_ = xC_focusedPlayerNumber
+xC_focusedPlayerNumber = (xC_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[xC_focusedPlayerNumber_]->does_player_exist) != 0) {
+xC_focusedPlayerPointer = *(int *)(character_change_pointer[xC_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(xC_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (param_4 == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 2)) {
+xC_successful = 1
+}
+}
+}
+}
+} while (xC_focusedPlayerNumber < player_count)
+}
+if (xC_successful == 1) {
+if (*(int *)(PlayerPointer->ActorType) == 4) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 103) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if (BYTE_807F61F8 == 0) {
+FUN_8064199C(behaviour,1,0)
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (CutsceneActive !== 1) {
+x54_ivar7 = (&WORD_807F6240)[23]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(23,10,behaviour)
+if (BYTE_807F61F8 == 0) {
+spawnActor(TimerController)
+temp = CurrentActorPointer
+WORD_807F61F4 = PTR_PTR_807FBB44
+CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)
+spawnTimer(0xDC,0x2A60)
+BYTE_807F61F8 = 1
+WORD_807F61F0 = PTR_PTR_807FBB44
+CurrentActorPointer = temp
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (CutsceneActive !== 1) {
+playCutsceneFromModelTwoScript(behaviour,8,1,0)
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (CutsceneActive !== 1) {
+if (BYTE_807F61F8 != 0) {
+FUN_806A2B08()
+}
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (BYTE_807F61F8 == 0) {
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (*(int *)(PlayerPointer->ActorType) !== 4) {
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+x54_ivar7 = (&WORD_807F6240)[23]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(23,20,behaviour)
+FUN_8064199C(behaviour,2,0)
+}

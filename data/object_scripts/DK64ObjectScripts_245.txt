@@ -1,0 +1,177 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x02>6,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x02>6,'Permanent') == 0) {
+FUN_80650BBC(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 7
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+x11_successful = false
+if (loadedActorCount != 0) {
+x11_focusedArraySlot = &loadedActorArray
+x11_focusedActor = loadedActorArray
+while (true) {
+x11_focusedArraySlot = x11_focusedArraySlot + 8
+if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x11_focusedActor->actor_type) == 6) {
+if (x11_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+x11_successful = true
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11_successful)) break;
+}
+}
+if (x11_successful) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
+if (BYTE_807F61F8 == 0) {
+FUN_806508B4(param_4,1,1)
+FUN_806085DC(param_4,326,255,127)
+FUN_806418E8(81,5,behaviour)
+*(byte *)(behaviour + 0x4B) = 14
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+x11_successful = false
+if (loadedActorCount != 0) {
+x11_focusedArraySlot = &loadedActorArray
+x11_focusedActor = loadedActorArray
+while (true) {
+x11_focusedArraySlot = x11_focusedArraySlot + 8
+if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x11_focusedActor->actor_type) == 6) {
+if (x11_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+x11_successful = true
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11_successful)) break;
+}
+}
+if (x11_successful) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
+if (BYTE_807F61F8 == 0) {
+x54_ivar7 = (&WORD_807F6240)[81]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_8064199C(behaviour,1,0)
+playCutsceneFromModelTwoScript(behaviour,10,1,0)
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+if (CutsceneActive !== 1) {
+if (BYTE_807F61F8 == 0) {
+spawnActor(TimerController)
+temp = CurrentActorPointer
+WORD_807F61F4 = PTR_PTR_807FBB44
+CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)
+spawnTimer(0xDC,0x2A50)
+BYTE_807F61F8 = 1
+WORD_807F61F0 = PTR_PTR_807FBB44
+CurrentActorPointer = temp
+}
+if (BYTE_807F61F8 != 0) {
+FUN_806A2B08()
+}
+*(byte *)(behaviour + 0x4B) = 8
+}
+}
+if (*(byte *)(behaviour + 0x48) == 8) {
+if (BYTE_807F61F8 == 0) {
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 8) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 8) {
+if (touchingModelTwoById(0x50) !== 0) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+FUN_806418E8(81,10,behaviour)
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 9) {
+FUN_806508B4(param_4,1,1)
+*(short *)(behaviour + 0x44) = 50
+*(byte *)(behaviour + 0x4B) = 10
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_8064199C(behaviour,0,0)
+*(byte *)(behaviour + 0x4B) = 7
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+FUN_8064199C(behaviour,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+FUN_80650A04(param_4,1,0)
+FUN_80650AD8(param_4,1,0,1)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 21
+}
+if (*(byte *)(behaviour + 0x48) == 21) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 22
+}
+if (*(byte *)(behaviour + 0x48) == 22) {
+FUN_8064199C(behaviour,2,0)
+}

@@ -1,0 +1,25 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+playCutsceneFromModelTwoScript(behaviour,20,0,0)
+*(short *)(behaviour + 0x44) = 30
+*(code *)(0x80747F1C)(behaviour,param_4,0,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playSong('Oh Banana', (float) 1)
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 20
+*(byte *)(behaviour + 0x4B) = 12
+}
+}

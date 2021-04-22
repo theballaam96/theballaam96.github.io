@@ -1,0 +1,9 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,6,50)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (FUN_80748068(behaviour,param_4,74,2) !== 0) {
+*(byte *)(behaviour + 0x4B) = 0
+}
+}

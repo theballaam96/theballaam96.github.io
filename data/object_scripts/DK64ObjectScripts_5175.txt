@@ -1,0 +1,132 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,10)
+FUN_8064199C(behaviour,3,300)
+FUN_80650BBC(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x2_successful = 0
+x2_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x2_focusedPlayerNumber_ = x2_focusedPlayerNumber
+x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
+x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
+if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+x2_successful = 1
+}
+}
+}
+} while x2_focusedPlayerNumber < player_count
+}
+if (x2_successful == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if ((*(byte *)CurrentCollectableBase->SlamLvl => 3)) {
+if (*(int *)(PlayerPointer->ActorType) == 3) {
+playCutsceneFromModelTwoScript(behaviour,2,1,0)
+FUN_8064199C(behaviour,1,0)
+*(short *)(behaviour + 0x44) = 40
+FUN_806508B4(param_4,1,1)
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x2_successful = 0
+x2_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x2_focusedPlayerNumber_ = x2_focusedPlayerNumber
+x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
+x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
+if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+x2_successful = 1
+}
+}
+}
+} while x2_focusedPlayerNumber < player_count
+}
+if (x2_successful == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if ((*(byte *)CurrentCollectableBase->SlamLvl => 3)) {
+if (*(int *)(PlayerPointer->ActorType) == 3) {
+FUN_806085DC(param_4,326,255,127)
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (FUN_80650D04(param_4,1) == 0) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806418E8(21,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[21]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(short *)(behaviour + 0x44) = 300
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806418E8(21,20,behaviour)
+x54_ivar7 = (&WORD_807F6240)[21]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+x31_ivar10_4 = indexOfNextObj(&WORD_807F6240[21])
+if (ObjectModel2ArrayPointer[x31_ivar10_4]->behaviour_pointer[0x48] == 23) {
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(byte *)(behaviour + 0x4B) = 0
+}
+}

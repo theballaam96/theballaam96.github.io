@@ -1,0 +1,124 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650AD8(param_4,2,0,1)
+FUN_80650A04(param_4,2,0)
+FUN_80650BBC(param_4,2,1)
+FUN_806508B4(param_4,2,1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x02
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (checkFlag(0x28>3,'Permanent') !== 0) {
+FUN_8065092C(param_4,2)
+*(byte *)(behaviour + 0x4B) = 40
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (checkFlag(0x28>3,'Permanent') == 0) {
+FUN_8065092C(param_4,2)
+FUN_80650b50(param_4,2,1)
+FUN_80650A04(param_4,2,10)
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+*(short *)(behaviour + 0x44) = 20
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806085DC(param_4,21,255,127)
+FUN_806508B4(param_4,2,1)
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (FUN_80650D04(param_4,2) == 0) {
+FUN_806085DC(param_4,469,255,127)
+FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,12,12,FLOAT_807F621C)
+*(short *)(behaviour + 0x44) = 50
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (CutsceneActive !== 1) {
+// Execution Type 0x53 stripped from final. Parameters: 5,0,0
+if (BYTE_807F61F8 == 0) {
+spawnActor(TimerController)
+temp = CurrentActorPointer
+WORD_807F61F4 = PTR_PTR_807FBB44
+CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)
+spawnTimer(0xDC,0x2A40)
+BYTE_807F61F8 = 1
+WORD_807F61F0 = PTR_PTR_807FBB44
+CurrentActorPointer = temp
+}
+if (BYTE_807F61F8 != 0) {
+FUN_806A2B08()
+}
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+FUN_806418E8(1,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[1]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (BYTE_807F61F8 == 0 && *(byte *)(PTR_0x807F61F0->control_state) != 5) {
+if (touchingModelTwoById(0x01) !== 0) {
+*(byte *)(behaviour + 0x4B) = 30
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+FUN_80724994(1,1,0,0)
+FUN_806508B4(param_4,2,1)
+*(byte *)(behaviour + 0x4B) = 21
+}
+if (*(byte *)(behaviour + 0x48) == 21) {
+if (FUN_80650D04(param_4,2) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 30) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+*(byte *)(behaviour + 0x4B) = 31
+}
+if (*(byte *)(behaviour + 0x48) == 31) {
+if (CutsceneActive !== 1) {
+playCutsceneFromModelTwoScript(behaviour,1,1,0)
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 32
+}
+}
+if (*(byte *)(behaviour + 0x48) == 32) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806418E8(2,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[2]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+FUN_8064199C(behaviour,2,0)
+}

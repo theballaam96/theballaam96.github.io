@@ -1,0 +1,107 @@
+if (checkFlag(0x07>5,'Temporary') !== 0) {
+if (checkFlag(0x08>2,'Temporary') !== 0) {
+if (checkFlag(0x09>7,'Temporary') == 0) {
+playCutsceneFromModelTwoScript(behaviour,8,1,0)
+setFlag(0x60>2,True,'Permanent')
+setFlag(0x09>7,True,'Temporary')
+setFlag(0x0A>0,True,'Temporary')
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x02
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x60>2,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 20
+FUN_8064199C(behaviour,3,500)
+*(byte *)(behaviour + 0x4B) = 11
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x09>6,'Temporary') !== 0) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 20
+FUN_8064199C(behaviour,3,500)
+*(byte *)(behaviour + 0x4B) = 11
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x09>6,'Temporary') == 0) {
+if (checkFlag(0x60>2,'Permanent') == 0) {
+FUN_8064199C(behaviour,3,300)
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x71) = 0
+*(byte *)(behaviour + 0x4B) = 99
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 20
+*(byte *)(behaviour + 0x71) = 1
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+xC_successful = 0
+xC_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+xC_focusedPlayerNumber_ = xC_focusedPlayerNumber
+xC_focusedPlayerNumber = (xC_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[xC_focusedPlayerNumber_]->does_player_exist) != 0) {
+xC_focusedPlayerPointer = *(int *)(character_change_pointer[xC_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(xC_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (param_4 == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 2)) {
+xC_successful = 1
+}
+}
+}
+}
+} while (xC_focusedPlayerNumber < player_count)
+}
+if (xC_successful == 1) {
+if (*(int *)(PlayerPointer->ActorType) == 3) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 103) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (CutsceneActive !== 1) {
+playCutsceneFromModelTwoScript(behaviour,13,1,0)
+x54_ivar7 = (&WORD_807F6240)[57]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(57,10,behaviour)
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (CutsceneActive !== 1) {
+*(byte *)(behaviour + 0x4B) = 11
+}
+}

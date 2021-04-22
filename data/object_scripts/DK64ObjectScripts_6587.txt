@@ -1,0 +1,173 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x28>3,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x28>3,'Permanent') == 0) {
+*(byte *)(behaviour + 0x71) = 0
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (CutsceneActive !== 1) {
+playCutsceneFromModelTwoScript(behaviour,2,1,0)
+*(short *)(behaviour + 0x44) = 180
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806085DC(param_4,747,255,127)
+*(byte *)(behaviour + 0x71) = 1
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 5
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (checkFlag(0x4D>1,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x71) = 0
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 4) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 2) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+FUN_8067ABC0(2,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 3) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 2) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+FUN_8067ABC0(2,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 2) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+FUN_8067ABC0(2,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 5) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 2) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+FUN_8067ABC0(2,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 6) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 2) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+FUN_8067ABC0(2,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+}
+}

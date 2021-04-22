@@ -1,0 +1,51 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,25)
+FUN_806508B4(param_4,1,-1)
+FUN_80650A04(param_4,2,28)
+FUN_806508B4(param_4,2,-1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,3,32)
+FUN_806508B4(param_4,3,-1)
+FUN_80650A04(param_4,4,23)
+FUN_806508B4(param_4,4,-1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,5,19)
+FUN_806508B4(param_4,5,-1)
+FUN_80650A04(param_4,6,21)
+FUN_806508B4(param_4,6,-1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,7,22)
+FUN_806508B4(param_4,7,-1)
+FUN_80650A04(param_4,8,27)
+FUN_806508B4(param_4,8,-1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,9,26)
+FUN_806508B4(param_4,9,-1)
+*(byte *)(behaviour + 0x4B) = 12
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+*(code *)(0x80748024)(behaviour,param_4,0,0)
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+FUN_8065092C(param_4,1)
+FUN_8065092C(param_4,2)
+FUN_8065092C(param_4,3)
+FUN_8065092C(param_4,4)
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+FUN_8065092C(param_4,5)
+FUN_8065092C(param_4,6)
+FUN_8065092C(param_4,7)
+FUN_8065092C(param_4,8)
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+FUN_8065092C(param_4,9)
+*(byte *)(behaviour + 0x4B) = 41
+}
+if (*(byte *)(behaviour + 0x48) == 41) {
+FUN_8064199C(behaviour,2,0)
+}

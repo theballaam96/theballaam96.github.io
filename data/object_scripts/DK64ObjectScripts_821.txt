@@ -1,0 +1,21 @@
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_80650A04(param_4,1,64)
+FUN_80650BBC(param_4,1,0)
+FUN_806508B4(param_4,1,5)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,258,1,0)
+}
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (FUN_80650D04(param_4,1) == 0) {
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+*(byte *)(behaviour + 0x4B) = 12
+}
+}

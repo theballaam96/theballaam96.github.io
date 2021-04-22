@@ -1,0 +1,23 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x71) = 0
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x37>6,'Permanent') !== 0) {
+if (checkFlag(0x38>3,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 255
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 1
+*(byte *)(behaviour + 0x71) = 1
+changeTriggerActiveStateOfFirstInstanceOfType('Loading Zone (0xD)',1)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,2,0)
+*(byte *)(behaviour + 0x4B) = 1
+}

@@ -1,0 +1,4 @@
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_8065F134()
+FUN_8064199C(behaviour,2,0)
+}

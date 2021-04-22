@@ -1,0 +1,60 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80661398()
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+FUN_80661398()
+FUN_80650A04(param_4,1,1)
+FUN_806508B4(param_4,1,1)
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,312,40,0)
+}
+*(byte *)(behaviour + 0x4B) = 2
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+FUN_8065092C(param_4,1)
+FUN_80602DC4()
+*(short *)(behaviour + 0x44) = 19
+*(byte *)(behaviour + 0x4B) = 3
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,12,12,FLOAT_807F621C)
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_80661398()
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+FUN_80661398()
+FUN_80650A04(param_4,1,0)
+FUN_806508B4(param_4,1,1)
+FUN_80650AD8(param_4,1,0,0.5)
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+*(byte *)(behaviour + 0x4B) = 21
+}
+if (*(byte *)(behaviour + 0x48) == 21) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 30) {
+FUN_80661398()
+FUN_80650A04(param_4,1,0)
+FUN_806508B4(param_4,1,1)
+FUN_80650AD8(param_4,1,0,0.6)
+}
+if (*(byte *)(behaviour + 0x48) == 30) {
+*(byte *)(behaviour + 0x4B) = 21
+}

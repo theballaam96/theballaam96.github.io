@@ -1,0 +1,42 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634CC8(param_4,1,10,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,3,300)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 2) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+x58_temp = FUN_805FFE50(38,0,10)
+if (x58_temp == 0) {
+FUN_8063DB3C(38,0,10)
+}
+FUN_806085DC(param_4,713,255,127)
+playSong('BBlast Final Star', (float) 1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 2) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+*(byte *)(behaviour + 0x4B) = 2
+setNextTransitionType(0)
+InitMapChange_TransferredActor(38,11,0,0)
+}
+}

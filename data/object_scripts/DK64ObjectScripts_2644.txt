@@ -1,0 +1,9 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x0D>6,'Temporary') !== 0) {
+changeTriggerActiveStateOfFirstInstanceOfType('Cutscene Trigger (0x15)',1)
+setFlag(0x0D>6,False,'Temporary')
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,2,0)
+}

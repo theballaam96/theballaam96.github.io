@@ -1,0 +1,54 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 0
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(byte *)(behaviour + 0x70) = 1
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 20
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 36) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_8064199C(behaviour,1,0)
+if ((&WORD_807F6240)[8] != -1) {
+x1C_ivar7 = (&WORD_807F6240)[8]
+if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
+x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 0
+x1C_puvar10[0x48] = x1C_puvar10[0x48] + 1
+}
+}
+*(code *)(0x80747FC4)(behaviour,param_4,1,0)
+FUN_806085DC(param_4,237,255,127)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 36) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+}
+}

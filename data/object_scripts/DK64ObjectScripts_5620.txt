@@ -1,0 +1,179 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x26>2,'Permanent') == 0) {
+FUN_80650BBC(param_4,1,1)
+FUN_80650A04(param_4,1,5)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x26>2,'Permanent') !== 0) {
+FUN_80650BBC(param_4,1,1)
+FUN_80650A04(param_4,1,0)
+FUN_80650AD8(param_4,1,0,1)
+FUN_806508B4(param_4,1,1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x26>2,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 15
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (CutsceneActive !== 1) {
+FUN_80641874()
+playCutsceneFromModelTwoScript(behaviour,1,1,0)
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806508B4(param_4,1,1)
+*(short *)(behaviour + 0x44) = 60
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,30,2)
+}
+*(byte *)(behaviour + 0x4B) = 7
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+if (FUN_80650D04(param_4,1) == 0) {
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+*(byte *)(behaviour + 0x4B) = 20
+if (*(short *)(behaviour + 0x12) < 0) {
+*(short *)(behaviour + 0x12) = FUN_80605044(param_4,287,30,2)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+FUN_8065092C(param_4,1)
+if (*(short *)(behaviour + 0x12) < 0) {
+*(short *)(behaviour + 0x12) = FUN_80605044(param_4,287,30,2)
+}
+*(byte *)(behaviour + 0x4B) = 20
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+*(code *)(0x80747F9C)(behaviour,param_4,0,0)
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+if (*(byte *)(PlayerPointer->unk0xD1) == 2) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 110) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 66) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful !== 1) {
+FUN_806EB178(0,700,0,0)
+setCharacterChangeParameters(56,0,0)
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+if (*(byte *)(PlayerPointer->unk0xD1) == 2) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 110) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful !== 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 111) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful !== 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 66) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful !== 1) {
+FUN_806EB178(0,500,0,0)
+setCharacterChangeParameters(56,0,0)
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+if (*(byte *)(PlayerPointer->unk0xD1) !== 2) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 111) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+setCharacterChangeParameters(57,0,0)
+}
+}
+}

@@ -1,0 +1,3 @@
+if (true) {
+*(code *)(0x80747EAC)(behaviour,param_4,0,0)
+}

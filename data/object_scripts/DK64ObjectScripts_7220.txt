@@ -1,0 +1,19 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x71) = 0
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 1
+*(byte *)(behaviour + 0x71) = 1
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+*(code *)(0x80747F4C)(behaviour,param_4,5,37)
+}

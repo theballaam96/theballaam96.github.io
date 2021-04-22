@@ -1,0 +1,12 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,60)
+FUN_80650A04(param_4,2,43)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x6F) = 1
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(code *)(0x80747F00)(behaviour,param_4,1,0)
+*(code *)(0x80747F30)(behaviour,param_4,0,0)
+}

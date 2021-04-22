@@ -1,0 +1,9 @@
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_80650A04(param_4,1,96)
+FUN_806508B4(param_4,1,1)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_806085DC(param_4,50,255,127)
+FUN_806085DC(param_4,579,255,127)
+*(byte *)(behaviour + 0x4B) = 11
+}

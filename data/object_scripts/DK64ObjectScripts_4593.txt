@@ -1,0 +1,60 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,200)
+FUN_8064199C(behaviour,3,500)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x2_successful = 0
+x2_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x2_focusedPlayerNumber_ = x2_focusedPlayerNumber
+x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
+x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
+if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+x2_successful = 1
+}
+}
+}
+} while x2_focusedPlayerNumber < player_count
+}
+if (x2_successful == 1) {
+if (*(byte *)(character_change_pointer->unk0x2C0) !== 2) {
+FUN_80650AD8(param_4,1,0,0)
+FUN_806508B4(param_4,1,1)
+*(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | 0x800000
+FUN_8067ABC0(0,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x2_successful = 0
+x2_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x2_focusedPlayerNumber_ = x2_focusedPlayerNumber
+x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
+x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
+if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+x2_successful = 1
+}
+}
+}
+} while x2_focusedPlayerNumber < player_count
+}
+if (x2_successful == 1) {
+if (*(byte *)(character_change_pointer->unk0x2C0) !== 2) {
+FUN_8064199C(behaviour,1,0)
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(byte *)(behaviour + 0x4B) = 0
+}
+}

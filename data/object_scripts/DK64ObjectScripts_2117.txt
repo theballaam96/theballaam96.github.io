@@ -1,0 +1,7 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x6F) = 0
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+*(code *)(0x80747F70)(behaviour,param_4,9,0)
+}

@@ -1,0 +1,32 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650BBC(param_4,1,1)
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (*(short *)(behaviour + 0x12) < 0) {
+*(short *)(behaviour + 0x12) = FUN_80605044(param_4,279,60,0)
+}
+FUN_80604BE8(*(byte *)(behaviour + 0x11,15,1)
+FUN_806085DC(param_4,593,255,47)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_806508B4(param_4,1,2)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (FUN_80650D04(param_4,1) == 0) {
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+*(byte *)(behaviour + 0x4C) = 10
+*(short *)(behaviour + 0x44) = 100
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}

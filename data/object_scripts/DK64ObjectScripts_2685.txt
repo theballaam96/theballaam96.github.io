@@ -1,0 +1,18 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,1,0)
+FUN_80634CC8(param_4,1,0,-8)
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,274,90,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (0 == 1) {
+*(int *)(behaviour + 0x8) = *(int *)(behaviour + 0x64)
+*(int *)(behaviour + 0xC) = *(int *)(behaviour + 0x14)
+}
+else {
+*(float *)(behaviour + 0x8) = 2
+*(float *)(behaviour + 0xC) = 0
+}
+*(byte *)(behaviour + 0x4B) = 1
+}

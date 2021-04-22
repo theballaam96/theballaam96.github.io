@@ -1,0 +1,9 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x02
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x33>5,'Permanent') !== 0) {
+*(code *)(0x80748038)(behaviour,param_4,0,0)
+}
+}

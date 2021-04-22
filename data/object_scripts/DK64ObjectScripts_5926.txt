@@ -1,0 +1,51 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634CC8(param_4,1,10,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x10>1,'Permanent') !== 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x10>1,'Permanent') == 0) {
+FUN_8064199C(behaviour,3,300)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 2) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_806085DC(param_4,713,255,127)
+playSong('BBlast Final Star', (float) 1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 2) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+*(byte *)(behaviour + 0x4B) = 2
+x58_temp = FUN_805FFE50(26,45,10)
+if (x58_temp == 0) {
+FUN_8063DB3C(26,45,10)
+}
+setNextTransitionType(0)
+SetIntroStoryPlaying(2)
+setNextTransitionType('Fade (Wrong Cutscene)')
+InitMapChange_TransferredActor(26,15,0,0)
+}
+}

@@ -1,0 +1,139 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650BBC(param_4,1,0)
+FUN_80650A04(param_4,1,160)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650BBC(param_4,3,0)
+FUN_80650A04(param_4,3,115)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x13>0,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x11>2,'Permanent') == 0) {
+FUN_806508B4(param_4,1,-1)
+FUN_806508B4(param_4,3,-1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x13>0,'Permanent') == 0) {
+*(short *)(behaviour + 0x44) = 45
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (isPlayerWithinDistanceOfObject(60) !== 0) {
+*(short *)(behaviour + 0x44) = *(short *)(behaviour + 0x14)
+*(code *)(0x80748040)(behaviour,param_4,0,1)
+BYTE_807F693F = 1
+playCutsceneFromModelTwoScript(behaviour,29,0,15)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (isPlayerWithinDistanceOfObject(60) !== 0) {
+setCharacterChangeParameters(90,0,0)
+*(byte *)(behaviour + 0x4B) = 100
+}
+}
+if (*(byte *)(behaviour + 0x48) == 100) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (checkFlag(0x11>2,'Permanent') !== 0) {
+*(short *)(behaviour + 0x44) = 60
+setFlag(0x13>0,True,'Permanent')
+*(byte *)(behaviour + 0x4B) = 40
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 100) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (checkFlag(0x11>2,'Permanent') == 0) {
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 4
+*(byte *)(behaviour + 0x70) = 0
+FUN_806085DC(param_4,994,255,127)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4B) = 41
+}
+}
+if (*(byte *)(behaviour + 0x48) == 41) {
+if (FUN_80650D04(param_4,2) !== 0) {
+*(code *)(0x80748040)(behaviour,param_4,0,2)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 41) {
+if (FUN_80650D04(param_4,2) == 0) {
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (isPlayerWithinDistanceOfObject(60) == 0) {
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(ushort *)(behaviour + 0x68) = 60
+*(ushort *)(behaviour + 0x6A) = 60
+*(ushort *)(behaviour + 0x6C) = 60
+*(byte *)(behaviour + 0x67) = 3
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (checkFlag(0x13>0,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+*(short *)(behaviour + 0x44) = 5
+*(code *)(0x80748040)(behaviour,param_4,0,0)
+BYTE_807F693F = 1
+playCutsceneFromModelTwoScript(behaviour,28,0,15)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+setCharacterChangeParameters(89,0,0)
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806CF398(PlayerPointer)
+InitMapChange_TransferredActor(0x2A,0,9,2)
+*(byte *)(behaviour + 0x4B) = 5
+}
+}

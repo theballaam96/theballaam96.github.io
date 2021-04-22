@@ -1,0 +1,138 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x04
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(ushort *)(behaviour + 0x68) = 80
+*(ushort *)(behaviour + 0x6A) = 80
+*(ushort *)(behaviour + 0x6C) = 80
+*(byte *)(behaviour + 0x67) = 3
+FUN_8064199C(behaviour,0,0)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (checkFlag(0x07>7,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 30
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_806085DC(param_4,470,255,127)
+playSong('Going through Vulture Ring', (float) 1)
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful !== 1) {
+if (isPlayerWithinDistanceOfObject(80) == 0) {
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_806085DC(param_4,470,255,127)
+playSong('Going through Vulture Ring', (float) 1)
+*(byte *)(behaviour + 0x4B) = 14
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful !== 1) {
+if (isPlayerWithinDistanceOfObject(80) == 0) {
+*(byte *)(behaviour + 0x4B) = 15
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_806085DC(param_4,470,255,127)
+playSong('Going through Vulture Ring', (float) 1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_8064199C(behaviour,1,0)
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 16
+}
+}
+if (*(byte *)(behaviour + 0x48) == 16) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playCutsceneFromModelTwoScript(behaviour,13,1,0)
+*(short *)(behaviour + 0x44) = 300
+*(byte *)(behaviour + 0x4B) = 17
+}
+}
+if (*(byte *)(behaviour + 0x48) == 17) {
+if (*(ushort *)(behaviour + 0x44) == 280) {
+FUN_806418E8(45,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[45]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 17) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4B) = 18
+FUN_8064199C(behaviour,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x49) == 10) {
+FUN_8064199C(behaviour,0,0)
+FUN_80650A04(param_4,1,15)
+*(byte *)(behaviour + 0x4C) = 11
+}

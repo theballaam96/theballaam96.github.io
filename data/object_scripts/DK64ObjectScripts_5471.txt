@@ -1,0 +1,109 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(short *)(behaviour + 0x44) = 100
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 90) {
+FUN_80724994(1,1,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 80) {
+FUN_80724994(1,2,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 70) {
+FUN_80724994(1,3,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 60) {
+FUN_80724994(1,4,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 50) {
+FUN_80724994(1,5,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 40) {
+FUN_80724994(1,6,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) >= 0) {
+if (*(byte *)(behaviour + 0x48) < 5) {
+if ((*(byte *)(behaviour + 0x9A) & 1) == 0) {
+*(byte *)(behaviour + 0x4B) = 0
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((*(byte *)(behaviour + 0x9A) & 1) !== 0) {
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((*(byte *)(behaviour + 0x9A) & 1) !== 0) {
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playCutsceneFromModelTwoScript(behaviour,0,0,0)
+*(short *)(behaviour + 0x44) = 30
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(int *)(behaviour + 0x38) = FUN_80723020(FLOAT_807F6220,FLOAT_807F6224,1)
+FUN_80723320(*(int *)(behaviour + 0x38),1)
+FUN_8072334C(*(int *)(behaviour + 0x38),1)
+FUN_80723284(4294967295,15)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playSong('Oh Banana', (float) 1)
+*(byte *)(behaviour + 0x4B) = 7
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+*(code *)(0x80747E94)(behaviour,param_4,0,0)
+FUN_806F4F50(param_4,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+FUN_80723484(*(int *)(behaviour + 0x38))
+FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+if (FUN_80723C98(*(word *) (behaviour + 0x38)) == 0) {
+FUN_80723428(*(int *)(behaviour + 0x38))
+*(int *)(behaviour + 0x38) = 0xFFFFFFFF
+*(short *)(behaviour + 0x44) = 100
+*(byte *)(behaviour + 0x4B) = 8
+}
+}
+if (*(byte *)(behaviour + 0x48) == 8) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}

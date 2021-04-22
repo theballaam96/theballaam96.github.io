@@ -1,0 +1,23 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650794(param_4,1,6,0.1)
+FUN_80650794(param_4,2,4,0.1)
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x08
+*(byte *)(behaviour + 0x6F) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,60)
+FUN_806508B4(param_4,1,-1)
+FUN_80650A04(param_4,2,43)
+FUN_806508B4(param_4,2,-1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(ushort *)(behaviour + 0x68) = 80
+*(ushort *)(behaviour + 0x6A) = 80
+*(ushort *)(behaviour + 0x6C) = 80
+*(byte *)(behaviour + 0x67) = 3
+*(byte *)(behaviour + 0x4F) = 1
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+*(code *)(0x80747F00)(behaviour,param_4,0,0)
+}

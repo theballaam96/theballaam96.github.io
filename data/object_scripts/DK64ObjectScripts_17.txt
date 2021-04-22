@@ -1,0 +1,31 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 10
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x71) = 0
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_806085DC(param_4,96,255,127)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+playCutsceneFromModelTwoScript(behaviour,0,1,0)
+*(short *)(behaviour + 0x44) = 15
+*(byte *)(behaviour + 0x4B) = 6
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 10
+*(byte *)(behaviour + 0x70) = 1
+*(byte *)(behaviour + 0x71) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806085DC(param_4,49,255,127)
+*(byte *)(behaviour + 0x4B) = 7
+}
+}

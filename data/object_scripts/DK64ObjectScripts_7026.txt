@@ -1,0 +1,27 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x6F) = 0
+FUN_80650BBC(param_4,1,1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x31>1,'Permanent') !== 0) {
+FUN_80650A04(param_4,1,255)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+playSong('Success', (float) 1)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_80650A04(param_4,1,1)
+FUN_806508B4(param_4,1,1)
+FUN_806085DC(param_4,20,255,127)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (FUN_80650D04(param_4,1) == 0) {
+setFlag(0x31>1,True,'Permanent')
+FUN_806085DC(param_4,469,255,127)
+*(byte *)(behaviour + 0x4B) = 20
+}
+}

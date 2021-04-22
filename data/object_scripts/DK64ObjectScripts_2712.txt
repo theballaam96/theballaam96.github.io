@@ -1,0 +1,56 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (checkFlag(0x06>2,'Permanent') !== 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (checkFlag(0x06>2,'Permanent') == 0) {
+playCutsceneFromModelTwoScript(behaviour,14,1,0)
+*(short *)(behaviour + 0x44) = 400
+*(byte *)(behaviour + 0x4B) = 11
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 300) {
+FUN_806508B4(param_4,1,1)
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,0,0)
+}
+*(byte *)(behaviour + 0x4C) = 1
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 200) {
+setFlag(0x06>2,True,'Permanent')
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 250) {
+FUN_806418E8(13,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[13]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 1) {
+if (FUN_80650D04(param_4,1) == 0) {
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+*(byte *)(behaviour + 0x4C) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (CutsceneActive !== 1) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+}

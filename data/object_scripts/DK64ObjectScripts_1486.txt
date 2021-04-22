@@ -1,0 +1,130 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x0E>1,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x0E>1,'Permanent') == 0) {
+FUN_8064199C(behaviour,3,200)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x2_successful = 0
+x2_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x2_focusedPlayerNumber_ = x2_focusedPlayerNumber
+x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
+x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
+if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+x2_successful = 1
+}
+}
+}
+} while x2_focusedPlayerNumber < player_count
+}
+if (x2_successful == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if (*(int *)(PlayerPointer->ActorType) == 3) {
+if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
+FUN_806508B4(param_4,1,1)
+FUN_806085DC(param_4,326,255,127)
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x2_successful = 0
+x2_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x2_focusedPlayerNumber_ = x2_focusedPlayerNumber
+x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
+x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
+if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+x2_successful = 1
+}
+}
+}
+} while x2_focusedPlayerNumber < player_count
+}
+if (x2_successful == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+if (*(int *)(PlayerPointer->ActorType) == 3) {
+if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
+FUN_8064199C(behaviour,1,0)
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playCutsceneFromModelTwoScript(behaviour,2,1,0)
+*(short *)(behaviour + 0x44) = 200
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 170) {
+FUN_806418E8(44,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[44]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+FUN_80650A04(param_4,1,0)
+FUN_80650AD8(param_4,1,0,1)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 21
+}
+if (*(byte *)(behaviour + 0x48) == 21) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 22
+}
+if (*(byte *)(behaviour + 0x48) == 22) {
+FUN_8064199C(behaviour,2,0)
+}

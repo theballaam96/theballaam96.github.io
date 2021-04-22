@@ -1,0 +1,59 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80642844(0,2840,behaviour)
+FUN_80642844(256,390,behaviour)
+FUN_80642844(512,3160,behaviour)
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x02
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playCutsceneFromModelTwoScript(behaviour,1,0,0)
+*(short *)(behaviour + 0x44) = 60
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(int *)(behaviour + 0x38) = FUN_80723020(FLOAT_807F6220,FLOAT_807F6224,2)
+FUN_80723320(*(int *)(behaviour + 0x38),1)
+FUN_8072334C(*(int *)(behaviour + 0x38),1)
+FUN_80723284(4294967295,20)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playSong('Oh Banana', (float) 1)
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+*(code *)(0x80747E94)(behaviour,param_4,0,0)
+FUN_806F4F50(param_4,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+FUN_80723484(*(int *)(behaviour + 0x38))
+FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (FUN_80723C98(*(word *) (behaviour + 0x38)) == 0) {
+FUN_80723428(*(int *)(behaviour + 0x38))
+*(int *)(behaviour + 0x38) = 0xFFFFFFFF
+*(short *)(behaviour + 0x44) = 100
+*(byte *)(behaviour + 0x4B) = 14
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}

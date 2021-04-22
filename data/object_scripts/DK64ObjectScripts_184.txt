@@ -1,0 +1,36 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (*(int *)(PlayerPointer->ActorType) == 3) {
+if (checkFlag(0x2D>7,'Permanent') == 0) {
+changeTriggerActiveStateOfFirstInstanceOfType('Type 0x1D',1)
+setFlag(0x2D>7,True,'Permanent')
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (*(int *)(PlayerPointer->ActorType) == 5) {
+if (checkFlag(0x2E>1,'Permanent') == 0) {
+changeTriggerActiveStateOfFirstInstanceOfType('Type 0x1D',1)
+setFlag(0x2E>1,True,'Permanent')
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (*(int *)(PlayerPointer->ActorType) == 4) {
+if (checkFlag(0x2E>0,'Permanent') == 0) {
+changeTriggerActiveStateOfFirstInstanceOfType('Type 0x1D',1)
+setFlag(0x2E>0,True,'Permanent')
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (*(int *)(PlayerPointer->ActorType) == 6) {
+if (checkFlag(0x2E>2,'Permanent') == 0) {
+changeTriggerActiveStateOfFirstInstanceOfType('Type 0x1D',1)
+setFlag(0x2E>2,True,'Permanent')
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x6F) = 0
+FUN_8064199C(behaviour,2,0)
+}

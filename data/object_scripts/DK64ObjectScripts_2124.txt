@@ -1,0 +1,27 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,5)
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_80724994(3,2,1,0)
+FUN_806508B4(param_4,1,1)
+FUN_806085DC(param_4,148,255,127)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+*(short *)(behaviour + 0x44) = 600
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 140) {
+FUN_806418E8(56,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[56]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}

@@ -1,0 +1,59 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x60>2,'Permanent') !== 0) {
+if (checkFlag(0x0A>0,'Temporary') == 0) {
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x0A>0,'Temporary') !== 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x60>2,'Permanent') == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 100) {
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+FUN_80650A04(param_4,1,5)
+FUN_806508B4(param_4,1,1)
+FUN_806085DC(param_4,385,255,127)
+*(byte *)(behaviour + 0x4B) = 5
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(short *)(behaviour + 0x44) = 100
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+setFlag(0x0A>0,False,'Temporary')
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+FUN_80650A04(param_4,1,0)
+FUN_80650AD8(param_4,1,0,1)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 21
+}
+if (*(byte *)(behaviour + 0x48) == 21) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 22
+}
+if (*(byte *)(behaviour + 0x48) == 22) {
+FUN_8064199C(behaviour,2,0)
+}

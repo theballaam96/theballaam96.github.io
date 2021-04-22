@@ -1,0 +1,96 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x1C>5,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 7
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x1C>5,'Permanent') == 0) {
+BYTE_80748094 = 0
+*(code *)(0x80748034)(behaviour,param_4,0,0)
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+BYTE_807F6902 = 0
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+BYTE_807F6902 = 0
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+BYTE_807F6902 = 0
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+BYTE_807F6902 = 0
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+*(short *)(behaviour + 0x44) = 500
+*(byte *)(behaviour + 0x4B) = 6
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 480) {
+playSong('Success', (float) 1)
+playCutsceneFromModelTwoScript(behaviour,5,1,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 460) {
+FUN_80641874()
+if (BYTE_80748094 < 1) {
+playSFX(477,0x7FFF,0x427C0000,0.86614173228346)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,110,5,0,0.3,0)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 320) {
+FUN_80641874()
+if (BYTE_80748094 < 1) {
+playSFX(477,0x7FFF,0x427C0000,0.86614173228346)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,110,5,0,0.3,0)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 235) {
+FUN_80641874()
+if (BYTE_80748094 < 1) {
+playSFX(477,0x7FFF,0x427C0000,0.86614173228346)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,110,5,0,0.3,0)
+}
+BYTE_807F6902 = 0
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+setFlag(0x1C>5,True,'Permanent')
+*(byte *)(behaviour + 0x4B) = 7
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+if (FUN_80689BAC(0) !== 0) {
+FUN_80641874()
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+if (FUN_80689BAC(1) !== 0) {
+FUN_80641874()
+}
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+if (FUN_80689BAC(2) !== 0) {
+FUN_80641874()
+}
+}

@@ -1,0 +1,132 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x01>7,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+if (checkFlag(0x01>7,'Permanent') == 0) {
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x6F) = 0
+FUN_8064199C(behaviour,3,300)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 47) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 8) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 41) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 8) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x11_successful = false
+if (loadedActorCount != 0) {
+x11_focusedArraySlot = &loadedActorArray
+x11_focusedActor = loadedActorArray
+while (true) {
+x11_focusedArraySlot = x11_focusedArraySlot + 8
+if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x11_focusedActor->actor_type) == 6) {
+if (x11_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+x11_successful = true
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11_successful)) break;
+}
+}
+if (x11_successful) {
+if (*(byte *)(character_change_pointer->unk0x2C0) == 2) {
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,70,70,FLOAT_807F621C)
+*(byte *)(behaviour + 0x71) = 0
+FUN_806085DC(param_4,35,255,127)
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+setFlag(0x01>7,True,'Permanent')
+*(code *)(0x80747F44)(behaviour,param_4,0,0)
+*(short *)(behaviour + 0x44) = 6
+*(byte *)(behaviour + 0x4B) = 3
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_806418E8(64,5,behaviour)
+x54_ivar7 = (&WORD_807F6240)[64]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,3,400)
+}
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x71) = 0
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+}

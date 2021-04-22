@@ -1,0 +1,983 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x4D>0,'Permanent') !== 0) {
+FUN_80650A04(param_4,7,255)
+FUN_806508B4(param_4,7,1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x4D>0,'Permanent') == 0) {
+*(byte *)(behaviour + 0x4D) = 10
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x22>4,'Permanent') !== 0) {
+*(byte *)(behaviour + 0x4B) = 200
+*(byte *)(behaviour + 0x4C) = 200
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,1,0)
+FUN_80634EA4(param_4,2,0)
+FUN_80634EA4(param_4,3,0)
+FUN_80634EA4(param_4,4,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,5,0)
+FUN_80634EA4(param_4,6,0)
+FUN_80634EA4(param_4,7,0)
+FUN_80634EA4(param_4,8,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,9,0)
+FUN_80634EA4(param_4,10,0)
+FUN_80634EA4(param_4,11,0)
+FUN_80634EA4(param_4,12,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,13,0)
+FUN_80634EA4(param_4,14,0)
+FUN_80634EA4(param_4,15,0)
+FUN_80634EA4(param_4,16,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,17,0)
+FUN_80634EA4(param_4,18,0)
+FUN_80634EA4(param_4,19,0)
+FUN_80634EA4(param_4,20,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,21,0)
+FUN_80634EA4(param_4,22,0)
+FUN_80634EA4(param_4,23,0)
+FUN_80634EA4(param_4,24,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80635018(param_4,1,1,0)
+FUN_80635018(param_4,2,1,0)
+FUN_80635018(param_4,3,1,0)
+FUN_80635018(param_4,4,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80635018(param_4,5,1,0)
+FUN_80635018(param_4,6,1,0)
+FUN_80635018(param_4,7,1,0)
+FUN_80635018(param_4,8,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80635018(param_4,9,1,0)
+FUN_80635018(param_4,10,1,0)
+FUN_80635018(param_4,11,1,0)
+FUN_80635018(param_4,12,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80635018(param_4,13,1,0)
+FUN_80635018(param_4,14,1,0)
+FUN_80635018(param_4,15,1,0)
+FUN_80635018(param_4,16,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80635018(param_4,17,1,0)
+FUN_80635018(param_4,18,1,0)
+FUN_80635018(param_4,19,1,0)
+FUN_80635018(param_4,20,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80635018(param_4,21,1,0)
+FUN_80635018(param_4,22,1,0)
+FUN_80635018(param_4,23,1,0)
+FUN_80635018(param_4,24,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650BBC(param_4,1,1)
+FUN_80650BBC(param_4,2,1)
+FUN_80650BBC(param_4,3,1)
+FUN_80650BBC(param_4,4,1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x6F) = 1
+FUN_80650BBC(param_4,5,1)
+FUN_80650BBC(param_4,6,1)
+*(float *)(behaviour + 0x14) = 0
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,8)
+FUN_80650A04(param_4,2,8)
+FUN_80650A04(param_4,3,3)
+FUN_80650A04(param_4,4,3)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,5,3)
+FUN_80650A04(param_4,6,3)
+*(byte *)(behaviour + 0x4C) = 0
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+BYTE_80748094 = -1
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(param_4,2) == 0) {
+*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) & ~0x20
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+if (BYTE_80748094 < 1) {
+playSFX(60,0x7FFF,0x427C0000,1)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,127,20,0,0.3,0)
+}
+*(byte *)(behaviour + 0x4B) = 11
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 1) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+// Execution Type 0x53 stripped from final. Parameters: 2,0,0
+if (BYTE_80748094 < 1) {
+playSFX(326,0x7FFF,0x427C0000,1)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,127,0,0,0.3,0)
+}
+FUN_806508B4(param_4,3,2)
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+if (FUN_80650D04(param_4,3) == 0) {
+*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | 0x20
+FUN_806508B4(param_4,1,1)
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,267,0,0)
+}
+*(byte *)(behaviour + 0x4B) = 10
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 3) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+if (BYTE_80748094 < 1) {
+playSFX(326,0x7FFF,0x427C0000,1)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,127,0,0,0.3,0)
+}
+FUN_806508B4(param_4,5,2)
+*(byte *)(behaviour + 0x4B) = 25
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 25) {
+if (FUN_80650D04(param_4,5) == 0) {
+*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | 0x20
+FUN_806508B4(param_4,1,1)
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,267,0,0)
+}
+*(byte *)(behaviour + 0x4B) = 10
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 2) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+if (BYTE_80748094 < 1) {
+playSFX(326,0x7FFF,0x427C0000,1)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,127,0,0,0.3,0)
+}
+FUN_806508B4(param_4,4,2)
+*(byte *)(behaviour + 0x4B) = 30
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 30) {
+if (FUN_80650D04(param_4,4) == 0) {
+*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | 0x20
+FUN_806508B4(param_4,2,1)
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,267,0,0)
+}
+*(byte *)(behaviour + 0x4B) = 10
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 4) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+if (BYTE_80748094 < 1) {
+playSFX(326,0x7FFF,0x427C0000,1)
+}
+else {
+FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806086CC(255,127,0,0,0.3,0)
+}
+FUN_806508B4(param_4,6,2)
+*(byte *)(behaviour + 0x4B) = 35
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 35) {
+if (FUN_80650D04(param_4,6) == 0) {
+*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | 0x20
+FUN_806508B4(param_4,2,1)
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,267,0,0)
+}
+*(byte *)(behaviour + 0x4B) = 10
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 5) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 1
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 7) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 2
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 9) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 3
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 6) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 4
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 11) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 5
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 10) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 6
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 8) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 7
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 13) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 8
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 12) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 9
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 15) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 10
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 14) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 11
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 0) {
+x17_successful = 0
+x17_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+x17_focusedPlayerNumber_ = x17_focusedPlayerNumber
+x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {
+x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(x17_focusedPlayerPointer->control_state) == 28) {
+x17_successful = 1
+}
+}
+} while (x17_focusedPlayerNumber < player_count)
+}
+if (x17_successful == 1) {
+x12_successful = false
+if (loadedActorCount != 0) {
+x12_focusedArraySlot = &loadedActorArray
+x12_focusedActor = loadedActorArray
+while (true) {
+x12_focusedArraySlot = x12_focusedArraySlot + 8
+if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
+if (*(int *)(x12_focusedActor->actor_type) == 2) {
+if (x12_focusedActor->locked_to_pad == 1) {
+if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (*(short *)(x12_focusedActor->unk10E) == 16) {
+x12_successful = true
+}
+}
+}
+}
+}
+if ((&loadedActorArray + (loadedActorCount * 8) <= x12_focusedArraySlot) || (x12_successful)) break;
+x12_focusedActor = *x12_focusedArraySlot
+}
+}
+if (x12_successful) {
+*(byte *)(behaviour + 0x4C) = 12
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) >= 0) {
+if (*(byte *)(behaviour + 0x49) < 13) {
+*(byte *)(behaviour + 0x4C) = 30
+*(short *)(behaviour + 0x44) = 30
+*(code *)(0x80747F90)(behaviour,param_4,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x49) == 30) {
+if (*(ushort *)(behaviour + 0x44) == 20) {
+if (FUN_80642500(behaviour + 0x14,0,0) !== 0) {
+if (BYTE_807F61F8 == 0) {
+spawnActor(TimerController)
+temp = CurrentActorPointer
+WORD_807F61F4 = PTR_PTR_807FBB44
+CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)
+spawnTimer(0xDC,0x2A50)
+BYTE_807F61F8 = 1
+WORD_807F61F0 = PTR_PTR_807FBB44
+CurrentActorPointer = temp
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 30) {
+if (*(ushort *)(behaviour + 0x44) == 10) {
+if (FUN_80642500(behaviour + 0x14,0,0) !== 0) {
+if (BYTE_807F61F8 != 0) {
+FUN_806A2B08()
+}
+*(float *)(behaviour + 0x14) = 10
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 30) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4C) = 0
+}
+}
+if (*(byte *)(behaviour + 0x49) < 31) {
+if (FUN_80642500(behaviour + 0x14,0,0) == 0) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+// Execution Type 0x53 stripped from final. Parameters: 999,0,0
+*(byte *)(behaviour + 0x4C) = 60
+*(short *)(behaviour + 0x44) = 20
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 60) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(param_4,2) == 0) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+*(byte *)(behaviour + 0x4C) = 70
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x49) == 50) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4C) = 51
+}
+if (*(byte *)(behaviour + 0x49) == 51) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806418E8(1,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[1]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+*(byte *)(behaviour + 0x4C) = 52
+}
+}
+if (*(byte *)(behaviour + 0x4A) == 10) {
+xC_successful = 0
+xC_focusedPlayerNumber = 0
+if (player_count != 0) {
+do {
+xC_focusedPlayerNumber_ = xC_focusedPlayerNumber
+xC_focusedPlayerNumber = (xC_focusedPlayerNumber_ + 1) & 0xFF
+if (*(byte *)(character_change_pointer[xC_focusedPlayerNumber_]->does_player_exist) != 0) {
+xC_focusedPlayerPointer = *(int *)(character_change_pointer[xC_focusedPlayerNumber_]->character_pointer)
+if (*(byte *)(xC_focusedPlayerPointer->locked_to_pad) == 1) {
+if (param_4 == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (param_4 == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 17)) {
+xC_successful = 1
+}
+}
+}
+}
+} while (xC_focusedPlayerNumber < player_count)
+}
+if (xC_successful == 1) {
+FUN_8067ABC0(2,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+// Execution Type 0x53 stripped from final. Parameters: 678,0,0
+}
+}

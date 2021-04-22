@@ -1,0 +1,103 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650BBC(param_4,1,0)
+FUN_80650BBC(param_4,2,0)
+FUN_80650A04(param_4,1,160)
+FUN_80650A04(param_4,2,115)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_806508B4(param_4,1,-1)
+FUN_806508B4(param_4,2,-1)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (isPlayerWithinDistanceOfObject(250) !== 0) {
+if (CutsceneActive !== 1) {
+*(short *)(behaviour + 0x44) = 60
+*(code *)(0x80748040)(behaviour,param_4,0,1)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (isPlayerWithinDistanceOfObject(250) !== 0) {
+if (CutsceneActive !== 1) {
+BYTE_807F693F = 1
+playCutsceneFromModelTwoScript(behaviour,29,0,15)
+setCharacterChangeParameters(90,0,0)
+*(byte *)(behaviour + 0x4B) = 100
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 100) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (isPlayerWithinDistanceOfObject(250) == 0) {
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if (CutsceneActive == 1) {
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(ushort *)(behaviour + 0x68) = 60
+*(ushort *)(behaviour + 0x6A) = 60
+*(ushort *)(behaviour + 0x6C) = 60
+*(byte *)(behaviour + 0x67) = 3
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+*(short *)(behaviour + 0x44) = 40
+*(code *)(0x80748040)(behaviour,param_4,0,0)
+BYTE_807F693F = 1
+playCutsceneFromModelTwoScript(behaviour,30,0,15)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+setCharacterChangeParameters(89,0,0)
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+next_transition_type = 'Fade'
+FUN_806CF398(PlayerPointer)
+x8d_uvar5 = getWorld(CurrentMap,0)
+x8d_ivar6 = isLobby(CurrentMap)
+x8d_ivar7 = x8d_uvar5
+if (x8d_ivar6 == 0) {
+FUN_80600044(x8d_ivar7)
+}
+else {
+x8d_svar12 = *(short *)(&DAT_8074809C + (x8d_ivar7 * 2))
+x8d_dstack88 = (short)(&WORD_807480AC)[x8d_ivar7]
+x8d_uvar9 = isFlagSet(*(short *)(&DAT_807480BC + (x8d_ivar7 * 2)),'Permanent')
+if ((x8d_uvar9 == 0) && (x8d_svar12 == 0x57)) {
+x8d_dstack88 = 0x15
+}
+x8d_ivar6 = DetermineLevel_NewLevel()
+if (x8d_ivar6 == 0) {
+InitMapChange(x8d_svar12,x8d_dstack88)
+}
+*(byte *)(behaviour + 0x4B) = 5
+}
+}

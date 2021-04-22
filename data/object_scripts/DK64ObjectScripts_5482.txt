@@ -1,0 +1,186 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650BBC(param_4,1,1)
+FUN_80650A04(param_4,1,0)
+FUN_80650AD8(param_4,1,0,1)
+FUN_806508B4(param_4,1,1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | 0x02
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 2
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+FUN_80650A04(param_4,1,3)
+*(byte *)(behaviour + 0x4B) = 5
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (checkFlag(0x20>6,'Permanent') !== 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (checkFlag(0x20>6,'Permanent') == 0) {
+*(byte *)(behaviour + 0x4B) = 10
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if (isPlayerWithinDistanceOfObject(50) == 0) {
+playCutsceneFromModelTwoScript(behaviour,1,1,0)
+*(short *)(behaviour + 0x44) = 200
+*(byte *)(behaviour + 0x4B) = 11
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 180) {
+FUN_806085DC(param_4,19,255,127)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (FUN_80650D04(param_4,1) == 0) {
+FUN_806085DC(param_4,50,255,80)
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 110) {
+FUN_80724994(1,1,0,0)
+FUN_80724994(1,2,0,0)
+FUN_80724994(1,3,0,0)
+FUN_80724994(1,4,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 110) {
+FUN_80724994(1,5,0,0)
+FUN_80724994(1,6,0,0)
+FUN_80724994(1,7,0,0)
+FUN_80724994(1,8,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 90) {
+if (BYTE_807F61F8 == 0) {
+spawnActor(TimerController)
+temp = CurrentActorPointer
+WORD_807F61F4 = PTR_PTR_807FBB44
+CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)
+spawnTimer(0xDC,0x2A50)
+BYTE_807F61F8 = 1
+WORD_807F61F0 = PTR_PTR_807FBB44
+CurrentActorPointer = temp
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (BYTE_807F61F8 != 0) {
+FUN_806A2B08()
+}
+*(byte *)(behaviour + 0x4B) = 14
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+*(short *)(behaviour + 0x44) = 30
+*(byte *)(behaviour + 0x4B) = 50
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+*(byte *)(behaviour + 0x4B) = 15
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+*(short *)(behaviour + 0x44) = 30
+*(byte *)(behaviour + 0x4B) = 50
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if ((FUN_80726D7C() & 0xFF) == 0){
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+*(short *)(behaviour + 0x44) = 40
+*(byte *)(behaviour + 0x4B) = 16
+}
+}
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 16) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806418E8(1,10,behaviour)
+x54_ivar7 = (&WORD_807F6240)[1]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+*(byte *)(behaviour + 0x4B) = 40
+}
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+if (touchingModelTwoById(0x01) !== 0) {
+*(byte *)(behaviour + 0x4B) = 41
+}
+}
+if (*(byte *)(behaviour + 0x48) == 41) {
+if (CutsceneActive !== 1) {
+playCutsceneFromModelTwoScript(behaviour,2,1,0)
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 42
+}
+}
+if (*(byte *)(behaviour + 0x48) == 42) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806085DC(param_4,21,255,127)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 43
+}
+}
+if (*(byte *)(behaviour + 0x48) == 43) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(byte *)(behaviour + 0x4B) = 44
+}
+}
+if (*(byte *)(behaviour + 0x48) == 50) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+playCutsceneFromModelTwoScript(behaviour,2,1,0)
+*(short *)(behaviour + 0x44) = 20
+*(byte *)(behaviour + 0x4B) = 51
+}
+}
+if (*(byte *)(behaviour + 0x48) == 51) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806085DC(param_4,21,255,127)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 52
+}
+}
+if (*(byte *)(behaviour + 0x48) == 52) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(byte *)(behaviour + 0x4B) = 53
+}
+}
+if (*(byte *)(behaviour + 0x48) == 53) {
+FUN_80724994(1,9,0,0)
+*(byte *)(behaviour + 0x4B) = 54
+}

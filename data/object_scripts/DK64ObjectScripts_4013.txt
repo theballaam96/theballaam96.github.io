@@ -1,0 +1,99 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80634EA4(param_4,1,0)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+FUN_806418E8(2,2,behaviour)
+FUN_806418E8(0,10,behaviour)
+FUN_806418E8(1,10,behaviour)
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+FUN_80635018(param_4,1,1,0)
+// Execution Type 0x53 stripped from final. Parameters: 1,0,0
+FUN_806418E8(14,1,behaviour)
+*(short *)(behaviour + 0x44) = 20
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_80635018(param_4,1,2,0)
+// Execution Type 0x53 stripped from final. Parameters: 2,0,0
+FUN_806418E8(2,2,behaviour)
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(short *)(behaviour + 0x44) = 20
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806418E8(2,2,behaviour)
+FUN_8065F134()
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 20
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+// Execution Type 0x53 stripped from final. Parameters: 3,0,0
+if ((&WORD_807F6240)[14] != -1) {
+x1C_ivar7 = (&WORD_807F6240)[14]
+if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
+x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 1
+x1C_puvar10[0x48] = x1C_puvar10[0x48] + 1
+}
+}
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+}

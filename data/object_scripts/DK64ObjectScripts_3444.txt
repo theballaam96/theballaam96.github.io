@@ -1,0 +1,113 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x19>6,'Permanent') !== 0) {
+FUN_80650A04(param_4,1,10)
+FUN_80650BBC(param_4,1,1)
+FUN_8064199C(behaviour,0,0)
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x19>6,'Permanent') == 0) {
+FUN_80650A04(param_4,1,0)
+FUN_80650AD8(param_4,1,0,1)
+FUN_80650BBC(param_4,1,1)
+FUN_806508B4(param_4,1,1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if (checkFlag(0x19>6,'Permanent') == 0) {
+*(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) & ~0x100000
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+FUN_8065092C(param_4,1)
+FUN_80650A04(param_4,1,10)
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_806508B4(param_4,1,1)
+*(short *)(behaviour + 0x44) = 90
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+FUN_806085DC(param_4,140,255,127)
+FUN_806508B4(param_4,1,1)
+*(short *)(behaviour + 0x44) = 50
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 30) {
+if (checkFlag(0x20>0,'Permanent') == 0) {
+playCutsceneFromModelTwoScript(behaviour,0,1,0)
+setFlag(0x20>0,True,'Permanent')
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 20) {
+FUN_80724994(2,2,0,0)
+*(code *)(0x8074802C)(behaviour,param_4,2,0)
+x54_ivar7 = (&WORD_807F6240)[6]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(6,10,behaviour)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 19) {
+*(code *)(0x8074802C)(behaviour,param_4,1,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+x54_ivar7 = (&WORD_807F6240)[3]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(3,10,behaviour)
+*(short *)(behaviour + 0x44) = 70
+*(byte *)(behaviour + 0x4B) = 14
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(short *)(behaviour + 0x44) = 130
+*(byte *)(behaviour + 0x4B) = 15
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+if (*(ushort *)(behaviour + 0x44) == 60) {
+// Execution Type 0x53 stripped from final. Parameters: 1234,0,0
+setFlag(0x19>6,False,'Permanent')
+*(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) & ~0x100000
+}
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+*(code *)(0x80747F40)(behaviour,param_4,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 15) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+x54_ivar7 = (&WORD_807F6240)[4]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(4,10,behaviour)
+*(code *)(0x8074802C)(behaviour,param_4,0,0)
+FUN_8064199C(behaviour,2,0)
+}
+}

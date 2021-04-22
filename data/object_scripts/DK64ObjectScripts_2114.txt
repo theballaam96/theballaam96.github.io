@@ -1,0 +1,107 @@
+if (true) {
+if ((&WORD_807F6240)[94] != -1) {
+FUN_806335B0((&WORD_807F6240)[94],1,1)
+}
+FUN_806335B0(param_4,1)
+FUN_8072ECFC(17)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(ushort *)(behaviour + 0x68) = 120
+*(ushort *)(behaviour + 0x6A) = 120
+*(ushort *)(behaviour + 0x6C) = 120
+*(byte *)(behaviour + 0x67) = 4
+FUN_80650A04(param_4,2,20)
+FUN_80650C98(param_4,2,1)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650C98(param_4,1,1)
+FUN_80650BBC(param_4,1,1)
+FUN_80650A04(param_4,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if ((FUN_806422D8() & 0xFF) !== 0){
+FUN_806508B4(param_4,2,-1)
+FUN_80650AD8(param_4,1,41,1)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 12
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+if ((FUN_806422D8() & 0xFF) == 0){
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_80650AD8(param_4,1,0,0)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+FUN_8065092C(param_4,1)
+*(byte *)(behaviour + 0x4B) = 10
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if ((FUN_806422D8() & 0xFF) !== 0){
+*(code *)(0x80747FE8)(behaviour,param_4,0,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if ((FUN_806422D8() & 0xFF) !== 0){
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_80650A04(param_4,1,80)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 11
+}
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+if ((FUN_806422D8() & 0xFF) !== 0){
+FUN_806085DC(param_4,815,255,127)
+FUN_806508B4(param_4,2,-1)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+*(code *)(0x80748004)(behaviour,param_4,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if ((FUN_806422D8() & 0xFF) == 0){
+FUN_8065092C(param_4,2)
+FUN_80650A04(param_4,1,80)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if ((FUN_806422D8() & 0xFF) == 0){
+*(short *)(behaviour + 0x44) = 18
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 8) {
+FUN_806085DC(param_4,816,255,127)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_806085DC(param_4,661,255,127)
+*(byte *)(behaviour + 0x4B) = 14
+}
+}
+if (*(byte *)(behaviour + 0x48) == 14) {
+if (FUN_80650D04(param_4,1) == 0) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x4B) = 10
+}
+}

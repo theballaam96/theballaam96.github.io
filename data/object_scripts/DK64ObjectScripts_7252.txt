@@ -1,0 +1,19 @@
+if (*(byte *)(behaviour + 0x48) == 4) {
+FUN_80650A04(param_4,1,10)
+FUN_806508B4(param_4,1,1)
+if (*(short *)(behaviour + 0x12) < 0) {
+*(short *)(behaviour + 0x12) = FUN_80605044(param_4,267,0,0)
+}
+*(byte *)(behaviour + 0x4B) = 5
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (FUN_80650D04(param_4,1) == 0) {
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+FUN_806085DC(param_4,60,255,127)
+*(byte *)(behaviour + 0x4B) = 6
+}
+}

@@ -1,0 +1,38 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_80650A04(param_4,1,8)
+FUN_80650A04(param_4,2,96)
+FUN_8064199C(behaviour,2,0)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+// Execution Type 0x53 stripped from final. Parameters: 1,0,0
+if (*(short *)(behaviour + 0x10) < 0) {
+*(short *)(behaviour + 0x10) = FUN_80605044(param_4,266,0,0)
+}
+FUN_80604BE8(*(byte *)(behaviour + 0x11,154.65,1)
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_806508B4(param_4,1,1)
+FUN_806508B4(param_4,2,12)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (FUN_80650D04(param_4,1) == 0) {
+x10_temp = *(short *)(behaviour + 0x10)
+if (-1 < x10_temp) {
+FUN_80605380(x10_temp)
+*(short *)(behaviour + 0x10) = 0xFFFF
+}
+*(short *)(behaviour + 0x44) = 50
+*(byte *)(behaviour + 0x4B) = 12
+}
+}
+if (*(byte *)(behaviour + 0x48) == 12) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+FUN_80650AD8(param_4,1,0,0)
+FUN_80650AD8(param_4,2,0,0)
+*(byte *)(behaviour + 0x4B) = 13
+}
+}
+if (*(byte *)(behaviour + 0x48) == 13) {
+FUN_8064199C(behaviour,2,0)
+}

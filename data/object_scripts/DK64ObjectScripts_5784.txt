@@ -1,0 +1,105 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+FUN_8064199C(behaviour,1,0)
+FUN_80650BBC(param_4,1,1)
+FUN_80650A04(param_4,1,10)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+x18_successful = 0
+if (*(byte *)(behaviour + 0x5C) != 0) {
+if (*(byte *)(behaviour + 0x5C) == 1){
+if ((*(ushort *)(behaviour + 0x5E) == 42) && FUN_806419F8() != 0) {
+FUN_80641724(ObjectModel2Array[param_4].object_type)
+x18_successful = 1
+}
+}
+}
+if (x18_successful == 1) {
+FUN_806085DC(param_4,140,255,127)
+FUN_806508B4(param_4,1,1)
+*(short *)(behaviour + 0x44) = 25
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+playCutsceneFromModelTwoScript(behaviour,0,1,0)
+*(short *)(behaviour + 0x44) = 110
+*(byte *)(behaviour + 0x4B) = 3
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+x54_ivar7 = (&WORD_807F6240)[1]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(1,10,behaviour)
+if (BYTE_807F61F8 == 0) {
+spawnActor(TimerController)
+temp = CurrentActorPointer
+WORD_807F61F4 = PTR_PTR_807FBB44
+CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)
+spawnTimer(0xDC,0x2A13)
+BYTE_807F61F8 = 1
+WORD_807F61F0 = PTR_PTR_807FBB44
+CurrentActorPointer = temp
+}
+*(byte *)(behaviour + 0x4B) = 4
+}
+}
+if (*(byte *)(behaviour + 0x48) == 3) {
+if (*(ushort *)(behaviour + 0x44) == 0) {
+x54_ivar7 = (&WORD_807F6240)[17]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(17,10,behaviour)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 4) {
+if (CutsceneActive !== 1) {
+if (BYTE_807F61F8 != 0) {
+FUN_806A2B08()
+}
+*(byte *)(behaviour + 0x4B) = 5
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (*(int *)(PlayerPointer->ActorType) !== 4) {
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+if (BYTE_807F61F8 == 0) {
+*(byte *)(behaviour + 0x4B) = 6
+}
+}
+if (*(byte *)(behaviour + 0x48) == 6) {
+x54_ivar7 = (&WORD_807F6240)[1]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(1,10,behaviour)
+FUN_806508B4(param_4,1,1)
+*(byte *)(behaviour + 0x4B) = 7
+}
+if (*(byte *)(behaviour + 0x48) == 7) {
+if (FUN_80650D04(param_4,1) == 0) {
+if (BYTE_807F61F8 != 0) {
+FUN_806782C0(DWORD_807F61F0)
+FUN_806782C0(DWORD_807F61F4)
+}
+x54_ivar7 = (&WORD_807F6240)[17]
+if (x54_ivar7 != -1) {
+FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
+}
+FUN_806418E8(17,20,behaviour)
+*(byte *)(behaviour + 0x4B) = 1
+}
+}

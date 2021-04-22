@@ -1,0 +1,13 @@
+if (true) {
+FUN_8064199C(behaviour,3,1000)
+}
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(ushort *)(behaviour + 0x68) = 200
+*(ushort *)(behaviour + 0x6A) = 80
+*(ushort *)(behaviour + 0x6C) = 200
+*(byte *)(behaviour + 0x67) = 3
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+*(code *)(0x80747F00)(behaviour,param_4,0,0)
+}

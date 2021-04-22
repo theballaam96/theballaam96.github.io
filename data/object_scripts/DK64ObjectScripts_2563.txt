@@ -1,0 +1,71 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,2,0)
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+FUN_80650A04(param_4,3,50)
+FUN_806508B4(param_4,3,-1)
+FUN_80650A04(param_4,1,100)
+FUN_806508B4(param_4,1,-1)
+}
+if (*(byte *)(behaviour + 0x48) == 5) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+FUN_8064199C(behaviour,1,0)
+*(byte *)(behaviour + 0x4B) = 6
+}
+if (*(byte *)(behaviour + 0x48) == 10) {
+FUN_80650A04(param_4,4,100)
+FUN_806508B4(param_4,4,1)
+*(byte *)(behaviour + 0x4B) = 11
+}
+if (*(byte *)(behaviour + 0x48) == 11) {
+if (FUN_80650D04(param_4,4) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+FUN_80650A04(param_4,6,100)
+FUN_806508B4(param_4,6,1)
+*(byte *)(behaviour + 0x4B) = 21
+}
+if (*(byte *)(behaviour + 0x48) == 21) {
+if (FUN_80650D04(param_4,6) == 0) {
+FUN_80650A04(param_4,7,100)
+FUN_806508B4(param_4,7,1)
+*(byte *)(behaviour + 0x4B) = 22
+}
+}
+if (*(byte *)(behaviour + 0x48) == 22) {
+if (FUN_80650D04(param_4,7) == 0) {
+FUN_80650A04(param_4,8,100)
+FUN_806508B4(param_4,8,1)
+*(byte *)(behaviour + 0x4B) = 23
+}
+}
+if (*(byte *)(behaviour + 0x48) == 23) {
+if (FUN_80650D04(param_4,8) == 0) {
+FUN_80650A04(param_4,9,100)
+FUN_806508B4(param_4,9,1)
+*(byte *)(behaviour + 0x4B) = 24
+}
+}
+if (*(byte *)(behaviour + 0x48) == 24) {
+if (FUN_80650D04(param_4,9) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}
+if (*(byte *)(behaviour + 0x48) == 30) {
+FUN_80650A04(param_4,5,100)
+FUN_806508B4(param_4,5,1)
+*(byte *)(behaviour + 0x4B) = 31
+}
+if (*(byte *)(behaviour + 0x48) == 31) {
+if (FUN_80650D04(param_4,5) == 0) {
+FUN_8064199C(behaviour,2,0)
+}
+}

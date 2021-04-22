@@ -1,0 +1,4 @@
+if (*(ushort *)(behaviour + 0x44) == 0) {
+*(code *)(0x80748028)(behaviour,param_4,4,17)
+*(short *)(behaviour + 0x44) = 12
+}

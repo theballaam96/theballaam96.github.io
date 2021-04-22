@@ -1,0 +1,50 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+*(code *)(0x80747F94)(behaviour,param_4,0,0)
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+if ((*(uint *)(PlayerPointer->unk0x368) & 0x40) == 0) {
+FUN_80724994(1,1,0,0)
+FUN_806418E8(0,20,behaviour)
+FUN_806418E8(1,20,behaviour)
+*(byte *)(behaviour + 0x4B) = 20
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+x10_uvar9 = 0
+} else {
+FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+x10_uvar9 = 1
+}
+if (x10_uvar9 == 1) {
+if ((*(uint *)(PlayerPointer->unk0x368) & 0x40) == 0) {
+FUN_806418E8(6,20,behaviour)
+FUN_806418E8(3,20,behaviour)
+FUN_806418E8(4,20,behaviour)
+FUN_806418E8(5,20,behaviour)
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((*(uint *)(PlayerPointer->unk0x368) & 0x40) !== 0) {
+*(byte *)(behaviour + 0x70) = 0
+*(byte *)(behaviour + 0x4B) = 40
+}
+}
+if (*(byte *)(behaviour + 0x48) == 20) {
+*(code *)(0x80747F94)(behaviour,param_4,1,0)
+}
+if (*(byte *)(behaviour + 0x48) == 40) {
+*(code *)(0x80747F94)(behaviour,param_4,0,0)
+}

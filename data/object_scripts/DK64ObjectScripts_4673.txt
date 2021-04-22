@@ -1,0 +1,30 @@
+if (*(byte *)(behaviour + 0x48) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 255
+*(byte *)(behaviour + 0x4B) = 1
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((*(uint *)(PlayerPointer->unk0x368) & 0x40) !== 0) {
+if (*(byte *)(behaviour + 0x49) == 0) {
+playSong('Oh Banana', (float) 1)
+*(byte *)(behaviour + 0x4C) = 1
+}
+}
+}
+if (*(byte *)(behaviour + 0x48) == 1) {
+if ((*(uint *)(PlayerPointer->unk0x368) & 0x40) !== 0) {
+*(byte *)(behaviour + 0x60) = 0
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 5
+*(byte *)(behaviour + 0x4B) = 2
+}
+}
+if (*(byte *)(behaviour + 0x48) == 2) {
+if ((*(uint *)(PlayerPointer->unk0x368) & 0x40) == 0) {
+*(byte *)(behaviour + 0x60) = 1
+*(ushort *)(behaviour + 0x62) = 0
+*(byte *)(behaviour + 0x66) = 5
+*(byte *)(behaviour + 0x4B) = 1
+}
+}
