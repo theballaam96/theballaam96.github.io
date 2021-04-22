@@ -2,28 +2,28 @@
    "data":[
       {
          "map_index":0,
-         "map_name":"Unknown 0x00",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":1,
          "map_name":"Test Map",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":2,
+         "map_index":1,
          "map_name":"Funkys Store",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":3,
+         "map_index":2,
          "map_name":"DK Arcade",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":3,
+         "map_name":"K. Rool Barrel: Lankys Maze",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_0.txt",
@@ -99,7 +99,7 @@
       },
       {
          "map_index":4,
-         "map_name":"K. Rool Barrel: Lankys Maze",
+         "map_name":"Jungle Japes: Mountain",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_10.txt",
@@ -518,7 +518,7 @@
       },
       {
          "map_index":5,
-         "map_name":"Jungle Japes: Mountain",
+         "map_name":"Crankys Lab",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_69.txt",
@@ -545,7 +545,7 @@
       },
       {
          "map_index":6,
-         "map_name":"Crankys Lab",
+         "map_name":"Jungle Japes: Minecart",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_72.txt",
@@ -1335,7 +1335,7 @@
       },
       {
          "map_index":7,
-         "map_name":"Jungle Japes: Minecart",
+         "map_name":"Jungle Japes",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_184.txt",
@@ -4337,28 +4337,28 @@
       },
       {
          "map_index":8,
-         "map_name":"Jungle Japes",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":9,
          "map_name":"Jungle Japes: Army Dillo",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":10,
+         "map_index":9,
          "map_name":"Jetpac",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":11,
+         "map_index":10,
          "map_name":"Kremling Kosh! (very easy)",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":11,
+         "map_name":"Stealthy Snoop! (normal, no logo)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_612.txt",
@@ -4574,7 +4574,7 @@
       },
       {
          "map_index":12,
-         "map_name":"Stealthy Snoop! (normal, no logo)",
+         "map_name":"Jungle Japes: Shell",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_642.txt",
@@ -5098,7 +5098,7 @@
       },
       {
          "map_index":13,
-         "map_name":"Jungle Japes: Shell",
+         "map_name":"Jungle Japes: Lankys Cave",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_716.txt",
@@ -5258,7 +5258,7 @@
       },
       {
          "map_index":14,
-         "map_name":"Jungle Japes: Lankys Cave",
+         "map_name":"Angry Aztec: Beetle Race",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_738.txt",
@@ -5775,7 +5775,7 @@
       },
       {
          "map_index":15,
-         "map_name":"Angry Aztec: Beetle Race",
+         "map_name":"Snides H.Q.",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_811.txt",
@@ -5928,7 +5928,7 @@
       },
       {
          "map_index":16,
-         "map_name":"Snides H.Q.",
+         "map_name":"Angry Aztec: Tinys Temple",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_832.txt",
@@ -6970,7 +6970,7 @@
       },
       {
          "map_index":17,
-         "map_name":"Angry Aztec: Tinys Temple",
+         "map_name":"Hideout Helm",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_980.txt",
@@ -7662,14 +7662,14 @@
       },
       {
          "map_index":18,
-         "map_name":"Hideout Helm",
+         "map_name":"Teetering Turtle Trouble! (very easy)",
          "map_objects":[
             
          ]
       },
       {
          "map_index":19,
-         "map_name":"Teetering Turtle Trouble! (very easy)",
+         "map_name":"Angry Aztec: Five Door Temple (DK)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1078.txt",
@@ -7906,7 +7906,7 @@
       },
       {
          "map_index":20,
-         "map_name":"Angry Aztec: Five Door Temple (DK)",
+         "map_name":"Angry Aztec: Llama Temple",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1111.txt",
@@ -9109,7 +9109,7 @@
       },
       {
          "map_index":21,
-         "map_name":"Angry Aztec: Llama Temple",
+         "map_name":"Angry Aztec: Five Door Temple (Diddy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1282.txt",
@@ -9241,7 +9241,7 @@
       },
       {
          "map_index":22,
-         "map_name":"Angry Aztec: Five Door Temple (Diddy)",
+         "map_name":"Angry Aztec: Five Door Temple (Tiny)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1300.txt",
@@ -9527,7 +9527,7 @@
       },
       {
          "map_index":23,
-         "map_name":"Angry Aztec: Five Door Temple (Tiny)",
+         "map_name":"Angry Aztec: Five Door Temple (Lanky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1340.txt",
@@ -9820,7 +9820,7 @@
       },
       {
          "map_index":24,
-         "map_name":"Angry Aztec: Five Door Temple (Lanky)",
+         "map_name":"Angry Aztec: Five Door Temple (Chunky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1381.txt",
@@ -10197,7 +10197,7 @@
       },
       {
          "map_index":25,
-         "map_name":"Angry Aztec: Five Door Temple (Chunky)",
+         "map_name":"Candys Music Shop",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1434.txt",
@@ -10224,7 +10224,7 @@
       },
       {
          "map_index":26,
-         "map_name":"Candys Music Shop",
+         "map_name":"Frantic Factory",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1437.txt",
@@ -13513,7 +13513,7 @@
       },
       {
          "map_index":27,
-         "map_name":"Frantic Factory",
+         "map_name":"Frantic Factory: Car Race",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_1906.txt",
@@ -14191,7 +14191,7 @@
       },
       {
          "map_index":28,
-         "map_name":"Frantic Factory: Car Race",
+         "map_name":"Hideout Helm (Level Intros, Game Over)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2002.txt",
@@ -14512,7 +14512,7 @@
       },
       {
          "map_index":29,
-         "map_name":"Hideout Helm (Level Intros, Game Over)",
+         "map_name":"Frantic Factory: Power Shed",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2047.txt",
@@ -14609,7 +14609,7 @@
       },
       {
          "map_index":30,
-         "map_name":"Frantic Factory: Power Shed",
+         "map_name":"Gloomy Galleon",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2060.txt",
@@ -17800,7 +17800,7 @@
       },
       {
          "map_index":31,
-         "map_name":"Gloomy Galleon",
+         "map_name":"Gloomy Galleon: K. Rools Ship",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2515.txt",
@@ -17911,14 +17911,14 @@
       },
       {
          "map_index":32,
-         "map_name":"Gloomy Galleon: K. Rools Ship",
+         "map_name":"Batty Barrel Bandit! (easy)",
          "map_objects":[
             
          ]
       },
       {
          "map_index":33,
-         "map_name":"Batty Barrel Bandit! (easy)",
+         "map_name":"Jungle Japes: Chunkys Cave",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2530.txt",
@@ -18148,7 +18148,7 @@
       },
       {
          "map_index":34,
-         "map_name":"Jungle Japes: Chunkys Cave",
+         "map_name":"DK Isles Overworld",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2562.txt",
@@ -18910,7 +18910,7 @@
       },
       {
          "map_index":35,
-         "map_name":"DK Isles Overworld",
+         "map_name":"K. Rool Barrel: DKs Target Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2670.txt",
@@ -19021,7 +19021,7 @@
       },
       {
          "map_index":36,
-         "map_name":"K. Rool Barrel: DKs Target Game",
+         "map_name":"Frantic Factory: Crusher Room",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2685.txt",
@@ -19181,7 +19181,7 @@
       },
       {
          "map_index":37,
-         "map_name":"Frantic Factory: Crusher Room",
+         "map_name":"Jungle Japes: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2707.txt",
@@ -19222,7 +19222,7 @@
       },
       {
          "map_index":38,
-         "map_name":"Jungle Japes: Barrel Blast",
+         "map_name":"Angry Aztec",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_2712.txt",
@@ -22518,7 +22518,7 @@
       },
       {
          "map_index":39,
-         "map_name":"Angry Aztec",
+         "map_name":"Gloomy Galleon: Seal Race",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3182.txt",
@@ -23112,14 +23112,14 @@
       },
       {
          "map_index":40,
-         "map_name":"Gloomy Galleon: Seal Race",
+         "map_name":"Nintendo Logo",
          "map_objects":[
             
          ]
       },
       {
          "map_index":41,
-         "map_name":"Nintendo Logo",
+         "map_name":"Angry Aztec: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3266.txt",
@@ -23132,13 +23132,13 @@
       },
       {
          "map_index":42,
-         "map_name":"Angry Aztec: Barrel Blast",
+         "map_name":"Troff n Scoff",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3267.txt",
                "object_id":0,
                "object_type":301,
-               "object_name":"Troff  n  Scoff Feed Pad",
+               "object_name":"Troff n Scoff Feed Pad",
                "script_lines":82
             },
             {
@@ -23208,35 +23208,35 @@
                "script_file":"DK64ObjectScripts_3277.txt",
                "object_id":9,
                "object_type":311,
-               "object_name":"Troff  n  Scoff Banana Count Pad (DK)",
+               "object_name":"Troff n Scoff Banana Count Pad (DK)",
                "script_lines":55
             },
             {
                "script_file":"DK64ObjectScripts_3278.txt",
                "object_id":10,
                "object_type":323,
-               "object_name":"Troff  n  Scoff Banana Count Pad (Diddy)",
+               "object_name":"Troff n Scoff Banana Count Pad (Diddy)",
                "script_lines":67
             },
             {
                "script_file":"DK64ObjectScripts_3279.txt",
                "object_id":11,
                "object_type":324,
-               "object_name":"Troff  n  Scoff Banana Count Pad (Lanky)",
+               "object_name":"Troff n Scoff Banana Count Pad (Lanky)",
                "script_lines":67
             },
             {
                "script_file":"DK64ObjectScripts_3280.txt",
                "object_id":12,
                "object_type":325,
-               "object_name":"Troff  n  Scoff Banana Count Pad (Chunky)",
+               "object_name":"Troff n Scoff Banana Count Pad (Chunky)",
                "script_lines":67
             },
             {
                "script_file":"DK64ObjectScripts_3281.txt",
                "object_id":13,
                "object_type":326,
-               "object_name":"Troff  n  Scoff Banana Count Pad (Tiny)",
+               "object_name":"Troff n Scoff Banana Count Pad (Tiny)",
                "script_lines":67
             },
             {
@@ -23250,7 +23250,7 @@
       },
       {
          "map_index":43,
-         "map_name":"Troff  n  Scoff",
+         "map_name":"Gloomy Galleon: Shipwreck (Diddy, Lanky, Chunky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3283.txt",
@@ -23501,7 +23501,7 @@
       },
       {
          "map_index":44,
-         "map_name":"Gloomy Galleon: Shipwreck (Diddy, Lanky, Chunky)",
+         "map_name":"Gloomy Galleon: Treasure Chest",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3318.txt",
@@ -23570,7 +23570,7 @@
       },
       {
          "map_index":45,
-         "map_name":"Gloomy Galleon: Treasure Chest",
+         "map_name":"Gloomy Galleon: Mermaid",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3327.txt",
@@ -23681,7 +23681,7 @@
       },
       {
          "map_index":46,
-         "map_name":"Gloomy Galleon: Mermaid",
+         "map_name":"Gloomy Galleon: Shipwreck (DK, Tiny)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3342.txt",
@@ -24170,7 +24170,7 @@
       },
       {
          "map_index":47,
-         "map_name":"Gloomy Galleon: Shipwreck (DK, Tiny)",
+         "map_name":"Gloomy Galleon: Shipwreck (Lanky, Tiny)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3411.txt",
@@ -24372,7 +24372,7 @@
       },
       {
          "map_index":48,
-         "map_name":"Gloomy Galleon: Shipwreck (Lanky, Tiny)",
+         "map_name":"Fungi Forest",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3439.txt",
@@ -27843,7 +27843,7 @@
       },
       {
          "map_index":49,
-         "map_name":"Fungi Forest",
+         "map_name":"Gloomy Galleon: Lighthouse",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3934.txt",
@@ -28199,7 +28199,7 @@
       },
       {
          "map_index":50,
-         "map_name":"Gloomy Galleon: Lighthouse",
+         "map_name":"K. Rool Barrel: Tinys Mushroom Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_3984.txt",
@@ -28373,7 +28373,7 @@
       },
       {
          "map_index":51,
-         "map_name":"K. Rool Barrel: Tinys Mushroom Game",
+         "map_name":"Gloomy Galleon: Mechanical Fish",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4008.txt",
@@ -28533,7 +28533,7 @@
       },
       {
          "map_index":52,
-         "map_name":"Gloomy Galleon: Mechanical Fish",
+         "map_name":"Fungi Forest: Ant Hill",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4030.txt",
@@ -28595,7 +28595,7 @@
       },
       {
          "map_index":53,
-         "map_name":"Fungi Forest: Ant Hill",
+         "map_name":"Battle Arena: Beaver Brawl!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4038.txt",
@@ -28629,7 +28629,7 @@
       },
       {
          "map_index":54,
-         "map_name":"Battle Arena: Beaver Brawl!",
+         "map_name":"Gloomy Galleon: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4042.txt",
@@ -28677,7 +28677,7 @@
       },
       {
          "map_index":55,
-         "map_name":"Gloomy Galleon: Barrel Blast",
+         "map_name":"Fungi Forest: Minecart",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4048.txt",
@@ -29985,7 +29985,7 @@
       },
       {
          "map_index":56,
-         "map_name":"Fungi Forest: Minecart",
+         "map_name":"Fungi Forest: Diddys Barn",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4234.txt",
@@ -30054,7 +30054,7 @@
       },
       {
          "map_index":57,
-         "map_name":"Fungi Forest: Diddys Barn",
+         "map_name":"Fungi Forest: Diddys Attic",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4243.txt",
@@ -30144,7 +30144,7 @@
       },
       {
          "map_index":58,
-         "map_name":"Fungi Forest: Diddys Attic",
+         "map_name":"Fungi Forest: Lankys Attic",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4255.txt",
@@ -30283,7 +30283,7 @@
       },
       {
          "map_index":59,
-         "map_name":"Fungi Forest: Lankys Attic",
+         "map_name":"Fungi Forest: DKs Barn",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4274.txt",
@@ -30541,7 +30541,7 @@
       },
       {
          "map_index":60,
-         "map_name":"Fungi Forest: DKs Barn",
+         "map_name":"Fungi Forest: Spider",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4310.txt",
@@ -30589,7 +30589,7 @@
       },
       {
          "map_index":61,
-         "map_name":"Fungi Forest: Spider",
+         "map_name":"Fungi Forest: Front Part of Mill",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4316.txt",
@@ -30791,7 +30791,7 @@
       },
       {
          "map_index":62,
-         "map_name":"Fungi Forest: Front Part of Mill",
+         "map_name":"Fungi Forest: Rear Part of Mill",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4344.txt",
@@ -30909,7 +30909,7 @@
       },
       {
          "map_index":63,
-         "map_name":"Fungi Forest: Rear Part of Mill",
+         "map_name":"Fungi Forest: Mushroom Puzzle",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4360.txt",
@@ -30971,7 +30971,7 @@
       },
       {
          "map_index":64,
-         "map_name":"Fungi Forest: Mushroom Puzzle",
+         "map_name":"Fungi Forest: Giant Mushroom",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4368.txt",
@@ -31943,14 +31943,14 @@
       },
       {
          "map_index":65,
-         "map_name":"Fungi Forest: Giant Mushroom",
+         "map_name":"Stealthy Snoop! (normal)",
          "map_objects":[
             
          ]
       },
       {
          "map_index":66,
-         "map_name":"Stealthy Snoop! (normal)",
+         "map_name":"Mad Maze Maul! (hard)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4506.txt",
@@ -32159,7 +32159,7 @@
       },
       {
          "map_index":67,
-         "map_name":"Mad Maze Maul! (hard)",
+         "map_name":"Stash Snatch! (normal)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4535.txt",
@@ -32347,7 +32347,7 @@
       },
       {
          "map_index":68,
-         "map_name":"Stash Snatch! (normal)",
+         "map_name":"Mad Maze Maul! (easy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4561.txt",
@@ -32451,7 +32451,7 @@
       },
       {
          "map_index":69,
-         "map_name":"Mad Maze Maul! (easy)",
+         "map_name":"Mad Maze Maul! (normal)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4575.txt",
@@ -32555,7 +32555,7 @@
       },
       {
          "map_index":70,
-         "map_name":"Mad Maze Maul! (normal)",
+         "map_name":"Fungi Forest: Mushroom Leap",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4589.txt",
@@ -32617,7 +32617,7 @@
       },
       {
          "map_index":71,
-         "map_name":"Fungi Forest: Mushroom Leap",
+         "map_name":"Fungi Forest: Shooting Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4597.txt",
@@ -32721,7 +32721,7 @@
       },
       {
          "map_index":72,
-         "map_name":"Fungi Forest: Shooting Game",
+         "map_name":"Crystal Caves",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4611.txt",
@@ -35177,7 +35177,7 @@
       },
       {
          "map_index":73,
-         "map_name":"Crystal Caves",
+         "map_name":"Battle Arena: Kritter Karnage!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4961.txt",
@@ -35211,7 +35211,7 @@
       },
       {
          "map_index":74,
-         "map_name":"Battle Arena: Kritter Karnage!",
+         "map_name":"Stash Snatch! (easy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4965.txt",
@@ -35364,7 +35364,7 @@
       },
       {
          "map_index":75,
-         "map_name":"Stash Snatch! (easy)",
+         "map_name":"Stash Snatch! (hard)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4986.txt",
@@ -35398,7 +35398,7 @@
       },
       {
          "map_index":76,
-         "map_name":"Stash Snatch! (hard)",
+         "map_name":"DK Rap",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4990.txt",
@@ -35425,14 +35425,14 @@
       },
       {
          "map_index":77,
-         "map_name":"DK Rap",
+         "map_name":"Minecart Mayhem! (easy)",
          "map_objects":[
             
          ]
       },
       {
          "map_index":78,
-         "map_name":"Minecart Mayhem! (easy)",
+         "map_name":"Busy Barrel Barrage! (easy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4993.txt",
@@ -35452,7 +35452,7 @@
       },
       {
          "map_index":79,
-         "map_name":"Busy Barrel Barrage! (easy)",
+         "map_name":"Busy Barrel Barrage! (normal)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4995.txt",
@@ -35472,21 +35472,21 @@
       },
       {
          "map_index":80,
-         "map_name":"Busy Barrel Barrage! (normal)",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":81,
          "map_name":"Main Menu",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":82,
+         "map_index":81,
          "map_name":"Title Screen (Not For Resale Version)",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":82,
+         "map_name":"Crystal Caves: Beetle Race",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_4997.txt",
@@ -36199,7 +36199,7 @@
       },
       {
          "map_index":83,
-         "map_name":"Crystal Caves: Beetle Race",
+         "map_name":"Fungi Forest: Dogadon",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5098.txt",
@@ -36212,7 +36212,7 @@
       },
       {
          "map_index":84,
-         "map_name":"Fungi Forest: Dogadon",
+         "map_name":"Crystal Caves: Igloo (Tiny)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5099.txt",
@@ -36295,7 +36295,7 @@
       },
       {
          "map_index":85,
-         "map_name":"Crystal Caves: Igloo (Tiny)",
+         "map_name":"Crystal Caves: Igloo (Lanky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5110.txt",
@@ -36413,7 +36413,7 @@
       },
       {
          "map_index":86,
-         "map_name":"Crystal Caves: Igloo (Lanky)",
+         "map_name":"Crystal Caves: Igloo (DK)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5126.txt",
@@ -36608,7 +36608,7 @@
       },
       {
          "map_index":87,
-         "map_name":"Crystal Caves: Igloo (DK)",
+         "map_name":"Creepy Castle",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5153.txt",
@@ -38413,7 +38413,7 @@
       },
       {
          "map_index":88,
-         "map_name":"Creepy Castle",
+         "map_name":"Creepy Castle: Ballroom",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5410.txt",
@@ -38650,7 +38650,7 @@
       },
       {
          "map_index":89,
-         "map_name":"Creepy Castle: Ballroom",
+         "map_name":"Crystal Caves: Rotating Room",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5443.txt",
@@ -38677,7 +38677,7 @@
       },
       {
          "map_index":90,
-         "map_name":"Crystal Caves: Rotating Room",
+         "map_name":"Crystal Caves: Shack (Chunky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5446.txt",
@@ -38802,7 +38802,7 @@
       },
       {
          "map_index":91,
-         "map_name":"Crystal Caves: Shack (Chunky)",
+         "map_name":"Crystal Caves: Shack (DK)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5463.txt",
@@ -38941,7 +38941,7 @@
       },
       {
          "map_index":92,
-         "map_name":"Crystal Caves: Shack (DK)",
+         "map_name":"Crystal Caves: Shack (Diddy, middle part)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5482.txt",
@@ -39045,7 +39045,7 @@
       },
       {
          "map_index":93,
-         "map_name":"Crystal Caves: Shack (Diddy, middle part)",
+         "map_name":"Crystal Caves: Shack (Tiny)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5496.txt",
@@ -39072,7 +39072,7 @@
       },
       {
          "map_index":94,
-         "map_name":"Crystal Caves: Shack (Tiny)",
+         "map_name":"Crystal Caves: Lankys Hut",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5499.txt",
@@ -39155,7 +39155,7 @@
       },
       {
          "map_index":95,
-         "map_name":"Crystal Caves: Lankys Hut",
+         "map_name":"Crystal Caves: Igloo (Chunky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5510.txt",
@@ -39168,7 +39168,7 @@
       },
       {
          "map_index":96,
-         "map_name":"Crystal Caves: Igloo (Chunky)",
+         "map_name":"Splish-Splash Salvage! (normal)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5511.txt",
@@ -39244,7 +39244,7 @@
       },
       {
          "map_index":97,
-         "map_name":"Splish-Splash Salvage! (normal)",
+         "map_name":"K. Lumsy",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5521.txt",
@@ -39376,7 +39376,7 @@
       },
       {
          "map_index":98,
-         "map_name":"K. Lumsy",
+         "map_name":"Crystal Caves: Ice Castle",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5539.txt",
@@ -39606,7 +39606,7 @@
       },
       {
          "map_index":99,
-         "map_name":"Crystal Caves: Ice Castle",
+         "map_name":"Speedy Swing Sortie! (easy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5571.txt",
@@ -39843,7 +39843,7 @@
       },
       {
          "map_index":100,
-         "map_name":"Speedy Swing Sortie! (easy)",
+         "map_name":"Crystal Caves: Igloo (Diddy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5604.txt",
@@ -39933,28 +39933,28 @@
       },
       {
          "map_index":101,
-         "map_name":"Crystal Caves: Igloo (Diddy)",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":102,
          "map_name":"Krazy Kong Klamour! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":103,
+         "map_index":102,
          "map_name":"Big Bug Bash! (very easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":104,
+         "map_index":103,
          "map_name":"Searchlight Seek! (very easy)",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":104,
+         "map_name":"Beaver Bother! (easy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5616.txt",
@@ -39988,7 +39988,7 @@
       },
       {
          "map_index":105,
-         "map_name":"Beaver Bother! (easy)",
+         "map_name":"Creepy Castle: Tower",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5620.txt",
@@ -40092,7 +40092,7 @@
       },
       {
          "map_index":106,
-         "map_name":"Creepy Castle: Tower",
+         "map_name":"Creepy Castle: Minecart",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5634.txt",
@@ -41148,14 +41148,14 @@
       },
       {
          "map_index":107,
-         "map_name":"Creepy Castle: Minecart",
+         "map_name":"Kong Battle: Battle Arena",
          "map_objects":[
             
          ]
       },
       {
          "map_index":108,
-         "map_name":"Kong Battle: Battle Arena",
+         "map_name":"Creepy Castle: Crypt (Lanky, Tiny)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5784.txt",
@@ -41525,7 +41525,7 @@
       },
       {
          "map_index":109,
-         "map_name":"Creepy Castle: Crypt (Lanky, Tiny)",
+         "map_name":"Kong Battle: Arena 1",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5836.txt",
@@ -42161,7 +42161,7 @@
       },
       {
          "map_index":110,
-         "map_name":"Kong Battle: Arena 1",
+         "map_name":"Frantic Factory: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5926.txt",
@@ -42216,7 +42216,7 @@
       },
       {
          "map_index":111,
-         "map_name":"Frantic Factory: Barrel Blast",
+         "map_name":"Gloomy Galleon: Pufftoss",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5933.txt",
@@ -42509,7 +42509,7 @@
       },
       {
          "map_index":112,
-         "map_name":"Gloomy Galleon: Pufftoss",
+         "map_name":"Creepy Castle: Crypt (DK, Diddy, Chunky)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_5974.txt",
@@ -42935,7 +42935,7 @@
       },
       {
          "map_index":113,
-         "map_name":"Creepy Castle: Crypt (DK, Diddy, Chunky)",
+         "map_name":"Creepy Castle: Museum",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6034.txt",
@@ -43130,7 +43130,7 @@
       },
       {
          "map_index":114,
-         "map_name":"Creepy Castle: Museum",
+         "map_name":"Creepy Castle: Library",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6061.txt",
@@ -43353,70 +43353,70 @@
       },
       {
          "map_index":115,
-         "map_name":"Creepy Castle: Library",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":116,
          "map_name":"Kremling Kosh! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":117,
+         "map_index":116,
          "map_name":"Kremling Kosh! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":118,
+         "map_index":117,
          "map_name":"Kremling Kosh! (hard)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":119,
+         "map_index":118,
          "map_name":"Teetering Turtle Trouble! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":120,
+         "map_index":119,
          "map_name":"Teetering Turtle Trouble! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":121,
+         "map_index":120,
          "map_name":"Teetering Turtle Trouble! (hard)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":122,
+         "map_index":121,
          "map_name":"Batty Barrel Bandit! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":123,
+         "map_index":122,
          "map_name":"Batty Barrel Bandit! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":124,
+         "map_index":123,
          "map_name":"Batty Barrel Bandit! (hard)",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":124,
+         "map_name":"Mad Maze Maul! (insane)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6092.txt",
@@ -43569,7 +43569,7 @@
       },
       {
          "map_index":125,
-         "map_name":"Mad Maze Maul! (insane)",
+         "map_name":"Stash Snatch! (insane)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6113.txt",
@@ -43953,42 +43953,42 @@
       },
       {
          "map_index":126,
-         "map_name":"Stash Snatch! (insane)",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":127,
          "map_name":"Stealthy Snoop! (very easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":128,
+         "map_index":127,
          "map_name":"Stealthy Snoop! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":129,
+         "map_index":128,
          "map_name":"Stealthy Snoop! (hard)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":130,
+         "map_index":129,
          "map_name":"Minecart Mayhem! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":131,
+         "map_index":130,
          "map_name":"Minecart Mayhem! (hard)",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":131,
+         "map_name":"Busy Barrel Barrage! (hard)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6167.txt",
@@ -44008,7 +44008,7 @@
       },
       {
          "map_index":132,
-         "map_name":"Busy Barrel Barrage! (hard)",
+         "map_name":"Splish-Splash Salvage! (hard)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6169.txt",
@@ -44119,7 +44119,7 @@
       },
       {
          "map_index":133,
-         "map_name":"Splish-Splash Salvage! (hard)",
+         "map_name":"Splish-Splash Salvage! (easy)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6184.txt",
@@ -44181,7 +44181,7 @@
       },
       {
          "map_index":134,
-         "map_name":"Splish-Splash Salvage! (easy)",
+         "map_name":"Speedy Swing Sortie! (normal)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6192.txt",
@@ -44432,7 +44432,7 @@
       },
       {
          "map_index":135,
-         "map_name":"Speedy Swing Sortie! (normal)",
+         "map_name":"Speedy Swing Sortie! (hard)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6227.txt",
@@ -44606,7 +44606,7 @@
       },
       {
          "map_index":136,
-         "map_name":"Speedy Swing Sortie! (hard)",
+         "map_name":"Beaver Bother! (normal)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6251.txt",
@@ -44640,7 +44640,7 @@
       },
       {
          "map_index":137,
-         "map_name":"Beaver Bother! (normal)",
+         "map_name":"Beaver Bother! (hard)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6255.txt",
@@ -44674,98 +44674,98 @@
       },
       {
          "map_index":138,
-         "map_name":"Beaver Bother! (hard)",
-         "map_objects":[
-            
-         ]
-      },
-      {
-         "map_index":139,
          "map_name":"Searchlight Seek! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":140,
+         "map_index":139,
          "map_name":"Searchlight Seek! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":141,
+         "map_index":140,
          "map_name":"Searchlight Seek! (hard)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":142,
+         "map_index":141,
          "map_name":"Krazy Kong Klamour! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":143,
+         "map_index":142,
          "map_name":"Krazy Kong Klamour! (hard)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":144,
+         "map_index":143,
          "map_name":"Krazy Kong Klamour! (insane)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":145,
+         "map_index":144,
          "map_name":"Peril Path Panic! (very easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":146,
+         "map_index":145,
          "map_name":"Peril Path Panic! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":147,
+         "map_index":146,
          "map_name":"Peril Path Panic! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":148,
+         "map_index":147,
          "map_name":"Peril Path Panic! (hard)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":149,
+         "map_index":148,
          "map_name":"Big Bug Bash! (easy)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":150,
+         "map_index":149,
          "map_name":"Big Bug Bash! (normal)",
          "map_objects":[
             
          ]
       },
       {
-         "map_index":151,
+         "map_index":150,
          "map_name":"Big Bug Bash! (hard)",
+         "map_objects":[
+            
+         ]
+      },
+      {
+         "map_index":151,
+         "map_name":"Creepy Castle: Dungeon",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6259.txt",
@@ -45247,7 +45247,7 @@
       },
       {
          "map_index":152,
-         "map_name":"Creepy Castle: Dungeon",
+         "map_name":"Hideout Helm (Intro Story)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6327.txt",
@@ -45568,7 +45568,7 @@
       },
       {
          "map_index":153,
-         "map_name":"Hideout Helm (Intro Story)",
+         "map_name":"DK Isles (DK Theatre)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6372.txt",
@@ -45588,7 +45588,7 @@
       },
       {
          "map_index":154,
-         "map_name":"DK Isles (DK Theatre)",
+         "map_name":"Frantic Factory: Mad Jack",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6374.txt",
@@ -45853,7 +45853,7 @@
       },
       {
          "map_index":155,
-         "map_name":"Frantic Factory: Mad Jack",
+         "map_name":"Battle Arena: Arena Ambush!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6411.txt",
@@ -45887,7 +45887,7 @@
       },
       {
          "map_index":156,
-         "map_name":"Battle Arena: Arena Ambush!",
+         "map_name":"Battle Arena: More Kritter Karnage!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6415.txt",
@@ -45921,7 +45921,7 @@
       },
       {
          "map_index":157,
-         "map_name":"Battle Arena: More Kritter Karnage!",
+         "map_name":"Battle Arena: Forest Fracas!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6419.txt",
@@ -45955,7 +45955,7 @@
       },
       {
          "map_index":158,
-         "map_name":"Battle Arena: Forest Fracas!",
+         "map_name":"Battle Arena: Bish Bash Brawl!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6423.txt",
@@ -45989,7 +45989,7 @@
       },
       {
          "map_index":159,
-         "map_name":"Battle Arena: Bish Bash Brawl!",
+         "map_name":"Battle Arena: Kamikaze Kremlings!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6427.txt",
@@ -46023,7 +46023,7 @@
       },
       {
          "map_index":160,
-         "map_name":"Battle Arena: Kamikaze Kremlings!",
+         "map_name":"Battle Arena: Plinth Panic!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6431.txt",
@@ -46057,7 +46057,7 @@
       },
       {
          "map_index":161,
-         "map_name":"Battle Arena: Plinth Panic!",
+         "map_name":"Battle Arena: Pinnacle Palaver!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6435.txt",
@@ -46091,7 +46091,7 @@
       },
       {
          "map_index":162,
-         "map_name":"Battle Arena: Pinnacle Palaver!",
+         "map_name":"Battle Arena: Shockwave Showdown!",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6439.txt",
@@ -46125,7 +46125,7 @@
       },
       {
          "map_index":163,
-         "map_name":"Battle Arena: Shockwave Showdown!",
+         "map_name":"Creepy Castle: Basement",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6443.txt",
@@ -46446,7 +46446,7 @@
       },
       {
          "map_index":164,
-         "map_name":"Creepy Castle: Basement",
+         "map_name":"Creepy Castle: Tree",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6488.txt",
@@ -46760,7 +46760,7 @@
       },
       {
          "map_index":165,
-         "map_name":"Creepy Castle: Tree",
+         "map_name":"K. Rool Barrel: Diddys Kremling Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6532.txt",
@@ -46885,7 +46885,7 @@
       },
       {
          "map_index":166,
-         "map_name":"K. Rool Barrel: Diddys Kremling Game",
+         "map_name":"Creepy Castle: Chunkys Toolshed",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6549.txt",
@@ -46996,7 +46996,7 @@
       },
       {
          "map_index":167,
-         "map_name":"Creepy Castle: Chunkys Toolshed",
+         "map_name":"Creepy Castle: Trash Can",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6564.txt",
@@ -47100,7 +47100,7 @@
       },
       {
          "map_index":168,
-         "map_name":"Creepy Castle: Trash Can",
+         "map_name":"Creepy Castle: Greenhouse",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6578.txt",
@@ -47323,7 +47323,7 @@
       },
       {
          "map_index":169,
-         "map_name":"Creepy Castle: Greenhouse",
+         "map_name":"Jungle Japes Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6609.txt",
@@ -47518,7 +47518,7 @@
       },
       {
          "map_index":170,
-         "map_name":"Jungle Japes Lobby",
+         "map_name":"Hideout Helm Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6636.txt",
@@ -47594,7 +47594,7 @@
       },
       {
          "map_index":171,
-         "map_name":"Hideout Helm Lobby",
+         "map_name":"DKs House",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6646.txt",
@@ -47607,7 +47607,7 @@
       },
       {
          "map_index":172,
-         "map_name":"DKs House",
+         "map_name":"Rock (Intro Story)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6647.txt",
@@ -47620,7 +47620,7 @@
       },
       {
          "map_index":173,
-         "map_name":"Rock (Intro Story)",
+         "map_name":"Angry Aztec Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6648.txt",
@@ -47808,7 +47808,7 @@
       },
       {
          "map_index":174,
-         "map_name":"Angry Aztec Lobby",
+         "map_name":"Gloomy Galleon Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6674.txt",
@@ -47926,7 +47926,7 @@
       },
       {
          "map_index":175,
-         "map_name":"Gloomy Galleon Lobby",
+         "map_name":"Frantic Factory Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6690.txt",
@@ -48051,7 +48051,7 @@
       },
       {
          "map_index":176,
-         "map_name":"Frantic Factory Lobby",
+         "map_name":"Training Grounds",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6707.txt",
@@ -48708,7 +48708,7 @@
       },
       {
          "map_index":177,
-         "map_name":"Training Grounds",
+         "map_name":"Dive Barrel",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6800.txt",
@@ -48721,7 +48721,7 @@
       },
       {
          "map_index":178,
-         "map_name":"Dive Barrel",
+         "map_name":"Fungi Forest Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6801.txt",
@@ -48853,7 +48853,7 @@
       },
       {
          "map_index":179,
-         "map_name":"Fungi Forest Lobby",
+         "map_name":"Gloomy Galleon: Submarine",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6819.txt",
@@ -49062,7 +49062,7 @@
       },
       {
          "map_index":180,
-         "map_name":"Gloomy Galleon: Submarine",
+         "map_name":"Orange Barrel",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6848.txt",
@@ -49110,7 +49110,7 @@
       },
       {
          "map_index":181,
-         "map_name":"Orange Barrel",
+         "map_name":"Barrel Barrel",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6854.txt",
@@ -49123,7 +49123,7 @@
       },
       {
          "map_index":182,
-         "map_name":"Barrel Barrel",
+         "map_name":"Vine Barrel",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6855.txt",
@@ -49150,7 +49150,7 @@
       },
       {
          "map_index":183,
-         "map_name":"Vine Barrel",
+         "map_name":"Creepy Castle: Crypt",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6858.txt",
@@ -49492,7 +49492,7 @@
       },
       {
          "map_index":184,
-         "map_name":"Creepy Castle: Crypt",
+         "map_name":"Enguarde Arena",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6906.txt",
@@ -49645,7 +49645,7 @@
       },
       {
          "map_index":185,
-         "map_name":"Enguarde Arena",
+         "map_name":"Creepy Castle: Car Race",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6927.txt",
@@ -49861,7 +49861,7 @@
       },
       {
          "map_index":186,
-         "map_name":"Creepy Castle: Car Race",
+         "map_name":"Crystal Caves: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6957.txt",
@@ -49930,7 +49930,7 @@
       },
       {
          "map_index":187,
-         "map_name":"Crystal Caves: Barrel Blast",
+         "map_name":"Creepy Castle: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6966.txt",
@@ -50006,7 +50006,7 @@
       },
       {
          "map_index":188,
-         "map_name":"Creepy Castle: Barrel Blast",
+         "map_name":"Fungi Forest: Barrel Blast",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6976.txt",
@@ -50040,7 +50040,7 @@
       },
       {
          "map_index":189,
-         "map_name":"Fungi Forest: Barrel Blast",
+         "map_name":"Fairy Island",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_6980.txt",
@@ -50382,7 +50382,7 @@
       },
       {
          "map_index":190,
-         "map_name":"Fairy Island",
+         "map_name":"Kong Battle: Arena 2",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7028.txt",
@@ -50976,7 +50976,7 @@
       },
       {
          "map_index":191,
-         "map_name":"Kong Battle: Arena 2",
+         "map_name":"Rambi Arena",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7112.txt",
@@ -51024,7 +51024,7 @@
       },
       {
          "map_index":192,
-         "map_name":"Rambi Arena",
+         "map_name":"Kong Battle: Arena 3",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7118.txt",
@@ -51317,7 +51317,7 @@
       },
       {
          "map_index":193,
-         "map_name":"Kong Battle: Arena 3",
+         "map_name":"Creepy Castle Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7159.txt",
@@ -51435,7 +51435,7 @@
       },
       {
          "map_index":194,
-         "map_name":"Creepy Castle Lobby",
+         "map_name":"Crystal Caves Lobby",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7175.txt",
@@ -51623,7 +51623,7 @@
       },
       {
          "map_index":195,
-         "map_name":"Crystal Caves Lobby",
+         "map_name":"DK Isles: Snides Room",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7201.txt",
@@ -51650,7 +51650,7 @@
       },
       {
          "map_index":196,
-         "map_name":"DK Isles: Snides Room",
+         "map_name":"Crystal Caves: Army Dillo",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7204.txt",
@@ -51663,7 +51663,7 @@
       },
       {
          "map_index":197,
-         "map_name":"Crystal Caves: Army Dillo",
+         "map_name":"Angry Aztec: Dogadon",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7205.txt",
@@ -51676,7 +51676,7 @@
       },
       {
          "map_index":198,
-         "map_name":"Angry Aztec: Dogadon",
+         "map_name":"Training Grounds (End Sequence)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7206.txt",
@@ -51892,14 +51892,14 @@
       },
       {
          "map_index":199,
-         "map_name":"Training Grounds (End Sequence)",
+         "map_name":"Creepy Castle: King Kut Out",
          "map_objects":[
             
          ]
       },
       {
          "map_index":200,
-         "map_name":"Creepy Castle: King Kut Out",
+         "map_name":"Crystal Caves: Shack (Diddy, upper part)",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7236.txt",
@@ -51989,7 +51989,7 @@
       },
       {
          "map_index":201,
-         "map_name":"Crystal Caves: Shack (Diddy, upper part)",
+         "map_name":"K. Rool Barrel: Diddys Rocketbarrel Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7248.txt",
@@ -52100,7 +52100,7 @@
       },
       {
          "map_index":202,
-         "map_name":"K. Rool Barrel: Diddys Rocketbarrel Game",
+         "map_name":"K. Rool Barrel: Lankys Shooting Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7263.txt",
@@ -52211,7 +52211,7 @@
       },
       {
          "map_index":203,
-         "map_name":"K. Rool Barrel: Lankys Shooting Game",
+         "map_name":"K. Rool Fight: DK Phase",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7278.txt",
@@ -52280,7 +52280,7 @@
       },
       {
          "map_index":204,
-         "map_name":"K. Rool Fight: DK Phase",
+         "map_name":"K. Rool Fight: Diddy Phase",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7287.txt",
@@ -52412,7 +52412,7 @@
       },
       {
          "map_index":205,
-         "map_name":"K. Rool Fight: Diddy Phase",
+         "map_name":"K. Rool Fight: Lanky Phase",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7305.txt",
@@ -52565,7 +52565,7 @@
       },
       {
          "map_index":206,
-         "map_name":"K. Rool Fight: Lanky Phase",
+         "map_name":"K. Rool Fight: Tiny Phase",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7326.txt",
@@ -52641,7 +52641,7 @@
       },
       {
          "map_index":207,
-         "map_name":"K. Rool Fight: Tiny Phase",
+         "map_name":"K. Rool Fight: Chunky Phase",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7336.txt",
@@ -52752,7 +52752,7 @@
       },
       {
          "map_index":208,
-         "map_name":"K. Rool Fight: Chunky Phase",
+         "map_name":"Bloopers Ending",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7351.txt",
@@ -52800,7 +52800,7 @@
       },
       {
          "map_index":209,
-         "map_name":"Bloopers Ending",
+         "map_name":"K. Rool Barrel: Chunkys Hidden Kremling Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7357.txt",
@@ -52890,7 +52890,7 @@
       },
       {
          "map_index":210,
-         "map_name":"K. Rool Barrel: Chunkys Hidden Kremling Game",
+         "map_name":"K. Rool Barrel: Tinys Pony Tail Twirl Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7369.txt",
@@ -52973,7 +52973,7 @@
       },
       {
          "map_index":211,
-         "map_name":"K. Rool Barrel: Tinys Pony Tail Twirl Game",
+         "map_name":"K. Rool Barrel: Chunkys Shooting Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7380.txt",
@@ -53042,7 +53042,7 @@
       },
       {
          "map_index":212,
-         "map_name":"K. Rool Barrel: Chunkys Shooting Game",
+         "map_name":"K. Rool Barrel: DKs Rambi Game",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7389.txt",
@@ -53104,7 +53104,7 @@
       },
       {
          "map_index":213,
-         "map_name":"K. Rool Barrel: DKs Rambi Game",
+         "map_name":"K. Lumsy Ending",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7397.txt",
@@ -53117,14 +53117,14 @@
       },
       {
          "map_index":214,
-         "map_name":"K. Lumsy Ending",
+         "map_name":"K. Rools Shoe",
          "map_objects":[
             
          ]
       },
       {
          "map_index":215,
-         "map_name":"K. Rools Shoe",
+         "map_name":"K. Rools Arena",
          "map_objects":[
             {
                "script_file":"DK64ObjectScripts_7398.txt",
