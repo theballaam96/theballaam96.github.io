@@ -1,5 +1,5 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634EA4(param_4,1,0)
+FUN_80634EA4(this->id,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x32>5,'Permanent') !== 0) {
@@ -12,20 +12,20 @@ FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x32>5,'Permanent') == 0) {
-FUN_80650A04(param_4,1,12)
-FUN_80650A04(param_4,2,27)
-FUN_80650794(param_4,1,3,2)
+FUN_80650A04(this->id,1,12)
+FUN_80650A04(this->id,2,27)
+FUN_80650794(this->id,1,3,2)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x32>5,'Permanent') == 0) {
-FUN_806508B4(param_4,1,-1)
-FUN_806508B4(param_4,2,-1)
+FUN_806508B4(this->id,1,-1)
+FUN_806508B4(this->id,2,-1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x32>5,'Permanent') == 0) {
-FUN_80635018(param_4,1,0,0)
+FUN_80635018(this->id,1,0,0)
 *(byte *)(behaviour + 0x4B) = 1
 }
 }
@@ -33,15 +33,15 @@ if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 36) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 36) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
 playSong('Company Coin Get', (float) 1)
-FUN_80635018(param_4,1,1,0)
+FUN_80635018(this->id,1,1,0)
 *(byte *)(behaviour + 0x4B) = 2
 }
 }
@@ -49,15 +49,15 @@ if (*(byte *)(behaviour + 0x48) == 2) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 48) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 48) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
 playSong('Company Coin Get', (float) 1)
-FUN_80635018(param_4,1,2,0)
+FUN_80635018(this->id,1,2,0)
 *(byte *)(behaviour + 0x4B) = 3
 }
 }
@@ -65,15 +65,15 @@ if (*(byte *)(behaviour + 0x48) == 3) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 42) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 42) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
 playSong('Company Coin Get', (float) 1)
-FUN_80635018(param_4,1,3,0)
+FUN_80635018(this->id,1,3,0)
 *(byte *)(behaviour + 0x4B) = 4
 }
 }
@@ -81,15 +81,15 @@ if (*(byte *)(behaviour + 0x48) == 4) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 38) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 38) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
 playSong('Company Coin Get', (float) 1)
-FUN_80635018(param_4,1,4,0)
+FUN_80635018(this->id,1,4,0)
 *(byte *)(behaviour + 0x4B) = 5
 }
 }
@@ -97,8 +97,8 @@ if (*(byte *)(behaviour + 0x48) == 5) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 43) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 43) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -111,8 +111,8 @@ if (*(byte *)(behaviour + 0x48) == 5) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 43) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 43) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -130,7 +130,7 @@ if (*(byte *)(behaviour + 0x48) == 6) {
 if (*(ushort *)(behaviour + 0x44) == 240) {
 BYTE_807F6902 = 0
 FUN_806418E8(4,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[4]
+x54_ivar7 = id2index((&WORD_807F6240)[4])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

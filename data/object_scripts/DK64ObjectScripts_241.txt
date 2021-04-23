@@ -29,8 +29,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 8) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 8) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -60,8 +60,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 8) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 8) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -82,7 +82,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 6) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -101,11 +101,11 @@ if (*(byte *)(character_change_pointer->unk0x2C0) == 2) {
 if (*(byte *)(behaviour + 0x48) == 2) {
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,70,70,FLOAT_807F621C)
 *(byte *)(behaviour + 0x71) = 0
-FUN_806085DC(param_4,35,255,127)
+FUN_806085DC(this->id,35,255,127)
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
 setFlag(0x02>0,True,'Permanent')
-*(code *)(0x80747F44)(behaviour,param_4,0,0)
+*(code *)(0x80747F44)(behaviour,this->id,0,0)
 *(short *)(behaviour + 0x44) = 6
 *(byte *)(behaviour + 0x4B) = 3
 }
@@ -115,7 +115,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
 FUN_806418E8(62,5,behaviour)
-x54_ivar7 = (&WORD_807F6240)[62]
+x54_ivar7 = id2index((&WORD_807F6240)[62])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,3,400)
 }
@@ -123,7 +123,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,3,400)
 }
 }
 if (true) {
-*(code *)(0x80747EF8)(behaviour,param_4,0,0)
+*(code *)(0x80747EF8)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
 *(byte *)(behaviour + 0x70) = 0

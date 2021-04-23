@@ -6,24 +6,24 @@ FUN_8065F134()
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (isPlayerWithinDistanceOfObject(200) !== 0) {
-FUN_80650A04(param_4,1,60)
-FUN_806508B4(param_4,1,1)
-FUN_806085DC(param_4,721,255,127)
+FUN_80650A04(this->id,1,60)
+FUN_806508B4(this->id,1,1)
+FUN_806085DC(this->id,721,255,127)
 *(byte *)(behaviour + 0x4B) = 1
 }
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
-*(code *)(0x80747FB8)(behaviour,param_4,4,0)
+*(code *)(0x80747FB8)(behaviour,this->id,4,0)
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 *(byte *)(behaviour + 0x4B) = 2
 }
 }
-if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (FUN_806419F8() == 0)) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 1))) || (canHitSwitch() == 0)) {
 x10_uvar9 = 0
 } else {
-FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+FUN_80641724(ObjectModel2ArrayPointer[id2index(this->id)].object_type)
 x10_uvar9 = 1
 }
 if (x10_uvar9 == 1) {
@@ -31,6 +31,6 @@ if (x10_uvar9 == 1) {
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 30
 setCharacterChangeParameters(52,0,0)
-FUN_806085DC(param_4,384,255,127)
+FUN_806085DC(this->id,384,255,127)
 FUN_8064199C(behaviour,2,0)
 }

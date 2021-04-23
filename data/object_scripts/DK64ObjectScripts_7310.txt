@@ -1,31 +1,31 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650BBC(param_4,2,1)
+FUN_80650BBC(this->id,2,1)
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-if (FUN_80689B10(2,0,0) == 100) {
+if (getAndSetActorSpawnerControlStateFromActorSpawnerID(2,0,'Don't Set') == 100) {
 FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-if (FUN_80689B10(2,0,0) !== 100) {
-FUN_80650A04(param_4,2,10)
-FUN_806508B4(param_4,2,1)
+if (getAndSetActorSpawnerControlStateFromActorSpawnerID(2,0,'Don't Set') !== 100) {
+FUN_80650A04(this->id,2,10)
+FUN_806508B4(this->id,2,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,308,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,308,0,0)
 }
 *(byte *)(behaviour + 0x4B) = 15
 }
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
-if (FUN_80650D04(param_4,2) == 0) {
-if (FUN_80689B10(2,0,0) == 0) {
-FUN_80689B10(2,10,1)
+if (FUN_80650D04(this->id,2) == 0) {
+if (getAndSetActorSpawnerControlStateFromActorSpawnerID(2,0,'Don't Set') == 0) {
+getAndSetActorSpawnerControlStateFromActorSpawnerID(2,10,'Set')
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
 FUN_80605380(x10_temp)
@@ -37,12 +37,12 @@ FUN_80605380(x10_temp)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806508B4(param_4,2,1)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 FUN_806418E8(17,30,behaviour)
 FUN_8064199C(behaviour,2,0)
 }

@@ -1,6 +1,6 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
 x34_uvar4 == FUN_806C8D2C(4)
-if (2> &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (2 > &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 70
 *(byte *)(behaviour + 0x66) = 255
@@ -9,7 +9,7 @@ FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 x34_uvar4 == FUN_806C8D2C(4)
-if (2<= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (2 <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 FUN_8064199C(behaviour,3,300)
 *(byte *)(behaviour + 0x4B) = 1
 }
@@ -23,7 +23,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 4) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }

@@ -18,14 +18,14 @@ if (*(byte *)(behaviour + 0x48) == 11) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806085DC(param_4,470,255,127)
+FUN_806085DC(this->id,470,255,127)
 playSong('Going through Vulture Ring', (float) 1)
 *(byte *)(behaviour + 0x4B) = 12
 }
@@ -34,8 +34,8 @@ if (*(byte *)(behaviour + 0x48) == 12) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -50,14 +50,14 @@ if (*(byte *)(behaviour + 0x48) == 13) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806085DC(param_4,470,255,127)
+FUN_806085DC(this->id,470,255,127)
 playSong('Going through Vulture Ring', (float) 1)
 *(byte *)(behaviour + 0x4B) = 14
 }
@@ -66,8 +66,8 @@ if (*(byte *)(behaviour + 0x48) == 14) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -82,14 +82,14 @@ if (*(byte *)(behaviour + 0x48) == 15) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806085DC(param_4,470,255,127)
+FUN_806085DC(this->id,470,255,127)
 playSong('Going through Vulture Ring', (float) 1)
 }
 }
@@ -97,8 +97,8 @@ if (*(byte *)(behaviour + 0x48) == 15) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -119,7 +119,7 @@ playCutsceneFromModelTwoScript(behaviour,13,1,0)
 if (*(byte *)(behaviour + 0x48) == 17) {
 if (*(ushort *)(behaviour + 0x44) == 280) {
 FUN_806418E8(45,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[45]
+x54_ivar7 = id2index((&WORD_807F6240)[45])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -133,6 +133,6 @@ FUN_8064199C(behaviour,0,0)
 }
 if (*(byte *)(behaviour + 0x49) == 10) {
 FUN_8064199C(behaviour,0,0)
-FUN_80650A04(param_4,1,15)
+FUN_80650A04(this->id,1,15)
 *(byte *)(behaviour + 0x4C) = 11
 }

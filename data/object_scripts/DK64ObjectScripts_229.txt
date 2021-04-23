@@ -5,7 +5,7 @@ if (checkFlag(0x00>5,'Permanent') !== 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x00>5,'Permanent') == 0) {
-FUN_80650A04(param_4,2,2)
+FUN_80650A04(this->id,2,2)
 *(byte *)(behaviour + 0x4B) = 1
 FUN_8064199C(behaviour,3,2000)
 }
@@ -22,9 +22,9 @@ if (CutsceneActive !== 1) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,2,1)
+FUN_806508B4(this->id,2,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,284,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,284,0,0)
 }
 *(short *)(behaviour + 0x44) = 60
 playCutsceneFromModelTwoScript(behaviour,16,1,0)
@@ -34,7 +34,7 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x49) == 1) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 *(byte *)(behaviour + 0x4C) = 0
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
@@ -52,7 +52,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 190) {
 FUN_806418E8(46,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[46]
+x54_ivar7 = id2index((&WORD_807F6240)[46])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -61,7 +61,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 120) {
 FUN_806418E8(47,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[47]
+x54_ivar7 = id2index((&WORD_807F6240)[47])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -77,9 +77,9 @@ FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_80650A04(param_4,2,0)
-FUN_80650AD8(param_4,2,0,1)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,0)
+FUN_80650AD8(this->id,2,0,1)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
@@ -87,7 +87,7 @@ if (*(byte *)(behaviour + 0x48) == 21) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
-FUN_8065092C(param_4,2)
+FUN_8065092C(this->id,2)
 *(byte *)(behaviour + 0x4B) = 22
 }
 if (*(byte *)(behaviour + 0x48) == 22) {

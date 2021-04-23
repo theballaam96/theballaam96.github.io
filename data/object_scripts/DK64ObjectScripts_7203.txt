@@ -19,7 +19,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -42,7 +42,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -65,7 +65,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 4) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }
@@ -91,7 +91,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 3) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }
@@ -117,7 +117,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 2) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }
@@ -143,7 +143,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 5) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }
@@ -169,7 +169,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 6) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }

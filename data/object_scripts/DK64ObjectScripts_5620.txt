@@ -1,16 +1,16 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x26>2,'Permanent') == 0) {
-FUN_80650BBC(param_4,1,1)
-FUN_80650A04(param_4,1,5)
+FUN_80650BBC(this->id,1,1)
+FUN_80650A04(this->id,1,5)
 *(byte *)(behaviour + 0x4B) = 1
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x26>2,'Permanent') !== 0) {
-FUN_80650BBC(param_4,1,1)
-FUN_80650A04(param_4,1,0)
-FUN_80650AD8(param_4,1,0,1)
-FUN_806508B4(param_4,1,1)
+FUN_80650BBC(this->id,1,1)
+FUN_80650A04(this->id,1,0)
+FUN_80650AD8(this->id,1,0,1)
+FUN_806508B4(this->id,1,1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
@@ -28,7 +28,7 @@ playCutsceneFromModelTwoScript(behaviour,1,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 60
 *(byte *)(behaviour + 0x4B) = 6
 }
@@ -36,13 +36,13 @@ FUN_806508B4(param_4,1,1)
 if (*(byte *)(behaviour + 0x48) == 6) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,30,2)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,288,30,2)
 }
 *(byte *)(behaviour + 0x4B) = 7
 }
 }
 if (*(byte *)(behaviour + 0x48) == 7) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
 FUN_80605380(x10_temp)
@@ -50,19 +50,19 @@ FUN_80605380(x10_temp)
 }
 *(byte *)(behaviour + 0x4B) = 20
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,287,30,2)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,287,30,2)
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
-FUN_8065092C(param_4,1)
+FUN_8065092C(this->id,1)
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,287,30,2)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,287,30,2)
 }
 *(byte *)(behaviour + 0x4B) = 20
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-*(code *)(0x80747F9C)(behaviour,param_4,0,0)
+*(code *)(0x80747F9C)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
 if (*(byte *)(PlayerPointer->unk0xD1) == 2) {

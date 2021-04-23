@@ -2,8 +2,8 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,1,-1)
-FUN_80634EA4(param_4,2,0)
+FUN_806508B4(this->id,1,-1)
+FUN_80634EA4(this->id,2,0)
 *(byte *)(behaviour + 0x67) = 1
 *(byte *)(behaviour + 0x4B) = 11
 }
@@ -17,21 +17,21 @@ else {
 *(float *)(behaviour + 0x8) = 0
 *(float *)(behaviour + 0xC) = 0.1
 }
-FUN_80650A04(param_4,1,20)
+FUN_80650A04(this->id,1,20)
 *(byte *)(behaviour + 0x4B) = 12
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 *(short *)(behaviour + 0x44) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-FUN_80634CC8(param_4,1,0,-6)
+FUN_80634CC8(this->id,1,0,-6)
 WORD_807F6906 = 50
 WORD_807F6908 = 300
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,1,5,FLOAT_807F621C)
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_80635018(param_4,2,3,0)
+FUN_80635018(this->id,2,3,0)
 *(short *)(behaviour + 0x44) = 15
 *(byte *)(behaviour + 0x4B) = 13
 }
@@ -43,7 +43,7 @@ FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,1,5,FLOAT_807F621C)
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_80635018(param_4,2,0,0)
+FUN_80635018(this->id,2,0,0)
 *(short *)(behaviour + 0x44) = 15
 *(byte *)(behaviour + 0x4B) = 12
 }
@@ -51,7 +51,7 @@ FUN_80635018(param_4,2,0,0)
 if (*(byte *)(behaviour + 0x49) == 10) {
 if ((FUN_806422D8() & 0xFF) !== 0){
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,274,110,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,274,110,0)
 }
 *(byte *)(behaviour + 0x4C) = 11
 }

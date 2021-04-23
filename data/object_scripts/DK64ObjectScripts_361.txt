@@ -5,7 +5,7 @@ if (checkFlag(0x03>6,'Permanent') !== 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x03>6,'Permanent') == 0) {
-FUN_80650A04(param_4,1,10)
+FUN_80650A04(this->id,1,10)
 *(byte *)(behaviour + 0x4B) = 1
 }
 }
@@ -13,16 +13,16 @@ if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 36) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 36) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
 FUN_8064199C(behaviour,1,0)
-FUN_806508B4(param_4,1,1)
-x54_ivar7 = (&WORD_807F6240)[39]
+FUN_806508B4(this->id,1,1)
+x54_ivar7 = id2index((&WORD_807F6240)[39])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -33,14 +33,14 @@ if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 36) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 36) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806085DC(param_4,140,255,127)
+FUN_806085DC(this->id,140,255,127)
 *(short *)(behaviour + 0x44) = 100
 *(byte *)(behaviour + 0x4B) = 2
 }
@@ -54,13 +54,13 @@ if (*(byte *)(behaviour + 0x48) == 20) {
 FUN_8064199C(behaviour,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_80650A04(param_4,1,0)
-FUN_80650AD8(param_4,1,0,1)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,0)
+FUN_80650AD8(this->id,1,0,1)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-FUN_8065092C(param_4,1)
+FUN_8065092C(this->id,1)
 *(byte *)(behaviour + 0x4B) = 22
 }
 if (*(byte *)(behaviour + 0x48) == 22) {

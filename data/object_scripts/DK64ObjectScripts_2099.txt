@@ -3,8 +3,8 @@ setFlag(0x04>0,False,'Temporary')
 *(byte *)(behaviour + 0x4C) = 1
 }
 if (true) {
-FUN_8066C904(&ObjectModel2ArrayPointer[param_4]->unk0x28)
-FUN_806348B4(&ObjectModel2ArrayPointer[param_4]->unk0x48)
+FUN_8066C904(&ObjectModel2ArrayPointer[id2index(this->id)]->unk0x28)
+FUN_806348B4(&ObjectModel2ArrayPointer[id2index(this->id)]->unk0x48)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 *(byte *)(behaviour + 0x6F) = 1
@@ -12,8 +12,8 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x19>4,'Permanent') !== 0) {
-FUN_80650A04(param_4,4,100)
-FUN_806508B4(param_4,4,1)
+FUN_80650A04(this->id,4,100)
+FUN_806508B4(this->id,4,1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
@@ -27,10 +27,10 @@ if (checkFlag(0x13>4,'Permanent') !== 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x13>4,'Permanent') !== 0) {
-FUN_80650A04(param_4,1,60)
-FUN_806508B4(param_4,1,-1)
-FUN_80650A04(param_4,2,43)
-FUN_806508B4(param_4,2,-1)
+FUN_80650A04(this->id,1,60)
+FUN_806508B4(this->id,1,-1)
+FUN_80650A04(this->id,2,43)
+FUN_806508B4(this->id,2,-1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
@@ -54,12 +54,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | 0x200
@@ -73,21 +73,21 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful !== 1) {
 *(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) & ~0x200
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80650A04(param_4,1,60)
-FUN_806508B4(param_4,1,-1)
-FUN_80650A04(param_4,2,43)
-FUN_806508B4(param_4,2,-1)
+FUN_80650A04(this->id,1,60)
+FUN_806508B4(this->id,1,-1)
+FUN_80650A04(this->id,2,43)
+FUN_806508B4(this->id,2,-1)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
 FUN_80642748(256,2760,behaviour)
@@ -103,7 +103,7 @@ playCutsceneFromModelTwoScript(behaviour,14,0,0)
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 440) {
 FUN_806418E8(81,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[81]
+x54_ivar7 = id2index((&WORD_807F6240)[81])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,0,0)
 }
@@ -113,14 +113,14 @@ if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 180) {
 setFlag(0x13>4,True,'Permanent')
 FUN_806418E8(40,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[40]
+x54_ivar7 = id2index((&WORD_807F6240)[40])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
-*(code *)(0x80747F00)(behaviour,param_4,0,0)
+*(code *)(0x80747F00)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
@@ -139,7 +139,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 12) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
@@ -149,7 +149,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 13) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 FUN_8064199C(behaviour,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
@@ -161,7 +161,7 @@ InitMapChange_TransferredActor(49,0,0,0)
 if (*(byte *)(behaviour + 0x48) == 14) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 14) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
@@ -177,7 +177,7 @@ if (*(byte *)(behaviour + 0x48) == 14) {
 if (*(byte *)(behaviour + 0x48) == 15) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
 x12_successful = false
@@ -189,7 +189,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 6) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 1) {
 x12_successful = true
 }
@@ -218,7 +218,7 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
-FUN_80650BBC(param_4,3,1)
+FUN_80650BBC(this->id,3,1)
 }
 }
 }
@@ -233,7 +233,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 6) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 1) {
 x12_successful = true
 }
@@ -262,9 +262,9 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
-FUN_80650A04(param_4,3,70)
-FUN_806085DC(param_4,995,255,127)
-FUN_806508B4(param_4,3,1)
+FUN_80650A04(this->id,3,70)
+FUN_806085DC(this->id,995,255,127)
+FUN_806508B4(this->id,3,1)
 *(byte *)(behaviour + 0x4B) = 16
 }
 }
@@ -273,7 +273,7 @@ FUN_806508B4(param_4,3,1)
 if (*(byte *)(behaviour + 0x48) == 16) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 16) {
 x12_successful = false
@@ -285,7 +285,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 6) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }
@@ -305,9 +305,9 @@ InitMapChange_TransferredActor(31,0,0,0)
 if (*(byte *)(behaviour + 0x48) == 17) {
 if ((*(byte *)(behaviour + 0x9A) & 1) == 0) {
 // Execution Type 0x53 stripped from final. Parameters: 531,0,0
-FUN_80650AD8(param_4,3,0,1)
-FUN_80650b50(param_4,3,1)
-FUN_806508B4(param_4,3,1)
+FUN_80650AD8(this->id,3,0,1)
+FUN_80650b50(this->id,3,1)
+FUN_806508B4(this->id,3,1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
@@ -320,7 +320,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 3) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 3) {
 x12_successful = true
 }
@@ -350,8 +350,8 @@ x17_successful = 1
 if (x17_successful == 1) {
 if (checkFlag(0x04>0,'Temporary') == 0) {
 if (checkFlag(0x19>4,'Permanent') == 0) {
-FUN_806508B4(param_4,4,1)
-FUN_806085DC(param_4,326,255,127)
+FUN_806508B4(this->id,4,1)
+FUN_806085DC(this->id,326,255,127)
 *(short *)(behaviour + 0x44) = 20
 *(byte *)(behaviour + 0x4B) = 26
 }
@@ -362,7 +362,7 @@ FUN_806085DC(param_4,326,255,127)
 if (*(byte *)(behaviour + 0x48) == 26) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 26) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
@@ -375,17 +375,17 @@ playCutsceneFromModelTwoScript(behaviour,15,0,0)
 if (*(byte *)(behaviour + 0x48) == 27) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 27) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 FUN_806418E8(45,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[45]
+x54_ivar7 = id2index((&WORD_807F6240)[45])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
-*(code *)(0x80747F08)(behaviour,param_4,4,0)
-FUN_806085DC(param_4,23,255,127)
+*(code *)(0x80747F08)(behaviour,this->id,4,0)
+FUN_806085DC(this->id,23,255,127)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 27) {
@@ -396,7 +396,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 28) {
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
-*(code *)(0x80747EFC)(behaviour,param_4,0,0)
+*(code *)(0x80747EFC)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 28) {
 if (CutsceneActive !== 1) {

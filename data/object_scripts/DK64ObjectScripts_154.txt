@@ -2,8 +2,8 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80650A04(param_4,1,30)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,30)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 100
 *(byte *)(behaviour + 0x4B) = 11
 }

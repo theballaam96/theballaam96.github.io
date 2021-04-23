@@ -1,13 +1,13 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634CC8(param_4,1,10,0)
+FUN_80634CC8(this->id,1,10,0)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 302) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 302) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }

@@ -1,5 +1,5 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650BBC(param_4,2,1)
+FUN_80650BBC(this->id,2,1)
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
@@ -26,9 +26,9 @@ playCutsceneFromModelTwoScript(behaviour,19,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806508B4(param_4,2,1)
+FUN_806508B4(this->id,2,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,284,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,284,0,0)
 }
 *(short *)(behaviour + 0x44) = 140
 *(byte *)(behaviour + 0x4B) = 13
@@ -53,21 +53,21 @@ FUN_8064199C(behaviour,2,0)
 if (*(byte *)(behaviour + 0x48) == 20) {
 if (isPlayerWithinDistanceOfObject(200) == 0) {
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,284,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,284,0,0)
 }
-FUN_806508B4(param_4,2,1)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
 FUN_80605380(x10_temp)
 *(short *)(behaviour + 0x10) = 0xFFFF
 }
 FUN_806418E8(291,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[291]
+x54_ivar7 = id2index((&WORD_807F6240)[291])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

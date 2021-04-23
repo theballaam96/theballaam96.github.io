@@ -1,14 +1,14 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634EA4(param_4,1,0)
-FUN_80635018(param_4,1,0,0)
-FUN_80634EA4(param_4,2,0)
-FUN_80635018(param_4,2,0,0)
+FUN_80634EA4(this->id,1,0)
+FUN_80635018(this->id,1,0,0)
+FUN_80634EA4(this->id,2,0)
+FUN_80635018(this->id,2,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634EA4(param_4,3,0)
-FUN_80635018(param_4,3,0,0)
-FUN_80634EA4(param_4,4,0)
-FUN_80635018(param_4,4,0,0)
+FUN_80634EA4(this->id,3,0)
+FUN_80635018(this->id,3,0,0)
+FUN_80634EA4(this->id,4,0)
+FUN_80635018(this->id,4,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 FUN_8064199C(behaviour,3,300)
@@ -24,7 +24,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -47,7 +47,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -70,12 +70,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -94,10 +94,10 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if (*(int *)(PlayerPointer->ActorType) == 6) {
-FUN_80635018(param_4,1,1,0)
-FUN_80635018(param_4,2,1,0)
-FUN_80635018(param_4,3,1,0)
-FUN_80635018(param_4,4,1,0)
+FUN_80635018(this->id,1,1,0)
+FUN_80635018(this->id,2,1,0)
+FUN_80635018(this->id,3,1,0)
+FUN_80635018(this->id,4,1,0)
 }
 }
 }
@@ -112,12 +112,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -136,7 +136,7 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if (*(int *)(PlayerPointer->ActorType) == 6) {
-FUN_806085DC(param_4,448,255,127)
+FUN_806085DC(this->id,448,255,127)
 *(short *)(behaviour + 0x44) = 60
 *(byte *)(behaviour + 0x4B) = 2
 }
@@ -158,7 +158,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -181,7 +181,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -204,12 +204,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -228,10 +228,10 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if (*(int *)(PlayerPointer->ActorType) == 6) {
-FUN_80635018(param_4,1,2,0)
-FUN_80635018(param_4,2,2,0)
-FUN_80635018(param_4,3,2,0)
-FUN_80635018(param_4,4,2,0)
+FUN_80635018(this->id,1,2,0)
+FUN_80635018(this->id,2,2,0)
+FUN_80635018(this->id,3,2,0)
+FUN_80635018(this->id,4,2,0)
 }
 }
 }
@@ -246,12 +246,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -270,7 +270,7 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if (*(int *)(PlayerPointer->ActorType) == 6) {
-FUN_806085DC(param_4,448,255,127)
+FUN_806085DC(this->id,448,255,127)
 *(short *)(behaviour + 0x44) = 60
 *(byte *)(behaviour + 0x4B) = 4
 }
@@ -292,7 +292,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -315,7 +315,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -338,12 +338,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -363,7 +363,7 @@ x17_successful = 1
 if (x17_successful == 1) {
 if (*(int *)(PlayerPointer->ActorType) == 6) {
 playCutsceneFromModelTwoScript(behaviour,20,1,0)
-FUN_806085DC(param_4,449,255,127)
+FUN_806085DC(this->id,449,255,127)
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 20
@@ -382,12 +382,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0

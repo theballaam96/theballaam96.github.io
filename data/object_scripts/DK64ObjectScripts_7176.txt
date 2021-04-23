@@ -39,8 +39,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -53,7 +53,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }
@@ -61,10 +61,10 @@ x21_successful = 1
 }
 }
 if (x21_successful == 1) {
-*(code *)(0x80747F88)(behaviour,param_4,1,0)
+*(code *)(0x80747F88)(behaviour,this->id,1,0)
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,70,70,FLOAT_807F621C)
-FUN_80650A04(param_4,1,350)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,350)
+FUN_806508B4(this->id,1,1)
 }
 }
 }
@@ -88,8 +88,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -102,7 +102,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }
@@ -110,9 +110,9 @@ x21_successful = 1
 }
 }
 if (x21_successful == 1) {
-FUN_806085DC(param_4,497,255,127)
-FUN_806085DC(param_4,657,255,100)
-*(code *)(0x80747F88)(behaviour,param_4,0,0)
+FUN_806085DC(this->id,497,255,127)
+FUN_806085DC(this->id,657,255,100)
+*(code *)(0x80747F88)(behaviour,this->id,0,0)
 }
 }
 }
@@ -136,8 +136,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -150,7 +150,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }
@@ -173,7 +173,7 @@ FUN_8061F510(1,16)
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-*(code *)(0x80747F88)(behaviour,param_4,0,0)
+*(code *)(0x80747F88)(behaviour,this->id,0,0)
 setFlag(0x33>1,True,'Permanent')
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
@@ -182,7 +182,7 @@ setFlag(0x33>1,True,'Permanent')
 }
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 FUN_8064199C(behaviour,2,0)
 }
 }

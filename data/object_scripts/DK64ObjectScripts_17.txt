@@ -6,7 +6,7 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 *(byte *)(behaviour + 0x71) = 0
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_806085DC(param_4,96,255,127)
+FUN_806085DC(this->id,96,255,127)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
@@ -25,7 +25,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 6) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806085DC(param_4,49,255,127)
+FUN_806085DC(this->id,49,255,127)
 *(byte *)(behaviour + 0x4B) = 7
 }
 }

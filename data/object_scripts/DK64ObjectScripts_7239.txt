@@ -26,8 +26,8 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(1) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(2) & 0xFF) !== 0) {
 playCutsceneFromModelTwoScript(behaviour,0,1,0)
 *(short *)(behaviour + 0x44) = 80
 *(byte *)(behaviour + 0x4B) = 4
@@ -41,7 +41,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
 x34_uvar4 == FUN_806C8D2C(3)
-if (3> &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (3 > &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 70
 *(byte *)(behaviour + 0x66) = 5
@@ -49,11 +49,11 @@ if (3> &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)]
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
 x34_uvar4 == FUN_806C8D2C(3)
-if (3<= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (3 <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 *(byte *)(behaviour + 0x60) = 0
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 10
-FUN_806085DC(param_4,747,255,127)
+FUN_806085DC(this->id,747,255,127)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
@@ -70,7 +70,7 @@ x12_focusedArraySlot = x12_focusedArraySlot + 8
 if ((*(uint *)(x12_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x12_focusedActor->actor_type) == 3) {
 if (x12_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x12_focusedActor->standingOnObjectM2Index)) {
 if (*(short *)(x12_focusedActor->unk10E) == 2) {
 x12_successful = true
 }

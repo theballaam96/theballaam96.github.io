@@ -5,7 +5,7 @@ if (checkFlag(0x03>7,'Permanent') !== 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x03>7,'Permanent') == 0) {
-FUN_80650BBC(param_4,2,1)
+FUN_80650BBC(this->id,2,1)
 FUN_8064199C(behaviour,2,0)
 }
 }
@@ -25,9 +25,9 @@ playCutsceneFromModelTwoScript(behaviour,2,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806508B4(param_4,2,1)
+FUN_806508B4(this->id,2,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,288,0,0)
 }
 *(short *)(behaviour + 0x44) = 140
 *(byte *)(behaviour + 0x4B) = 5
@@ -57,8 +57,8 @@ FUN_8064199C(behaviour,2,0)
 if (*(byte *)(behaviour + 0x48) == 7) {
 if (*(int *)(PlayerPointer->ActorType) !== 3) {
 if (checkFlag(0x03>7,'Permanent') == 0) {
-FUN_80650A04(param_4,2,5)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,5)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 8
 }
 }
@@ -67,12 +67,12 @@ if (*(byte *)(behaviour + 0x48) == 7) {
 if (*(int *)(PlayerPointer->ActorType) !== 3) {
 if (checkFlag(0x03>7,'Permanent') == 0) {
 FUN_806418E8(42,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[42]
+x54_ivar7 = id2index((&WORD_807F6240)[42])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,0,0)
 }
 FUN_806418E8(41,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[41]
+x54_ivar7 = id2index((&WORD_807F6240)[41])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,0,0)
 }
@@ -80,8 +80,8 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,0,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 8) {
-if (FUN_80650D04(param_4,2) == 0) {
-FUN_80650A04(param_4,2,1)
+if (FUN_80650D04(this->id,2) == 0) {
+FUN_80650A04(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 0
 FUN_8064199C(behaviour,2,0)
 }
@@ -90,13 +90,13 @@ if (*(byte *)(behaviour + 0x48) == 20) {
 FUN_8064199C(behaviour,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_80650A04(param_4,2,0)
-FUN_80650AD8(param_4,2,0,1)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,0)
+FUN_80650AD8(this->id,2,0,1)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-FUN_8065092C(param_4,2)
+FUN_8065092C(this->id,2)
 *(byte *)(behaviour + 0x4B) = 22
 }
 if (*(byte *)(behaviour + 0x48) == 22) {

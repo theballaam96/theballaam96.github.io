@@ -30,7 +30,7 @@ FUN_8064199C(behaviour,0,0)
 if (*(byte *)(behaviour + 0x48) == 1) {
 if ((FUN_806422D8() & 0xFF) !== 0){
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,283,100,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,283,100,0)
 }
 *(byte *)(behaviour + 0x4B) = 2
 FUN_8064199C(behaviour,1,0)
@@ -50,11 +50,11 @@ FUN_8064199C(behaviour,0,0)
 if (*(byte *)(behaviour + 0x48) == 10) {
 FUN_8064199C(behaviour,1,0)
 *(short *)(behaviour + 0x44) = 120
-*(code *)(0x80747FC8)(behaviour,param_4,0,0)
+*(code *)(0x80747FC8)(behaviour,this->id,0,0)
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
-*(code *)(0x80747FC8)(behaviour,param_4,0,0)
+*(code *)(0x80747FC8)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 0) {

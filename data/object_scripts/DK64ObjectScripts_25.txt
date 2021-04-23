@@ -1,6 +1,6 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
 x34_uvar4 == FUN_806C8D2C(3)
-if (1<= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (1 <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 changeTriggerActiveStateOfFirstInstanceOfType('Boss Door Trigger',0)
 }
 }

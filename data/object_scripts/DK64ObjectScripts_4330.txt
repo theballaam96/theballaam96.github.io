@@ -6,15 +6,15 @@ FUN_8064199C(behaviour,2,0)
 if (*(byte *)(behaviour + 0x48) == 1) {
 // Execution Type 0x53 stripped from final. Parameters: 89,0,0
 *(byte *)(behaviour + 0x4B) = 0
-*(code *)(0x80747F78)(behaviour,param_4,1,0)
+*(code *)(0x80747F78)(behaviour,this->id,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
 *(byte *)(behaviour + 0x4B) = 0
-*(code *)(0x80747F78)(behaviour,param_4,2,0)
+*(code *)(0x80747F78)(behaviour,this->id,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
 *(byte *)(behaviour + 0x4B) = 0
-*(code *)(0x80747F78)(behaviour,param_4,3,0)
+*(code *)(0x80747F78)(behaviour,this->id,3,0)
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
 *(short *)(behaviour + 0x44) = 20
@@ -33,12 +33,12 @@ playCutsceneFromModelTwoScript(behaviour,1,1,0)
 if (*(byte *)(behaviour + 0x48) == 7) {
 if (*(ushort *)(behaviour + 0x44) == 120) {
 FUN_806418E8(7,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[7]
+x54_ivar7 = id2index((&WORD_807F6240)[7])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
 FUN_806418E8(10,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[10]
+x54_ivar7 = id2index((&WORD_807F6240)[10])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -48,7 +48,7 @@ if (*(byte *)(behaviour + 0x48) == 7) {
 if (*(ushort *)(behaviour + 0x44) == 30) {
 setFlag(0x1B>4,True,'Permanent')
 FUN_806418E8(9,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[9]
+x54_ivar7 = id2index((&WORD_807F6240)[9])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -71,7 +71,7 @@ FUN_8064199C(behaviour,2,0)
 if (*(byte *)(behaviour + 0x48) == 20) {
 setCharacterChangeParameters(46,0,0)
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,283,0,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,283,0,0)
 }
 *(short *)(behaviour + 0x44) = 20
 *(byte *)(behaviour + 0x4B) = 21

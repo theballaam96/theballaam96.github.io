@@ -22,8 +22,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 9) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 9) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -32,8 +32,8 @@ if (x18_successful == 1) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
-FUN_806085DC(param_4,35,255,127)
-*(code *)(0x80747FB0)(behaviour,param_4,0,0)
+FUN_806085DC(this->id,35,255,127)
+*(code *)(0x80747FB0)(behaviour,this->id,0,0)
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,70,70,FLOAT_807F621C)
 }
 }
@@ -57,8 +57,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 9) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 9) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -90,8 +90,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 9) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 9) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -102,7 +102,7 @@ FUN_8064199C(behaviour,1,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
-*(code *)(0x80747FE0)(behaviour,param_4,0,0)
+*(code *)(0x80747FE0)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 140) {
@@ -113,7 +113,7 @@ if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 130) {
 if (checkFlag(0x18>0,'Permanent') == 0) {
 FUN_806418E8(107,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[107]
+x54_ivar7 = id2index((&WORD_807F6240)[107])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

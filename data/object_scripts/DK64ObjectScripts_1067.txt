@@ -2,14 +2,14 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
-FUN_8065092C(param_4,2)
+FUN_8065092C(this->id,2)
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80650A04(param_4,1,70)
-FUN_806508B4(param_4,1,-1)
-FUN_80650A04(param_4,2,80)
-FUN_80650A04(param_4,3,80)
+FUN_80650A04(this->id,1,70)
+FUN_806508B4(this->id,1,-1)
+FUN_80650A04(this->id,2,80)
+FUN_80650A04(this->id,3,80)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
 *(ushort *)(behaviour + 0x68) = 60
@@ -25,16 +25,16 @@ if (*(byte *)(behaviour + 0x48) == 11) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806508B4(param_4,2,-1)
+FUN_806508B4(this->id,2,-1)
 *(short *)(behaviour + 0x44) = 20
-if ((&WORD_807F6240)[59] != -1) {
+if ((&WORD_807F6240)[id2index(59)] != -1) {
 x1C_ivar7 = (&WORD_807F6240)[59]
 if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
 x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 0
@@ -47,16 +47,16 @@ if (*(byte *)(behaviour + 0x48) == 11) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 3) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 3) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806508B4(param_4,3,-1)
+FUN_806508B4(this->id,3,-1)
 playSong('Normal Star', (float) 1)
-*(code *)(0x80747FF4)(behaviour,param_4,0,0)
+*(code *)(0x80747FF4)(behaviour,this->id,0,0)
 *(byte *)(behaviour + 0x4B) = 12
 }
 }

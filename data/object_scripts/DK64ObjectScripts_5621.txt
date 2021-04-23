@@ -28,17 +28,17 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(1) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(2) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(3) & 0xFF) !== 0) {
 *(byte *)(behaviour + 0x4B) = 4
 }
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(4) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(5) & 0xFF) !== 0) {
 *(short *)(behaviour + 0x44) = 100
 *(byte *)(behaviour + 0x4B) = 5
 }
@@ -56,7 +56,7 @@ setFlag(0x26>3,True,'Permanent')
 *(byte *)(behaviour + 0x60) = 0
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 10
-FUN_806085DC(param_4,429,255,192)
+FUN_806085DC(this->id,429,255,192)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
@@ -73,7 +73,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 4) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }

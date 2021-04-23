@@ -25,9 +25,9 @@ playCutsceneFromModelTwoScript(behaviour,5,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806508B4(param_4,2,1)
+FUN_806508B4(this->id,2,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,288,0,0)
 }
 *(short *)(behaviour + 0x44) = 140
 *(byte *)(behaviour + 0x4B) = 5
@@ -54,16 +54,16 @@ FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_80650A04(param_4,2,0)
-FUN_80650AD8(param_4,2,0,1)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,0)
+FUN_80650AD8(this->id,2,0,1)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
-FUN_8065092C(param_4,2)
+FUN_8065092C(this->id,2)
 *(byte *)(behaviour + 0x4B) = 22
 }
 if (*(byte *)(behaviour + 0x48) == 22) {

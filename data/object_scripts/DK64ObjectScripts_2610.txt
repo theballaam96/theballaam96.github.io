@@ -18,7 +18,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -41,7 +41,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -64,8 +64,8 @@ xC_focusedPlayerNumber = (xC_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[xC_focusedPlayerNumber_]->does_player_exist) != 0) {
 xC_focusedPlayerPointer = *(int *)(character_change_pointer[xC_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(xC_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
-if (param_4 == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 2)) {
+if (this->id == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 2)) {
 xC_successful = 1
 }
 }

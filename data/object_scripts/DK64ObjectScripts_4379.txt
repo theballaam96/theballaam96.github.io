@@ -6,7 +6,7 @@ if (checkFlag(0x1C>5,'Permanent') !== 0) {
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x1C>5,'Permanent') == 0) {
 BYTE_80748094 = 0
-*(code *)(0x80748034)(behaviour,param_4,0,0)
+*(code *)(0x80748034)(behaviour,this->id,0,0)
 FUN_8064199C(behaviour,2,0)
 }
 }
@@ -43,7 +43,7 @@ if (BYTE_80748094 < 1) {
 playSFX(477,0x7FFF,0x427C0000,0.86614173228346)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(255,110,5,0,0.3,0)
 }
 }
@@ -55,7 +55,7 @@ if (BYTE_80748094 < 1) {
 playSFX(477,0x7FFF,0x427C0000,0.86614173228346)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(255,110,5,0,0.3,0)
 }
 }
@@ -67,7 +67,7 @@ if (BYTE_80748094 < 1) {
 playSFX(477,0x7FFF,0x427C0000,0.86614173228346)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(255,110,5,0,0.3,0)
 }
 BYTE_807F6902 = 0

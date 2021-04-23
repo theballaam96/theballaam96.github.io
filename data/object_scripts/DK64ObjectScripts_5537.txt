@@ -8,8 +8,8 @@ FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634EA4(param_4,1,0)
-FUN_80635018(param_4,1,2,0)
+FUN_80634EA4(this->id,1,0)
+FUN_80635018(this->id,1,2,0)
 FUN_8064199C(behaviour,2,0)
 *(byte *)(behaviour + 0x4B) = 1
 }

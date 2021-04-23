@@ -20,8 +20,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -34,7 +34,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }
@@ -45,8 +45,8 @@ if (x21_successful == 1) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
-FUN_806085DC(param_4,35,255,127)
-*(code *)(0x80747FB0)(behaviour,param_4,0,0)
+FUN_806085DC(this->id,35,255,127)
+*(code *)(0x80747FB0)(behaviour,this->id,0,0)
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,70,70,FLOAT_807F621C)
 }
 }
@@ -71,8 +71,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -85,7 +85,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }

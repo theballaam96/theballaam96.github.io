@@ -18,8 +18,8 @@ setFlag(0x0F>0,True,'Permanent')
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 30
-*(code *)(0x80747ED4)(behaviour,param_4,0,0)
-FUN_806085DC(param_4,35,255,127)
+*(code *)(0x80747ED4)(behaviour,this->id,0,0)
+FUN_806085DC(this->id,35,255,127)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
 *(short *)(behaviour + 0x44) = 20

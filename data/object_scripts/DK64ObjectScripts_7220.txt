@@ -15,5 +15,5 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
-*(code *)(0x80747F4C)(behaviour,param_4,5,37)
+*(code *)(0x80747F4C)(behaviour,this->id,5,37)
 }

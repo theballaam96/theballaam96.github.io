@@ -3,7 +3,7 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-*(code *)(0x80747FA0)(behaviour,param_4,0,14)
+*(code *)(0x80747FA0)(behaviour,this->id,0,14)
 *(short *)(behaviour + 0x44) = 25
 }
 }

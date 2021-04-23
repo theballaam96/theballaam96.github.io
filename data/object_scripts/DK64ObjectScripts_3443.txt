@@ -1,18 +1,18 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x19>6,'Permanent') !== 0) {
-FUN_80650BBC(param_4,1,1)
+FUN_80650BBC(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 40
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x19>6,'Permanent') == 0) {
-FUN_80650A04(param_4,1,10)
-FUN_80650BBC(param_4,1,1)
+FUN_80650A04(this->id,1,10)
+FUN_80650BBC(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 12
 }
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 90
 *(byte *)(behaviour + 0x4B) = 11
 }
@@ -22,15 +22,15 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (FUN_806419F8() == 0)) {
+if ((((*(byte *)(behaviour + 0x5C) == 0) || (*(byte *)(behaviour + 0x5C) != 1) || (FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & 4))) || (canHitSwitch() == 0)) {
 x10_uvar9 = 0
 } else {
-FUN_80641724(ObjectModel2ArrayPointer[param_4].object_type)
+FUN_80641724(ObjectModel2ArrayPointer[id2index(this->id)].object_type)
 x10_uvar9 = 1
 }
 if (x10_uvar9 == 1) {
-FUN_806085DC(param_4,140,255,127)
-FUN_806508B4(param_4,1,1)
+FUN_806085DC(this->id,140,255,127)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 50
 *(byte *)(behaviour + 0x4B) = 13
 }
@@ -46,8 +46,8 @@ setFlag(0x1F>7,True,'Permanent')
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 20) {
 FUN_80724994(2,7,0,0)
-*(code *)(0x8074802C)(behaviour,param_4,2,0)
-x54_ivar7 = (&WORD_807F6240)[6]
+*(code *)(0x8074802C)(behaviour,this->id,2,0)
+x54_ivar7 = id2index((&WORD_807F6240)[6])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -56,12 +56,12 @@ FUN_806418E8(6,10,behaviour)
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 19) {
-*(code *)(0x8074802C)(behaviour,param_4,1,0)
+*(code *)(0x8074802C)(behaviour,this->id,1,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-x54_ivar7 = (&WORD_807F6240)[3]
+x54_ivar7 = id2index((&WORD_807F6240)[3])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -79,34 +79,34 @@ setFlag(0x19>6,True,'Permanent')
 }
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
-*(code *)(0x80747F40)(behaviour,param_4,0,0)
+*(code *)(0x80747F40)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 15) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-x54_ivar7 = (&WORD_807F6240)[5]
+x54_ivar7 = id2index((&WORD_807F6240)[5])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
 FUN_806418E8(5,10,behaviour)
-*(code *)(0x8074802C)(behaviour,param_4,0,0)
+*(code *)(0x8074802C)(behaviour,this->id,0,0)
 FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 40) {
-FUN_80650A04(param_4,1,0)
-FUN_80650AD8(param_4,1,0,1)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,0)
+FUN_80650AD8(this->id,1,0,1)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 41
 }
 if (*(byte *)(behaviour + 0x48) == 40) {
-*(code *)(0x80747F40)(behaviour,param_4,0,1)
+*(code *)(0x80747F40)(behaviour,this->id,0,1)
 }
 if (*(byte *)(behaviour + 0x48) == 41) {
-FUN_8065092C(param_4,1)
+FUN_8065092C(this->id,1)
 *(byte *)(behaviour + 0x4B) = 42
 }
 if (*(byte *)(behaviour + 0x48) == 42) {
-FUN_80650A04(param_4,1,10)
+FUN_80650A04(this->id,1,10)
 FUN_8064199C(behaviour,2,0)
 *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | 0x100000
 *(byte *)(behaviour + 0x4B) = 10

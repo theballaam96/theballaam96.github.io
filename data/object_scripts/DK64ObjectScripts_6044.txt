@@ -1,6 +1,6 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
 x34_uvar4 == FUN_806C8D2C(5)
-if (3> &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (3 > &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 70
 *(byte *)(behaviour + 0x66) = 255
@@ -9,7 +9,7 @@ FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 x34_uvar4 == FUN_806C8D2C(5)
-if (3<= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
+if (3 <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {
 FUN_8064199C(behaviour,3,300)
 *(byte *)(behaviour + 0x4B) = 1
 }
@@ -23,7 +23,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 5) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -35,7 +35,7 @@ if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11
 if (x11_successful) {
 if (*(byte *)(behaviour + 0x48) == 1) {
 FUN_806418E8(9,20,behaviour)
-x54_ivar7 = (&WORD_807F6240)[9]
+x54_ivar7 = id2index((&WORD_807F6240)[9])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

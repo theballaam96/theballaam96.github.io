@@ -1,12 +1,12 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,1,60)
+FUN_80650A04(this->id,1,60)
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,1,-1)
+FUN_806508B4(this->id,1,-1)
 playCutsceneFromModelTwoScript(behaviour,17,1,0)
 *(short *)(behaviour + 0x44) = 30
 *(byte *)(behaviour + 0x4B) = 11
@@ -23,8 +23,8 @@ if (*(byte *)(behaviour + 0x48) == 12) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 74) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 74) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -41,7 +41,7 @@ playSong('Crystal Coconut Get', (float) 1)
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 FUN_806418E8(47,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[47]
+x54_ivar7 = id2index((&WORD_807F6240)[47])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

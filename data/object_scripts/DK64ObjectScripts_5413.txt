@@ -29,17 +29,17 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(1) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(2) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(3) & 0xFF) !== 0) {
 *(byte *)(behaviour + 0x4B) = 4
 }
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(4) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(5) & 0xFF) !== 0) {
 *(short *)(behaviour + 0x44) = 300
 *(byte *)(behaviour + 0x4B) = 5
 }

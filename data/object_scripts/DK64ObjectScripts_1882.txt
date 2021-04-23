@@ -9,7 +9,7 @@ FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x12>7,'Permanent') == 0) {
-FUN_80650A04(param_4,1,5)
+FUN_80650A04(this->id,1,5)
 FUN_8064199C(behaviour,2,0)
 }
 }
@@ -21,15 +21,15 @@ playCutsceneFromModelTwoScript(behaviour,36,1,0)
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 280) {
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,288,0,0)
 }
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 12
 *(byte *)(behaviour + 0x4C) = 0
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 if (*(byte *)(behaviour + 0x49) == 0) {
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
@@ -43,7 +43,7 @@ FUN_80605380(x10_temp)
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 150) {
 FUN_806418E8(262,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[262]
+x54_ivar7 = id2index((&WORD_807F6240)[262])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

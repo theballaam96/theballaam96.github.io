@@ -10,7 +10,7 @@ FUN_8064199C(behaviour,2,0)
 }
 if ((*(byte *)(behaviour + 0x9A) & 1) == 0) {
 if (checkFlag(0x21>6,'Permanent') == 0) {
-FUN_80636014(param_4,1)
+FUN_80636014(this->id,1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
@@ -33,16 +33,16 @@ FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,70,70,FLOAT_807F621C)
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 220) {
-FUN_806085DC(param_4,36,255,127)
-FUN_806085DC(param_4,497,255,127)
-FUN_806085DC(param_4,657,255,100)
-*(code *)(0x80747F84)(behaviour,param_4,0,0)
+FUN_806085DC(this->id,36,255,127)
+FUN_806085DC(this->id,497,255,127)
+FUN_806085DC(this->id,657,255,100)
+*(code *)(0x80747F84)(behaviour,this->id,0,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 190) {
 FUN_806418E8(47,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[47]
+x54_ivar7 = id2index((&WORD_807F6240)[47])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

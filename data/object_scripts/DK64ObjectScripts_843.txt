@@ -8,42 +8,42 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x60) = 0
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 30
-FUN_80636014(param_4,1)
-FUN_806508B4(param_4,1,1)
+FUN_80636014(this->id,1)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 10
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,289,0,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,289,0,0)
 }
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_8065092C(param_4,1)
+FUN_8065092C(this->id,1)
 *(short *)(behaviour + 0x44) = 15
 *(byte *)(behaviour + 0x4B) = 12
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_80650A04(param_4,1,1)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,1)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 90
 *(byte *)(behaviour + 0x4B) = 13
 }
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
-*(code *)(0x80747EA8)(behaviour,param_4,16,1)
+*(code *)(0x80747EA8)(behaviour,this->id,16,1)
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 60) {
-FUN_806085DC(param_4,52,255,127)
+FUN_806085DC(this->id,52,255,127)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806085DC(param_4,52,255,115)
+FUN_806085DC(this->id,52,255,115)
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
 FUN_80605380(x10_temp)

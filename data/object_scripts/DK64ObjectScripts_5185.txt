@@ -9,7 +9,7 @@ FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x28>4,'Permanent') == 0) {
-FUN_80650A04(param_4,1,2)
+FUN_80650A04(this->id,1,2)
 FUN_8064199C(behaviour,2,0)
 }
 }
@@ -20,15 +20,15 @@ playCutsceneFromModelTwoScript(behaviour,5,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 170) {
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,288,0,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,288,0,0)
 }
 *(byte *)(behaviour + 0x4B) = 12
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 x10_temp = *(short *)(behaviour + 0x10)
 if (-1 < x10_temp) {
 FUN_80605380(x10_temp)

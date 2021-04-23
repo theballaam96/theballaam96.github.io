@@ -1,14 +1,14 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,1,20)
-FUN_80650A04(param_4,2,20)
-FUN_80650A04(param_4,3,20)
-FUN_80650A04(param_4,4,20)
+FUN_80650A04(this->id,1,20)
+FUN_80650A04(this->id,2,20)
+FUN_80650A04(this->id,3,20)
+FUN_80650A04(this->id,4,20)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,5,20)
-FUN_80650A04(param_4,6,20)
+FUN_80650A04(this->id,5,20)
+FUN_80650A04(this->id,6,20)
 *(byte *)(behaviour + 0x67) = 1
-FUN_80634EA4(param_4,2,0)
+FUN_80634EA4(this->id,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x1B>4,'Permanent') == 0) {
@@ -21,18 +21,18 @@ if (checkFlag(0x1B>4,'Permanent') !== 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,1,-1)
-FUN_806508B4(param_4,2,-1)
-FUN_806508B4(param_4,3,-1)
-FUN_806508B4(param_4,4,-1)
+FUN_806508B4(this->id,1,-1)
+FUN_806508B4(this->id,2,-1)
+FUN_806508B4(this->id,3,-1)
+FUN_806508B4(this->id,4,-1)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,5,-1)
-FUN_806508B4(param_4,6,-1)
-FUN_80634EA4(param_4,2,1)
+FUN_806508B4(this->id,5,-1)
+FUN_806508B4(this->id,6,-1)
+FUN_80634EA4(this->id,2,1)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80634CC8(param_4,1,0,-8)
+FUN_80634CC8(this->id,1,0,-8)
 if (0 == 1) {
 *(int *)(behaviour + 0x8) = *(int *)(behaviour + 0xFFFFFFFFFFFFFFCC)
 *(int *)(behaviour + 0xC) = *(int *)(behaviour + 0x14)
@@ -42,14 +42,14 @@ else {
 *(float *)(behaviour + 0xC) = 0
 }
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,279,0,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,279,0,0)
 }
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if ((*(byte *)(behaviour + 0x9A) & 1) == 0) {
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,279,0,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,279,0,0)
 }
 }
 }

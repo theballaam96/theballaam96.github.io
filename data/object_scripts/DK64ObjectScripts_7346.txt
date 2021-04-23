@@ -1,5 +1,5 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650BBC(param_4,1,1)
+FUN_80650BBC(this->id,1,1)
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
@@ -7,7 +7,7 @@ FUN_80650BBC(param_4,1,1)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806085DC(param_4,429,255,127)
+FUN_806085DC(this->id,429,255,127)
 *(byte *)(behaviour + 0x60) = 0
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 60
@@ -24,12 +24,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -47,36 +47,36 @@ x17_successful = 1
 } while (x17_focusedPlayerNumber < player_count)
 }
 if (x17_successful == 1) {
-FUN_80650A04(param_4,1,1)
-FUN_806508B4(param_4,1,1)
-FUN_806085DC(param_4,326,255,127)
+FUN_80650A04(this->id,1,1)
+FUN_806508B4(this->id,1,1)
+FUN_806085DC(this->id,326,255,127)
 *(byte *)(behaviour + 0x4B) = 12
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-if ((&WORD_807F6240)[11] != -1) {
+if ((&WORD_807F6240)[id2index(11)] != -1) {
 x1C_ivar7 = (&WORD_807F6240)[11]
 if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
 x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 0
 x1C_puvar10[0x48] = x1C_puvar10[0x48] + 1
 }
 }
-if ((&WORD_807F6240)[12] != -1) {
+if ((&WORD_807F6240)[id2index(12)] != -1) {
 x1C_ivar7 = (&WORD_807F6240)[12]
 if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
 x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 0
 x1C_puvar10[0x48] = x1C_puvar10[0x48] + 1
 }
 }
-if ((&WORD_807F6240)[13] != -1) {
+if ((&WORD_807F6240)[id2index(13)] != -1) {
 x1C_ivar7 = (&WORD_807F6240)[13]
 if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
 x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 0
 x1C_puvar10[0x48] = x1C_puvar10[0x48] + 1
 }
 }
-if ((&WORD_807F6240)[14] != -1) {
+if ((&WORD_807F6240)[id2index(14)] != -1) {
 x1C_ivar7 = (&WORD_807F6240)[14]
 if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {
 x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + 0
@@ -85,7 +85,7 @@ x1C_puvar10[0x48] = x1C_puvar10[0x48] + 1
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-FUN_806085DC(param_4,747,255,127)
+FUN_806085DC(this->id,747,255,127)
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (checkFlag(0x0B>7,'Temporary') !== 0) {
@@ -100,15 +100,15 @@ playCutsceneFromModelTwoScript(behaviour,1,1,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
-if (FUN_80650D04(param_4,1) == 0) {
-FUN_80650A04(param_4,1,5)
-FUN_806508B4(param_4,1,1)
+if (FUN_80650D04(this->id,1) == 0) {
+FUN_80650A04(this->id,1,5)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 14
 }
 }
 if (*(byte *)(behaviour + 0x48) == 14) {
-if (FUN_80650D04(param_4,1) == 0) {
-FUN_8065092C(param_4,1)
+if (FUN_80650D04(this->id,1) == 0) {
+FUN_8065092C(this->id,1)
 *(byte *)(behaviour + 0x4B) = 0
 }
 }

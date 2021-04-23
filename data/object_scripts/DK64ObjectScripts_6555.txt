@@ -24,9 +24,9 @@ if ((*(byte *)(behaviour + 0x9A) & 1) == 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
 if ((*(byte *)(behaviour + 0x9A) & 1) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(1) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(2) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(3) & 0xFF) !== 0) {
 *(byte *)(behaviour + 0x4B) = 3
 }
 }
@@ -40,8 +40,8 @@ if ((*(byte *)(behaviour + 0x9A) & 1) == 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
 if ((*(byte *)(behaviour + 0x9A) & 1) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(4) & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(5) & 0xFF) !== 0) {
 *(byte *)(behaviour + 0x4B) = 11
 }
 }
@@ -70,8 +70,8 @@ playSong('Oh Banana', (float) 1)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 13) {
-*(code *)(0x80747E94)(behaviour,param_4,0,0)
-FUN_806F4F50(param_4,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
+*(code *)(0x80747E94)(behaviour,this->id,0,0)
+FUN_806F4F50(this->id,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
 FUN_80723484(*(int *)(behaviour + 0x38))
 FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)
 }

@@ -1,16 +1,16 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,3,50)
-FUN_806508B4(param_4,3,-1)
-FUN_80650A04(param_4,1,100)
-FUN_806508B4(param_4,1,-1)
+FUN_80650A04(this->id,3,50)
+FUN_806508B4(this->id,3,-1)
+FUN_80650A04(this->id,1,100)
+FUN_806508B4(this->id,1,-1)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 BYTE_80748094 = 9
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,294,60,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,294,60,0)
 }
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,257,60,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,257,60,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
@@ -18,8 +18,8 @@ FUN_8064199C(behaviour,1,0)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80650A04(param_4,4,100)
-FUN_806508B4(param_4,4,1)
+FUN_80650A04(this->id,4,100)
+FUN_806508B4(this->id,4,1)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
 *(short *)(behaviour + 0x44) = 110
@@ -27,12 +27,12 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 55) {
-FUN_806085DC(param_4,12,255,100)
+FUN_806085DC(this->id,12,255,100)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 10) {
-FUN_806085DC(param_4,12,255,100)
+FUN_806085DC(this->id,12,255,100)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
@@ -51,7 +51,7 @@ FUN_80605380(x10_temp)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-if (FUN_80650D04(param_4,4) == 0) {
+if (FUN_80650D04(this->id,4) == 0) {
 FUN_8064199C(behaviour,2,0)
 }
 }
@@ -60,11 +60,11 @@ if (BYTE_80748094 < 1) {
 playSFX(779,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(180,127,0,0,0.3,0)
 }
-FUN_80650A04(param_4,6,100)
-FUN_806508B4(param_4,6,1)
+FUN_80650A04(this->id,6,100)
+FUN_806508B4(this->id,6,1)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
 *(short *)(behaviour + 0x44) = 120
@@ -76,31 +76,31 @@ if (BYTE_80748094 < 1) {
 playSFX(779,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(180,127,0,0,0.3,0)
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-if (FUN_80650D04(param_4,6) == 0) {
-FUN_80650A04(param_4,7,100)
-FUN_806508B4(param_4,7,1)
+if (FUN_80650D04(this->id,6) == 0) {
+FUN_80650A04(this->id,7,100)
+FUN_806508B4(this->id,7,1)
 if (BYTE_80748094 < 1) {
 playSFX(391,0x7FFF,0x427C0000,0.62992125984252)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(90,80,0,0,0.3,0)
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-if (FUN_80650D04(param_4,6) == 0) {
+if (FUN_80650D04(this->id,6) == 0) {
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,294,50,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,294,50,0)
 }
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,257,50,0)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,257,50,0)
 }
 *(short *)(behaviour + 0x44) = 110
 *(byte *)(behaviour + 0x4B) = 22
@@ -112,7 +112,7 @@ if (BYTE_80748094 < 1) {
 playSFX(781,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(90,127,0,0,0.3,0)
 }
 }
@@ -123,7 +123,7 @@ if (BYTE_80748094 < 1) {
 playSFX(781,0x7FFF,0x427C0000,1.0393700787402)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(90,132,0,0,0.3,0)
 }
 }
@@ -134,7 +134,7 @@ if (BYTE_80748094 < 1) {
 playSFX(782,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(90,127,0,0,0.3,0)
 }
 *(byte *)(behaviour + 0x4B) = 23
@@ -143,31 +143,31 @@ FUN_806086CC(90,127,0,0,0.3,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 23) {
-if (FUN_80650D04(param_4,7) == 0) {
-FUN_80650A04(param_4,8,100)
-FUN_806508B4(param_4,8,1)
+if (FUN_80650D04(this->id,7) == 0) {
+FUN_80650A04(this->id,8,100)
+FUN_806508B4(this->id,8,1)
 *(byte *)(behaviour + 0x4B) = 24
 }
 }
 if (*(byte *)(behaviour + 0x48) == 24) {
-if (FUN_80650D04(param_4,8) == 0) {
-FUN_80650A04(param_4,9,100)
-FUN_806508B4(param_4,9,1)
+if (FUN_80650D04(this->id,8) == 0) {
+FUN_80650A04(this->id,9,100)
+FUN_806508B4(this->id,9,1)
 *(byte *)(behaviour + 0x4B) = 25
 }
 }
 if (*(byte *)(behaviour + 0x48) == 25) {
-if (FUN_80650D04(param_4,9) == 0) {
+if (FUN_80650D04(this->id,9) == 0) {
 FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 30) {
-FUN_80650A04(param_4,5,100)
-FUN_806508B4(param_4,5,1)
+FUN_80650A04(this->id,5,100)
+FUN_806508B4(this->id,5,1)
 *(byte *)(behaviour + 0x4B) = 31
 }
 if (*(byte *)(behaviour + 0x48) == 31) {
-if (FUN_80650D04(param_4,5) == 0) {
+if (FUN_80650D04(this->id,5) == 0) {
 FUN_8064199C(behaviour,2,0)
 }
 }
@@ -177,7 +177,7 @@ if (BYTE_80748094 < 1) {
 playSFX(784,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(130,127,0,0,0.3,0)
 }
 *(short *)(behaviour + 0x44) = 30
@@ -190,7 +190,7 @@ if (BYTE_80748094 < 1) {
 playSFX(784,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(130,127,0,0,0.3,0)
 }
 *(short *)(behaviour + 0x44) = 30
@@ -203,7 +203,7 @@ if (BYTE_80748094 < 1) {
 playSFX(784,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(70,127,0,0,0.3,0)
 }
 *(short *)(behaviour + 0x44) = 30
@@ -216,7 +216,7 @@ if (BYTE_80748094 < 1) {
 playSFX(784,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(70,127,0,0,0.3,0)
 }
 *(short *)(behaviour + 0x44) = 30
@@ -229,7 +229,7 @@ if (BYTE_80748094 < 1) {
 playSFX(784,0x7FFF,0x427C0000,1)
 }
 else {
-FUN_806335B0(param_4,1,BYTE_80748094)
+FUN_806335B0(this->id,1,BYTE_80748094)
 FUN_806086CC(70,127,0,0,0.3,0)
 }
 *(short *)(behaviour + 0x44) = 30

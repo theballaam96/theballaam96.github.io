@@ -17,8 +17,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -31,7 +31,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }
@@ -39,10 +39,10 @@ x21_successful = 1
 }
 }
 if (x21_successful == 1) {
-FUN_80650A04(param_4,1,10)
-FUN_80650BBC(param_4,1,1)
-FUN_806085DC(param_4,140,255,127)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,10)
+FUN_80650BBC(this->id,1,1)
+FUN_806085DC(this->id,140,255,127)
+FUN_806508B4(this->id,1,1)
 }
 }
 }
@@ -66,8 +66,8 @@ if (x17_successful == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 6) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 6) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
@@ -80,7 +80,7 @@ do {
 x21_focusedPlayerNumber_ = x21_focusedPlayerNumber
 x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {
-21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
+x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == 2) {
 x21_successful = 1
 }
@@ -98,12 +98,12 @@ FUN_8064199C(behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 1) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 FUN_806418E8(19,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[19]
+x54_ivar7 = id2index((&WORD_807F6240)[19])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
 FUN_806418E8(30,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[30]
+x54_ivar7 = id2index((&WORD_807F6240)[30])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -112,7 +112,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 1) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 FUN_806418E8(31,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[31]
+x54_ivar7 = id2index((&WORD_807F6240)[31])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -128,7 +128,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 790) {
 FUN_806418E8(131,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[131]
+x54_ivar7 = id2index((&WORD_807F6240)[131])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -137,7 +137,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 770) {
 FUN_806418E8(132,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[132]
+x54_ivar7 = id2index((&WORD_807F6240)[132])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -146,7 +146,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 750) {
 FUN_806418E8(133,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[133]
+x54_ivar7 = id2index((&WORD_807F6240)[133])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -155,7 +155,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 730) {
 FUN_806418E8(134,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[134]
+x54_ivar7 = id2index((&WORD_807F6240)[134])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -177,7 +177,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 90) {
 FUN_806418E8(131,20,behaviour)
-x54_ivar7 = (&WORD_807F6240)[131]
+x54_ivar7 = id2index((&WORD_807F6240)[131])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -186,7 +186,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 70) {
 FUN_806418E8(132,20,behaviour)
-x54_ivar7 = (&WORD_807F6240)[132]
+x54_ivar7 = id2index((&WORD_807F6240)[132])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -195,7 +195,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 50) {
 FUN_806418E8(133,20,behaviour)
-x54_ivar7 = (&WORD_807F6240)[133]
+x54_ivar7 = id2index((&WORD_807F6240)[133])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -204,7 +204,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 30) {
 FUN_806418E8(134,20,behaviour)
-x54_ivar7 = (&WORD_807F6240)[134]
+x54_ivar7 = id2index((&WORD_807F6240)[134])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -212,7 +212,7 @@ FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 100
 *(byte *)(behaviour + 0x4B) = 4
 }

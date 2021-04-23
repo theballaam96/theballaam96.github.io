@@ -1,12 +1,12 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,1,1)
-FUN_80650BBC(param_4,1,1)
-FUN_80634EA4(param_4,1,0)
+FUN_80650A04(this->id,1,1)
+FUN_80650BBC(this->id,1,1)
+FUN_80634EA4(this->id,1,0)
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80635018(param_4,1,1,0)
-FUN_806508B4(param_4,1,1)
+FUN_80635018(this->id,1,1,0)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
@@ -19,12 +19,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -43,8 +43,8 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
-FUN_806085DC(param_4,430,255,127)
-FUN_80650A04(param_4,1,5)
+FUN_806085DC(this->id,430,255,127)
+FUN_80650A04(this->id,1,5)
 }
 }
 }
@@ -59,12 +59,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -83,8 +83,8 @@ x17_successful = 1
 }
 if (x17_successful == 1) {
 if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
-FUN_80635018(param_4,1,0,0)
-FUN_806508B4(param_4,1,1)
+FUN_80635018(this->id,1,0,0)
+FUN_806508B4(this->id,1,1)
 FUN_806418E8(105,20,behaviour)
 *(byte *)(behaviour + 0x4B) = 21
 }
@@ -92,17 +92,17 @@ FUN_806418E8(105,20,behaviour)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 30) {
-FUN_80650A04(param_4,1,0)
-FUN_80650AD8(param_4,1,0,0)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,0)
+FUN_80650AD8(this->id,1,0,0)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 31
 }
 if (*(byte *)(behaviour + 0x48) == 31) {
-FUN_8065092C(param_4,1)
-FUN_80650b50(param_4,1,0)
+FUN_8065092C(this->id,1)
+FUN_80650b50(this->id,1,0)
 *(byte *)(behaviour + 0x4B) = 32
 }
 if (*(byte *)(behaviour + 0x48) == 32) {
-FUN_80635018(param_4,1,0,0)
+FUN_80635018(this->id,1,0,0)
 *(byte *)(behaviour + 0x4B) = 0
 }

@@ -7,7 +7,7 @@ FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x08>5,'Permanent') == 0) {
-FUN_80650BBC(param_4,1,1)
+FUN_80650BBC(this->id,1,1)
 FUN_8064199C(behaviour,3,200)
 *(byte *)(behaviour + 0x4B) = 1
 }
@@ -22,8 +22,8 @@ xC_focusedPlayerNumber = (xC_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[xC_focusedPlayerNumber_]->does_player_exist) != 0) {
 xC_focusedPlayerPointer = *(int *)(character_change_pointer[xC_focusedPlayerNumber_]->character_pointer)
 if (*(byte *)(xC_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
-if (param_4 == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 2)) {
+if (this->id == *(short *)(xC_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(byte *)(xC_focusedPlayerPointer->unk0x10E == 2)) {
 xC_successful = 1
 }
 }
@@ -78,7 +78,7 @@ FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,5,2,FLOAT_807F621C)
 if (*(byte *)(behaviour + 0x48) == 20) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 FUN_806418E8(6,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[6]
+x54_ivar7 = id2index((&WORD_807F6240)[6])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

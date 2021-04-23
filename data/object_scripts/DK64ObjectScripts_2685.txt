@@ -1,8 +1,8 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634EA4(param_4,1,0)
-FUN_80634CC8(param_4,1,0,-8)
+FUN_80634EA4(this->id,1,0)
+FUN_80634CC8(this->id,1,0,-8)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,274,90,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,274,90,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 0) {

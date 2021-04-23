@@ -1,32 +1,32 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,1,10)
+FUN_80650A04(this->id,1,10)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 36) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 36) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806085DC(param_4,140,255,127)
-FUN_806508B4(param_4,1,1)
+FUN_806085DC(this->id,140,255,127)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 30
 *(byte *)(behaviour + 0x4B) = 2
 }
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-x54_ivar7 = (&WORD_807F6240)[2]
+x54_ivar7 = id2index((&WORD_807F6240)[2])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
 FUN_806418E8(2,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[3]
+x54_ivar7 = id2index((&WORD_807F6240)[3])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

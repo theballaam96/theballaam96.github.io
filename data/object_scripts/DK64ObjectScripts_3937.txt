@@ -1,28 +1,28 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
 *(byte *)(behaviour + 0x6F) = 1
-FUN_80650BBC(param_4,2,1)
+FUN_80650BBC(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
-FUN_80650A04(param_4,2,10)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,10)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 2
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 *(short *)(behaviour + 0x44) = 20
 *(byte *)(behaviour + 0x4B) = 3
 }
 }
 if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_80650A04(param_4,2,10)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,10)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 4
 }
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 *(short *)(behaviour + 0x44) = 20
 *(byte *)(behaviour + 0x4B) = 5
 }

@@ -3,5 +3,5 @@ FUN_8064199C(behaviour,1,0)
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
-*(code *)(0x80747F14)(behaviour,param_4,0,0)
+*(code *)(0x80747F14)(behaviour,this->id,0,0)
 }

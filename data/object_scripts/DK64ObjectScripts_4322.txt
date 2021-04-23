@@ -3,7 +3,7 @@ if (checkFlag(0x1B>2,'Permanent') !== 0) {
 *(byte *)(behaviour + 0x70) = 0
 *(byte *)(behaviour + 0x71) = 0
 FUN_806418E8(2,1,behaviour)
-x54_ivar7 = (&WORD_807F6240)[2]
+x54_ivar7 = id2index((&WORD_807F6240)[2])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -32,12 +32,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -59,8 +59,8 @@ if ((*(byte *)CurrentCollectableBase->SlamLvl => 1)) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 30
-*(code *)(0x80747ED4)(behaviour,param_4,0,0)
-FUN_806085DC(param_4,35,255,127)
+*(code *)(0x80747ED4)(behaviour,this->id,0,0)
+FUN_806085DC(this->id,35,255,127)
 }
 }
 }
@@ -75,12 +75,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -114,7 +114,7 @@ if (*(ushort *)(behaviour + 0x44) == 55) {
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 FUN_806418E8(2,1,behaviour)
-x54_ivar7 = (&WORD_807F6240)[2]
+x54_ivar7 = id2index((&WORD_807F6240)[2])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

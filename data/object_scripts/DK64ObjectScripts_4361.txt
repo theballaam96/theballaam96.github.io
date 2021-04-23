@@ -5,8 +5,8 @@ if (checkFlag(0x1C>0,'Permanent') !== 0) {
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x1C>0,'Permanent') == 0) {
-FUN_80650BBC(param_4,1,1)
-FUN_80650A04(param_4,1,20)
+FUN_80650BBC(this->id,1,1)
+FUN_80650A04(this->id,1,20)
 *(byte *)(behaviour + 0x4B) = 1
 }
 }
@@ -20,12 +20,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -43,14 +43,14 @@ x17_successful = 1
 } while (x17_focusedPlayerNumber < player_count)
 }
 if (x17_successful == 1) {
-FUN_806508B4(param_4,1,1)
-FUN_806085DC(param_4,607,255,127)
+FUN_806508B4(this->id,1,1)
+FUN_806085DC(this->id,607,255,127)
 *(byte *)(behaviour + 0x4B) = 2
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 *(byte *)(behaviour + 0x4C) = 1
 FUN_806418E8(2,1,behaviour)
 *(byte *)(behaviour + 0x4B) = 20
@@ -66,12 +66,12 @@ x2_focusedPlayerNumber = (x2_focusedPlayerNumber_ + 1) & 0xFF
 if (*(byte *)(character_change_pointer[x2_focusedPlayerNumber_]->does_player_exist) != 0) {
 x2_focusedPlayerPointer = *(int *)(character_change_pointer[x2_focusedPlayerNumber_)]->character_pointer)
 if (*(byte *)(x2_focusedPlayerPointer->locked_to_pad) == 1) {
-if (param_4 == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x2_focusedPlayerPointer->standingOnObjectM2Index)) {
 x2_successful = 1
 }
 }
 }
-} while x2_focusedPlayerNumber < player_count
+} while (x2_focusedPlayerNumber < player_count)
 }
 if (x2_successful == 1) {
 x17_successful = 0
@@ -89,20 +89,20 @@ x17_successful = 1
 } while (x17_focusedPlayerNumber < player_count)
 }
 if (x17_successful == 1) {
-FUN_806508B4(param_4,1,1)
-FUN_806085DC(param_4,607,255,127)
+FUN_806508B4(this->id,1,1)
+FUN_806085DC(this->id,607,255,127)
 *(byte *)(behaviour + 0x4B) = 11
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 *(byte *)(behaviour + 0x4B) = 30
 }
 }
 if (*(byte *)(behaviour + 0x48) == 30) {
-FUN_806085DC(param_4,608,255,127)
-FUN_806508B4(param_4,1,1)
+FUN_806085DC(this->id,608,255,127)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 30
 *(byte *)(behaviour + 0x4B) = 31
 }
@@ -114,7 +114,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x48) == 40) {
 if (*(byte *)(behaviour + 0x49) == 1) {
 *(byte *)(behaviour + 0x4C) = 0
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 41
 }
 }
@@ -124,18 +124,18 @@ if (*(byte *)(behaviour + 0x49) == 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 41) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 *(byte *)(behaviour + 0x4B) = 0
 }
 }
 if (*(byte *)(behaviour + 0x48) == 80) {
-FUN_80650A04(param_4,1,0)
-FUN_80650AD8(param_4,1,0,1)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,0)
+FUN_80650AD8(this->id,1,0,1)
+FUN_806508B4(this->id,1,1)
 *(byte *)(behaviour + 0x4B) = 81
 }
 if (*(byte *)(behaviour + 0x48) == 81) {
-FUN_8065092C(param_4,1)
+FUN_8065092C(this->id,1)
 *(byte *)(behaviour + 0x4B) = 82
 }
 if (*(byte *)(behaviour + 0x48) == 82) {

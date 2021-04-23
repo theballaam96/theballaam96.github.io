@@ -22,7 +22,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 }
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
-if ((FUN_80726DC0() & 0xFF) !== 0) {
+if ((isCharacterSpawnerInState7(31) & 0xFF) !== 0) {
 setFlag(0x25>4,True,'Permanent')
 FUN_8064199C(behaviour,2,0)
 }

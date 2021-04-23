@@ -19,7 +19,7 @@ x11_focusedArraySlot = x11_focusedArraySlot + 8
 if ((*(uint *)(x11_focusedActor->object_properties_bitfield) & 0x2000) == 0) {
 if (*(int *)(x11_focusedActor->actor_type) == 61) {
 if (x11_focusedActor->locked_to_pad == 1) {
-if (param_4 == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
+if (this->id == *(short *)(x11_focusedActor->standingOnObjectM2Index)) {
 x11_successful = true
 }
 }
@@ -30,15 +30,15 @@ if ((&loadedActorArray + (loadedActorCount * 8) <= x11_focusedArraySlot) || (x11
 }
 if (x11_successful) {
 FUN_8064199C(behaviour,1,0)
-FUN_806508B4(param_4,2,1)
-FUN_806085DC(param_4,326,255,127)
+FUN_806508B4(this->id,2,1)
+FUN_806085DC(this->id,326,255,127)
 *(byte *)(behaviour + 0x4B) = 2
 }
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
-if (FUN_80650D04(param_4,2) == 0) {
+if (FUN_80650D04(this->id,2) == 0) {
 FUN_806418E8(43,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[43]
+x54_ivar7 = id2index((&WORD_807F6240)[43])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }
@@ -46,13 +46,13 @@ FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_80650A04(param_4,2,0)
-FUN_80650AD8(param_4,2,0,1)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,0)
+FUN_80650AD8(this->id,2,0,1)
+FUN_806508B4(this->id,2,1)
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-FUN_8065092C(param_4,2)
+FUN_8065092C(this->id,2)
 *(byte *)(behaviour + 0x4B) = 22
 }
 if (*(byte *)(behaviour + 0x48) == 22) {

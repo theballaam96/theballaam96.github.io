@@ -44,11 +44,11 @@ BYTE_80748094 = -1
 if (*(byte *)(behaviour + 0x48) == 13) {
 if (*(ushort *)(behaviour + 0x44) == 130) {
 if (*(short *)(behaviour + 0x14) < 0) {
-*(short *)(behaviour + 0x14) = FUN_80605044(param_4,261,0,2)
+*(short *)(behaviour + 0x14) = FUN_80605044(this->id,261,0,2)
 }
 FUN_80604BE8(*(byte *)(behaviour + 0x11,40.96,90)
 if (*(short *)(behaviour + 0x16) < 0) {
-*(short *)(behaviour + 0x16) = FUN_80605044(param_4,312,1,2)
+*(short *)(behaviour + 0x16) = FUN_80605044(this->id,312,1,2)
 }
 FUN_80604BE8(*(byte *)(behaviour + 0x13,40.96,90)
 }

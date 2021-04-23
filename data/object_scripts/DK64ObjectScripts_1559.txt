@@ -1,8 +1,8 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650BBC(param_4,1,1)
-FUN_80650AD8(param_4,1,0,1)
-FUN_80650A04(param_4,1,0)
-FUN_806508B4(param_4,1,1)
+FUN_80650BBC(this->id,1,1)
+FUN_80650AD8(this->id,1,0,1)
+FUN_80650A04(this->id,1,0)
+FUN_806508B4(this->id,1,1)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 *(byte *)(behaviour + 0x4B) = 1
@@ -11,12 +11,12 @@ if (*(byte *)(behaviour + 0x48) == 1) {
 *(byte *)(behaviour + 0x60) = 1
 *(ushort *)(behaviour + 0x62) = 0
 *(byte *)(behaviour + 0x66) = 255
-FUN_80650A04(param_4,1,20)
+FUN_80650A04(this->id,1,20)
 FUN_8064199C(behaviour,2,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806085DC(param_4,385,255,127)
-FUN_806508B4(param_4,1,1)
+FUN_806085DC(this->id,385,255,127)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 150
 *(byte *)(behaviour + 0x60) = 0
 *(ushort *)(behaviour + 0x62) = 0
@@ -26,15 +26,15 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
-if (FUN_80650D04(param_4,1) == 0) {
-FUN_806085DC(param_4,151,255,127)
+if (FUN_80650D04(this->id,1) == 0) {
+FUN_806085DC(this->id,151,255,127)
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,12,12,FLOAT_807F621C)
-FUN_806FB370(2,0,1)
-FUN_806FB370(4,0,1)
+setHUDItemAsInfinite(Ammo,0,True)
+setHUDItemAsInfinite(Orange,0,True)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
-if (FUN_80650D04(param_4,1) == 0) {
+if (FUN_80650D04(this->id,1) == 0) {
 *(byte *)(behaviour + 0x4B) = 12
 }
 }
@@ -50,13 +50,13 @@ FUN_8064199C(behaviour,2,0)
 }
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_806085DC(param_4,385,255,127)
-FUN_806508B4(param_4,1,1)
+FUN_806085DC(this->id,385,255,127)
+FUN_806508B4(this->id,1,1)
 *(short *)(behaviour + 0x44) = 90
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-FUN_806FB370(2,0,0)
-FUN_806FB370(4,0,0)
+setHUDItemAsInfinite(Ammo,0,False)
+setHUDItemAsInfinite(Orange,0,False)
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {

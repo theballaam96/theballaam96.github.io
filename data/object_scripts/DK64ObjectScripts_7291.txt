@@ -1,4 +1,4 @@
 if (*(ushort *)(behaviour + 0x44) == 0) {
-*(code *)(0x80748028)(behaviour,param_4,4,24)
+*(code *)(0x80748028)(behaviour,this->id,4,24)
 *(short *)(behaviour + 0x44) = 10
 }

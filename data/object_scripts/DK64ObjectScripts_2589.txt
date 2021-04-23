@@ -1,15 +1,15 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650BBC(param_4,1,0)
-FUN_80650BBC(param_4,2,0)
-FUN_80650BBC(param_4,3,0)
-FUN_80650A04(param_4,3,25)
+FUN_80650BBC(this->id,1,0)
+FUN_80650BBC(this->id,2,0)
+FUN_80650BBC(this->id,3,0)
+FUN_80650A04(this->id,3,25)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x38>1,'Permanent') !== 0) {
 if (checkFlag(0x38>2,'Permanent') == 0) {
 *(byte *)(behaviour + 0x4B) = 100
-FUN_80650A04(param_4,1,25)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,25)
+FUN_806508B4(this->id,1,1)
 }
 }
 }
@@ -17,8 +17,8 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x38>1,'Permanent') == 0) {
 if (checkFlag(0x38>2,'Permanent') !== 0) {
 *(byte *)(behaviour + 0x4B) = 100
-FUN_80650A04(param_4,1,25)
-FUN_806508B4(param_4,1,1)
+FUN_80650A04(this->id,1,25)
+FUN_806508B4(this->id,1,1)
 }
 }
 }
@@ -26,20 +26,20 @@ if (*(byte *)(behaviour + 0x48) == 0) {
 if (checkFlag(0x38>1,'Permanent') !== 0) {
 if (checkFlag(0x38>2,'Permanent') !== 0) {
 *(byte *)(behaviour + 0x4B) = 100
-FUN_80650A04(param_4,2,25)
-FUN_806508B4(param_4,2,1)
-FUN_806508B4(param_4,3,1)
+FUN_80650A04(this->id,2,25)
+FUN_806508B4(this->id,2,1)
+FUN_806508B4(this->id,3,1)
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
-FUN_806085DC(param_4,325,128,127)
+FUN_806085DC(this->id,325,128,127)
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,15,30,FLOAT_807F621C)
 *(short *)(behaviour + 0x44) = 60
 *(byte *)(behaviour + 0x4B) = 2
 }
 if (*(byte *)(behaviour + 0x48) == 2) {
-FUN_806085DC(param_4,325,128,127)
+FUN_806085DC(this->id,325,128,127)
 FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,15,30,FLOAT_807F621C)
 *(short *)(behaviour + 0x44) = 15
 *(byte *)(behaviour + 0x4B) = 3
@@ -48,8 +48,8 @@ if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 if (checkFlag(0x38>1,'Permanent') !== 0) {
 if (checkFlag(0x38>2,'Permanent') == 0) {
-FUN_80650A04(param_4,2,5)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,5)
+FUN_806508B4(this->id,2,1)
 setFlag(0x38>2,True,'Permanent')
 *(byte *)(behaviour + 0x4B) = 4
 }
@@ -60,8 +60,8 @@ if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 if (checkFlag(0x38>1,'Permanent') == 0) {
 if (checkFlag(0x38>2,'Permanent') !== 0) {
-FUN_80650A04(param_4,2,5)
-FUN_806508B4(param_4,2,1)
+FUN_80650A04(this->id,2,5)
+FUN_806508B4(this->id,2,1)
 setFlag(0x38>1,True,'Permanent')
 *(byte *)(behaviour + 0x4B) = 4
 }
@@ -69,12 +69,12 @@ setFlag(0x38>1,True,'Permanent')
 }
 }
 if (*(byte *)(behaviour + 0x48) == 4) {
-FUN_806085DC(param_4,371,128,85)
+FUN_806085DC(this->id,371,128,85)
 *(byte *)(behaviour + 0x4B) = 5
 }
 if (*(byte *)(behaviour + 0x48) == 5) {
-if (FUN_80650D04(param_4,2) == 0) {
-FUN_806085DC(param_4,372,128,127)
+if (FUN_80650D04(this->id,2) == 0) {
+FUN_806085DC(this->id,372,128,127)
 *(byte *)(behaviour + 0x4B) = 6
 }
 }
@@ -82,28 +82,28 @@ if (*(byte *)(behaviour + 0x48) == 3) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
 if (checkFlag(0x38>1,'Permanent') == 0) {
 if (checkFlag(0x38>2,'Permanent') == 0) {
-FUN_80650A04(param_4,1,4)
-FUN_806508B4(param_4,1,1)
-*(code *)(0x80748044)(behaviour,param_4,0,0)
+FUN_80650A04(this->id,1,4)
+FUN_806508B4(this->id,1,1)
+*(code *)(0x80748044)(behaviour,this->id,0,0)
 *(byte *)(behaviour + 0x4B) = 10
 }
 }
 }
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806085DC(param_4,371,128,64)
+FUN_806085DC(this->id,371,128,64)
 *(short *)(behaviour + 0x44) = 85
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-FUN_806085DC(param_4,371,128,64)
+FUN_806085DC(this->id,371,128,64)
 *(byte *)(behaviour + 0x4B) = 12
 }
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
-if (FUN_80650D04(param_4,1) == 0) {
-FUN_806085DC(param_4,372,128,127)
+if (FUN_80650D04(this->id,1) == 0) {
+FUN_806085DC(this->id,372,128,127)
 *(byte *)(behaviour + 0x4B) = 13
 }
 }

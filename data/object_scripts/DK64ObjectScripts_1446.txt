@@ -9,8 +9,8 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x67) = 4
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_80650A04(param_4,1,14)
-FUN_806508B4(param_4,1,-1)
+FUN_80650A04(this->id,1,14)
+FUN_806508B4(this->id,1,-1)
 *(byte *)(behaviour + 0x4B) = 11
 }
 if (*(byte *)(behaviour + 0x48) == 11) {
@@ -24,7 +24,7 @@ x4C_temp = (x4C_temp + 0x01)
 if (x4C_temp < 0) {
 x4C_temp = 0
 }
-FUN_80650A04(param_4,1,x4C_temp)
+FUN_80650A04(this->id,1,x4C_temp)
 }
 if (*(byte *)(behaviour + 0x48) == 12) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
@@ -45,7 +45,7 @@ x4C_temp = (x4C_temp + 0xFFFFFFFFFFFFFFFF)
 if (x4C_temp < 0) {
 x4C_temp = 0
 }
-FUN_80650A04(param_4,1,x4C_temp)
+FUN_80650A04(this->id,1,x4C_temp)
 }
 if (*(byte *)(behaviour + 0x48) == 14) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
@@ -61,7 +61,7 @@ if (*(ushort *)(behaviour + 0x44) == 0) {
 if (*(byte *)(behaviour + 0x49) == 10) {
 if ((FUN_806422D8() & 0xFF) !== 0){
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,274,100,2)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,274,100,2)
 }
 *(byte *)(behaviour + 0x4C) = 11
 }

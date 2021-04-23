@@ -1,8 +1,8 @@
 if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80650A04(param_4,1,70)
-FUN_806508B4(param_4,1,-1)
-FUN_80650A04(param_4,2,80)
-FUN_80650A04(param_4,3,80)
+FUN_80650A04(this->id,1,70)
+FUN_806508B4(this->id,1,-1)
+FUN_80650A04(this->id,2,80)
+FUN_80650A04(this->id,3,80)
 }
 if (*(byte *)(behaviour + 0x48) == 0) {
 *(ushort *)(behaviour + 0x68) = 60
@@ -15,14 +15,14 @@ if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 9) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 9) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-FUN_806508B4(param_4,2,3)
+FUN_806508B4(this->id,2,3)
 *(short *)(behaviour + 0x44) = 60
 *(byte *)(behaviour + 0x4B) = 2
 }
@@ -31,17 +31,17 @@ if (*(byte *)(behaviour + 0x48) == 1) {
 x18_successful = 0
 if (*(byte *)(behaviour + 0x5C) != 0) {
 if (*(byte *)(behaviour + 0x5C) == 1){
-if ((*(ushort *)(behaviour + 0x5E) == 9) && FUN_806419F8() != 0) {
-FUN_80641724(ObjectModel2Array[param_4].object_type)
+if ((*(ushort *)(behaviour + 0x5E) == 9) && canHitSwitch() != 0) {
+FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)
 x18_successful = 1
 }
 }
 }
 if (x18_successful == 1) {
-*(code *)(0x80748030)(behaviour,param_4,0,0)
-FUN_806508B4(param_4,3,3)
+*(code *)(0x80748030)(behaviour,this->id,0,0)
+FUN_806508B4(this->id,3,3)
 if (*(short *)(behaviour + 0x12) < 0) {
-*(short *)(behaviour + 0x12) = FUN_80605044(param_4,281,0,2)
+*(short *)(behaviour + 0x12) = FUN_80605044(this->id,281,0,2)
 }
 }
 }

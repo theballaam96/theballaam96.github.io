@@ -4,7 +4,7 @@ FUN_8064199C(behaviour,1,0)
 }
 if (*(byte *)(behaviour + 0x48) == 1) {
 if (*(ushort *)(behaviour + 0x44) == 0) {
-*(code *)(0x8074800C)(behaviour,param_4,0,0)
+*(code *)(0x8074800C)(behaviour,this->id,0,0)
 *(short *)(behaviour + 0x44) = 20
 }
 }

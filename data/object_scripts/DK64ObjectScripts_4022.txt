@@ -1,13 +1,13 @@
 if (*(byte *)(behaviour + 0x48) == 1) {
-*(code *)(0x80747EF0)(behaviour,param_4,100,10)
+*(code *)(0x80747EF0)(behaviour,this->id,100,10)
 }
 if (*(byte *)(behaviour + 0x48) == 20) {
-*(code *)(0x80747EF0)(behaviour,param_4,100,10)
+*(code *)(0x80747EF0)(behaviour,this->id,100,10)
 FUN_8065F134()
 *(byte *)(behaviour + 0x4B) = 21
 }
 if (*(byte *)(behaviour + 0x48) == 21) {
-*(code *)(0x80747EF0)(behaviour,param_4,100,10)
+*(code *)(0x80747EF0)(behaviour,this->id,100,10)
 }
 if (*(byte *)(behaviour + 0x48) == 30) {
 playSong('Failure', (float) 1)
@@ -27,7 +27,7 @@ InitMapChange(30,0)
 if (*(byte *)(behaviour + 0x49) == 3) {
 playSong('Success', (float) 1)
 FUN_806418E8(15,10,behaviour)
-x54_ivar7 = (&WORD_807F6240)[15]
+x54_ivar7 = id2index((&WORD_807F6240)[15])
 if (x54_ivar7 != -1) {
 FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,1,0)
 }

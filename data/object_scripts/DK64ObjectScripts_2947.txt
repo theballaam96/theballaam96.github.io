@@ -9,7 +9,7 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x66) = 255
 playCutsceneFromModelTwoScript(behaviour,20,0,0)
 *(short *)(behaviour + 0x44) = 30
-*(code *)(0x80747F1C)(behaviour,param_4,0,0)
+*(code *)(0x80747F1C)(behaviour,this->id,0,0)
 }
 if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x4B) = 11

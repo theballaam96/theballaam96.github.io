@@ -22,5 +22,5 @@ if (*(byte *)(behaviour + 0x48) == 10) {
 *(byte *)(behaviour + 0x4B) = 1
 }
 if (true) {
-*(code *)(0x80747EB4)(behaviour,param_4,0,0)
+*(code *)(0x80747EB4)(behaviour,this->id,0,0)
 }

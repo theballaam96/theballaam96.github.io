@@ -1,7 +1,7 @@
 if (*(byte *)(behaviour + 0x48) == 10) {
-FUN_806508B4(param_4,1,1)
+FUN_806508B4(this->id,1,1)
 if (*(short *)(behaviour + 0x10) < 0) {
-*(short *)(behaviour + 0x10) = FUN_80605044(param_4,282,1,0)
+*(short *)(behaviour + 0x10) = FUN_80605044(this->id,282,1,0)
 }
 *(short *)(behaviour + 0x44) = 55
 *(byte *)(behaviour + 0x4B) = 11
