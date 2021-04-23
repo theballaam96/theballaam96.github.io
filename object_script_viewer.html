@@ -49,6 +49,20 @@
 		h4.code_head {
 			padding-left: 15px;
 		}
+		.filter-box {
+			width: -moz-available;          /* WebKit-based browsers will ignore this. */
+		    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+		    width: fill-available;
+		    margin: 10px;
+		    padding: 10px;
+		    background-color: rgba(0,0,0,0);
+		    outline: 1px solid gainsboro;
+		    color: gainsboro;
+		    font-size: 15px;
+		}
+		.filter-hide, .filter-hide-obj {
+			display: none;
+		}
 	</style>
 </head>
 <body>
@@ -64,6 +78,14 @@
 	</div>
 	<div class="flexsplitter">
 		<div class="homebox" style="flex:25%">
+			<div class="flexsplitter">
+				<div style="flex:50%">
+					<input placeholder="Filter Map..." type="text" class="filter-box" id="map-filter" onkeyup="search()">
+				</div>
+				<div style="flex:50%">
+					<input placeholder="Filter Object..." type="text" class="filter-box" id="obj-filter" onkeyup="search()">
+				</div>
+			</div>
 			<ul class="tree" id="tree_hook">
 				<!-- <li>
 					<span class="caret">Position Storage</span>
@@ -104,21 +126,70 @@
 						"map_objects": mapItem.map_objects.filter(item => item.script_lines > 0).slice()
 					})
 				})
-				objectList = filteredMapList.filter(item => item.map_objects.length > 0).slice()
+				objectList = filteredMapList.filter(item => item.map_objects.length > 0).sort((a,b) => (a.map_name > b.map_name) ? 1 : -1).slice()
 				createTree()
+				goThroughParams()
 			}
 		}
 		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/objectScripts.json", true);
 		xhttp.send(null)
 
+		function search() {
+			var map_search_term = document.getElementById("map-filter").value;
+			var obj_search_term = document.getElementById("obj-filter").value;
+			var maps = document.getElementsByClassName("map-item")
+			var objs = document.getElementsByClassName("obj-item")
+			for (m = 0; m < maps.length; m++) {
+				var map_text = maps[m].childNodes[0].innerText
+				if (map_text.toLowerCase().includes(map_search_term.toLowerCase())) {
+					maps[m].classList.remove("filter-hide")
+					maps[m].setAttribute("map-filter-shown", true)
+				} else {
+					maps[m].classList.add("filter-hide")
+					maps[m].setAttribute("map-filter-shown", false)
+				}
+			}
+			for (o = 0; o < objs.length; o++) {
+				var object_text = objs[o].getAttribute("object-name")
+				var notif_object = objs[o].getElementsByTagName("ntf")[0]
+				if (object_text.toLowerCase().includes(obj_search_term.toLowerCase())) {
+					objs[o].classList.remove("filter-hide-obj")
+					notif_object.setAttribute("shown",true)
+				} else {
+					objs[o].classList.add("filter-hide-obj")
+					notif_object.setAttribute("shown",false)
+				}
+			}
+			for (m = 0; m < maps.length; m++) {
+				var notifs = maps[m].getElementsByTagName("ntf")
+				var has_shown = false;
+				for (n = 0; n < notifs.length; n++) {
+					if (notifs[n]) {
+						if (notifs[n].getAttribute("shown") == "true") {
+							has_shown = true;
+						}
+					}
+				}
+				if (maps[m].getAttribute("map-filter-shown")) {
+					if (has_shown) {
+						maps[m].classList.remove("filter-hide-obj")
+					} else {
+						maps[m].classList.add("filter-hide-obj")
+					}
+				}
+			}
+		}
+
 		function createTree() {
 			var hook = document.getElementById("tree_hook")
-			console.log(objectList)
 			objectList.forEach(mapItem => {
 				var map_li = document.createElement("li")
+				map_li.classList.add("map-item")
+				map_li.setAttribute("map-filter-shown", true)
 
 				var map_name_span = document.createElement("span")
 				map_name_span.classList.add("caret")
+
 				var map_name_text = document.createTextNode(mapItem.map_name)
 
 				var map_ul = document.createElement("ul")
@@ -147,43 +218,71 @@
 						})
 					}
 				})
-				if (mapItem.map_index == 7) {
-					console.log(map_objects_list.slice())
-				}
+				map_objects_list = map_objects_list.sort((a,b) => (a.name > b.name) ? 1 : -1).slice()
 				map_objects_list.forEach(mapObject => {
 					var object_li = document.createElement("li")
+					object_li.classList.add("obj-item")
 					object_li.setAttribute("object_type", mapObject.type)
+					object_li.setAttribute("object-name", mapObject.name)
 
-					var object_span = document.createElement("span")
-					object_span.classList.add("caret")
-					object_span_text = document.createTextNode(mapObject.name)
+					var object_indic = document.createElement("ntf")
+					object_indic.style.display = "none";
+					object_indic.setAttribute("object-name",mapObject.name)
+					object_indic.setAttribute("shown", true)
+					object_li.appendChild(object_indic)
 
-					var object_ul = document.createElement("ul")
-					object_ul.classList.add("nested")
+					if (mapObject.objects.length > 1) {
+						var object_span = document.createElement("span")
+						object_span.classList.add("caret")
+						object_span_text = document.createTextNode(mapObject.name)
 
-					mapObject.objects.forEach(objectInstance => {
-						var instance_li = document.createElement("li")
-						var instance_a = document.createElement("a")
-						instance_a.classList.add("excluded_link")
-						instance_a.classList.add("hovergold")
-						instance_a.setAttribute(
-							"onclick",
+						var object_ul = document.createElement("ul")
+						object_ul.classList.add("nested")
+
+						mapObject.objects.forEach(objectInstance => {
+							var instance_li = document.createElement("li")
+							var instance_a = document.createElement("a")
+							instance_a.classList.add("excluded_link")
+							instance_a.classList.add("hovergold")
+							instance_a.setAttribute(
+								"onclick",
+								"treeshow('"
+								+ objectInstance.file + "','"
+								+ mapObject.name + "','"
+								+ mapItem.map_name + "',"
+								+ objectInstance.id + ","
+								+ mapItem.map_index + ","
+								+ mapObject.type
+								+ ")")
+							var instance_text = document.createTextNode("ID: 0x" + objectInstance.id.toString(16).toUpperCase())
+
+							instance_a.appendChild(instance_text)
+							instance_li.appendChild(instance_a)
+							object_ul.appendChild(instance_li)
+						})
+
+						object_span.appendChild(object_span_text)
+						object_li.appendChild(object_span)
+						object_li.appendChild(object_ul)
+					} else {
+						var object_a = document.createElement("a")
+						object_a.classList.add("excluded_link")
+						object_a.classList.add("hovergold")
+						object_a.setAttribute("onclick",
 							"treeshow('"
-							+ objectInstance.file + "','"
-							+ mapObject.name + "','"
-							+ mapItem.map_name + "',"
-							+ objectInstance.id
-							+ ")")
-						var instance_text = document.createTextNode("ID: 0x" + objectInstance.id.toString(16).toUpperCase())
+								+ mapObject.objects[0].file + "','"
+								+ mapObject.name + "','"
+								+ mapItem.map_name + "',"
+								+ mapObject.objects[0].id + ","
+								+ mapItem.map_index + ","
+								+ mapObject.type
+							+ ")"
+						)
+						var object_text = document.createTextNode(mapObject.name)
 
-						instance_a.appendChild(instance_text)
-						instance_li.appendChild(instance_a)
-						object_ul.appendChild(instance_li)
-					})
-
-					object_span.appendChild(object_span_text)
-					object_li.appendChild(object_span)
-					object_li.appendChild(object_ul)
+						object_a.appendChild(object_text)
+						object_li.appendChild(object_a)
+					}
 					map_ul.appendChild(object_li)
 				})
 
@@ -203,10 +302,35 @@
 			}
 		}
 
-		function treeshow(filename,object_name,map_name,id) {
+		function goThroughParams() {
+			var queryString = window.location.search;
+			const urlParams = new URLSearchParams(queryString)
+			const mapnum = urlParams.get("map");
+			const objnum = urlParams.get("object");
+			const idnum = urlParams.get("instance");
+			var foundmap = objectList.find(item => item.map_index == mapnum)
+			if (foundmap) {
+				console.log(foundmap)
+				var foundobj = foundmap.map_objects.find(item => item.object_type == objnum && item.object_id == idnum)
+				if (foundobj) {
+					console.log(foundobj)
+					treeshow(
+						foundobj.script_file,
+						foundobj.object_name,
+						foundmap.map_name,
+						idnum,
+						mapnum,
+						objnum
+					)
+				}
+			}
+		}
+
+		function treeshow(filename,object_name,map_name,id,map_id,object_type) {
 			var treeboxes = document.getElementsByClassName("treebox")
 			var t;
 
+			document.getElementById("code_hook").innerHTML = ""; // Wipes old
 			var url_name = "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/object_scripts/" + filename
 			var xhttp_file = new XMLHttpRequest();
 			xhttp_file.onreadystatechange = function() {
@@ -250,13 +374,11 @@
 							new_code.push(new_line)
 						}
 					})
-					document.getElementById("code_hook").innerHTML = ""; // Wipes old
 					var setup_pre = document.createElement("pre")
 					var setup_code = document.createElement("code")
 					setup_code.innerHTML = new_code.join("\n")
 					setup_pre.appendChild(setup_code)
 					document.getElementById("code_hook").appendChild(setup_pre)
-					console.log(new_code.join("\n"))
 				}
 			}
 			xhttp_file.open("GET", url_name, true);
@@ -274,6 +396,7 @@
 					treeboxes[t].classList.add("hide")
 				}
 			}
+			window.history.replaceState(null, null, "?map=" + map_id + "&object=" + object_type + "&instance=" + id)
 		}
 	</script>
 </body>
