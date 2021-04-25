@@ -2,80 +2,248 @@
 	<head>
 	</head>
 	<body>
+		<h1>Practice ROM 1.3.3 Features List</h1>
+		<p>Since 1.4 is going to involve a <a href="https://twitter.com/tjballaam/status/1374472190704320512">large scale controls/UI overhaul</a>, I haven't really put much time into a features list and something official for 1.3.3 isn't reallly worth it all things considered.<br>That being said, I understand the desire for a features list/controls for 1.3.3 until 1.4 comes out, so here is a basic HTML page for that</p>
+		<h3>Interface</h3>
 		<ul>
-						<li>Quality of life features</li>
-						<ul>
-							
-							<li>Story Skip locked to on</li>
-							<li>Entire Mystery Menu unlocked from the start</li>
-						</ul>
-						<li>Tag Anywhere with D-Down</li>
-						<li>D-Up on the pause menu main screen to access more functions</li>
-						<ul>
-							<li>Option to warp to the following levels</li>
-							<ul>
-								<li>The primary 7 levels</li>
-								<li>DK Isles</li>
-								<li>Hideout Helm</li>
-								<li>The 5 phases of K. Rool</li>
-							</ul>
-							<li>Store permanent flags to load later. When you load, it warps you to the map you stored the savestate in, from the entrance that you entered that map from, with the kong you were when you stored the state</li>
-							<li>Option to toggle some late game moves</li>
-							<ul>
-								<li>Toggle between the 4 levels of 'Simian Slam'</li>
-								<ul>
-									<li>No Slam</li>
-									<li>Simian Slam</li>
-									<li>Super Simian Slam</li>
-									<li>Super Duper Simian Slam</li>
-								</ul>
-								<li>Toggle 'Sniper Scope' on or off</li>
-							</ul>
-							<li>Option to display various Statistics</li>
-							<ul>
-								<li>These are the following statistics you can display:</li>
-								<ul>
-									<li>Lagometer</li>
-									<li>Lagometer (Cumulative)</li>
-									<ul>
-										<li>Press L to reset to 0</li>
-									</ul>
-									<li>Speed</li>
-									<li>Timer</li>
-									<ul>
-										<li>Timer is displayed in frames, where there are 60 frames that occur each second (whether they are lag frames or not)</li>
-										<li>L to Start timer. Press again to stop timer. Press again to reset timer back to 0</li>
-									</ul>
-								</ul>
-								<li>This shows under all circumstances except when something else covers the lagometer (like the transition spin)</li>
-								<li>If you are in K Rool, and the Lagometer is on, the K. Rool timer will shift to the right side of the screen</li>
-							</ul>
-							<li>Option to set up the flags necessary to practice "Takeoff Skip"</li>
-							<ul>
-								<li>Sets all "Key turned in" flags (excl. Key 3 & 8)</li>
-								<li>Clears the "Key 3 turned in" and "Key 8 turned in" flags</li>
-								<li>Sets the flags for having Keys 3 & 8</li>
-								<li>Clears Rainbow Coin First Time Text flag</li>
-								<li>Clears the flag for having acquired the Rainbow Coin behind K. Lumsy</li>
-							</ul>
-							<li>Option to grant all moves and kongs</li>
-							<li>Option to restock inventory items (eg. Crystals, Oranges)</li>
-							<li>Option to gift the player 50 coins to all kongs to enable easy purchase of a particular set of moves</li>
-						</ul>
-						<li>Position Warping</li>
-						<ul>
-							<li>D-Right to store a position</li>
-							<li>D-Left to warp to that stored position, if you are on the same map you stored the position in</li>
-							<li>Various stats will also be stored with this:</li>
-							<ul>
-								<li>Your X, Y and Z co-ordinates</li>
-								<li>Your "Stored Position" (in the context of TBS)</li>
-								<li>Your facing angle</li>
-								<li>Your Z Rotation (AKA "Skew angle")</li>
-								<li>Your velocity & acceleration both horizontally and vertically</li>
-								<li>Your floor height</li>
-							</ul>
-						</ul>
+			<li>Open up the pause menu and press D-Up to access a tools menu that allows you to modify various in-game aspects</li>
+			<ul>
+				<li>To close, press D-Up again or close the pause menu with Start/B</li>
+			</ul>
+			<li>Use the analog stick to navigate the menus</li>
+			<li>Use the A Button to active the functionality of a menu item (eg. A to warp to map, A to toggle flag state, A to set watch)</li>
+			<li>Use the L Button to speed up scrolling speed</li>
+			<li>To change "screens" (essentially just a way to segment controls), press Z/R</li>
+			<ul>
+				<li>The screens are as follows:</li>
+				<ul>
+					<li>Screen 1: Set 'Important Flags', Savestates, Watches/Miscellaneous items</li>
+					<li>Screen 2: Warp to map</li>
+					<li>Screen 3: Control how the timer words</li>
+					<li>Screen 4: Toggle flags for individual bananaports</li>
+					<li>Screen 5: File Status, Cheats</li>
+				</ul>
+			</ul>
+		</ul>
+		<h3>Savestates</h3>
+		<ul>
+			<li>Savestates aren't 100% the savestates you may be used to with Emulators/Wii U Virtual console. They store some key variables that emulate most of what users want savestates for</li>
+			<li>To save a state, select "Save State"</li>
+			<li>To load a state, select "Load State" (This cannot be performed until a state has been saved)</li>
+			<ul>
+				<li>There are two variants of this</li>
+				<ul>
+					<li>"From Position" loads you back in from the map and position where you saved your savestate</li>
+					<li>"From Exit" loads you back in from the entrance you entered the map from where you saved your savestate</li>
+				</ul>
+			</ul>
+			<li>Savestate functionality is prevented in certain maps</li>
+			<ul>
+				<li>See "Warping Preventions"</li>
+			</ul>
+			<li>The following variables are stored with Savestates:</li>
+			<ul>
+				<li>Kong played</li>
+				<li>Permanent flags (Golden Bananas, Crowns, Fairies, Boss Keys etc.)</li>
+				<li>Temporary flags (Fungi Bean, Long Boss Intros watched etc.)</li>
+				<li>Kong moves/guns/instruments</li>
+				<li>Kong coin count</li>
+				<li>Coloured Bananas and Golden Bananas for each kong for each level</li>
+				<li>Inventory items (Ammo, Crystals, Film etc.)</li>
+			</ul>
+		</ul>
+		<h3>Warp to Map</h3>
+		<ul>
+			<li>Allows you to warp to most maps in the game</li>
+			<ul>
+				<li>Maps that aren't in are either useless to speedrunners (DK Rap, Test Map, Nintendo Logo), or cause crashes due to technical reasons (See "Warping Preventions")</li>
+			</ul>
+			<li>Each map is segmented into a level (eg. Dungeon will be in "Castle", Llama Temple will be in "Aztec")</li>
+			<li>In some cases, you can warp to a specific entrance for maps that are quite large, these will be stated in the map name</li>
+		</ul>
+		<h3>Timer Control</h3>
+		<ul>
+			<li>The timer can be controlled automatically by game events</li>
+			<li>Start Events:</li>
+			<ul>
+				<li>On L Press</li>
+				<li>On input</li>
+				<li>On Map Load</li>
+			</ul>
+			<li>End Events:</li>
+			<ul>
+				<li>On L Press</li>
+				<li>On Transition (Map Transition into a new map)</li>
+				<li>On Cutscene being active</li>
+				<li>On GB Dance (Doesn't activate for dance skips)</li>
+			</ul>
+			<li>Pause on Pause:</li>
+			<ul>
+				<li>Toggles whether the pause the timer when the pause menu is pulled up</li>
+			</ul>
+			<li>L will always act as master control of the timer</li>
+		</ul>
+		<h3>Displays (Watches)</h3>
+		<ul>
+			<li>Display a readout of an important game variable</li>
+			<li>Current watches available</li>
+			<ul>
+				<li>Lag</li>
+				<li>Cumulative Lag</li>
+				<ul>
+					<li>Press L to reset the counter</li>
+				</ul>
+				<li>Horizontal Speed</li>
+				<li>A Timer</li>
+				<li>The timer which controls Giant Kosha's (Crystal Caves) actions</li>
+				<li>Movement State</li>
+				<li>Angle</li>
+			</ul>
+			<li>If in K. Rool, the "K Rool Timer" will shift to the right to prevent the display being unreadable</li>
+		</ul>
+		<h3>Important Flags</h3>
+		<ul>
+			<li>Set/Clear/View the state of various important game flags that are of note. These aid in allowing the user to generate a specific scenario for practice</li>
+		</ul>
+		<h3>Position Warping</h3>
+		<ul>
+			<li>Allows you to store and warp to a specific position of your choosing</li>
+			<li>Press D-Right to store a position</li>
+			<li>Press D-Left to warp to a previously stored position</li>
+			<ul>
+				<li>You can only have one position stored, and you can only warp to that position if you are in the correct map</li>
+			</ul>
+			<li>Position Warping stores/loads the following variables:</li>
+			<ul>
+				<li>X, Y and Z Co-ordinates</li>
+				<li>'Stored Positions' (In the context of TBS. If you don't know what this is, don't worry about it)</li>
+				<li>Facing angle</li>
+				<li>Z Rotation (AKA "Skew Angle")</li>
+				<li>Velocity and Acceleration components in both the horizontal and vertical axis</li>
+				<li>Floor height</li>
+			</ul>
+		</ul>
+		<h3>Tag Anywhere</h3>
+		<ul>
+			<li>Press D-Down to instantly change kongs to the next kong (DK > Diddy > Lanky > Tiny > Chunky)</li>
+			<ul>
+				<li>NOTE: Tag Anywhere currently crashes if you perform it whilst you are either Enguarde or Rambi</li>
+			</ul>
+			<li>If you have played Isotarge's dedicated Tag Anywhere ROM Hack, this is pretty similar to this, but with a lot of the "casual player protections" removed</li>
+		</ul>
+		<h3>Inventory Manipulation</h3>
+		<ul>
+			<li>Unlock Moves</li>
+			<ul>
+				<li>Gives all of the moves in the game (Cranky/Candy/Funky/BFI Camera/Training Barrels) <strong>EXCEPT SIMIAN SLAM AND SNIPER SCOPE</strong></li>
+				<ul>
+					<li>See below on how to change Simian Slam/Sniper Scope</li>
+				</ul>
+			</ul>
+			<li>Slam Level</li>
+			<ul>
+				<li>Changes the simian slam level between the four values</li>
+				<ul>
+					<li>0 = No Simian Slam</li>
+					<li>1 = Regular Simian Slam (Green)</li>
+					<li>2 = Super Simian Slam (Blue)</li>
+					<li>3 = Super Duper Simian Slam (Red)</li>
+				</ul>
+			</ul>
+			<li>Sniper Scope</li>
+			<ul>
+				<li>Toggles Sniper Scope on/off</li>
+				<ul>
+					<li>Since sniper scope increases lag, this is useful for those wanting to practice runs where Sniper Scope isn't obtained</li>
+				</ul>
+			</ul>
+			<li>Restock Inventory</li>
+			<ul>
+				<li>Restocks all of your inventory items (Ammo, Crystals, Film, Health)</li>
+			</ul>
+			<li>Give Coins</li>
+			<ul>
+				<li>Gives each kong 50 coins, more than enough for the player to purchase a specific moveset</li>
+			</ul>
+		</ul>
+		<h3>File Status</h3>
+		<ul>
+			<li>101% - Sets file status to be a 101% file in terms of collectable counts</li>
+			<li>Max% - Sets file status to be a Max% (132% / -124%) file in terms of collectable counts</li>
+		</ul>
+		<h3>Cheats</h3>
+		<ul>
+			<li>Infinite Health</li>
+			<ul>
+				<li>Sets the health of the player to be full every frame. Doesn't prevent death in circumstances where the damage dealt exceeds the amount of health the player has</li>
+			</ul>
+			<li>Auto-Phase State</li>
+			<ul>
+				<li>Grants the player the "Phase State" (In the context of Phasewalking/falling/swimming)</li>
+				<li>In order to go through a wall, you will need to execute an action that would allow you to go through a wall under normal gameplay circumstances (eg. crouching)</li>
+			</ul>
+			<li>L Mode</li>
+			<ul>
+				<li>Various cheats (due to the nature of the cheat), can only be accessed by pressing L</li>
+				<li>L can only activate one cheat at a time</li>
+				<li>L Mode Cheats:</li>
+				<ul>
+					<li>Stop Timer</li>
+					<ul>
+						<li>AKA No cheats activated, L will always control timer</li>
 					</ul>
+					<li>L to Levitate</li>
+					<ul>
+						<li>Does what it says on the tin</li>
+						<li>Holding R doubles levitation speed</li>
+						<li>Holding Z halves levitation speed</li>
+					</ul>
+					<li>Toggle Sandstorm</li>
+					<ul>
+						<li>Toggles whether the sandstorm in Aztec is on or off (Only togglable in Aztec)</li>
+					</ul>
+					<li>Cancel Cutscene</li>
+					<ul>
+						<li>Immediately ends the cutscene that is currently playing</li>
+					</ul>
+				</ul>
+			</ul>
+		</ul>
+		<h3>Toggle Individual Bananaports</h3>
+		<ul>
+			<li>Allows you to toggle whether a bananaport is tagged or not for each bananaport in the game</li>
+		</ul>
+		<h3>Setup Takeoff Skip</h3>
+		<ul>
+			<li>Sets the file up with the appropriate flags/variables set/cleared for practising "Takeoff Skip"</li>
+		</ul>
+		<h3>Warping preventions</h3>
+		<ul>
+			<li>For technical reasons, warping to and from certain maps is prohibited to prevent unintended behaviour/crashes</li>
+			<li>These maps are</li>
+			<ul>
+				<li>The 7 Level Boss Fight Maps (Both Army Dillos, Both Dogadons, Mad Jack, Pufftoss, Kut Out)</li>
+				<li>Bonus Minigames (Bonus Barrel Minigames, Training Barrels, Helm Barrel Minigames)</li>
+				<li>Battle Crowns</li>
+				<li>Character Shops (Snide's, Funky's, Candy's, Cranky's)</li>
+				<li>Troff n Scoff</li>
+			</ul>
+			<li>If you attempt to warp to/from one of these maps, you will here an error sound</li>
+		</ul>
+		<h3>Change Menu Variables</h3>
+		<ul>
+			<li>Aspect Ratio (4:3/16:9)</li>
+			<li>Music Level</li>
+			<li>SFX Level</li>
+			<li>Camera Mode (Free Cam/Follow Cam)</li>
+		</ul>
+		<h3>Various other quality of life features</h3>
+		<ul>
+			<li>Story skip is locked to on</li>
+			<li>Entire mystery menu is unlocked from the start</li>
+			<li>Game automatically skips the DK Rap and DKTV</li>
+			<li>Recoloured kongs</li>
+			<li>Options to disable position warping/Tag Anywhere</li>
+		</ul>
 	</body>
 </html>
