@@ -1,0 +1,3004 @@
+{
+   "data":{
+      "modeltwo":[
+         {
+            "modeltwo_index":"0x00",
+            "name":"Nothing"
+         },
+         {
+            "modeltwo_index":"0x01",
+            "name":"Thin Flame?",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x02",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x03",
+            "name":"Tree",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x04",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x05",
+            "name":"Yellow Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x06",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x07",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x08",
+            "name":"Xmas Holly?",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x09",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x0A",
+            "name":"CB Single (Diddy)"
+         },
+         {
+            "modeltwo_index":"0x0B",
+            "name":"Large Wooden Panel",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x0C",
+            "name":"Flames",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x0D",
+            "name":"CB Single (DK)"
+         },
+         {
+            "modeltwo_index":"0x0E",
+            "name":"Large Iron Bars Panel",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x0F",
+            "name":"Goo Hand",
+            "extra":"Creepy Castle Crypt"
+         },
+         {
+            "modeltwo_index":"0x10",
+            "name":"Flame",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x11",
+            "name":"Homing Ammo Crate"
+         },
+         {
+            "modeltwo_index":"0x12",
+            "name":"Coffin Door"
+         },
+         {
+            "modeltwo_index":"0x13",
+            "name":"Coffin Lid"
+         },
+         {
+            "modeltwo_index":"0x14",
+            "name":"Skull",
+            "extra":"Castle, it has a boulder in it"
+         },
+         {
+            "modeltwo_index":"0x15",
+            "name":"Wooden Crate"
+         },
+         {
+            "modeltwo_index":"0x16",
+            "name":"CB Single (Tiny)"
+         },
+         {
+            "modeltwo_index":"0x17",
+            "name":"Shield",
+            "extra":"Castle Museum"
+         },
+         {
+            "modeltwo_index":"0x18",
+            "name":"Metal thing"
+         },
+         {
+            "modeltwo_index":"0x19",
+            "name":"Coffin"
+         },
+         {
+            "modeltwo_index":"0x1A",
+            "name":"Metal Panel"
+         },
+         {
+            "modeltwo_index":"0x1B",
+            "name":"Rock Panel"
+         },
+         {
+            "modeltwo_index":"0x1C",
+            "name":"Banana Coin (Tiny)"
+         },
+         {
+            "modeltwo_index":"0x1D",
+            "name":"Banana Coin (DK)"
+         },
+         {
+            "modeltwo_index":"0x1E",
+            "name":"CB Single (Lanky)"
+         },
+         {
+            "modeltwo_index":"0x1F",
+            "name":"CB Single (Chunky)"
+         },
+         {
+            "modeltwo_index":"0x20",
+            "name":"Tree",
+            "extra":"Japes?"
+         },
+         {
+            "modeltwo_index":"0x21",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x22",
+            "name":"Metal Panel"
+         },
+         {
+            "modeltwo_index":"0x23",
+            "name":"Banana Coin (Lanky)"
+         },
+         {
+            "modeltwo_index":"0x24",
+            "name":"Banana Coin (Diddy)"
+         },
+         {
+            "modeltwo_index":"0x25",
+            "name":"Metal Panel"
+         },
+         {
+            "modeltwo_index":"0x26",
+            "name":"Metal Panel Red"
+         },
+         {
+            "modeltwo_index":"0x27",
+            "name":"Banana Coin (Chunky)"
+         },
+         {
+            "modeltwo_index":"0x28",
+            "name":"Metal Panel Grey"
+         },
+         {
+            "modeltwo_index":"0x29",
+            "name":"Tree",
+            "extra":"Japes?"
+         },
+         {
+            "modeltwo_index":"0x2A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2B",
+            "name":"CB Bunch (DK)"
+         },
+         {
+            "modeltwo_index":"0x2C",
+            "name":"Hammock"
+         },
+         {
+            "modeltwo_index":"0x2D",
+            "name":"Small jungle bush plant"
+         },
+         {
+            "modeltwo_index":"0x2E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2F",
+            "name":"Small plant"
+         },
+         {
+            "modeltwo_index":"0x30",
+            "name":"Bush",
+            "extra":"Japes"
+         },
+         {
+            "modeltwo_index":"0x31",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x32",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x33",
+            "name":"-",
+            "extra":"Fungi Lobby, unknown"
+         },
+         {
+            "modeltwo_index":"0x34",
+            "name":"Metal Bridge",
+            "extra":"Helm Lobby"
+         },
+         {
+            "modeltwo_index":"0x35",
+            "name":"Large Blue Crystal",
+            "extra":"Crystal Caves Lobby"
+         },
+         {
+            "modeltwo_index":"0x36",
+            "name":"Plant"
+         },
+         {
+            "modeltwo_index":"0x37",
+            "name":"Plant"
+         },
+         {
+            "modeltwo_index":"0x38",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x39",
+            "name":"White Flowers"
+         },
+         {
+            "modeltwo_index":"0x3A",
+            "name":"Stem 4 Leaves"
+         },
+         {
+            "modeltwo_index":"0x3B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x3C",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x3D",
+            "name":"Small plant"
+         },
+         {
+            "modeltwo_index":"0x3E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x3F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x40",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x41",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x42",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x43",
+            "name":"Yellow Flower"
+         },
+         {
+            "modeltwo_index":"0x44",
+            "name":"Blade of Grass Large"
+         },
+         {
+            "modeltwo_index":"0x45",
+            "name":"Lilypad?"
+         },
+         {
+            "modeltwo_index":"0x46",
+            "name":"Plant"
+         },
+         {
+            "modeltwo_index":"0x47",
+            "name":"Iron Bars",
+            "extra":"Castle Lobby Coconut Switch"
+         },
+         {
+            "modeltwo_index":"0x48",
+            "name":"Nintendo Coin"
+         },
+         {
+            "modeltwo_index":"0x49",
+            "name":"Metal Floor"
+         },
+         {
+            "modeltwo_index":"0x4A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x4B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x4C",
+            "name":"Bull Rush"
+         },
+         {
+            "modeltwo_index":"0x4D",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x4E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x4F",
+            "name":"Metal box/platform"
+         },
+         {
+            "modeltwo_index":"0x50",
+            "name":"K Crate",
+            "extra":"DK Helm Target Barrel"
+         },
+         {
+            "modeltwo_index":"0x51",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x52",
+            "name":"Wooden panel"
+         },
+         {
+            "modeltwo_index":"0x53",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x54",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x55",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x56",
+            "name":"Orange"
+         },
+         {
+            "modeltwo_index":"0x57",
+            "name":"Watermelon Slice"
+         },
+         {
+            "modeltwo_index":"0x58",
+            "name":"Tree",
+            "extra":"Unused?"
+         },
+         {
+            "modeltwo_index":"0x59",
+            "name":"Tree",
+            "extra":"Unused?"
+         },
+         {
+            "modeltwo_index":"0x5A",
+            "name":"Tree"
+         },
+         {
+            "modeltwo_index":"0x5B",
+            "name":"Tree (Black)",
+            "extra":"Unused"
+         },
+         {
+            "modeltwo_index":"0x5C",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x5D",
+            "name":"Light Green platform"
+         },
+         {
+            "modeltwo_index":"0x5E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x5F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x60",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x61",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x62",
+            "name":"Brick Wall"
+         },
+         {
+            "modeltwo_index":"0x63",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x64",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x65",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x66",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x67",
+            "name":"Wrinkly Door (Tiny)"
+         },
+         {
+            "modeltwo_index":"0x68",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x69",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x6A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x6B",
+            "name":"Conveyor Belt"
+         },
+         {
+            "modeltwo_index":"0x6C",
+            "name":"Tree",
+            "extra":"Japes?"
+         },
+         {
+            "modeltwo_index":"0x6D",
+            "name":"Tree"
+         },
+         {
+            "modeltwo_index":"0x6E",
+            "name":"Tree"
+         },
+         {
+            "modeltwo_index":"0x6F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x70",
+            "name":"Primate Punch Switch",
+            "extra":"Factory"
+         },
+         {
+            "modeltwo_index":"0x71",
+            "name":"Hi-Lo toggle machine"
+         },
+         {
+            "modeltwo_index":"0x72",
+            "name":"Breakable Metal Grate",
+            "extra":"Factory"
+         },
+         {
+            "modeltwo_index":"0x73",
+            "name":"Cranky's Lab"
+         },
+         {
+            "modeltwo_index":"0x74",
+            "name":"Golden Banana"
+         },
+         {
+            "modeltwo_index":"0x75",
+            "name":"Metal Platform"
+         },
+         {
+            "modeltwo_index":"0x76",
+            "name":"Metal Bars"
+         },
+         {
+            "modeltwo_index":"0x77",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x78",
+            "name":"Metal fence"
+         },
+         {
+            "modeltwo_index":"0x79",
+            "name":"Snide's HQ"
+         },
+         {
+            "modeltwo_index":"0x7A",
+            "name":"Funky's Armory"
+         },
+         {
+            "modeltwo_index":"0x7B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x7C",
+            "name":"Blue lazer field"
+         },
+         {
+            "modeltwo_index":"0x7D",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x7E",
+            "name":"Bamboo Gate"
+         },
+         {
+            "modeltwo_index":"0x7F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x80",
+            "name":"Tree Stump"
+         },
+         {
+            "modeltwo_index":"0x81",
+            "name":"Breakable Hut",
+            "extra":"Japes"
+         },
+         {
+            "modeltwo_index":"0x82",
+            "name":"Mountain Bridge",
+            "extra":"Japes"
+         },
+         {
+            "modeltwo_index":"0x83",
+            "name":"Tree Stump",
+            "extra":"Japes"
+         },
+         {
+            "modeltwo_index":"0x84",
+            "name":"Bamboo Gate"
+         },
+         {
+            "modeltwo_index":"0x85",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x86",
+            "name":"Blue/green tree"
+         },
+         {
+            "modeltwo_index":"0x87",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x88",
+            "name":"Mushroom"
+         },
+         {
+            "modeltwo_index":"0x89",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x8A",
+            "name":"Disco Ball"
+         },
+         {
+            "modeltwo_index":"0x8B",
+            "name":"2 Door (5DS)"
+         },
+         {
+            "modeltwo_index":"0x8C",
+            "name":"3 Door (5DS)"
+         },
+         {
+            "modeltwo_index":"0x8D",
+            "name":"Map of DK island"
+         },
+         {
+            "modeltwo_index":"0x8E",
+            "name":"Crystal Coconut"
+         },
+         {
+            "modeltwo_index":"0x8F",
+            "name":"Ammo Crate"
+         },
+         {
+            "modeltwo_index":"0x90",
+            "name":"Banana Medal"
+         },
+         {
+            "modeltwo_index":"0x91",
+            "name":"Peanut"
+         },
+         {
+            "modeltwo_index":"0x92",
+            "name":"Simian Slam Switch (Chunky, Green)"
+         },
+         {
+            "modeltwo_index":"0x93",
+            "name":"Simian Slam Switch (Diddy, Green)"
+         },
+         {
+            "modeltwo_index":"0x94",
+            "name":"Simian Slam Switch (DK, Green)"
+         },
+         {
+            "modeltwo_index":"0x95",
+            "name":"Simian Slam Switch (Lanky, Green)"
+         },
+         {
+            "modeltwo_index":"0x96",
+            "name":"Simian Slam Switch (Tiny, Green)"
+         },
+         {
+            "modeltwo_index":"0x97",
+            "name":"Baboon Blast Pad"
+         },
+         {
+            "modeltwo_index":"0x98",
+            "name":"Film"
+         },
+         {
+            "modeltwo_index":"0x99",
+            "name":"Chunky Rotating Room",
+            "extra":"Aztec Tiny Temple"
+         },
+         {
+            "modeltwo_index":"0x9A",
+            "name":"Stone Monkey Face"
+         },
+         {
+            "modeltwo_index":"0x9B",
+            "name":"Stone Monkey Face"
+         },
+         {
+            "modeltwo_index":"0x9C",
+            "name":"Aztec Panel blue"
+         },
+         {
+            "modeltwo_index":"0x9D",
+            "name":"-",
+            "extra":"Aztec Tiny Temple"
+         },
+         {
+            "modeltwo_index":"0x9E",
+            "name":"Ice Floor"
+         },
+         {
+            "modeltwo_index":"0x9F",
+            "name":"Ice Pole",
+            "extra":"Spotlight?"
+         },
+         {
+            "modeltwo_index":"0xA0",
+            "name":"Big Blue wall panel"
+         },
+         {
+            "modeltwo_index":"0xA1",
+            "name":"Big Blue wall panel"
+         },
+         {
+            "modeltwo_index":"0xA2",
+            "name":"Big Blue wall panel"
+         },
+         {
+            "modeltwo_index":"0xA3",
+            "name":"Big Blue wall panel"
+         },
+         {
+            "modeltwo_index":"0xA4",
+            "name":"KONG Letter (K)"
+         },
+         {
+            "modeltwo_index":"0xA5",
+            "name":"KONG Letter (O)"
+         },
+         {
+            "modeltwo_index":"0xA6",
+            "name":"KONG Letter (N)"
+         },
+         {
+            "modeltwo_index":"0xA7",
+            "name":"KONG Letter (G)"
+         },
+         {
+            "modeltwo_index":"0xA8",
+            "name":"Bongo Pad"
+         },
+         {
+            "modeltwo_index":"0xA9",
+            "name":"Guitar Pad"
+         },
+         {
+            "modeltwo_index":"0xAA",
+            "name":"Saxaphone Pad"
+         },
+         {
+            "modeltwo_index":"0xAB",
+            "name":"Triangle Pad"
+         },
+         {
+            "modeltwo_index":"0xAC",
+            "name":"Trombone Pad"
+         },
+         {
+            "modeltwo_index":"0xAD",
+            "name":"Wood panel small"
+         },
+         {
+            "modeltwo_index":"0xAE",
+            "name":"Wood panel small"
+         },
+         {
+            "modeltwo_index":"0xAF",
+            "name":"Wood panel small"
+         },
+         {
+            "modeltwo_index":"0xB0",
+            "name":"Wood Panel small"
+         },
+         {
+            "modeltwo_index":"0xB1",
+            "name":"Wall Panel",
+            "extra":"Aztec"
+         },
+         {
+            "modeltwo_index":"0xB2",
+            "name":"Wall Panel",
+            "extra":"Caves?"
+         },
+         {
+            "modeltwo_index":"0xB3",
+            "name":"Stone Monkey Face (Not Solid)"
+         },
+         {
+            "modeltwo_index":"0xB4",
+            "name":"Feed Me Totem"
+         },
+         {
+            "modeltwo_index":"0xB5",
+            "name":"Melon Crate"
+         },
+         {
+            "modeltwo_index":"0xB6",
+            "name":"Lava Platform",
+            "extra":"Aztec Llama Temple"
+         },
+         {
+            "modeltwo_index":"0xB7",
+            "name":"Rainbow Coin"
+         },
+         {
+            "modeltwo_index":"0xB8",
+            "name":"Green Switch"
+         },
+         {
+            "modeltwo_index":"0xB9",
+            "name":"Coconut Indicator",
+            "extra":"Free Diddy"
+         },
+         {
+            "modeltwo_index":"0xBA",
+            "name":"Snake Head",
+            "extra":"Aztec Llama Temple"
+         },
+         {
+            "modeltwo_index":"0xBB",
+            "name":"Matching Game Board",
+            "extra":"Aztec Llama Temple"
+         },
+         {
+            "modeltwo_index":"0xBC",
+            "name":"Stone Monkey Head",
+            "extra":"Aztec"
+         },
+         {
+            "modeltwo_index":"0xBD",
+            "name":"Large metal section"
+         },
+         {
+            "modeltwo_index":"0xBE",
+            "name":"Production Room Crusher",
+            "extra":"Factory"
+         },
+         {
+            "modeltwo_index":"0xBF",
+            "name":"Metal Platform"
+         },
+         {
+            "modeltwo_index":"0xC0",
+            "name":"Metal Object"
+         },
+         {
+            "modeltwo_index":"0xC1",
+            "name":"Metal Object"
+         },
+         {
+            "modeltwo_index":"0xC2",
+            "name":"Metal Object"
+         },
+         {
+            "modeltwo_index":"0xC3",
+            "name":"Gong"
+         },
+         {
+            "modeltwo_index":"0xC4",
+            "name":"Platform",
+            "extra":"Aztec"
+         },
+         {
+            "modeltwo_index":"0xC5",
+            "name":"Bamboo together"
+         },
+         {
+            "modeltwo_index":"0xC6",
+            "name":"Metal Bars"
+         },
+         {
+            "modeltwo_index":"0xC7",
+            "name":"Target"
+         },
+         {
+            "modeltwo_index":"0xC8",
+            "name":"Wooden object"
+         },
+         {
+            "modeltwo_index":"0xC9",
+            "name":"Ladder"
+         },
+         {
+            "modeltwo_index":"0xCA",
+            "name":"Ladder"
+         },
+         {
+            "modeltwo_index":"0xCB",
+            "name":"Wooden pole"
+         },
+         {
+            "modeltwo_index":"0xCC",
+            "name":"Blue panel"
+         },
+         {
+            "modeltwo_index":"0xCD",
+            "name":"Ladder"
+         },
+         {
+            "modeltwo_index":"0xCE",
+            "name":"Grey Switch"
+         },
+         {
+            "modeltwo_index":"0xCF",
+            "name":"D Block for toy world"
+         },
+         {
+            "modeltwo_index":"0xD0",
+            "name":"Hatch (Factory)"
+         },
+         {
+            "modeltwo_index":"0xD1",
+            "name":"Metal Bars"
+         },
+         {
+            "modeltwo_index":"0xD2",
+            "name":"Raisable Metal Platform"
+         },
+         {
+            "modeltwo_index":"0xD3",
+            "name":"Metal Cage"
+         },
+         {
+            "modeltwo_index":"0xD4",
+            "name":"Simian Spring Pad"
+         },
+         {
+            "modeltwo_index":"0xD5",
+            "name":"Power Shed"
+         },
+         {
+            "modeltwo_index":"0xD6",
+            "name":"Metal platform"
+         },
+         {
+            "modeltwo_index":"0xD7",
+            "name":"Sun Lighting effect panel"
+         },
+         {
+            "modeltwo_index":"0xD8",
+            "name":"Wooden Pole"
+         },
+         {
+            "modeltwo_index":"0xD9",
+            "name":"Wooden Pole"
+         },
+         {
+            "modeltwo_index":"0xDA",
+            "name":"Wooden Pole"
+         },
+         {
+            "modeltwo_index":"0xDB",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0xDC",
+            "name":"Question Mark Box"
+         },
+         {
+            "modeltwo_index":"0xDD",
+            "name":"Blueprint (Tiny)"
+         },
+         {
+            "modeltwo_index":"0xDE",
+            "name":"Blueprint (DK)"
+         },
+         {
+            "modeltwo_index":"0xDF",
+            "name":"Blueprint (Chunky)"
+         },
+         {
+            "modeltwo_index":"0xE0",
+            "name":"Blueprint (Diddy)"
+         },
+         {
+            "modeltwo_index":"0xE1",
+            "name":"Blueprint (Lanky)"
+         },
+         {
+            "modeltwo_index":"0xE2",
+            "name":"Tree Dark"
+         },
+         {
+            "modeltwo_index":"0xE3",
+            "name":"Rope"
+         },
+         {
+            "modeltwo_index":"0xE4",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0xE5",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0xE6",
+            "name":"Lever"
+         },
+         {
+            "modeltwo_index":"0xE7",
+            "name":"Green Croc Head (Minecart)"
+         },
+         {
+            "modeltwo_index":"0xE8",
+            "name":"Metal Gate with red/white stripes"
+         },
+         {
+            "modeltwo_index":"0xE9",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0xEA",
+            "name":"Purple Croc Head (Minecart)"
+         },
+         {
+            "modeltwo_index":"0xEB",
+            "name":"Wood panel"
+         },
+         {
+            "modeltwo_index":"0xEC",
+            "name":"DK coin"
+         },
+         {
+            "modeltwo_index":"0xED",
+            "name":"Wooden leg"
+         },
+         {
+            "modeltwo_index":"0xEE",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0xEF",
+            "name":"Wrinkly Door (Lanky)"
+         },
+         {
+            "modeltwo_index":"0xF0",
+            "name":"Wrinkly Door (DK)"
+         },
+         {
+            "modeltwo_index":"0xF1",
+            "name":"Wrinkly Door (Chunky)"
+         },
+         {
+            "modeltwo_index":"0xF2",
+            "name":"Wrinkly Door (Diddy)"
+         },
+         {
+            "modeltwo_index":"0xF3",
+            "name":"Torch"
+         },
+         {
+            "modeltwo_index":"0xF4",
+            "name":"Number Game (1)"
+         },
+         {
+            "modeltwo_index":"0xF5",
+            "name":"Number Game (2)"
+         },
+         {
+            "modeltwo_index":"0xF6",
+            "name":"Number Game (3)"
+         },
+         {
+            "modeltwo_index":"0xF7",
+            "name":"Number Game (4)"
+         },
+         {
+            "modeltwo_index":"0xF8",
+            "name":"Number Game (5)"
+         },
+         {
+            "modeltwo_index":"0xF9",
+            "name":"Number Game (6)"
+         },
+         {
+            "modeltwo_index":"0xFA",
+            "name":"Number Game (7)"
+         },
+         {
+            "modeltwo_index":"0xFB",
+            "name":"Number Game (8)"
+         },
+         {
+            "modeltwo_index":"0xFC",
+            "name":"Number Game (9)"
+         },
+         {
+            "modeltwo_index":"0xFD",
+            "name":"Number Game (10)"
+         },
+         {
+            "modeltwo_index":"0xFE",
+            "name":"Number Game (11)"
+         },
+         {
+            "modeltwo_index":"0xFF",
+            "name":"Number Game (12)"
+         },
+         {
+            "modeltwo_index":"0x100",
+            "name":"Number Game (13)"
+         },
+         {
+            "modeltwo_index":"0x101",
+            "name":"Number Game (14)"
+         },
+         {
+            "modeltwo_index":"0x102",
+            "name":"Number Game (15)"
+         },
+         {
+            "modeltwo_index":"0x103",
+            "name":"Number Game (16)"
+         },
+         {
+            "modeltwo_index":"0x104",
+            "name":"Bad Hit Detection Wheel"
+         },
+         {
+            "modeltwo_index":"0x105",
+            "name":"Breakable Gate",
+            "extra":"Galleon Primate Punch"
+         },
+         {
+            "modeltwo_index":"0x106",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x107",
+            "name":"Picture of DK island"
+         },
+         {
+            "modeltwo_index":"0x108",
+            "name":"White flashing thing"
+         },
+         {
+            "modeltwo_index":"0x109",
+            "name":"Barrel",
+            "extra":"Galleon Ship"
+         },
+         {
+            "modeltwo_index":"0x10A",
+            "name":"Gorilla Gone Pad"
+         },
+         {
+            "modeltwo_index":"0x10B",
+            "name":"Monkeyport Pad"
+         },
+         {
+            "modeltwo_index":"0x10C",
+            "name":"Baboon Balloon Pad"
+         },
+         {
+            "modeltwo_index":"0x10D",
+            "name":"Light",
+            "extra":"Factory?"
+         },
+         {
+            "modeltwo_index":"0x10E",
+            "name":"Light",
+            "extra":"Factory?"
+         },
+         {
+            "modeltwo_index":"0x10F",
+            "name":"Barrel",
+            "extra":"Galleon Ship"
+         },
+         {
+            "modeltwo_index":"0x110",
+            "name":"Barrel",
+            "extra":"Galleon Ship"
+         },
+         {
+            "modeltwo_index":"0x111",
+            "name":"Barrel",
+            "extra":"Galleon Ship"
+         },
+         {
+            "modeltwo_index":"0x112",
+            "name":"Barrel",
+            "extra":"Galleon Ship"
+         },
+         {
+            "modeltwo_index":"0x113",
+            "name":"Pad",
+            "extra":"Empty, Blue"
+         },
+         {
+            "modeltwo_index":"0x114",
+            "name":"Red Light",
+            "extra":"Factory?"
+         },
+         {
+            "modeltwo_index":"0x115",
+            "name":"Breakable X Panel",
+            "extra":"To Japes Underground"
+         },
+         {
+            "modeltwo_index":"0x116",
+            "name":"Power Shed Screen"
+         },
+         {
+            "modeltwo_index":"0x117",
+            "name":"Crusher",
+            "extra":"Factory"
+         },
+         {
+            "modeltwo_index":"0x118",
+            "name":"Floor Panel"
+         },
+         {
+            "modeltwo_index":"0x119",
+            "name":"Metal floor panel mesh"
+         },
+         {
+            "modeltwo_index":"0x11A",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x11B",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x11C",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x11D",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x11E",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x11F",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x120",
+            "name":"Toyz Box"
+         },
+         {
+            "modeltwo_index":"0x121",
+            "name":"O Pad",
+            "extra":"Vase Puzzle"
+         },
+         {
+            "modeltwo_index":"0x122",
+            "name":"Bonus Barrel Trap",
+            "extra":"Aztec"
+         },
+         {
+            "modeltwo_index":"0x123",
+            "name":"Sun Idol"
+         },
+         {
+            "modeltwo_index":"0x124",
+            "name":"Candy's Shop"
+         },
+         {
+            "modeltwo_index":"0x125",
+            "name":"Pineapple Switch"
+         },
+         {
+            "modeltwo_index":"0x126",
+            "name":"Peanut Switch"
+         },
+         {
+            "modeltwo_index":"0x127",
+            "name":"Feather Switch"
+         },
+         {
+            "modeltwo_index":"0x128",
+            "name":"Grape Switch"
+         },
+         {
+            "modeltwo_index":"0x129",
+            "name":"Coconut Switch"
+         },
+         {
+            "modeltwo_index":"0x12A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x12B",
+            "name":"Kong Pad"
+         },
+         {
+            "modeltwo_index":"0x12C",
+            "name":"Boss Door",
+            "extra":"T&S"
+         },
+         {
+            "modeltwo_index":"0x12D",
+            "name":"Troff 'n' Scoff Feed Pad"
+         },
+         {
+            "modeltwo_index":"0x12E",
+            "name":"Metal Bars horizontal"
+         },
+         {
+            "modeltwo_index":"0x12F",
+            "name":"Metal Bars"
+         },
+         {
+            "modeltwo_index":"0x130",
+            "name":"Harbour Gate",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x131",
+            "name":"K. Rool's Ship",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x132",
+            "name":"Metal Platform"
+         },
+         {
+            "modeltwo_index":"0x133",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x134",
+            "name":"Flame"
+         },
+         {
+            "modeltwo_index":"0x135",
+            "name":"Flame"
+         },
+         {
+            "modeltwo_index":"0x136",
+            "name":"Scoff n Troff platform"
+         },
+         {
+            "modeltwo_index":"0x137",
+            "name":"Troff 'n' Scoff Banana Count Pad (DK)"
+         },
+         {
+            "modeltwo_index":"0x138",
+            "name":"Torch"
+         },
+         {
+            "modeltwo_index":"0x139",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x13A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x13B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x13C",
+            "name":"Boss Key"
+         },
+         {
+            "modeltwo_index":"0x13D",
+            "name":"Machine"
+         },
+         {
+            "modeltwo_index":"0x13E",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x13F",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x140",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x141",
+            "name":"Metal Door",
+            "extra":"Factory or Car Race"
+         },
+         {
+            "modeltwo_index":"0x142",
+            "name":"Piano Game"
+         },
+         {
+            "modeltwo_index":"0x143",
+            "name":"Troff 'n' Scoff Banana Count Pad (Diddy)"
+         },
+         {
+            "modeltwo_index":"0x144",
+            "name":"Troff 'n' Scoff Banana Count Pad (Lanky)"
+         },
+         {
+            "modeltwo_index":"0x145",
+            "name":"Troff 'n' Scoff Banana Count Pad (Chunky)"
+         },
+         {
+            "modeltwo_index":"0x146",
+            "name":"Troff 'n' Scoff Banana Count Pad (Tiny)"
+         },
+         {
+            "modeltwo_index":"0x147",
+            "name":"Door 1342"
+         },
+         {
+            "modeltwo_index":"0x148",
+            "name":"Door 3142"
+         },
+         {
+            "modeltwo_index":"0x149",
+            "name":"Door 4231"
+         },
+         {
+            "modeltwo_index":"0x14A",
+            "name":"1 Switch (Red)"
+         },
+         {
+            "modeltwo_index":"0x14B",
+            "name":"2 Switch (Blue)"
+         },
+         {
+            "modeltwo_index":"0x14C",
+            "name":"3 Switch (Orange)"
+         },
+         {
+            "modeltwo_index":"0x14D",
+            "name":"4 Switch (Green)"
+         },
+         {
+            "modeltwo_index":"0x14E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x14F",
+            "name":"Metal Archway"
+         },
+         {
+            "modeltwo_index":"0x150",
+            "name":"Green Crystal thing"
+         },
+         {
+            "modeltwo_index":"0x151",
+            "name":"Red Crystal thing"
+         },
+         {
+            "modeltwo_index":"0x152",
+            "name":"Propeller"
+         },
+         {
+            "modeltwo_index":"0x153",
+            "name":"Large Metal Bar"
+         },
+         {
+            "modeltwo_index":"0x154",
+            "name":"Ray Sheild?"
+         },
+         {
+            "modeltwo_index":"0x155",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x156",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x157",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x158",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x159",
+            "name":"Light"
+         },
+         {
+            "modeltwo_index":"0x15A",
+            "name":"Target"
+         },
+         {
+            "modeltwo_index":"0x15B",
+            "name":"Ladder"
+         },
+         {
+            "modeltwo_index":"0x15C",
+            "name":"Metal Bars"
+         },
+         {
+            "modeltwo_index":"0x15D",
+            "name":"Red Feather"
+         },
+         {
+            "modeltwo_index":"0x15E",
+            "name":"Grape"
+         },
+         {
+            "modeltwo_index":"0x15F",
+            "name":"Pinapple"
+         },
+         {
+            "modeltwo_index":"0x160",
+            "name":"Coconut"
+         },
+         {
+            "modeltwo_index":"0x161",
+            "name":"Rope"
+         },
+         {
+            "modeltwo_index":"0x162",
+            "name":"On Button"
+         },
+         {
+            "modeltwo_index":"0x163",
+            "name":"Up Button"
+         },
+         {
+            "modeltwo_index":"0x164",
+            "name":"Metal barrel or lid"
+         },
+         {
+            "modeltwo_index":"0x165",
+            "name":"Simian Slam Switch (Chunky, Red)"
+         },
+         {
+            "modeltwo_index":"0x166",
+            "name":"Simian Slam Switch (Diddy, Red)"
+         },
+         {
+            "modeltwo_index":"0x167",
+            "name":"Simian Slam Switch (DK, Red)"
+         },
+         {
+            "modeltwo_index":"0x168",
+            "name":"Simian Slam Switch (Lanky, Red)"
+         },
+         {
+            "modeltwo_index":"0x169",
+            "name":"Simian Slam Switch (Tiny, Red)"
+         },
+         {
+            "modeltwo_index":"0x16A",
+            "name":"Simian Slam Switch (Chunky, Blue)"
+         },
+         {
+            "modeltwo_index":"0x16B",
+            "name":"Simian Slam Switch (Diddy, Blue)"
+         },
+         {
+            "modeltwo_index":"0x16C",
+            "name":"Simian Slam Switch (DK, Blue)"
+         },
+         {
+            "modeltwo_index":"0x16D",
+            "name":"Simian Slam Switch (Lanky, Blue)"
+         },
+         {
+            "modeltwo_index":"0x16E",
+            "name":"Simian Slam Switch (Tiny, Blue)"
+         },
+         {
+            "modeltwo_index":"0x16F",
+            "name":"Metal Grate",
+            "extra":"Lanky Attic"
+         },
+         {
+            "modeltwo_index":"0x170",
+            "name":"Pendulum",
+            "extra":"Fungi Clock"
+         },
+         {
+            "modeltwo_index":"0x171",
+            "name":"Weight",
+            "extra":"Fungi Clock"
+         },
+         {
+            "modeltwo_index":"0x172",
+            "name":"Door",
+            "extra":"Fungi Clock"
+         },
+         {
+            "modeltwo_index":"0x173",
+            "name":"Day Switch",
+            "extra":"Fungi Clock"
+         },
+         {
+            "modeltwo_index":"0x174",
+            "name":"Night Switch",
+            "extra":"Fungi Clock"
+         },
+         {
+            "modeltwo_index":"0x175",
+            "name":"Hands",
+            "extra":"Fungi Clock"
+         },
+         {
+            "modeltwo_index":"0x176",
+            "name":"Bell"
+         },
+         {
+            "modeltwo_index":"0x177",
+            "name":"Grate"
+         },
+         {
+            "modeltwo_index":"0x178",
+            "name":"Red Crystal"
+         },
+         {
+            "modeltwo_index":"0x179",
+            "name":"Blue Crystal"
+         },
+         {
+            "modeltwo_index":"0x17A",
+            "name":"Green Crystal"
+         },
+         {
+            "modeltwo_index":"0x17B",
+            "name":"Door",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x17C",
+            "name":"Gate",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x17D",
+            "name":"Breakable Door",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x17E",
+            "name":"Night Gate",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x17F",
+            "name":"Night Grate",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x180",
+            "name":"Unknown",
+            "extra":"Internal Name 'Minecart'"
+         },
+         {
+            "modeltwo_index":"0x181",
+            "name":"Metal Grate",
+            "extra":"Fungi Well"
+         },
+         {
+            "modeltwo_index":"0x182",
+            "name":"Mill Pulley Mechanism"
+         },
+         {
+            "modeltwo_index":"0x183",
+            "name":"Metal Bar"
+         },
+         {
+            "modeltwo_index":"0x184",
+            "name":"Water Wheel"
+         },
+         {
+            "modeltwo_index":"0x185",
+            "name":"Crusher",
+            "extra":"Fungi Mill"
+         },
+         {
+            "modeltwo_index":"0x186",
+            "name":"Coveyor Belt"
+         },
+         {
+            "modeltwo_index":"0x187",
+            "name":"Night Gate"
+         },
+         {
+            "modeltwo_index":"0x188",
+            "name":"Question Mark Box"
+         },
+         {
+            "modeltwo_index":"0x189",
+            "name":"Spider Web Door"
+         },
+         {
+            "modeltwo_index":"0x18A",
+            "name":"Grey Croc Head"
+         },
+         {
+            "modeltwo_index":"0x18B",
+            "name":"Caution Sign (Falling Rocks)"
+         },
+         {
+            "modeltwo_index":"0x18C",
+            "name":"Door"
+         },
+         {
+            "modeltwo_index":"0x18D",
+            "name":"Battle Crown"
+         },
+         {
+            "modeltwo_index":"0x18E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x18F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x190",
+            "name":"Dogadon Arena Background"
+         },
+         {
+            "modeltwo_index":"0x191",
+            "name":"Skull Door (Small)"
+         },
+         {
+            "modeltwo_index":"0x192",
+            "name":"Skull Door (Big)"
+         },
+         {
+            "modeltwo_index":"0x193",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x194",
+            "name":"Tombstone"
+         },
+         {
+            "modeltwo_index":"0x195",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x196",
+            "name":"DK Star"
+         },
+         {
+            "modeltwo_index":"0x197",
+            "name":"K. Rool's Throne"
+         },
+         {
+            "modeltwo_index":"0x198",
+            "name":"Bean"
+         },
+         {
+            "modeltwo_index":"0x199",
+            "name":"Power Beam",
+            "extra":"Helm (Lanky - BoM)"
+         },
+         {
+            "modeltwo_index":"0x19A",
+            "name":"Power Beam",
+            "extra":"Helm (Diddy - BoM)"
+         },
+         {
+            "modeltwo_index":"0x19B",
+            "name":"Power Beam",
+            "extra":"Helm (Tiny - Medal Room)"
+         },
+         {
+            "modeltwo_index":"0x19C",
+            "name":"Power Beam",
+            "extra":"Helm (Tiny - BoM)"
+         },
+         {
+            "modeltwo_index":"0x19D",
+            "name":"Power Beam",
+            "extra":"Helm (Chunky - Medal Room)"
+         },
+         {
+            "modeltwo_index":"0x19E",
+            "name":"Power Beam",
+            "extra":"Helm (Chunky - BoM)"
+         },
+         {
+            "modeltwo_index":"0x19F",
+            "name":"Power Beam",
+            "extra":"Helm (Lanky - Medal Room)"
+         },
+         {
+            "modeltwo_index":"0x1A0",
+            "name":"Power Beam",
+            "extra":"Helm (DK - Medal Room)"
+         },
+         {
+            "modeltwo_index":"0x1A1",
+            "name":"Power Beam",
+            "extra":"Helm (DK - BoM)"
+         },
+         {
+            "modeltwo_index":"0x1A2",
+            "name":"Power Beam",
+            "extra":"Helm (Diddy - Medal Room)"
+         },
+         {
+            "modeltwo_index":"0x1A3",
+            "name":"Warning Lights",
+            "extra":"Helm Wheel Room"
+         },
+         {
+            "modeltwo_index":"0x1A4",
+            "name":"K. Rool Door",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1A5",
+            "name":"Metal Grate"
+         },
+         {
+            "modeltwo_index":"0x1A6",
+            "name":"Crown Door",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1A7",
+            "name":"Coin Door",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1A8",
+            "name":"Medal Barrier (DK)",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1A9",
+            "name":"Medal Barrier (Diddy)",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1AA",
+            "name":"Medal Barrier (Tiny)",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1AB",
+            "name":"Medal Barrier (Chunky)",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1AC",
+            "name":"Medal Barrier (Lanky)",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1AD",
+            "name":"I Door (Helm, DK)"
+         },
+         {
+            "modeltwo_index":"0x1AE",
+            "name":"V Door (Helm, Diddy)"
+         },
+         {
+            "modeltwo_index":"0x1AF",
+            "name":"III Door (Helm, Tiny)"
+         },
+         {
+            "modeltwo_index":"0x1B0",
+            "name":"II Door (Helm, Chunky)"
+         },
+         {
+            "modeltwo_index":"0x1B1",
+            "name":"IV Door (Helm, Lanky)"
+         },
+         {
+            "modeltwo_index":"0x1B2",
+            "name":"Metal Door",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1B3",
+            "name":"Stone Wall",
+            "extra":"Helm"
+         },
+         {
+            "modeltwo_index":"0x1B4",
+            "name":"Pearl",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x1B5",
+            "name":"Small Door",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1B6",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x1B7",
+            "name":"Cloud"
+         },
+         {
+            "modeltwo_index":"0x1B8",
+            "name":"Warning Lights",
+            "extra":"Crusher/Grinder"
+         },
+         {
+            "modeltwo_index":"0x1B9",
+            "name":"Door",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1BA",
+            "name":"Mushroom (Yellow)"
+         },
+         {
+            "modeltwo_index":"0x1BB",
+            "name":"Mushroom (Purple)"
+         },
+         {
+            "modeltwo_index":"0x1BC",
+            "name":"Mushroom (Blue)"
+         },
+         {
+            "modeltwo_index":"0x1BD",
+            "name":"Mushroom (Green)"
+         },
+         {
+            "modeltwo_index":"0x1BE",
+            "name":"Mushroom (Red)"
+         },
+         {
+            "modeltwo_index":"0x1BF",
+            "name":"Mushroom Puzzle Instructions"
+         },
+         {
+            "modeltwo_index":"0x1C0",
+            "name":"Face Puzzle Board",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1C1",
+            "name":"Mushroom",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1C2",
+            "name":"Small Torch"
+         },
+         {
+            "modeltwo_index":"0x1C3",
+            "name":"DK Arcade Machine"
+         },
+         {
+            "modeltwo_index":"0x1C4",
+            "name":"Simian Slam Switch (Any Kong)"
+         },
+         {
+            "modeltwo_index":"0x1C5",
+            "name":"Spotlight (Crown Arena?)"
+         },
+         {
+            "modeltwo_index":"0x1C6",
+            "name":"Battle Crown Pad"
+         },
+         {
+            "modeltwo_index":"0x1C7",
+            "name":"Seaweed"
+         },
+         {
+            "modeltwo_index":"0x1C8",
+            "name":"Light",
+            "extra":"Lighthouse"
+         },
+         {
+            "modeltwo_index":"0x1C9",
+            "name":"Dust?"
+         },
+         {
+            "modeltwo_index":"0x1CA",
+            "name":"Moon Trapdoor",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1CB",
+            "name":"Ladder",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1CC",
+            "name":"Mushroom Board",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1CD",
+            "name":"DK Star"
+         },
+         {
+            "modeltwo_index":"0x1CE",
+            "name":"Wooden Box"
+         },
+         {
+            "modeltwo_index":"0x1CF",
+            "name":"Yellow CB Powerup",
+            "extra":"Multiplayer"
+         },
+         {
+            "modeltwo_index":"0x1D0",
+            "name":"Blue CB Powerup",
+            "extra":"Multiplayer"
+         },
+         {
+            "modeltwo_index":"0x1D1",
+            "name":"Coin Powerup",
+            "extra":"Multiplayer"
+         },
+         {
+            "modeltwo_index":"0x1D2",
+            "name":"DK Coin"
+         },
+         {
+            "modeltwo_index":"0x1D3",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1D4",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1D5",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1D6",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1D7",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1D8",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1D9",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1DA",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1DB",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1DC",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1DD",
+            "name":"Snide's Mechanism"
+         },
+         {
+            "modeltwo_index":"0x1DE",
+            "name":"Blue Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1DF",
+            "name":"Plant (Green)",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E0",
+            "name":"Plant (Brown)",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E1",
+            "name":"Plant",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E2",
+            "name":"Pink Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E3",
+            "name":"Pink Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E4",
+            "name":"Plant",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E5",
+            "name":"Yellow Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E6",
+            "name":"Yellow Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E7",
+            "name":"Plant",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E8",
+            "name":"Blue Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1E9",
+            "name":"Blue Flower",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1EA",
+            "name":"Plant",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1EB",
+            "name":"Plant",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1EC",
+            "name":"Red Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1ED",
+            "name":"Red Flower",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1EE",
+            "name":"Mushrooms (Small)",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1EF",
+            "name":"Mushrooms (Small)",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1F0",
+            "name":"Purple Flowers",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x1F1",
+            "name":"Tree"
+         },
+         {
+            "modeltwo_index":"0x1F2",
+            "name":"Cactus",
+            "extra":"Unused"
+         },
+         {
+            "modeltwo_index":"0x1F3",
+            "name":"Cactus",
+            "extra":"Unused"
+         },
+         {
+            "modeltwo_index":"0x1F4",
+            "name":"Ramp"
+         },
+         {
+            "modeltwo_index":"0x1F5",
+            "name":"Submerged Pot",
+            "extra":"Unused"
+         },
+         {
+            "modeltwo_index":"0x1F6",
+            "name":"Submerged Pot",
+            "extra":"Unused"
+         },
+         {
+            "modeltwo_index":"0x1F7",
+            "name":"Ladder",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1F8",
+            "name":"Ladder",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1F9",
+            "name":"Floor Texture?",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1FA",
+            "name":"Iron Gate",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1FB",
+            "name":"Day Gate",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1FC",
+            "name":"Night Gate",
+            "extra":"Fungi"
+         },
+         {
+            "modeltwo_index":"0x1FD",
+            "name":"Cabin Door",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x1FE",
+            "name":"Ice Wall (Breakable)",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x1FF",
+            "name":"Igloo Door",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x200",
+            "name":"Castle Top",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x201",
+            "name":"Ice Dome",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x202",
+            "name":"Boulder Pad",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x203",
+            "name":"Target",
+            "extra":"Caves 5DI"
+         },
+         {
+            "modeltwo_index":"0x204",
+            "name":"Metal Gate"
+         },
+         {
+            "modeltwo_index":"0x205",
+            "name":"CB Bunch (Lanky)"
+         },
+         {
+            "modeltwo_index":"0x206",
+            "name":"CB Bunch (Chunky)"
+         },
+         {
+            "modeltwo_index":"0x207",
+            "name":"CB Bunch (Tiny)"
+         },
+         {
+            "modeltwo_index":"0x208",
+            "name":"CB Bunch (Diddy)"
+         },
+         {
+            "modeltwo_index":"0x209",
+            "name":"Blue Aura"
+         },
+         {
+            "modeltwo_index":"0x20A",
+            "name":"Ice Maze",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x20B",
+            "name":"Rotating Room",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x20C",
+            "name":"Light + Barrier",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x20D",
+            "name":"Light",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x20E",
+            "name":"Trapdoor",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x20F",
+            "name":"Large Wooden Door"
+         },
+         {
+            "modeltwo_index":"0x210",
+            "name":"Warp 5 Pad"
+         },
+         {
+            "modeltwo_index":"0x211",
+            "name":"Warp 3 Pad"
+         },
+         {
+            "modeltwo_index":"0x212",
+            "name":"Warp 4 Pad"
+         },
+         {
+            "modeltwo_index":"0x213",
+            "name":"Warp 2 Pad"
+         },
+         {
+            "modeltwo_index":"0x214",
+            "name":"Warp 1 Pad"
+         },
+         {
+            "modeltwo_index":"0x215",
+            "name":"Large Door",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x216",
+            "name":"Library Door"
+         },
+         {
+            "modeltwo_index":"0x217",
+            "name":"Blue Platform"
+         },
+         {
+            "modeltwo_index":"0x218",
+            "name":"White Platform"
+         },
+         {
+            "modeltwo_index":"0x219",
+            "name":"Wooden Platform",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x21A",
+            "name":"Wooden Bridge",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x21B",
+            "name":"Wooden Door",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x21C",
+            "name":"Metal Grate",
+            "extra":"Castle pipe"
+         },
+         {
+            "modeltwo_index":"0x21D",
+            "name":"Metal Door",
+            "extra":"Greenhouse"
+         },
+         {
+            "modeltwo_index":"0x21E",
+            "name":"Large Metal Door"
+         },
+         {
+            "modeltwo_index":"0x21F",
+            "name":"Rotating Chair"
+         },
+         {
+            "modeltwo_index":"0x220",
+            "name":"Baboon Balloon Pad (with platform)"
+         },
+         {
+            "modeltwo_index":"0x221",
+            "name":"Large Aztec Door"
+         },
+         {
+            "modeltwo_index":"0x222",
+            "name":"Large Aztec Door"
+         },
+         {
+            "modeltwo_index":"0x223",
+            "name":"Large Wooden Door",
+            "extra":"Castle Tree"
+         },
+         {
+            "modeltwo_index":"0x224",
+            "name":"Large Breakable Wooden Door",
+            "extra":"Castle Tree`"
+         },
+         {
+            "modeltwo_index":"0x225",
+            "name":"Pineapple Switch (Rotating)",
+            "extra":"Castle Tree"
+         },
+         {
+            "modeltwo_index":"0x226",
+            "name":": Pad",
+            "extra":"Vase Puzzle"
+         },
+         {
+            "modeltwo_index":"0x227",
+            "name":"Triangle Pad",
+            "extra":"Vase Puzzle"
+         },
+         {
+            "modeltwo_index":"0x228",
+            "name":"+ Pad",
+            "extra":"Vase Puzzle"
+         },
+         {
+            "modeltwo_index":"0x229",
+            "name":"Stone Monkey Head"
+         },
+         {
+            "modeltwo_index":"0x22A",
+            "name":"Stone Monkey Head"
+         },
+         {
+            "modeltwo_index":"0x22B",
+            "name":"Stone Monkey Head"
+         },
+         {
+            "modeltwo_index":"0x22C",
+            "name":"Door",
+            "extra":"Caves Beetle Race"
+         },
+         {
+            "modeltwo_index":"0x22D",
+            "name":"Broken Ship Piece",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x22E",
+            "name":"Broken Ship Piece",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x22F",
+            "name":"Broken Ship Piece",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x230",
+            "name":"Flotsam",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x231",
+            "name":"Metal Grate",
+            "extra":"Factory R&D"
+         },
+         {
+            "modeltwo_index":"0x232",
+            "name":"Treasure Chest",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x233",
+            "name":"Up Switch",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x234",
+            "name":"Down Switch"
+         },
+         {
+            "modeltwo_index":"0x235",
+            "name":"DK Star",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x236",
+            "name":"Enguarde Door",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x237",
+            "name":"Trash Can"
+         },
+         {
+            "modeltwo_index":"0x238",
+            "name":"Fluorescent Tube"
+         },
+         {
+            "modeltwo_index":"0x239",
+            "name":"Wooden Door Half",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x23A",
+            "name":"Stone Platform",
+            "extra":"Aztec Lobby"
+         },
+         {
+            "modeltwo_index":"0x23B",
+            "name":"Stone Panel",
+            "extra":"Aztec Lobby"
+         },
+         {
+            "modeltwo_index":"0x23C",
+            "name":"Stone Panel (Rotating)",
+            "extra":"Aztec Lobby"
+         },
+         {
+            "modeltwo_index":"0x23D",
+            "name":"Wrinkly Door Wheel"
+         },
+         {
+            "modeltwo_index":"0x23E",
+            "name":"Wooden Door",
+            "extra":"Fungi Lobby"
+         },
+         {
+            "modeltwo_index":"0x23F",
+            "name":"Wooden Panel",
+            "extra":"Fungi Lobby"
+         },
+         {
+            "modeltwo_index":"0x240",
+            "name":"Electricity Shields?"
+         },
+         {
+            "modeltwo_index":"0x241",
+            "name":"Unknown",
+            "extra":"Internal name is 'torches'"
+         },
+         {
+            "modeltwo_index":"0x242",
+            "name":"Boulder Pad (Red)",
+            "extra":"Caves"
+         },
+         {
+            "modeltwo_index":"0x243",
+            "name":"Candelabra",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x244",
+            "name":"Banana Peel"
+         },
+         {
+            "modeltwo_index":"0x245",
+            "name":"Skull+Candle"
+         },
+         {
+            "modeltwo_index":"0x246",
+            "name":"Metal Box"
+         },
+         {
+            "modeltwo_index":"0x247",
+            "name":"1 Switch"
+         },
+         {
+            "modeltwo_index":"0x248",
+            "name":"2 Switch"
+         },
+         {
+            "modeltwo_index":"0x249",
+            "name":"3 Switch"
+         },
+         {
+            "modeltwo_index":"0x24A",
+            "name":"4 Switch"
+         },
+         {
+            "modeltwo_index":"0x24B",
+            "name":"Metal Grate (Breakable?)"
+         },
+         {
+            "modeltwo_index":"0x24C",
+            "name":"Pound The X Platform"
+         },
+         {
+            "modeltwo_index":"0x24D",
+            "name":"Wooden Door",
+            "extra":"Castle Shed"
+         },
+         {
+            "modeltwo_index":"0x24E",
+            "name":"Chandelier",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x24F",
+            "name":"Bone Door",
+            "extra":"Castle"
+         },
+         {
+            "modeltwo_index":"0x250",
+            "name":"Metal Bars",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x251",
+            "name":"4 Door (5DS)"
+         },
+         {
+            "modeltwo_index":"0x252",
+            "name":"5 Door (5DS)"
+         },
+         {
+            "modeltwo_index":"0x253",
+            "name":"Door (Llama Temple)"
+         },
+         {
+            "modeltwo_index":"0x254",
+            "name":"Coffin Door"
+         },
+         {
+            "modeltwo_index":"0x255",
+            "name":"Metal Bars"
+         },
+         {
+            "modeltwo_index":"0x256",
+            "name":"Metal Grate",
+            "extra":"Galleon"
+         },
+         {
+            "modeltwo_index":"0x257",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x258",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x259",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x25A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x25B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x25C",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x25D",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x25E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x25F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x260",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x261",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x262",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x263",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x264",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x265",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x266",
+            "name":"Boulder",
+            "extra":"Isles covering Fungi Cannon"
+         },
+         {
+            "modeltwo_index":"0x267",
+            "name":"Boulder",
+            "extra":"Isles"
+         },
+         {
+            "modeltwo_index":"0x268",
+            "name":"K. Rool Ship Jaw Bottom",
+            "extra":"Isles"
+         },
+         {
+            "modeltwo_index":"0x269",
+            "name":"Blast-O-Matic Cover?",
+            "extra":"Isles"
+         },
+         {
+            "modeltwo_index":"0x26A",
+            "name":"Blast-O-Matic Cover",
+            "extra":"Isles"
+         },
+         {
+            "modeltwo_index":"0x26B",
+            "name":"Door",
+            "extra":"Factory Lobby 'Door'"
+         },
+         {
+            "modeltwo_index":"0x26C",
+            "name":"Platform",
+            "extra":"What is raised with Key 2"
+         },
+         {
+            "modeltwo_index":"0x26D",
+            "name":"Propeller",
+            "extra":"K Rool's Ship"
+         },
+         {
+            "modeltwo_index":"0x26E",
+            "name":"K. Rool's Ship",
+            "extra":"Intro Story"
+         },
+         {
+            "modeltwo_index":"0x26F",
+            "name":"Mad Jack Platform (White)"
+         },
+         {
+            "modeltwo_index":"0x270",
+            "name":"Mad Jack Platform (White)"
+         },
+         {
+            "modeltwo_index":"0x271",
+            "name":"Mad Jack Platform (Blue)"
+         },
+         {
+            "modeltwo_index":"0x272",
+            "name":"Mad Jack Platform (Blue)"
+         },
+         {
+            "modeltwo_index":"0x273",
+            "name":"Skull Gate (Minecart)",
+            "extra":"2D"
+         },
+         {
+            "modeltwo_index":"0x274",
+            "name":"Dogadon Arena Outer"
+         },
+         {
+            "modeltwo_index":"0x275",
+            "name":"Boxing Ring Corner (Red)"
+         },
+         {
+            "modeltwo_index":"0x276",
+            "name":"Boxing Ring Corner (Green)"
+         },
+         {
+            "modeltwo_index":"0x277",
+            "name":"Boxing Ring Corner (Blue)"
+         },
+         {
+            "modeltwo_index":"0x278",
+            "name":"Boxing Ring Corner (Yellow)"
+         },
+         {
+            "modeltwo_index":"0x279",
+            "name":"Lightning Rod"
+         },
+         {
+            "modeltwo_index":"0x27A",
+            "name":"Green Electricity"
+         },
+         {
+            "modeltwo_index":"0x27B",
+            "name":"Blast-O-Matic"
+         },
+         {
+            "modeltwo_index":"0x27C",
+            "name":"Target",
+            "extra":"Diddy Phase"
+         },
+         {
+            "modeltwo_index":"0x27D",
+            "name":"Spotlight",
+            "extra":"K. Rool Fight"
+         },
+         {
+            "modeltwo_index":"0x27E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x27F",
+            "name":"Vine",
+            "extra":"Unused?"
+         },
+         {
+            "modeltwo_index":"0x280",
+            "name":"Director's Chair",
+            "extra":"Bloopers"
+         },
+         {
+            "modeltwo_index":"0x281",
+            "name":"Spotlight",
+            "extra":"Bloopers"
+         },
+         {
+            "modeltwo_index":"0x282",
+            "name":"Spotlight",
+            "extra":"Bloopers"
+         },
+         {
+            "modeltwo_index":"0x283",
+            "name":"Boom Microphone",
+            "extra":"Bloopers"
+         },
+         {
+            "modeltwo_index":"0x284",
+            "name":"Auditions Sign",
+            "extra":"Bloopers"
+         },
+         {
+            "modeltwo_index":"0x285",
+            "name":"Banana Hoard"
+         },
+         {
+            "modeltwo_index":"0x286",
+            "name":"Boulder",
+            "extra":"Isles covering Caves Lobby"
+         },
+         {
+            "modeltwo_index":"0x287",
+            "name":"Boulder",
+            "extra":"Isles covering Japes Lobby"
+         },
+         {
+            "modeltwo_index":"0x288",
+            "name":"Rareware GB"
+         },
+         {
+            "modeltwo_index":"0x289",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x28A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x28B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x28C",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x28D",
+            "name":"Platform (Crystal Caves Minigame)"
+         },
+         {
+            "modeltwo_index":"0x28E",
+            "name":"King Kut Out Arm (Bloopers)"
+         },
+         {
+            "modeltwo_index":"0x28F",
+            "name":"Rareware Coin"
+         },
+         {
+            "modeltwo_index":"0x290",
+            "name":"Golden Banana"
+         },
+         {
+            "modeltwo_index":"0x291",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x292",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x293",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x294",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x295",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x296",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x297",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x298",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x299",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x29A",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x29B",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x29C",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x29D",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x29E",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x29F",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A0",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A1",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A2",
+            "name":"Rock",
+            "extra":"DK Isles"
+         },
+         {
+            "modeltwo_index":"0x2A3",
+            "name":"K. Rool's Ship",
+            "extra":"Entrance to final boss"
+         },
+         {
+            "modeltwo_index":"0x2A4",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A5",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A6",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A7",
+            "name":"Wooden Door",
+            "extra":"BFI"
+         },
+         {
+            "modeltwo_index":"0x2A8",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2A9",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2AA",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2AB",
+            "name":"Nothing?"
+         },
+         {
+            "modeltwo_index":"0x2AC",
+            "name":"Troff'n'Scoff Portal"
+         },
+         {
+            "modeltwo_index":"0x2AD",
+            "name":"Level Entry/Exit"
+         },
+         {
+            "modeltwo_index":"0x2AE",
+            "name":"K. Lumsy Key Indicator?"
+         },
+         {
+            "modeltwo_index":"0x2AF",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2B0",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2B1",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2B2",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2B3",
+            "name":"-"
+         },
+         {
+            "modeltwo_index":"0x2B4",
+            "name":"Red Bell",
+            "extra":"2D, Minecart"
+         },
+         {
+            "modeltwo_index":"0x2B5",
+            "name":"Green Bell",
+            "extra":"2D, Minecart"
+         },
+         {
+            "modeltwo_index":"0x2B6",
+            "name":"Race Checkpoint"
+         }
+      ]
+   }
+}
