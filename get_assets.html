@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DK64 Data Extractor - Ballaam's DK64 Tools</title>
+	<link rel="stylesheet" href="style/nav.css">
+	<link rel="stylesheet" href="style/main.css">
+	<link rel="stylesheet" href="style/home.css">
+	<link rel="stylesheet" href="style/maps.css">
+	<link rel="stylesheet" href="style/mj.css">
+	<link rel="stylesheet" href="style/tree.css">
+	<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+	<link rel="manifest" href="site.webmanifest">
+	<link rel="mask-icon" href="safari-pinned-tab.svg" color="#5bbad5">
+	<meta name="msapplication-TileColor" content="#da532c">
+	<meta name="theme-color" content="#ffffff">
+	<meta name="description" content="" />
+	<style type="text/css">
+		.homebox {
+			transition: 0.5s ease-in-out;
+			cursor: default;
+		}
+		.homebox.clickable:hover {
+			border-color:red;
+		}
+		.hide {
+			display: none;
+		}
+		.treebox {
+			color: white;
+			padding: 10px;
+		}
+		.treebox .treebox_head {
+			font-weight: bold;
+			padding-bottom: 10px;
+		}
+		.treebox .treebox_body {
+			padding-left: 10px;
+		}
+		.code_head {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+		.code_head:not(.no_pad) {
+			padding-bottom: 0 !important;
+		}
+		h4.code_head {
+			padding-left: 15px;
+		}
+		.filter-box {
+			width: -moz-available;          /* WebKit-based browsers will ignore this. */
+		    width: -webkit-fill-available;  /* Mozilla-based browsers will ignore this. */
+		    width: fill-available;
+		    margin: 10px;
+		    padding: 10px;
+		    background-color: rgba(0,0,0,0);
+		    outline: 1px solid gainsboro;
+		    color: gainsboro;
+		    font-size: 15px;
+		}
+		.filter-hide, .filter-hide-obj {
+			display: none;
+		}
+		button.clickable {
+			width: fit-content;
+			width: -moz-fit-content;
+			width: -o-fit-content;
+			margin-left: 5px;
+			margin-right: 5px;
+			padding: 5px;
+			border-color: white;
+			color: white;
+		}
+		button.clickable.edit {
+			background-color: darkslateblue;
+		}
+		button.clickable.delete {
+			background-color: firebrick;
+		}
+		.darkener {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background-color: rgba(0,0,0,0.8);
+			z-index: 1001;
+			cursor: pointer;
+		}
+		.edit_box {
+			min-width: fit-content;
+			min-width: -moz-fit-content;
+			min-width: -o-fit-content;
+			background-color: white;
+			border-radius: 10px;
+			min-height: 80%;
+			margin: 50px;
+			padding: 10px;
+			padding-top: 20px;
+		}
+		form {
+		  	position: relative;
+		 	width: 18rem;
+		}
+
+		.chosen-value, .value-list {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+		}
+
+		.chosen-value {
+			text-transform: uppercase;
+			font-weight: 600;
+			letter-spacing: 4px;
+			height: 2rem;
+			font-size: 1rem;
+			padding: 0.4rem;
+			background-color: #FAFCFD;
+			border: 3px solid gainsboro;
+			border-radius: 5px;
+			transition: .3s ease-in-out;
+		 }
+		 .chosen-value::-webkit-input-placeholder {
+			color: #333;
+		}
+		  
+		.chosen-value:hover {
+			background-color: #eee;
+			cursor: pointer;
+		}
+
+		.chosen-value:hover::-webkit-input-placeholder {
+			color: #333;
+		}
+		  }
+		  
+		.chosen-value:focus, .chosen-value.open {
+			box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+			outline: 0;
+			background-color: #FF908B;
+			color: #000;
+		}
+
+		.chosen-value:focus::-webkit-input-placeholder, .chosen-value.open::-webkit-input-placeholder {
+			color: #000;
+		}
+
+		.value-list {
+		  list-style: none;
+		  margin-top: 3.5rem;
+		  box-shadow: 0px 5px 8px 0px rgba(0,0,0,0.2);
+		  overflow: hidden;
+		  max-height: 0;
+		  transition: .3s ease-in-out;
+		}
+		  
+		.value-list.open {
+		   max-height: 320px;
+		   overflow: auto;
+		}
+		  
+		.value-list li {
+		    position: relative;
+		    height: 3rem;
+		    min-height: fit-content;
+		    min-height: -moz-fit-content;
+		    min-height: -o-fit-content;
+		    background-color: #FAFCFD;
+		    padding: 0.6rem;
+		    font-size: 1rem;
+		    display: flex;
+		    align-items: center;
+		    cursor: pointer;
+		    transition: background-color .3s;
+		    opacity: 1;
+		}
+		.value-list li:hover {
+			background-color: #eee;
+		}
+		    
+		.value-list li.closed {
+		    max-height: 0;
+		    overflow: hidden;
+		    padding: 0;
+		    opacity: 0;
+		}
+		.line_indent {
+			padding-top: 5px;
+			padding-left: 10px;
+		}
+		input[readonly] {
+			background-color: #f4f4f4;
+		}
+		input.input_editor {
+			padding: 8px;
+			width: -webkit-fill-available;
+			width: fill-available;
+		}
+		.form-header {
+			padding-right: 10px;
+		}
+
+		/*.dropdown {
+			padding: 10px;
+		}*/
+	</style>
+</head>
+<body>
+	<nav id="navigation"></nav>
+	<div class="v_spacer">
+	</div>
+	<div class="flexsplitter">
+		<div class="homebox">
+			<div class="header master_header">
+				<strong>DK64 Data Extractor</strong>
+			</div>
+		</div>
+	</div>
+	<div class="flexsplitter">
+		<div class="homebox">
+			<div class="flexsplitter">
+				<input type="file" id="dk64_z64_rom_upload" accept=".z64">
+				<br>
+				<div style="color:white" id="z64_response"></div>
+			</div>
+		</div>
+	</div>
+	<div id="results_container">
+
+	</div>
+	<script src="script/nav.js"></script>
+	<script type="text/javascript" src="./script/pako.js"></script>
+	<script>
+		document.getElementById("dk64_z64_rom_upload").addEventListener("change", function() {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var data = fr.result;
+				setup_data = fr.result;
+			    var array = new Uint8Array(data);
+			    //console.log(array)
+			    document.getElementById("results_container").innerHTML = "";
+			    document.getElementById("z64_response").innerText = "Decompressing ROM. This will take about 1 minute"
+			    extractFiles(array)
+			};
+			fr.readAsArrayBuffer(document.getElementById("dk64_z64_rom_upload").files[0]);
+        })
+
+		function arrToInt(arr,start,end) {
+			total = 0;
+			n_arr = arr.slice().filter((item,index)=>index>=start && index <= end)
+			n_arr.forEach(item=> {
+				total = (total * 256) + item;
+			})
+			return total
+		}
+
+		function displayResponse(header,results_array) {
+			var hook = document.getElementById("results_container")
+
+			var flex_container = document.createElement("div")
+			flex_container.classList.add("flexsplitter")
+
+			var box_container = document.createElement("div")
+			box_container.classList.add("homebox")
+			box_container.style["padding-left"] = "10px";
+
+			var box_header = document.createElement("h2")
+			box_header.style.color = "white";
+			var box_header_text = document.createTextNode(header)
+			box_header.appendChild(box_header_text)
+			box_container.appendChild(box_header)
+
+			results_array.forEach(item=>{
+				var line = document.createElement("p")
+				line.style.color = "white";
+				var line_text = document.createTextNode(item.replaceAll("~","{KONG_NAME}").replaceAll("@","{NUMBER}"))
+				line.appendChild(line_text)
+				box_container.appendChild(line)
+			})
+
+			flex_container.appendChild(box_container)
+			hook.appendChild(flex_container)
+		}
+
+		function parseText(decomp_bytes,file_name) {
+			count = decomp_bytes[0]
+			//console.log(count)
+			text_data = [];
+			text_start = (count * 0xF) + 3;
+			data_start = 1;
+			for (i = 0; i < count; i++) {
+				text_info = decomp_bytes.filter((item,index)=>index >= data_start);
+				section1count = arrToInt(text_info,0,0)
+				section2count = arrToInt(text_info,1,1)
+				section3count = arrToInt(text_info,2,2)
+				start = arrToInt(text_info,5,6)
+				size = arrToInt(text_info,7,8)
+				block_start = 1;
+				blocks = [];
+				for (k = 0; k < section1count; k++) {
+					//console.log(text_info)
+					//console.log(block_start)
+					sec2ct = arrToInt(text_info,block_start + 0,block_start + 0)
+					offset = 0;
+					//console.log(sec2ct & 4)
+					if ((sec2ct & 4) != 0) {
+						console.log("adding offset")
+						offset += 4;
+					}
+					text_blocks = [];
+					if ((sec2ct & 1) == 0) {
+						if ((sec2ct & 2) != 0) {
+							sec3ct = arrToInt(text_info,block_start + offset + 1,block_start + offset + 1)
+							for (j = 0; j < sec3ct; j++) {
+								_block = block_start + 2 + offset + (4 * j) - 1;
+								text_blocks.push({
+									"type": "unk",
+									"position": arrToInt(text_info,_block,_block + 2),
+									"data": arrToInt(text_info,_block,_block + 4).toString(16),
+								})
+							}
+							added = block_start + 2 + offset + (4 * sec3ct) + 4;
+						}
+					} else {
+						sec3ct = arrToInt(text_info,block_start + offset + 1,block_start + offset + 1)
+						for (j = 0; j < sec3ct; j++) {
+							_block = block_start + 2 + offset + (8 * j) - 1
+							//console.log(arrToInt(text_info,_block+3,_block + 4).toString(16))
+							//console.log(arrToInt(text_info,_block+5,_block + 6).toString(16))
+							text_blocks.push({
+								"type": "normal",
+								"start": arrToInt(text_info,_block + 3,_block + 4),
+								"size": arrToInt(text_info,_block + 5, _block + 6),
+							})
+						}
+						added = block_start + 2 + offset + (8 * sec3ct) + 4
+					}
+					blocks.push({
+						"block_start": (block_start + data_start).toString(16),
+						"section2count": sec2ct,
+						"section3count": sec3ct,
+						"offset": offset,
+						"text": text_blocks.slice(),
+					})
+					block_start = added;
+				}
+				//added = 3 + (section3count * 8) + 4 // 3 for header info
+				text_info = decomp_bytes.filter((item,index)=>index >= data_start && index < added);
+				// text_blocks = [];
+				// for (j = 0; j < section3count; j++) {
+				// 	_block = 3 + (8 * j)
+				// 	text_blocks.push({
+				// 		"start": arrToInt(text_info,_block + 2,_block + 3),
+				// 		"size": arrToInt(text_info,_block + 4, _block + 5),
+				// 	})
+				// }
+				text_data.push({
+					"arr": text_info.slice(),
+					"text": blocks.slice(),
+					"section1count": section1count, // Size 12
+					"section2count": section2count,
+					"section3count": section3count, // Size 8
+					"data_start": data_start.toString(16),
+				})
+				text_start += added - data_start;
+				//console.log(block_start)
+				data_start += block_start;
+				// if (section2count != 1) {
+				// 	console.log("ALERT: Item "+i+" includes non-singular section 2 count")
+				// }
+			}
+			console.log(text_data)
+			//console.log(decomp_bytes)
+			dk64_text = [];
+			text_data.forEach(item => {
+				item.text.forEach(item2 => {
+					item2.text.forEach(item3 => {
+						if (item3.type == "normal") {
+							start = item3.start + data_start + 2;
+							end = start + item3.size;
+							//console.log(start.toString(16) + "|" + end)
+							text = decomp_bytes.filter((item,index)=>index >= start && index<end)
+							dk64_text.push(String.fromCharCode.apply(null, new Uint16Array(text)))
+						}
+					})
+				})
+			})
+			displayResponse(file_name,dk64_text.slice())
+		}
+
+		function extractTextFile(bytearr,file_start,file_end,file_name) {
+			data = ungzip_file(bytearr,file_start,file_end,file_name);
+
+			// console.log("Extracting " + file_name)
+			// bytes = []
+   //      	bytearr.filter((item,index)=>index >= file_start && index < file_end).forEach(item=>bytes.push(item))
+   //      	data = pako.inflate(new Uint8Array(bytes))
+        	//console.log(data)
+        	parseText(data,file_name)
+        	console.log("")
+		}
+
+		function extractSimpleTextFile(bytearr,file_start,file_end,file_name) {
+			data = ungzip_file(bytearr,file_start,file_end,file_name);
+			partition_bytes = [0xA];
+			blocks = [];
+			start = 0;
+			end = 0;
+			for (i = 0; i < data.length; i++) {
+				if (partition_bytes.indexOf(data[i]) > -1) {
+					end = i;
+					text = data.filter((item,index)=>index >= start && index<end);
+					console.log(String.fromCharCode.apply(null, new Uint16Array(text)))
+				}
+				start = i + 1;
+			}
+		}
+
+		function ungzip_file(bytearr,file_start,file_end,file_name) {
+			console.log("Extracting " + file_name)
+			bytes = []
+        	bytearr.filter((item,index)=>index >= file_start && index < file_end).forEach(item=>bytes.push(item))
+        	data = pako.inflate(new Uint8Array(bytes))
+        	return data;
+		}
+
+		function alterZ64Response(remaining,cap) {
+			// count = cap - remaining;
+			// perc = 100 * (count / cap);
+			// document.getElementById("z64_response").innerText = "Decompressing ROM (" + Math.floor(perc) + "%). This will take about 1 minute"
+		}
+
+        function extractFiles(bytearr) {
+        	// if (i > 0) {
+        	// 	setTimeout(function() {
+        	// //		extractTextFile(bytearr,0x0DF346,0x0E9D17,"Rambi/Enguarde Arenas");
+        	// 	})
+        	// }
+        	i = 41;
+        	cap = 41;
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1113222,0x11138DC,"K. Rool Intros");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11138DC,0x1113934,"Tag Barrel");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1113934,0x1113A2B,"Diddy");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1113A2C,0x1113B36,"Tiny");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1113B36,0x1113C10,"Chunky");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1113C10,0x1113CE7,"Lanky");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1113CE8,0x11141F1,"Funky");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11141F2,0x1114DD6,"Cranky");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1114DD6,0x11152F5,"Candy");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11152F6,0x11153AB,"Llama");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11153AC,0x11156FB,"Snide");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11156FC,0x1115765,"Title Screen");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1115766,0x11157D3,"Dolby Screen");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11157D4,0x111593A,"Beetle")
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x111593A,0x1115A66,"Vulture");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1115A66,0x1116076,"Squawks");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116076,0x1116262,"Factory Car Race");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116262,0x1116379,"Seal Race");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x111637A,0x11169C5,"Misc");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11169C6,0x1116B9E,"Rabbit");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116B9E,0x1116C78,"Owl");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116C78,0x1116DE1,"Worm");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116DE2,0x1116F0B,"Mermaid");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116F0C,0x1116FB1,"DK");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1116FB2,0x11171AF,"Training Barrels");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11171B0,0x11172E7,"Bonus HUD");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11172E8,0x11174E7,"K. Lumsy");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11174E8,0x1117667,"Seal");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1117668,0x11179D9,"B. Locker");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11179DA,0x1117CA1,"Fairy Queen Intro");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1117CA2,0x1117D41,"Beanstalk");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1117D42,0x1117D91,"Unknown Lanky NPC");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1117D92,0x1117ED7,"Ice Tomato");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1117ED8,0x11180A4,"Castle Car Race");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11180A4,0x11182E3,"Location Names");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x11182E4,0x111841F,"Pause Menu");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1118420,0x111879A,"Main Menu");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x111879A,0x111882C,"Races");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x111882C,0x1118ACE,"Shop Upgrades");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1118ACE,0x1118BA4,"Fairy Queen Reward");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	if (i > 0) {
+        		setTimeout(function() {
+        			extractTextFile(bytearr,0x1118BA4,0x11191B1,"Wrinkly");
+        			i--
+        			alterZ64Response(i,cap);
+        		},1)
+        	}
+        	//extractTextFile(bytearr,0x11191B2,0x111929C,"Snide's Bonus"); // Unknown Compression Method error?
+        	//extractSimpleTextFile(bytearr,0x1186CA8,0x1188F54,"Credits");
+        }
+	</script>
+</body>
+</html>

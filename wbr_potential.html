@@ -1,0 +1,138 @@
+<html>
+	<head>
+		<title>Wrong Barrel Resolution Potential - Donkey Kong 64 Speedruns</title>
+		<link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link rel="stylesheet" href="style/home.css">
+		<link rel="stylesheet" href="style/mj.css">
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="" />
+		<style>
+			.pre_text {
+				color: white;
+			}
+			.input_container {
+				padding: 10px;
+			}
+			.input_container .value_input {
+				padding: 10px;
+				padding-left: 20px;
+				width: 100%;
+				background-color: rgba(0,0,0,0);
+				border: 2px solid gold;
+				border-radius: 5px;
+				color: white;
+				font-size: 18px;
+			}
+
+			#results_table {
+				color: white;
+				width: 100%;
+				border: 2px solid white;
+				border-collapse: collapse;
+			} 
+
+			#results_table tr td {
+				border: 2px solid white;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<nav id="navigation"></nav>
+		<nav id="navigation"></nav>
+		<div class="v_spacer">
+
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox">
+				<div class="header master_header">
+					<strong>Next RNG Values</strong>
+				</div>
+			</div>
+		</div>
+		<div class="flexsplitter">
+			<div class="homebox" id="results" style="padding: 20px;display:none">
+				
+			</div>
+		</div>
+	</body>
+	<script src="script/nav.js"></script>
+	<script>
+		var xhttp = new XMLHttpRequest();
+		var mapData = [];
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				responseJSON = JSON.parse(xhttp.responseText).data;
+				//console.log(responseJSON[4].obj[16].count)
+				mapData = [...responseJSON];
+				searchMaps();
+			}
+		}
+		xhttp.open("GET", "https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/data/object_data_advanced.json", true);
+		xhttp.send(null)
+
+		function searchMaps() {
+			game_barrels = [];
+			mapData.forEach(lvl_map => {
+				map_name = lvl_map.map
+				barrel_names = ["Bonus Barrel","Bonus Barrel (Hideout Helm)", "Training Barrel"]
+				//console.log(lvl_map)
+				bonus_list = lvl_map.obj.filter(item => barrel_names.indexOf(item.name) > -1)
+				pad_list = lvl_map.obj.filter(item => item.name == "Battle Crown Pad")
+				barrels = [];
+				if (bonus_list.length > 0) {
+					bonus_list.forEach(barrel => {
+						barrel_methods = [];
+						for (var i = 0; i < bonus_list.length; i++) {
+							var dx = bonus_list[i].position_x - barrel.position_x;
+							var dy = bonus_list[i].position_y - barrel.position_y;
+							var dz = bonus_list[i].position_z - barrel.position_z;
+							var dxz2 = Math.pow(dx,2)+Math.pow(dz,2)
+							var dxz = Math.pow(dxz2,0.5)
+							var d2 = Math.pow(dxz,2)+Math.pow(dy,2)
+							var dxyz = Math.pow(d2,0.5)
+							if ((dxyz > 1) | (dy > 1)) {
+								if (dxyz < 300) {
+									barrel_methods.push({
+										"method_type": "Cross-Barrel Travel",
+										"target": bonus_list[i].dmap,
+										"dxz": dxz,
+										"dy": dy,
+										"dxyz": dxyz,
+									})
+								}
+							}
+						}
+						// if (pad_list.length > 0) {
+						// 	barrel_methods.push({
+						// 		"method_type": "Crown FBW"
+						// 	})
+						// }
+						if (barrel_methods.length > 0) {
+							barrels.push({
+								"dest_map": barrel.dmap,
+								"methods": barrel_methods.slice(),
+							});
+						}
+					})
+					if (barrels.length > 0) {
+						game_barrels.push({
+							"map": map_name,
+							"barrels": barrels.slice()
+						})
+					}
+				}
+			})
+			console.log(JSON.stringify(game_barrels))
+		}
+		//document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
+	</script>
+</html>
