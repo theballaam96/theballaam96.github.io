@@ -39,12 +39,20 @@
 			padding: 10px;
 			padding-left: 15px;
 		}
+		.c-highlight {
+			background-color: rgba(128,0,0,0.5);
+		}
+		.error-highlight {
+			color: red;
+		}
 	</style>
 </head>
 <body>
 	<div class="back">
 		<div class="viewbox-container">
-			<textarea class="viewbox" id="numeric_editor" style="width:100%" onkeyup="liveUpdate()"></textarea>
+			<div class="viewbox" id="numeric_editor" style="width:100%" onkeyup="liveUpdate()" contenteditable="true">
+
+			</div>
 		</div>
 		<div class="viewbox-container">
 			<div class="viewbox" id="c_comparison">
@@ -58,14 +66,24 @@
 				<strong>Raw Script File:</strong>
 				<input type="file" id="file-selector" accept=".raw, .bin"/>
 			</div>
-			<div class="file-input-container" style="height:200px;margin-top:10px" id="error_list"></div>
+			<div class="file-input-container" style="height:200px;margin-top:10px;overflow:scroll;" id="error_list"></div>
 			<div>
-				<button onclick="numericToJSON()">
-					Save Script to session
-				</button>
-				<button onclick="saveArrayToFile()">
-					Save map scripts to PC
-				</button>
+				<div>	
+					<button onclick="numericToJSON()">
+						Save Script to session
+					</button>
+					<button onclick="saveArrayToFile()">
+						Save map scripts to PC
+					</button>
+				</div>
+				<div>
+					Highlight associated C Line
+					<input type="checkbox" checked="true" id="show_c_highlight_checkbox">
+				</div>
+				<div>
+					Auto-Indent Script Commands
+					<input type="checkbox" checked="true" id="indent_num" onclick="updateLineHovering()">
+				</div>
 			</div>
 		</div>
 		<div class="viewbox-container">
@@ -74,6 +92,7 @@
 			</div>
 		</div>
 	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
 		var file_bytes = []
 		var viewed_file = -1;
@@ -315,6 +334,70 @@
 			return arr.length;
 		}
 
+		function showCLines(idx) {
+			if (document.getElementById("show_c_highlight_checkbox").checked) {
+				var rel_c = document.getElementsByClassName("assoc-line-" + idx.toString())
+				for (let c = 0; c < rel_c.length; c++) {
+					rel_c[c].classList.add("c-highlight")
+				}
+				var rel_num = document.getElementsByClassName("line" + idx.toString())
+				for (let n = 0; n < rel_num.length; n++) {
+					rel_num[n].classList.add("c-highlight")
+				}
+			}
+		}
+
+		function clearCLines(idx) {
+			var rel_c = document.getElementsByClassName("assoc-line-" + idx.toString())
+			for (let c = 0; c < rel_c.length; c++) {
+				rel_c[c].classList.remove("c-highlight")
+			}
+			var rel_num = document.getElementsByClassName("line" + idx.toString())
+			for (let n = 0; n < rel_num.length; n++) {
+				rel_num[n].classList.remove("c-highlight")
+			}
+		}
+
+		function updateLineHovering() {
+			$(function(){
+			    $('div[contentEditable="true"]').each(function(){
+			       var text = $(this).clone().children().remove().end().text();// get text
+			       var $children = $(this).children();// get children
+
+			       //add text and children again
+			       if (text != "") {
+			       	$(this).empty().append('<div>'+text+'</div>').append($children);
+			       }
+			    });
+			});
+			var hook = document.getElementById("numeric_editor")
+			var children = hook.childNodes
+			var current_num_indent = 0;
+			var indent = document.getElementById("indent_num").checked
+			//console.log(indent)
+			for (let c = 0; c < children.length; c++) {
+				var focused_child = hook.childNodes[c];
+				if (focused_child) {
+					var pad = current_num_indent * 30;
+					if (indent) {
+						focused_child.style["padding-left"] = pad.toString() + "px"
+					} else {
+						focused_child.style["padding-left"] = 0
+					}
+					if (focused_child.innerText.substring(0,4).toLowerCase() == "cond") {
+						current_num_indent++;
+					} else if (focused_child.innerText.toLowerCase() == "endblock") {
+						current_num_indent = 0;
+					}
+					focused_child.removeAttribute("class")
+					focused_child.classList.add("line" + c.toString())
+					focused_child.classList.add("numline")
+					focused_child.setAttribute("onmouseover","showCLines(" + c + ")")
+					focused_child.setAttribute("onmouseout","clearCLines(" + c + ")")
+				}
+			}
+		}
+
 		function convertScriptLine(json) {
 			string = "";
 			var has_params = false;
@@ -427,55 +510,115 @@
 		}
 
 		function liveUpdate() {
-			var text = document.getElementById("numeric_editor").value
+			var text = document.getElementById("numeric_editor").innerText
 			var lines = text.split("\n").filter(item => item != "")
 			var success = true;
 			var can_update = true;
 			var errors = []
 			var cond_count = 0;
 			var exec_count = 0;
+			var lines_with_errors = [];
 			lines.forEach((line, index) => {
 				var pars = line.split(" ")
 				var line_idx = (index + 1).toString();
 				if (pars[0] == "COND" || pars[0] == "CONDINV") {
 					cond_count += 1;
+					if (exec_count > 0) {
+						success = false;
+						can_update = false;
+						errors.push("[CRITICAL] Condition occurs after execution before ENDBLOCK on line " + line_idx)
+						lines_with_errors.push(index)
+					}
 				}
 				if (pars[0] == "EXEC") {
 					exec_count += 1;
 				}
 				if (pars[0] == "ENDBLOCK") {
+					if (exec_count == 0) {
+						success = false;
+						can_update = true;
+						errors.push("Endblock occurs on line " + line_idx + " without an execution, rendering this condition useless")
+						lines_with_errors.push(index)
+					}
 					cond_count = 0;
 					exec_count = 0;
+				} else {
+					var has_nan = isNaN(parseInt(pars[1]));
+					if (has_nan) {
+						success = false;
+						can_update = false;
+						errors.push("[CRITICAL] Non-Number function type provided on " + line_idx)
+						lines_with_errors.push(index)
+					} else {
+						if ((pars[1] % 1) != 0) {
+							success = false;
+							can_update = false;
+							errors.push("[CRITICAL] Non-Integer function type provided on " + line_idx)
+							lines_with_errors.push(index)
+						}
+					}
+					var has_dec = false;
+					for (let a = 0; a < 3; a++) {
+						if (isNaN(parseInt(pars[3 + a]))) {
+							has_nan = true;
+						} else if ((pars[3 + a] % 1) != 0) {
+							has_dec = true;
+						}
+					}
+					if (has_nan) {
+						success = false;
+						can_update = false;
+						errors.push("[CRITICAL] One or more non-number parameter(s) provided on " + line_idx)
+						lines_with_errors.push(index)
+					}
+					if (has_dec) {
+						success = false;
+						can_update = false;
+						errors.push("[CRITICAL] One or more non-integer parameter(s) provided on " + line_idx)
+						lines_with_errors.push(index)
+					}
 				}
 				if (cond_count > 4) {
 					success = false;
 					can_update = false;
 					errors.push("[CRITICAL] Condition count for a block exceeds 4 on line " + line_idx)
+					lines_with_errors.push(index)
 				}
 				if (exec_count > 4) {
 					success = false;
 					can_update = false;
 					errors.push("[CRITICAL] Execution count for a block exceeds 4 on line " + line_idx)
+					lines_with_errors.push(index)
 				}
 				if (pars.filter(item => item != "").length != 6 && pars[0] != "ENDBLOCK") {
 					success = false;
 					can_update = false;
 					errors.push("[CRITICAL] Invalid length on line " + line_idx)
+					lines_with_errors.push(index)
 				}
 				valid_pars = ["ENDBLOCK","COND","CONDINV","EXEC"]
 				if (valid_pars.indexOf(pars[0]) == -1) {
 					success = false;
 					can_update = false;
 					errors.push("[CRITICAL] Invalid line type on line " + line_idx)
+					lines_with_errors.push(index)
 				}
 				if (pars[0] == "ENDBLOCK" && pars.filter(item => item != "").length != 1) {
 					errors.push("Endblock on line " + line_idx + " has parameters when it should not")
+					lines_with_errors.push(index)
 				}
 				if (index == (lines.length - 1)) {
 					if (pars[0] != "ENDBLOCK") {
 						success = false;
 						errors.push("[CRITICAL] Trailing conditionals and executions without an endblock on line " + line_idx)
+						lines_with_errors.push(index)
 					}
+				}
+				if (pars[0] != "ENDBLOCK" && pars[2] != "|") {
+					success = false;
+					can_update = true;
+					errors.push("Invalid separator on line " + line_idx)
+					lines_with_errors.push(index)
 				}
 			})
 			document.getElementById("error_list").innerText = errors.join("\n")
@@ -484,6 +627,13 @@
 				numericCommandsToC();
 				fixTabbing();
 			}
+			updateLineHovering()
+			lines_with_errors.forEach(item => {
+				var lwe = document.getElementsByClassName("line" + item)
+				for (let l = 0; l < lwe.length; l++) {
+					lwe[l].classList.add("error-highlight")
+				}
+			})
 			return success
 		}
 
@@ -510,7 +660,7 @@
 			var success = liveUpdate();
 			if (success) {
 				var hook = document.getElementById("numeric_editor")
-				var text = hook.value;
+				var text = hook.innerText;
 				var lines = text.split("\n").filter(item => item != "").slice()
 				var existing_data = scripts.filter(item => item.id == viewed_file)
 				var is_new = true;
@@ -578,43 +728,54 @@
 			}
 		}
 
+		var current_numeric_line = 0;
 		function numericCommandsToC() {
 			num_hook = document.getElementById("numeric_editor")
-			lines = num_hook.value.split("\n").filter(item => item != "")
+			lines = num_hook.childNodes
+			current_numeric_line = 0
+			document.getElementById("c_comparison").innerHTML = "";
+			//lines = num_hook.innerText.split("\n").filter(item => item != "")
 			tab_indentation = 0;
-			lines.forEach(item => {
-				line_seg = item.split(" ")
-				if (line_seg[0] != "ENDBLOCK") {
-					func = parseInt(line_seg[1])
-					params = []
-					for (let a = 0; a < 3; a++) {
-						params.push(parseInt(line_seg[3 + a]))
-					}
-					if (line_seg[0] == "EXEC") {
-						grabExecution(0, func,params,0,0,"")
-					} else {
-						if (line_seg[0] == "CONVINV") {
-							func += 0x8000
+			for (let l = 0; l < lines.length; l++) {
+				item = lines[l].innerText;
+				if (item) {
+					if (item != "") {
+						index = current_numeric_line;
+						line_seg = item.split(" ")
+						if (line_seg[0] != "ENDBLOCK") {
+							func = parseInt(line_seg[1])
+							params = []
+							for (let a = 0; a < 3; a++) {
+								params.push(parseInt(line_seg[3 + a]))
+							}
+							if (line_seg[0] == "EXEC") {
+								grabExecution(0, func,params,0,0,"")
+							} else {
+								if (line_seg[0] == "CONVINV") {
+									func += 0x8000
+								}
+								grabConditional(0, func,params,0,0,"")
+							}
+						} else {
+							var hook = document.getElementById("c_comparison")
+							for (let t = 0; t < tab_indentation; t++) {
+								local_tab = 0
+								for (let a = 0; a < tab_indentation - t - 1; a++) {
+									local_tab += 1;
+								}
+								var block = document.createElement("div")
+								var block_text = document.createTextNode("}")
+								block.setAttribute("tabbing",local_tab);
+								block.classList.add("code-line")
+								block.appendChild(block_text)
+								hook.appendChild(block)
+							}
+							tab_indentation = 0;
 						}
-						grabConditional(0, func,params,0,0,"")
+						current_numeric_line++;
 					}
-				} else {
-					var hook = document.getElementById("c_comparison")
-					for (let t = 0; t < tab_indentation; t++) {
-						local_tab = 0
-						for (let a = 0; a < tab_indentation - t - 1; a++) {
-							local_tab += 1;
-						}
-						var block = document.createElement("div")
-						var block_text = document.createTextNode("}")
-						block.setAttribute("tabbing",local_tab);
-						block.classList.add("code-line")
-						block.appendChild(block_text)
-						hook.appendChild(block)
-					}
-					tab_indentation = 0;
 				}
-			})
+			}
 		}
 
 		function showScript(script_index, id_index) {
@@ -629,16 +790,18 @@
 				}
 			}
 			hook = document.getElementById("numeric_editor")
-			hook.value = ""
+			hook.innerHTML = ""
 			var focused_script = scripts.find(item => item.id == id_index)
 			if (focused_script) {
 				focused_script.script.forEach(item => {
-					hook.value += convertScriptLine(item)
+					hook.innerHTML += "<div>" + convertScriptLine(item) + "</div>"
 				})
 				document.getElementById("c_comparison").innerHTML = "";
 				tab_indentation = 0;
 				numericCommandsToC()
 				fixTabbing()
+				liveUpdate();
+				updateLineHovering();
 			}
 		}
 
@@ -663,7 +826,7 @@
 				setup_data = fr.result;
 			    var array = new Uint8Array(data);
 			    file_bytes = array.slice()
-			    //console.log(file_bytes)
+				//console.log(file_bytes)
 			    var script_list = parseFile();
 			    populateSelectList(script_list);
 			};
@@ -1723,6 +1886,7 @@
 				tab_indentation -= 1;
 			}
 			var block = document.createElement("div")
+			block.classList.add("assoc-line-" + current_numeric_line.toString())
 			var block_text = document.createTextNode(str)
 			block.setAttribute("tabbing",line_tabbing);
 			block.classList.add("code-line")
