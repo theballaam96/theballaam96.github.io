@@ -13,7 +13,7 @@
 			background-color: white;
 			border: 2px solid black;
 			height: inherit;
-			overflow: scroll;
+			overflow-y: scroll;
 		}
 		.viewbox-container {
 			flex: 1;
@@ -23,7 +23,7 @@
 		.scrollbox {
 			padding: 10px;
 			padding-left: 20px;
-			overflow: scroll;
+			overflow-y: scroll;
 		}
 		.map-item {
 			padding: 2px;
@@ -45,17 +45,31 @@
 		.error-highlight {
 			color: red;
 		}
+		.line_numbers {
+			background-color: #555;
+			border: 2px solid #555;
+			height: inherit;
+			text-align: right;
+			padding-right: 5px;
+			color: gainsboro;
+			overflow-y: hidden;
+		}
 	</style>
 </head>
 <body>
 	<div class="back">
 		<div class="viewbox-container">
-			<div class="viewbox" id="numeric_editor" style="width:100%" onkeyup="liveUpdate()" contenteditable="true">
+			<div style="display:flex;height:100%">
+				<div class="line_numbers" style="flex:1" id="numeric_linenums">
 
+				</div>
+				<div class="viewbox" id="numeric_editor" style="width:100%;flex:20" onkeyup="liveUpdate()" onscroll="updateScroll()" contenteditable="true" spellcheck="false">
+
+				</div>
 			</div>
 		</div>
 		<div class="viewbox-container">
-			<div class="viewbox" id="c_comparison">
+			<div class="viewbox" id="c_comparison" style="overflow: scroll">
 
 			</div>
 		</div>
@@ -66,7 +80,7 @@
 				<strong>Raw Script File:</strong>
 				<input type="file" id="file-selector" accept=".raw, .bin"/>
 			</div>
-			<div class="file-input-container" style="height:200px;margin-top:10px;overflow:scroll;" id="error_list"></div>
+			<div class="file-input-container" style="height:200px;margin-top:10px;overflow-y:scroll;" id="error_list"></div>
 			<div>
 				<div>	
 					<button onclick="numericToJSON()">
@@ -334,6 +348,28 @@
 			return arr.length;
 		}
 
+		function updateLineNumbers() {
+			var hook = document.getElementById("numeric_editor")
+			var num_hook = document.getElementById("numeric_linenums")
+			num_hook.innerHTML = "";
+			var children = hook.childNodes
+			//console.log(indent)
+			for (let c = 0; c < children.length; c++) {
+				var focused_child = hook.childNodes[c];
+				if (focused_child) {
+					var num_div = document.createElement("div")
+					var num_txt = document.createTextNode((c+1).toString())
+					num_div.appendChild(num_txt)
+					num_hook.appendChild(num_div)
+				}
+			}
+			updateScroll();
+		}
+
+		function updateScroll() {
+			document.getElementById("numeric_linenums").scrollTop = document.getElementById("numeric_editor").scrollTop;
+		}
+
 		function showCLines(idx) {
 			if (document.getElementById("show_c_highlight_checkbox").checked) {
 				var rel_c = document.getElementsByClassName("assoc-line-" + idx.toString())
@@ -396,6 +432,7 @@
 					focused_child.setAttribute("onmouseout","clearCLines(" + c + ")")
 				}
 			}
+			updateLineNumbers();
 		}
 
 		function convertScriptLine(json) {
@@ -578,10 +615,10 @@
 						lines_with_errors.push(index)
 					}
 				}
-				if (cond_count > 4) {
+				if (cond_count > 5) {
 					success = false;
 					can_update = false;
-					errors.push("[CRITICAL] Condition count for a block exceeds 4 on line " + line_idx)
+					errors.push("[CRITICAL] Condition count for a block exceeds 5 on line " + line_idx)
 					lines_with_errors.push(index)
 				}
 				if (exec_count > 4) {
