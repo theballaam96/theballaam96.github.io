@@ -488,6 +488,7 @@
 		var new_file = []
 		function saveArrayToFile() {
 			numericToJSON();
+			scripts = scripts.filter(item=>item.id != -1)
 			var script_count = scripts.length;
 			new_file = [];
 			intToArr(script_count,2).forEach(byte => {new_file.push(byte)})
@@ -711,6 +712,7 @@
 				var exec_count = 0;
 				var block_arr = [];
 				lines.forEach(line => {
+					console.log(line.split(" "))
 					var numeric_params = line.split(" ")
 					var func = 0;
 					var params = [];
@@ -745,7 +747,7 @@
 						block_arr.push({
 							"type": "endblock",
 						})
-						if (cond_count <= 4 && exec_count <= 4) {
+						if (cond_count <= 5 && exec_count <= 4) {
 							block_arr.forEach(block => {
 								new_script_arr.push(block)
 							})
@@ -3234,6 +3236,7 @@
 					})
 				}
 			}
+			console.log(scripts)
 			return scripts.slice()
 		}
 	</script>
