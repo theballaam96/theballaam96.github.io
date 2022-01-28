@@ -77,6 +77,10 @@ var toolbar_items = [
 		"link": "/pufftoss_viewer.html"
 	},
 	{
+		"text": "Object Script Viewer",
+		"link": "/object_script_viewer.html"
+	},
+	{
 		"text": "DK64 Practice ROM",
 		"link": "/practicerom.html"
 	}

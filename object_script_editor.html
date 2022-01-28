@@ -2911,10 +2911,10 @@
 					display(file, "}",[])
 					break;
 				case 0x69:
-					display(file, "FUN_80661398()",[])
+					display(file, "setWaterHeight(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
 					break;
 				case 0x6A:
-					display(file, "FUN_806613E8(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
+					display(file, "increaseWaterHeight(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
 					break;
 				case 0x6B:
 					display(file, "setFlag(%s>%s,%s,'Permanent')", [hex(Math.floor(params[0] / 8)), str(params[0] % 8), getTOrF(params[1])])

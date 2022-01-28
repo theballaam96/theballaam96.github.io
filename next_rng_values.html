@@ -180,11 +180,26 @@
 			Count = parseInt(document.getElementById("cycleCount").value)
 			document.getElementById("results").style.display = "";
 			var rng_values = [RNG];
+			// var rotate1 = 0;
+			// var rotate2 = 0;
+			// var rotate3 = 0;
+			// var lastRNG = 0;
 			for (r = 1; r < Count; r++) {
 				RNG = cycleRNG();
+				// if (RNG < 1431655765) {
+				// 	rotate1 = rotate1 + 1;
+				// } else if (RNG > 2863311531) {
+				// 	rotate3 = rotate3 + 1;
+				// } else {
+				// 	rotate2 = rotate2 + 1;
+				// }
+				// lastRNG = RNG
 				rng_values.push(RNG)
 			}
+			// console.log([rotate1,rotate2,rotate3])
+			// console.log([(100 * (rotate1 / Count)),(100 * (rotate2 / Count)), (100*(rotate3 / Count))])
 			console.log(rng_values)
+			// console.log(lastRNG)
 			document.getElementById("results_table").innerHTML = "";
 			var tr;
 			var td;
