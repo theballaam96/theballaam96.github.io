@@ -2276,7 +2276,7 @@
 					display(file, "if (*(byte *)(character_change_pointer->unk0x2C1) %s== 0){", [inverseFlagInvertedChar])
 					break;
 				case 28:
-					display(file, "x1C_svar6 = 80650a70()",[])
+					display(file, "x1C_svar6 = 80650a70(this->id, %s)",[str(params[0])])
 					if (params[1] == 0) {
 						if (inverseFlag == 0) {
 							display(file, "if (x1C_svar6 < %s) {", [str(params[2])])
@@ -2311,7 +2311,7 @@
 					}
 					break;
 				case 30:
-					display(file, "if ((FUN_80726D7C() & 0xFF) %s== 0){", [inverseFlagInvertedChar])
+					display(file, "if ((isEnemySpawnedFromSpawnerTrigger(%s) & 0xFF) %s== 0){", [str(params[0]),inverseFlagInvertedChar])
 					break;
 				case 31:
 					if (inverseFlag == 0) {
@@ -2400,15 +2400,15 @@
 				case 51:
 					if (params[0] == 0) {
 						if (inverseFlag == 0) {
-							display(file, "if (%s < FUN_80614A54(PlayerPointer)) {", [str(params[1])])
+							display(file, "if (%s < getAnimationTimer(PlayerPointer)) {", [str(params[1])])
 						} else {
-							display(file, "if (%s >= FUN_80614A54(PlayerPointer)) {", [str(params[1])])
+							display(file, "if (%s >= getAnimationTimer(PlayerPointer)) {", [str(params[1])])
 						}
 					} else if (params[0] == 1) {
 						if (inverseFlag == 0) {
-							display(file, "if (%s >= FUN_80614A54(PlayerPointer)) {", [str(params[1])])
+							display(file, "if (%s >= getAnimationTimer(PlayerPointer)) {", [str(params[1])])
 						} else {
-							display(file, "if (%s < FUN_80614A54(PlayerPointer)) {", [str(params[1])])
+							display(file, "if (%s < getAnimationTimer(PlayerPointer)) {", [str(params[1])])
 						}
 					} else {
 						display(file, "if (1 == 0) {",[])
@@ -2485,7 +2485,35 @@
 					display(file, "*(float *)(behaviour + %s) = %s", [hex((params[0] * 4) + 0x14), str(params[1] / 10)])
 					break;
 				case 7:
-					display(file, "*(code *)(%s)(behaviour,this->id,%s,%s)", [hex(0x80747E70 + (params[0] * 4)), str(params[1]), str(params[2])])
+					switch(params[0]) {
+						case 16:
+							display(file, "spawn4Slices()", [])
+							break;
+						case 68:
+							display(file, "controlGiantKoshaTimer(behaviour,this->id,%s)", [str(params[1])])
+							break;
+						case 104:
+							display(file, "showAztecSandstorm(behaviour,this->id",[])
+							break;
+						case 105:
+							display(file, "spawnWrinkly(behaviour,this->id,%s)", [str(params[1])])
+							break;
+						case 113:
+							display(file, "updateMushCannonsProgress(behaviour)", [])
+							break;
+						case 122:
+							display(file, "isNotArcadeRound2()", [])
+							break;
+						case 124:
+							display(file, "doesBLockerStay()", [])
+							break;
+						case 133:
+							display(file, "hasKey()", [])
+							break;
+						default:
+							display(file, "*(code *)(%s)(behaviour,this->id,%s,%s)", [hex(0x80747E70 + (params[0] * 4)), str(params[1]), str(params[2])])
+						break;
+					}
 					break;
 				case 8:
 					display(file, "FUN_80642844(%s,%s,behaviour)", [str(params[0]), str(params[1])])
@@ -2535,7 +2563,7 @@
 					if (xF_uvar14 == 0) {
 						xF_uvar14 = 0xFF
 					}
-					display(file, "FUN_806085DC(this->id,%s,%s,%s)", [str(params[0]), str(xF_uvar14), str(xF_bvar15)])
+					display(file, "playSFXFromObject(this->id,%s,%s,%s)", [str(params[0]), str(xF_uvar14), str(xF_bvar15)])
 					break;
 				case 0x10:
 					display(file, "x10_temp = *(short *)(behaviour + %s)", [hex((params[1] * 2) + 0x10)])
@@ -2617,7 +2645,7 @@
 					display(file, "playCutsceneFromModelTwoScript(behaviour,%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
 					break;
 				case 0x26:
-					display(file, "FUN_8064199C(behaviour,%s,%s)", [str(params[0]), str(params[1])])
+					display(file, "setScriptRunState(behaviour,%s,%s)", [str(params[0]), str(params[1])])
 					break;
 				case 0x27:
 					display(file, "FUN_80634EA4(this->id,%s,%s)", [str(params[0]), str(params[1] & 0xFF)])
@@ -2719,7 +2747,7 @@
 					break;
 				case 0x3C:
 					display(file, "if (*(int *)(behaviour + 0x94) != 0) {",[])
-					display(file, "FUN_806782C0(*(int *)(behaviour + 0x94))",[])
+					display(file, "deleteActorContainer(*(int *)(behaviour + 0x94))",[])
 					display(file, "*(int *)(behaviour + 0x94) = 0",[])
 					display(file, "}",[])
 					break;
@@ -2770,7 +2798,7 @@
 					display(file, "FUN_80604BE8(*(byte *)(behaviour + %s,%s,%s)", [hex((params[0] * 2) + 0x11), str(params[1] / 100), str(params[2])])
 					break;
 				case 0x49:
-					display(file, "FUN_8067ABC0(%s,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)", [str(params[2])])
+					display(file, "createCollision(0,character_change_pointer[0]->character_pointer,%s,%s,%s,CutsceneX,CutsceneY,CutsceneZ)", [str(params[0] & 0xFF),str(params[1]),str(params[2])])
 					break;
 				case 0x4A:
 					display(file, "FUN_8063393C(this->id,1,%s,%s)", [str(params[0]), str(params[1])])
@@ -2823,7 +2851,7 @@
 				case 0x54:
 					display(file, "x54_ivar7 = id2index((&WORD_807F6240)[%s])", [str(params[0])])
 					display(file, "if (x54_ivar7 != -1) {",[])
-					display(file, "FUN_8064199C(ObjectModel2ArrayPointer[x54_ivar7].behaviour,%s,%s)", [str(params[1]), str(params[2])])
+					display(file, "setScriptRunState(ObjectModel2ArrayPointer[x54_ivar7].behaviour,%s,%s)", [str(params[1]), str(params[2])])
 					display(file, "}",[])
 					break;
 				case 0x55:
@@ -2879,7 +2907,7 @@
 					display(file, "WORD_807F693A = %s", [str(params[0])])
 					break;
 				case 0x63:
-					display(file, "FUN_8068B830()",[])
+					display(file, "FUN_8068B830(%s,%s,%s)",[str(params[0]),str(params[1]),str(params[2])])
 					break;
 				case 0x64:
 					display(file, "FUN_8068B8FC()",[])
@@ -2906,8 +2934,8 @@
 					break;
 				case 0x68:
 					display(file, "if (BYTE_807F61F8 != 0) {",[])
-					display(file, "FUN_806782C0(DWORD_807F61F0)",[])
-					display(file, "FUN_806782C0(DWORD_807F61F4)",[])
+					display(file, "deleteActorContainer(DWORD_807F61F0)",[])
+					display(file, "deleteActorContainer(DWORD_807F61F4)",[])
 					display(file, "}",[])
 					break;
 				case 0x69:
