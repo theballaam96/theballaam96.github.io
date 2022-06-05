@@ -1900,15 +1900,17 @@
 		function display(file, str, args) {
 			hook = document.getElementById("c_comparison")
 			str = str.toString()
-			if (args.length > 0) {
-				str_arr = str.split("%s")
-				str = ""
-				str_arr.forEach((item,index)=> {
-					str += str_arr[index]
-					if (index < (str_arr.length - 1)) {
-						str += args[index]
-					}
-				})
+			if (args) {
+				if (args.length > 0) {
+					str_arr = str.split("%s")
+					str = ""
+					str_arr.forEach((item,index)=> {
+						str += str_arr[index]
+						if (index < (str_arr.length - 1)) {
+							str += args[index]
+						}
+					})
+				}
 			}
 			if (str.substring(str.length - 1) != "{") {
 				if (str.substring(str.length - 1) != "}") {
