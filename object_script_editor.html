@@ -767,6 +767,15 @@
 			}
 		}
 
+		function addScript(new_script_id) {
+			script_insert = {
+				"id": new_script_id,
+				"behav_9C": 0,
+				"script": []
+			}
+			scripts.push(script_insert)
+		}
+
 		var current_numeric_line = 0;
 		function numericCommandsToC() {
 			num_hook = document.getElementById("numeric_editor")
@@ -2323,7 +2332,7 @@
 					}
 					break;
 				case 32:
-					display(file, "if ((FUN_806422D8() & 0xFF) %s== 0){", [inverseFlagInvertedChar])
+					display(file, "if ((isPlayerWithinDistance(%s) & 0xFF) %s== 0){", [str(params[0]), inverseFlagInvertedChar])
 					break;
 				case 33:
 					display(file, "x21_successful = 0",[])
@@ -2565,7 +2574,7 @@
 					if (xF_uvar14 == 0) {
 						xF_uvar14 = 0xFF
 					}
-					display(file, "playSFXFromObject(this->id,%s,%s,%s)", [str(params[0]), str(xF_uvar14), str(xF_bvar15)])
+					display(file, "playSFXFromObject(this->id,%s,%s,%s,%s,%s,0.3)", [str(params[0]), str(xF_uvar14), str(xF_bvar15), str(params[1]&0x7F), str(params[2]&0x7F)])
 					break;
 				case 0x10:
 					display(file, "x10_temp = *(short *)(behaviour + %s)", [hex((params[1] * 2) + 0x10)])
@@ -2890,7 +2899,7 @@
 					display(file, "setNextTransitionType(%s)", [str(params[0])])
 					break;
 				case 0x5E:
-					display(file, "FUN_80641874()",[])
+					display(file, "FUN_80641874(%s,%s)",[str(params[0]),str(params[1])])
 					break;
 				case 0x5F:
 					display(file, "*(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | %s", [hex((params[0] * 0x10000) + params[1])])
@@ -3266,7 +3275,27 @@
 					})
 				}
 			}
-			console.log(scripts)
+			test = "length"
+			if (test == "length") {
+				scripts.sort((a,b) => (a.id > b.id) ? 1 : -1)
+				script_str = ""
+				for (let s = 0; s < scripts.length; s++) {
+					script_str += scripts[s].id + " | " + scripts[s].script.length + "\n"
+				}
+				console.log(script_str)
+			} else if (test == "instructions") {
+				script_str = ""
+				for (let s = 0; s < scripts.length; s++) {
+					if (scripts[s].id == 0xD) {
+						for (let l = 0; l < scripts[s].script.length; l++) {
+							script_str += JSON.stringify(scripts[s].script[l]) + "\n"
+						}
+						console.log(script_str)
+					}
+				}
+			} else {
+				console.log(scripts)
+			}
 			return scripts.slice()
 		}
 	</script>
