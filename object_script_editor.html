@@ -4,16 +4,20 @@
 	<title>Object Script Editor</title>
 	<style>
 		body {
-			background-color: antiquewhite;
+			background-color: #222;
 		}
 		.back {
 			display: flex;
 		}
 		.viewbox {
-			background-color: white;
-			border: 2px solid black;
+			background-color: #222;
+			border: 2px solid #eee;
 			height: inherit;
 			overflow-y: scroll;
+			color: #eee;
+		}
+		#numeric_editor.viewbox {
+			border-left-width: 0px;
 		}
 		.viewbox-container {
 			flex: 1;
@@ -29,15 +33,17 @@
 			padding: 2px;
 			transition: 0.5s ease-in-out;
 			cursor: pointer;
+			color: #eee;
 		}
 		.map-item:hover, .viewed-index {
-			background-color: #eee;
+			background-color: #555;
 		}
 		.file-input-container {
-			background-color: white;
-			border: 2px solid black;
+			background-color: #222;
+			border: 2px solid #eee;
 			padding: 10px;
 			padding-left: 15px;
+			color: #eee;
 		}
 		.c-highlight {
 			background-color: rgba(128,0,0,0.5);
@@ -46,13 +52,90 @@
 			color: red;
 		}
 		.line_numbers {
-			background-color: #555;
-			border: 2px solid #555;
+			background-color: #222;
+			border: 2px solid #eee;
 			height: inherit;
 			text-align: right;
 			padding-right: 5px;
 			color: gainsboro;
 			overflow-y: hidden;
+		}
+		.highlight-c-prompt {
+			color: #eee;
+		}
+		.indent-script-prompt {
+			color: #eee;
+		}
+		button {
+			border: 2px solid #eee;
+			border-radius: 5px;
+			padding: 5px;
+			color: #eee;
+			background-color: #222;
+			transition: 0.25s ease-in-out;
+		}
+		button.cancel {
+			background-color: rgba(81, 1, 1, 0.705);
+		}
+		button.confirm {
+			background-color: rgba(1, 81, 1, 0.705);
+		}
+		button:hover {
+			background-color: #555;
+		}
+		button.cancel:hover {
+			background-color: rgba(160, 1, 1, 0.705);
+		}
+		button.confirm:hover {
+			background-color: rgba(1, 160, 1, 0.705);
+		}
+		.prompt {
+			position:absolute;
+			border: 2px solid #eee;
+			padding: 10px;
+			color: #eee;
+			background-color: #222;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%,-50%);
+		}
+		.prompt > .head {
+			margin: 10px;
+			font-weight: bold;
+			text-align: center;
+			font-size: 2em;
+		}
+		.prompt > .button-array {
+			margin-top: 20px;
+			display: flex;
+		}
+		.prompt > .button-array > .array-item {
+			flex: 1;
+		}
+		.prompt > .button-array > .array-item > button {
+			padding: 8px 20px;
+		}
+		.prompt > .button-array > .array-item.right {
+			text-align: right;
+		}
+		.prompt > input {
+			padding: 5px;
+		}
+		.prompt > .prompt-error {
+			text-align: center;
+			margin-top: 5px;
+			color: red;
+			font-size: 1.1em;
+		}
+		.blocker {
+			position:absolute;
+			top: 0%;
+			left: 0%;
+			width: 100%;
+			height: 100%;
+		}
+		.hide {
+			display:none;
 		}
 	</style>
 </head>
@@ -81,20 +164,33 @@
 				<input type="file" id="file-selector" accept=".raw, .bin"/>
 			</div>
 			<div class="file-input-container" style="height:200px;margin-top:10px;overflow-y:scroll;" id="error_list"></div>
-			<div>
+			<div id="form-controls" class="hide">
 				<div>	
 					<button onclick="numericToJSON()">
 						Save Script to session
 					</button>
 					<button onclick="saveArrayToFile()">
-						Save map scripts to PC
+						Save map scripts file to PC
 					</button>
+					<button onclick="initAddItem()">
+						Add Script
+					</button>
+					<button onclick="removeSelectedScript()">
+						Remove Selected Script
+					</button>
+					<button onclick="document.getElementById('import-selector').click()">
+						Import Script
+					</button>
+					<button onclick="exportScript()">
+						Export Script
+					</button>
+					<input type="file" id="import-selector" class="hide" accept=".script"/>
 				</div>
-				<div>
+				<div class="highlight-c-prompt">
 					Highlight associated C Line
 					<input type="checkbox" checked="true" id="show_c_highlight_checkbox">
 				</div>
-				<div>
+				<div class="indent-script-prompt">
 					Auto-Indent Script Commands
 					<input type="checkbox" checked="true" id="indent_num" onclick="updateLineHovering()">
 				</div>
@@ -106,8 +202,30 @@
 			</div>
 		</div>
 	</div>
+	<div class="blocker hide" id="blocker"></div>
+	<div class="new_item prompt hide" id="new-item">
+		<div class="head">
+			Add Script Item
+		</div>
+		<label for="new-item-index">New Script ID: 0x</label>
+		<input id="new-item-index" type="text" pattern="[a-fA-F0-9]{1,4}" maxlength="4" onkeyup="this.value = filterNewItemInput(this.value)"/>
+		<div id="new-item-error" class="prompt-error"></div>
+		<div class="button-array">
+			<div class="array-item" onclick="togglePromptState('new-item',true)">
+				<button class="cancel">Close</button>
+			</div>
+			<div class="array-item right" onclick="addReferencedScript()">
+				<button class="confirm">Confirm</button>
+			</div>
+		</div>
+	</div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script type="text/javascript">
+		function filterNewItemInput(value) {
+			document.getElementById("new-item-error").innerText="";
+			permitted_chars = ['a','b','c','d','e','f','A','B','C','D','E','F','0','1','2','3','4','5','6','7','8','9']
+			return value.split("").filter(item => permitted_chars.includes(item)).join("")
+		}
 		var file_bytes = []
 		var viewed_file = -1;
 
@@ -771,9 +889,127 @@
 			script_insert = {
 				"id": new_script_id,
 				"behav_9C": 0,
-				"script": []
+				"script": [
+					{"type": "condition","func":1,"params":[0,0,0]},
+					{"type": "execution","func":1,"params":[1,0,0]},
+					{"type": "endblock"},
+				]
 			}
 			scripts.push(script_insert)
+		}
+
+		function removeSelectedScript() {
+			scripts = scripts.filter(item => item.id != viewed_file)
+			populateSelectList(scripts)
+		}
+
+		function addReferencedScript() {
+			const value = parseInt("0x"+document.getElementById("new-item-index").value,16);
+			if (scripts.find(item => item.id == value)) {
+				document.getElementById("new-item-error").innerText = "ID already exists";
+			} else {
+				addScript(value);
+				populateSelectList(scripts)
+				togglePromptState('new-item',true)
+			}
+		}
+
+		function importScript(file_data) {
+			const script_data = file_data.split("\r\n")
+			let found_data = false;
+			let found_code = false;
+			script_insert = {
+				"id": -1,
+				"behav_9C": 0,
+				"script": []
+			}
+			script_data.forEach(line => {
+				if (line == ".data") {
+					found_data = true;
+				} else if (line == ".code") {
+					found_code = true;
+				} else if (found_data && !found_code) {
+					prop = line.split(" = ")[0]
+					val = line.split(" = ")[1]
+					if (val.toLowerCase().includes("0x")) {
+						val = parseInt(val.split("0x")[1],16)
+					}
+					if (prop == "id") {
+						script_insert.id = val
+					} else if (prop == "behav_9C") {
+						script_insert.behav_9C = val
+					}
+				} else if (found_code) {
+					code_data = line.split(" ")
+					func = code_data[0]
+					param_funcs = ["COND","CONDINV","EXEC"]
+					if (param_funcs.includes(func.toUpperCase())) {
+						param_list = []
+						for (let k = 0; k < 3; k++) {
+							param_list.push(parseInt(code_data[k+3]))
+						}
+						if (func.toUpperCase().indexOf("COND") > -1) {
+							sub_func = code_data[1]
+							if (func.toUpperCase() == "CONDINV") {
+								sub_func += 0x8000
+							}
+							script_insert.script.push({"type": "condition","func":sub_func,"params":param_list})
+						} else {
+							script_insert.script.push({"type": "execution","func":code_data[1],"params":param_list})
+						}
+					} else if (func.toUpperCase() == "ENDBLOCK") {
+						script_insert.script.push({"type":"endblock"})
+					}
+				}
+			})
+			scripts = scripts.filter(item => item.id != script_insert.id)
+			scripts.push(script_insert)
+			populateSelectList(scripts)
+		}
+
+		function exportScript() {
+			export_item = scripts.find(item => item.id == viewed_file)
+			if (export_item) {
+				text = [".data","id = " + export_item.id,"behav_9C = " + export_item.behav_9C,".code"]
+				export_item.script.forEach(item => {
+					head = ""
+					sub_func = -1
+					if (item.type == "condition" && item.func < 0x8000) {
+						head = "COND"
+						sub_func = item.func
+					} else if (item.type == "condition" && item.func >= 0x8000) {
+						head = "CONDINV"
+						sub_func = item.func - 0x8000
+					} else if (item.type == "execution") {
+						head = "EXEC"
+						sub_func = item.func
+					} else if (item.type == "endblock") {
+						head = "ENDBLOCK"
+					}
+					if (head != "") {
+						if (sub_func == -1 && head == "ENDBLOCK") {
+							text.push(head)
+						} else {
+							if (head != "ENDBLOCK") {
+								text.push([head,sub_func,"|",item.params[0],item.params[1],item.params[2]].join(" "))
+							}
+						}
+					}
+				})
+				console.log(export_item)
+				var element = document.createElement("a");
+				element.setAttribute("href","data:text/plain;charset=utf-8," + encodeURIComponent(text.join("\n")))
+				element.setAttribute("download","output.script")
+				element.style.display = "none";
+				document.body.appendChild(element);
+				element.click();
+				document.body.removeChild(element);
+			}
+		}
+
+		function initAddItem() {
+			document.getElementById("new-item-index").value = "";
+			togglePromptState('new-item',false)
 		}
 
 		var current_numeric_line = 0;
@@ -875,10 +1111,21 @@
 			    var array = new Uint8Array(data);
 			    file_bytes = array.slice()
 				//console.log(file_bytes)
+				document.getElementById("form-controls").classList.remove("hide")
 			    var script_list = parseFile();
 			    populateSelectList(script_list);
 			};
 			fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
+        })
+		document.getElementById("import-selector").addEventListener("change", function() {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var data = fr.result;
+				var enc = new TextDecoder("utf-8");
+				var arr = data;
+				importScript(enc.decode(arr));
+			};
+			fr.readAsArrayBuffer(document.getElementById("import-selector").files[0]);
         })		
 
 		hud_items = [
@@ -1950,6 +2197,16 @@
 			var hooks = document.getElementsByClassName("code-line")
 			for (let h = 0; h < hooks.length; h++) {
 				hooks[h].style["padding-left"] = (parseInt(hooks[h].getAttribute("tabbing")) * 20).toString() + "px"
+			}
+		}
+
+		function togglePromptState(prompt_id,shown) {
+			if (shown) {
+				document.getElementById(prompt_id).classList.add("hide")
+				document.getElementById("blocker").classList.add("hide")
+			} else {
+				document.getElementById(prompt_id).classList.remove("hide")
+				document.getElementById("blocker").classList.remove("hide")
 			}
 		}
 
