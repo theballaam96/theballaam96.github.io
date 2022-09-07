@@ -164,7 +164,7 @@
 				<input type="file" id="file-selector" accept=".raw, .bin"/>
 			</div>
 			<div class="file-input-container" style="height:200px;margin-top:10px;overflow-y:scroll;" id="error_list"></div>
-			<div id="form-controls" class="hide">
+			<div id="form-controls">
 				<div>	
 					<button onclick="numericToJSON()">
 						Save Script to session
@@ -949,7 +949,7 @@
 							param_list.push(parseInt(code_data[k+3]))
 						}
 						if (func.toUpperCase().indexOf("COND") > -1) {
-							sub_func = code_data[1]
+							sub_func = parseInt(code_data[1])
 							if (func.toUpperCase() == "CONDINV") {
 								sub_func += 0x8000
 							}
