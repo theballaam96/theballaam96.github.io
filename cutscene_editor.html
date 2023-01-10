@@ -60,7 +60,7 @@
 			color: gainsboro;
 			overflow-y: hidden;
 		}
-		.highlight-c-prompt {
+		.show-cutscene-numbers {
 			color: #eee;
 		}
 		.indent-script-prompt {
@@ -104,6 +104,15 @@
 			font-weight: bold;
 			text-align: center;
 			font-size: 2em;
+		}
+		.preview-head {
+			margin: 5px;
+			margin-top: 10px;
+			font-weight: bold;
+			text-align: center;
+			font-size: 1.5em;
+			margin-left: auto;
+			margin-right: auto;
 		}
 		.prompt > .button-array {
 			margin-top: 20px;
@@ -161,6 +170,13 @@
 		.code-item-edit:hover {
 			background-color: darkgoldenrod;
 		}
+		.code-item-add {
+			background-color: green;
+			width: 100%;
+		}
+		.code-item-add:hover {
+			background-color: darkgreen;
+		}
 		.code-item-remove {
 			background-color: firebrick;
 			font-size: 1.5em;
@@ -168,8 +184,28 @@
 		.code-item-remove:hover {
 			background-color: darkred;
 		}
-		select {
+		select, input {
 			padding: 5px;
+		}
+		.code {
+			font-family: monospace;
+			background-color: black;
+			padding: 5px;
+		}
+		.point-button-add {
+			background-color: green;
+		}
+		.point-button-remove {
+			background-color: firebrick;
+		}
+		.point-button-add:hover {
+			background-color: darkgreen;
+		}
+		.point-button-remove:hover {
+			background-color: darkred;
+		}
+		.map-item-empty {
+			color: red;
 		}
 	</style>
 </head>
@@ -179,19 +215,19 @@
 
 		</div>
 		<div class="viewbox-container">
-			<div class="viewbox" id="cutscene_script_display" style="overflow: scroll">
+			<div class="viewbox" id="cutscene_script_display" style="overflow-x: hidden">
 
 			</div>
 		</div>
 	</div>
 	<div class="back">
-		<div class="viewbox-container">
+		<div class="viewbox-container" style="height: 300px">
 			<div class="file-input-container">
 				<strong>Raw Cutscene File:</strong>
 				<input type="file" id="file-selector" accept=".bin"/>
 			</div>
 			<div class="file-input-container" style="height:200px;margin-top:10px;overflow-y:scroll;" id="error_list"></div>
-			<div id="form-controls">
+			<div id="form-controls" class="hide">
 				<div>	
 					<!-- <button onclick="numericToJSON()">
 						Save Script to session
@@ -201,6 +237,15 @@
 					</button>
 					<button onclick="purgeUnusedItems()">
 						Purge Unused Items
+					</button>
+					<button onclick="addCutscene()">
+						Add Cutscene
+					</button>
+					<button onclick="emptyCutscene()">
+						Empty Selected Cutscene
+					</button>
+					<button onclick="removeCutscene()">
+						Remove Last Cutscene
 					</button>
 					<!-- <button onclick="initAddItem()">
 						Add Script
@@ -216,17 +261,14 @@
 					</button> -->
 					<input type="file" id="import-selector" class="hide" accept=".script"/>
 				</div>
-				<div class="highlight-c-prompt">
-					Highlight associated C Line
-					<input type="checkbox" checked="true" id="show_c_highlight_checkbox">
-				</div>
-				<div class="indent-script-prompt">
-					Auto-Indent Script Commands
-					<input type="checkbox" checked="true" id="indent_num" onclick="updateLineHovering()">
+				<div class="show-cutscene-numbers">
+					Show Cutscene Numbers (Names)
+					<input type="checkbox" checked="true" id="show_cs_numbers_checkbox" onclick="updateCutsceneNames()">
 				</div>
 			</div>
 		</div>
-		<div class="viewbox-container">
+		<div class="viewbox-container" style="height: 300px">
+			<strong style="color:white">Populate Names:</strong> <select id="map-selection" onchange="updateCutsceneNames();"></select>
 			<div class="viewbox scrollbox" id="map-select">
 
 			</div>
@@ -252,6 +294,65 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="script/common_data.js"></script>
 	<script type="text/javascript">
+		function populateMapList() {
+			var hook = document.getElementById("map-selection")
+			const map_copy = maps.map((item, index) => {
+				return {
+					"name": item,
+					"index": index,
+				}
+			}).sort((a, b) => (a.name > b.name) ? 1 : -1)
+			hook.innerHTML = `
+				${map_copy.map((item, index) => `
+					${(index == 0 ? "<option value='-1'>------------</option>" : "")}
+					<option value="${item.index}">${item.name}</option>	
+				`)}
+			`
+		}
+		populateMapList();
+		function updateCutsceneNames() {
+			index = document.getElementById("map-selection").value
+			if (index != "") {
+				index = parseInt(index)
+				if (index > -1) {
+					items = document.getElementsByClassName("map-item")
+					for (let i = 0; i < items.length; i++) {
+						let name = "";
+						const cutscene_index = items[i].getAttribute("id-index");
+						if (Object.keys(cutscene_names).includes(index.toString())) {
+							map_cutscene_names = cutscene_names[index.toString()]
+							if (Object.keys(map_cutscene_names).includes(cutscene_index.toString())) {
+								name = map_cutscene_names[cutscene_index.toString()]
+							}
+						}
+						if (name == "") {
+							name = `Cutscene ${cutscene_index}`
+						}
+						if (document.getElementById("show_cs_numbers_checkbox").checked) {
+							name = `[${cutscene_index}] ${name}`;
+						}
+						items[i].innerText = name;
+					}
+				}
+			}
+		}
+
+		function updateEmptyScripts() {
+			var items = document.getElementsByClassName("map-item")
+			for (let i = 0; i < items.length; i++) {
+				const target_index = items[i].getAttribute("id-index");
+				const data = cutscene_data["cutscenes"].find(item => item.index == target_index);
+				if (data) {
+					if (data.point_sequence.length == 0) {
+						items[i].classList.add("map-item-empty")
+					} else {
+						items[i].classList.remove("map-item-empty")
+					}
+				}
+			}
+		}
+
+
 		function filterNewItemInput(value) {
 			document.getElementById("new-item-error").innerText="";
 			permitted_chars = ['a','b','c','d','e','f','A','B','C','D','E','F','0','1','2','3','4','5','6','7','8','9']
@@ -295,59 +396,13 @@
 			}
 		}
 
-		function updateLineNumbers() {
-			var hook = document.getElementById("numeric_editor")
-			var num_hook = document.getElementById("numeric_linenums")
-			num_hook.innerHTML = "";
-			var children = hook.childNodes
-			//console.log(indent)
-			for (let c = 0; c < children.length; c++) {
-				var focused_child = hook.childNodes[c];
-				if (focused_child) {
-					var num_div = document.createElement("div")
-					var num_txt = document.createTextNode((c+1).toString())
-					num_div.appendChild(num_txt)
-					num_hook.appendChild(num_div)
-				}
-			}
-			updateScroll();
-		}
-
-		function updateScroll() {
-			document.getElementById("numeric_linenums").scrollTop = document.getElementById("numeric_editor").scrollTop;
-		}
-
-		function showCLines(idx) {
-			if (document.getElementById("show_c_highlight_checkbox").checked) {
-				var rel_c = document.getElementsByClassName("assoc-line-" + idx.toString())
-				for (let c = 0; c < rel_c.length; c++) {
-					rel_c[c].classList.add("c-highlight")
-				}
-				var rel_num = document.getElementsByClassName("line" + idx.toString())
-				for (let n = 0; n < rel_num.length; n++) {
-					rel_num[n].classList.add("c-highlight")
-				}
-			}
-		}
-
-		function clearCLines(idx) {
-			var rel_c = document.getElementsByClassName("assoc-line-" + idx.toString())
-			for (let c = 0; c < rel_c.length; c++) {
-				rel_c[c].classList.remove("c-highlight")
-			}
-			var rel_num = document.getElementsByClassName("line" + idx.toString())
-			for (let n = 0; n < rel_num.length; n++) {
-				rel_num[n].classList.remove("c-highlight")
-			}
-		}
-
-		function getDurationText(item) {
-			return `Duration: ${item['duration']} frames`
+		function getDurationText(duration, item) {
+			return `&#128337; ${duration} frames | &#128193; Item ${item.segment}`
 		}
 
 		function convertScriptLine(item) {
 			if (item["code"]) {
-				text = [`${item["code"]}`]
+				return `${item["code"]}`.replaceAll("\n","<br>")
 			} else if (item["points"]) {
 				return item["points"]
 					.map((point, index) => `<strong>Point ${index}:</strong> ${point['x']}, ${point['y']}, ${point['z']}`)
@@ -420,15 +475,50 @@
 			})
 			cutscene_data["cutscenes"].forEach(cutscene => {
 				cutscene.point_sequence.forEach((point, index) => {
-					cutscene.point_sequence[index] = conversion[point]
+					if (Object.keys(conversion).includes(point)) {
+						cutscene.point_sequence[index] = conversion[point]
+					}
 				})
 			})
 			console.info(`${unused_count}/${original_count} items purged for being unused.`)
+			showScript(viewed_file)
+		}
+
+		function addCutscene() {
+			const added = cutscene_data["cutscenes"].length;
+			cutscene_data["cutscenes"].push({
+				"index": added,
+				"count": 0,
+				"point_data": [],
+				"point_sequence": [],
+				"point_durations": [],
+			})
+			populateSelectList(cutscene_data);
+			viewed_file = added;
+			showScript(added);
+		}
+
+		function emptyCutscene() {
+			console.log(cutscene_data["cutscenes"])
+			cutscene_data["cutscenes"].find(item => item.index == viewed_file).point_sequence = []
+			cutscene_data["cutscenes"].find(item => item.index == viewed_file).point_durations = []
+			cutscene_data["cutscenes"].find(item => item.index == viewed_file).point_data = []
+			cutscene_data["cutscenes"].find(item => item.index == viewed_file).count = 0
+			showScript(viewed_file)
+		}
+
+		function removeCutscene() {
+			if (cutscene_data["cutscenes"].length > 0) {
+				cutscene_data["cutscenes"] = cutscene_data["cutscenes"].filter((item, index) => item.index < (cutscene_data["cutscenes"].length - 1));
+				populateSelectList(cutscene_data);
+			} else {
+				console.log("No cutscenes to remove!")
+			}
 		}
 
 		let new_file = []
 		function saveCutscenesToFile() {
-			console.log(cutscene_data)
+			let dump_data = {}
 			// Write Header
 			new_file = [... cutscene_data["header_data"].slice()]
 			// Cutscene Point Sequences
@@ -483,19 +573,21 @@
 						point_list = [start, item["point_end"]]
 						point_list = point_list.concat(item["points"])
 						point_list.forEach(point => {
-							["x","y","z"].forEach(coord => {
+							const coord_bases = ["x","y","z"]
+							coord_bases.forEach(coord => {
 								val = point[coord]
 								if (val < 0) {
 									val += 65536
 								}
 								new_file = new_file.concat(intToArr(val, 2))
 							})
-							new_file.push(point["rot"]["x1"])
-							new_file.push(point["unk"][0])
-							new_file.push(point["rot"]["y1"])
-							new_file.push(point["unk"][1])
-							new_file.push(point["rot"]["x2"])
-							new_file.push(point["unk"][2])
+							coord_bases.forEach(coord => {
+								val = point["rot"][coord]
+								if (val < 0) {
+									val += 65536
+								}
+								new_file = new_file.concat(intToArr(val, 2))
+							})
 							new_file.push(point["zoom"])
 							new_file.push(point["roll"])
 						})
@@ -570,8 +662,9 @@
 		var edit_data = {};
 		var point_data = {};
 		var edit_line = 0;
+		var edit_duration = 0;
 
-		function updateCommand() {
+		function updateCommand(update) {
 			point_data["command"] = parseInt(document.getElementById("command-select").value);
 			if (point_data["command"] == 13) {
 				if (!Object.keys(point_data).includes("detailed_command")) {
@@ -582,10 +675,12 @@
 					}
 				}
 			}
-			updateControls();
+			if (update) {
+				updateControls(false);
+			}
 		}
 
-		function updateSubcommand() {
+		function updateSubcommand(update) {
 			const val = parseInt(document.getElementById("subcommand-select").value)
 			const matching_functions = codeBlocks.filter(item => item.index == val)
 			let param_length = 4;
@@ -603,64 +698,230 @@
 					"params": new Array(param_length).fill(0),
 				}
 			}
-			updateControls();
+			if (update) {
+				updateControls(false);
+			}
 		}
 
-		function updateControls() {
+		function updateSubcommandParameters(update) {
+			point_data["detailed_command"]["params"].forEach((item, index) => {
+				if (document.getElementById(`subcommand-field-${index}`) != null) {
+					if (document.getElementById(`subcommand-field-${index}`).value == "") {
+						point_data["detailed_command"]["params"][index] = 0
+					} else {
+						point_data["detailed_command"]["params"][index] = parseInt(document.getElementById(`subcommand-field-${index}`).value)
+					}
+				}
+			})
+			if (update) {
+				updateControls(true);
+			}
+		}
+
+		function updateSong(update) {
+			point_data["song"] = parseInt(document.getElementById("input-song").value);
+			if (update) {
+				updateControls(false);
+			}
+		}
+
+		function updateDuration(update) {
+			if (document.getElementById("duration-specify").value == "") {
+				edit_duration = 0;
+			} else {
+				edit_duration = parseInt(document.getElementById("duration-specify").value)
+			}
+			if (update) {
+				updateControls(false);
+			}
+		}
+
+		function removePoint(target_index) {
+			point_data["points"] = point_data["points"].filter((item, index) => index != target_index)
+			updateControls(false);
+		}
+
+		function pushPoint(include_rotation, update) {
+			push_obj = {
+				"x": 0,
+				"y": 0,
+				"z": 0,
+				"zoom": 45,
+				"roll": 0,
+			}
+			if (include_rotation) {
+				push_obj["rot"] = {
+					"x": 0,
+					"y": 0,
+					"z": 0,
+				}
+			}
+			point_data["points"].push(push_obj)
+			if (update) {
+				updateControls(false);
+			}
+		}
+
+		function updateAllControls() {
+			if (point["command"] == 12) {
+				updateSong(false);
+			} else if (point["command"] == 13) {
+				updateSubcommand(false);
+				updateSubcommandParameters(false);
+			}
+			updateDuration();
+			updateEmptyScripts();
+		}
+
+		function updateControls(preview_only) {
 			var hook = document.getElementById("item-controls")
 			const command_names = {
-				4: "Points",
-				5: "Points (Detailed)",
+				4: "Points (Detailed)",
+				5: "Points",
+				12: "Play Song",
 				13: "Function",
 			}
 			const command_indexes = [...Array(16).keys()].map(item => item + 1)
-			console.log(point_data)
-			hook.innerHTML = `
-				<div class="flex-container">
-					<div class="flex-item">
-						<label for="command-select">Command</label>
-						<select name="command" id="command-select" onchange="updateCommand();">
-							${command_indexes.map(item => 
+			if (!preview_only) {
+					hook.innerHTML = `
+						<div class="flex-container">
+							<div class="flex-item">
+								<label for="command-select">Command</label>
+								<select name="command" id="command-select" onchange="updateCommand(true);">
+									${command_indexes.map(item => 
+										`
+											<option
+												value="${item}"
+												class="command-item-${Object.keys(command_names).includes(item.toString()) ? "used" : `unused ${point_data["command"] == item ? "" : "hide"}`}"
+												${point_data["command"] == item ? "selected" : ""}
+											>
+												${(Object.keys(command_names).includes(item.toString())) ? command_names[item] : `Command ${item}`}
+											</option>
+										`
+									).join("")}
+								</select>
+							</div>
+							<div class="flex-item">
+								<label for="duration-specify">Duration</label>
+								<input type-"number" id="duration-specify" value="${edit_duration}" onfocusout="updateDuration(true);" style="width: 100px">
+							</div>
+						</div>
+						<hr>
+						${([4, 5].includes(point_data["command"]) ?
+							`${point_data["points"].map((item, index) => `
+								<div class="flex-container">
+									<div class="flex-item">
+										<strong>Point ${index + 1}</strong>
+									</div>
+									<div class="flex-item" style="text-align:right">
+										<button class="point-button-hidetoggle" onclick="document.getElementById('point-group-${index}').classList.toggle('hide')">&#128065;</button>
+										<button class="point-button-remove" onclick="removePoint(${index});">&#10799;</button>
+									</div>
+								</div>
+								<div id="point-group-${index}" ${index > 0 ? "class='hide'" : ""}>
+									<div>Positions</div>
+									<div class="flex-container">
+										${["x", "y", "z"].map(item2 => `
+											<div class="flex-item">
+												<label for="point-define-pos-${index}-${item2}">${item2}</label>
+												<input type="number" id="point-define-pos-${index}-${item2}" value="${item[item2]}" style="width: 100px">
+											</div>
+										`).join("")}
+									</div>
+									<br>
+									${point_data["command"] == 4 ? `
+										<div>Rotations</div>
+										<div class="flex-container">
+											${["x", "y", "z"].map(item2 => `
+												<div class="flex-item">
+													<label for="point-define-rot-${index}-${item2}">${item2}</label>
+													<input type="number" id="point-define-rot-${index}-${item2}" value="${item["rot"][item2]}" style="width: 100px">
+												</div>
+											`).join("")}
+										</div>
+										<br>
+									` : ""}
+									<div>Miscellaneous</div>
+									<div class="flex-container">
+										${["zoom", "roll"].map(item2 => `
+											<div class="flex-item">
+												<label for="point-define-misc-${index}-${item2}">${item2}</label>
+												<input type="number" id="point-define-misc-${index}-${item2}" value="${item[item2]}" style="width: 100px">
+											</div>
+										`).join("")}
+									</div>
+								</div>
+								<hr>
+							`).join("")}
+							<button class="point-button-add" style="width:100%" onclick="pushPoint(${point_data["command"] == 4}, true);">Add Point</button>
+							`
+						: (point_data["command"] == 12 ?
+							`<div class="flex-container">
+								<div style="margin-left:auto;margin-right:auto;">
+									<label for="input-song">Song</label>
+									<select id="input-song" onchange="updateSong(true);">
+										${songs.map((item, index) => `
+											<option value=${index} ${(point_data["song"] == index ? "selected" : "")}>
+												${item}
+											</option>
+										`)}
+										</select>
+									</div>
+								</div>
+							</div>
+							<div class="flex-container">
+								<div class="preview-head">Preview</div>
+							</div>
+							<div class="code" id="preview_text">
+								${`playSong('${songs[point_data['song']]}');`}
+							</div>`
+						: (point_data["command"] == 13 ?
+							`<div class="flex-container">
+								<div class="flex-item">
+									<label for="subcommand-select">Sub-Command</label>
+									<select name="subcommand" id="subcommand-select" onchange="updateSubcommand(true);">
+										${codeBlocks.map(item => 
+											`
+												<option
+													value="${item.index}"
+													title="${item.tooltip.join("\n")}"
+													${point_data["detailed_command"]["sub_command"] == item.index ? "selected" : ""}
+												>
+													${item.name}
+												</option>
+											`
+										).join("")}
+									</select>
+								</div>
+							</div>
+							${codeBlocks.find(item => item.index == point_data["detailed_command"]["sub_command"]).parameter_names.map((item, index) => 
 								`
-									<option
-										value="${item}"
-										class="command-item-${Object.keys(command_names).includes(item.toString()) ? "used" : `unused ${point_data["command"] == item ? "" : "hide"}`}"
-										${point_data["command"] == item ? "selected" : ""}
-									>
-										${(Object.keys(command_names).includes(item.toString())) ? command_names[item] : `Command ${item}`}
-									</option>
+									<div>
+										<label for="subcommand-field-${index}">${item}</label>
+										<input type="text" id="subcommand-field-${index}" value="${point_data["detailed_command"]["params"][index]}" onkeyup="updateSubcommandParameters(true);">
+									</div>
 								`
 							).join("")}
-						</select>
-					</div>
-				</div>
-				${(point_data["command"] == 4 ?
-					`<div>Command 4</div>`
-				: (point_data["command"] == 5 ?
-					`<div>Command 5</div>`
-				: (point_data["command"] == 13 ?
-					`<div class="flex-container">
-						<div class="flex-item">
-							<label for="subcommand-select">Sub-Command</label>
-							<select name="subcommand" id="subcommand-select" onchange="updateSubcommand();">
-								${codeBlocks.map(item => 
-									`
-										<option
-											value="${item.index}"
-											title="${item.tooltip.join("\n")}"
-											${point_data["detailed_command"]["sub_command"] == item.index ? "selected" : ""}
-										>
-											${item.name}
-										</option>
-									`
-								).join("")}
-							</select>
-						</div>
-					</div>`
-				:
-					`<div>Command ${point_data['command']}</div>`
-				)))}
-			`
+							<div class="flex-container">
+								<div class="preview-head">Preview</div>
+							</div>
+							<div class="code" id="preview-text">
+								${codeBlocks.find(item => item.index == point_data["detailed_command"]["sub_command"]).output(point_data["detailed_command"]["params"]).map(item => item.trim()).join("<br>")}
+							</div>
+							`
+						:
+							`<div>Command ${point_data['command']}</div>`
+						)))}
+					`
+			} else {
+				var preview_hook = document.getElementById("preview-text")
+				if (point_data["command"] == 13) {
+					preview_hook.innerHTML = `${codeBlocks.find(item => item.index == point_data["detailed_command"]["sub_command"]).output(point_data["detailed_command"]["params"]).map(item => item.trim()).join("<br>")}`
+				} else if (point_data["command"] == 12) {
+					preview_hook.innerHTML = `${`playSong('${songs[point_data['song']]}');`}`
+				}
+			}
+			updateEmptyScripts();
 		}
 
 		function pushPrompt() {
@@ -677,10 +938,11 @@
 			*/
 			var hook = document.getElementById("new-item");
 			const used_points = cutscene_data["points"].map(item => item.segment)
+			const new_seg = Math.min(...[...Array(5000).keys()].filter(item => !used_points.includes(item)));
 			point_data = {
 				"command": 5,
 				"points": [],
-				"segment": Math.min([...Array(1000).keys()].filter(item => !used_points.includes(item))),
+				"segment": new_seg,
 				"duration": 0,
 				"detailed_command": {
 					"sub_command": 0,
@@ -688,9 +950,11 @@
 				},
 				"head": [0, 0],
 				"read": [],
+				"song": 0,
 			}
 			if (Object.keys(edit_data).length > 0) {
 				point_data = Object.assign({}, edit_data);
+				point_data["segment"] = new_seg
 			}
 			hook.innerHTML = `
 				<div class="head">
@@ -700,11 +964,11 @@
 				<div id="new-item-error" class="prompt-error"></div>
 				<div id="item-controls"></div>
 				<div class="button-array">
-					<div class="array-item" onclick="togglePromptState('new-item',true)">
-						<button class="cancel">Close</button>
+					<div class="array-item">
+						<button class="cancel" onclick="togglePromptState('new-item',true)">Close</button>
 					</div>
-					<div class="array-item right" onclick="pushLine(${viewed_file}, ${edit_line})">
-						<button class="confirm">Confirm</button>
+					<div class="array-item right">
+						<button class="confirm" onclick="pushLine(${viewed_file}, ${edit_line})">Confirm</button>
 					</div>
 				</div>
 			`
@@ -716,15 +980,38 @@
 		function initEditLine(file, line) {
 			edit_data = cutscene_data["cutscenes"].find(item => item.index == file).point_data[line]
 			edit_line = line
+			edit_duration = cutscene_data["cutscenes"].find(item => item.index == file).point_durations[line]
 			pushPrompt()
 		}
 
-		function editLine(file, line, new_json) {
-
+		function initAddLine(file) {
+			edit_data = {}
+			edit_duration = 0
+			edit_line = cutscene_data["cutscenes"].find(item => item.index == file).point_data.length
+			pushPrompt();
 		}
 
 		function pushLine(file, line) {
-
+			updateAllControls();
+			point_data["duration"] = edit_duration
+			if (point_data["command"] == 13) {
+				code = parseSubCommand(point_data["detailed_command"]["sub_command"], point_data["detailed_command"]["params"])
+				point_data["code"] = code
+			} else {
+				parsePoint(point_data)
+			}
+			cutscene_data["points"].push(point_data)
+			reference =  cutscene_data["cutscenes"].find(item => item.index == file)
+			if (reference != null) {
+				reference["point_data"][line] = point_data,
+				reference["point_sequence"][line] = point_data.segment
+				reference["point_durations"][line] = edit_duration
+				cutscene_data["cutscenes"] = cutscene_data["cutscenes"].filter(item => item.index != file)
+				cutscene_data["cutscenes"].push(reference)
+				cutscene_data["cutscenes"] = cutscene_data["cutscenes"].sort((a, b) => (a.index > b.index) ? 1 : -1);
+			}
+			showScript(file);
+			togglePromptState('new-item', true);
 		}
 
 
@@ -743,44 +1030,40 @@
 		}
 
 		function showScript(script_index) {
-			viewed_file = script_index;
-			items = document.getElementsByClassName("map-item")
-			for (let i = 0; i < items.length; i++) {
-				if (items[i].getAttribute("id-index").toString() == script_index.toString()) {
-					items[i].classList.add("viewed-index")
-				} else {
-					items[i].classList.remove("viewed-index")
+			if (script_index != -1) {
+				viewed_file = script_index;
+				items = document.getElementsByClassName("map-item")
+				for (let i = 0; i < items.length; i++) {
+					if (items[i].getAttribute("id-index").toString() == script_index.toString()) {
+						items[i].classList.add("viewed-index")
+					} else {
+						items[i].classList.remove("viewed-index")
+					}
 				}
-			}
-			hook = document.getElementById("cutscene_script_display")
-			hook.innerHTML = ""
-			console.log(cutscene_data["cutscenes"])
-			var focused_cs = cutscene_data["cutscenes"].find(item => item.index == script_index)
-			if (focused_cs) {
-				focused_cs.point_data.forEach((item, index) => {
-					hook.innerHTML += `
-						<div class='code_item'>
-							<div class='flex-container'>
-								<div class='flex-item'>
-									<div class='code_duration'>${getDurationText(item)}</div>
-									<div class='code_sample'>${convertScriptLine(item)}</div>
-								</div>
-								<div class='flex-item'>
-									<button class='code-item-edit' onclick='initEditLine(${script_index}, ${index})'>&#9998;</button>
-									<button class='code-item-remove' onclick='removeLine(${script_index}, ${index})'>&#10799;</button>
+				hook = document.getElementById("cutscene_script_display")
+				hook.innerHTML = ""
+				var focused_cs = cutscene_data["cutscenes"].find(item => item.index == script_index)
+				if (focused_cs) {
+					hook.innerHTML = `
+						${focused_cs.point_data.map((item, index) =>	`
+							<div class='code_item'>
+								<div class='flex-container'>
+									<div class='flex-item' style='flex:5'>
+										<div class='code_duration'>${getDurationText(focused_cs.point_durations[index], item)}</div>
+										<div class='code_sample'>${convertScriptLine(item)}</div>
+									</div>
+									<div class='flex-item' style='text-align:right'>
+										<button class='code-item-edit' onclick='initEditLine(${script_index}, ${index})'>&#9998;</button>
+										<button class='code-item-remove' onclick='removeLine(${script_index}, ${index})'>&#10799;</button>
+									</div>
 								</div>
 							</div>
-						</div>`
-				})
-				/*
-				document.getElementById("c_comparison").innerHTML = "";
-				tab_indentation = 0;
-				numericCommandsToC()
-				fixTabbing()
-				liveUpdate();
-				updateLineHovering();
-				*/
+						`).join("")}
+						<button onclick="initAddLine(${script_index})" class="code-item-add">Add Item</button>
+					`
+				}
 			}
+			updateEmptyScripts();
 		}
 
 		function populateSelectList(cutscene_data) {
@@ -795,6 +1078,8 @@
 				item_div.setAttribute("onclick",`showScript(${index})`)
 				hook.appendChild(item_div)
 			})
+			updateCutsceneNames();
+			updateEmptyScripts();
 		}
 
 		document.getElementById("file-selector").addEventListener("change", function() {
@@ -804,7 +1089,6 @@
 				setup_data = fr.result;
 			    var array = new Uint8Array(data);
 			    file_bytes = array.slice()
-				//console.log(file_bytes)
 				document.getElementById("form-controls").classList.remove("hide")
 			    let cutscene_data = parseFile();
 			    populateSelectList(cutscene_data);
@@ -907,6 +1191,7 @@
 				document.getElementById(prompt_id).classList.remove("hide")
 				document.getElementById("blocker").classList.remove("hide")
 			}
+			updateEmptyScripts();
 		}
 
 		function hexToFloat(hx_) {
@@ -956,7 +1241,7 @@
 					`void* uvar0 = getSpawnerTiedActor(${params_lst[0]});`,
 					`setCutsceneTarget(uvar0,${params_lst[1] & 0xFF});`
 				]
-			}, ["tied actor id", "setCutsceneTarget Param 2"]),
+			}, ["tied actor id", "setCutsceneTarget Param 2"], "Set Cutscene Target"),
 			new Code(7, (params_lst) => {
 				return [
 					`changeCutsceneState(${params_lst[0] & 0xFF},${params_lst[1] & 0xFF})`
@@ -1480,6 +1765,48 @@
 			}
 		}
 
+		function parsePoint(point_json) {
+			command = point_json["command"]
+			switch (command) {
+				case 10:
+				case 15:
+				case 16:
+				case 17:
+					point_json["code"] = ["LevelStateBitfield |= 0x2000;"]
+					break;
+				case 6:
+					point_json["code"] = ["nextCutscenePart()"]
+					break;
+				case 11:
+					point_json["code"] = ["cancel cutscene something"]
+					break;
+				case 12:
+					point_json["code"] = [`playSong('${songs[point_json['song']]}');`]
+					break;
+				case 14:
+					point_json["code"] = ["playCutsceneInMap();"]
+					break;
+				case 13:
+					command_info = {
+						"sub_command": readData(point_json["read"], 4, 0)
+					}
+					params = []
+					param_count = parseInt((point_json["read"].length - 4) / 2)
+					for (let a = 0; a < param_count; a++) {
+						params.push(readData(point_json["read"], 2, 4 + (2 * a)))
+					}
+					command_info["params"] = params
+					sub_command = command_info["sub_command"]
+					code = parseSubCommand(sub_command,params)
+					point_json["code"] = code
+					point_json["detailed_command"] = command_info
+					break;
+				case 4:
+				case 5:
+					//point_json["code"] = point_json["code"].join("\n")
+			}
+		}
+
 		var cutscene_data = [];
 		function parseFile() {
 			header_info = []
@@ -1487,7 +1814,6 @@
 			cutscene_info = []
 			point_info = []
             data = file_bytes.slice()
-            console.log(data)
             info_l = 0x30
             read_l = 0
 			// Header stupidity
@@ -1515,7 +1841,6 @@
             }
 			header_end = info_l
             cutscene_count = readData(data,2,info_l)
-			console.log(cutscene_count)
 			// Cutscene Point Sequences
 			info_l += 2
 			for (let i = 0; i < cutscene_count; i++) {
@@ -1537,10 +1862,8 @@
 				cutscene_info.push(master)
 			}
 			cutscene_point_count = readData(data,2,info_l)
-            // console.log(cutscene_info)
 			// Item Processing
 			count_copy = cutscene_point_count
-			console.log(count_copy)
 			info_l += 2
 			repeat = 0
 			unk0_list = []
@@ -1600,17 +1923,12 @@
 								"y": readData_s16(data,info_l+2),
 								"z": readData_s16(data,info_l+4),
 								"rot":{
-									"x1":readData(data,1,info_l+6),
-									"y1":readData(data,1,info_l+8),
-									"x2":readData(data,1,info_l+10),
+									"x":readData(data,2,info_l+6),
+									"y":readData(data,2,info_l+8),
+									"z":readData(data,2,info_l+10),
 								},
 								"zoom":readData(data,1,info_l+12),
 								"roll":readData(data,1,info_l+13),
-								"unk":[
-									readData(data,1,info_l+7),
-									readData(data,1,info_l+9),
-									readData(data,1,info_l+11),
-								]
 							}
 							if (j == 0) {
 								info["point_start"] = point_item
@@ -1684,45 +2002,7 @@
 				point_info.push(info)
 			}
 			point_info.forEach(point => {
-				command = point["command"]
-				switch (command) {
-					case 10:
-					case 15:
-					case 16:
-					case 17:
-						point["code"] = ["LevelStateBitfield |= 0x2000;"]
-						break;
-					case 6:
-						point["code"] = ["nextCutscenePart()"]
-						break;
-					case 11:
-						point["code"] = ["cancel cutscene something"]
-						break;
-					case 12:
-						point["code"] = [`playSong('${songs[point['song']]}');`]
-						break;
-					case 14:
-						point["code"] = ["playCutsceneInMap();"]
-						break;
-					case 13:
-						command_info = {
-							"sub_command": readData(point["read"], 4, 0)
-						}
-						params = []
-						param_count = parseInt((point["read"].length - 4) / 2)
-						for (let a = 0; a < param_count; a++) {
-							params.push(readData(point["read"], 2, 4 + (2 * a)))
-						}
-						command_info["params"] = params
-						sub_command = command_info["sub_command"]
-						code = parseSubCommand(sub_command,params)
-						point["code"] = code
-						point["detailed_command"] = command_info
-						break;
-					case 4:
-					case 5:
-						//point["code"] = point["code"].join("\n")
-				}
+				parsePoint(point);
 			})
 			cutscene_info.forEach(cutscene => {
 				point_data = []
@@ -1739,7 +2019,6 @@
 				}
 				cutscene["point_data"] = point_data
 			})
-			console.log(point_info)
 			cutscene_data = {
 				"cutscenes": cutscene_info,
 				"points": point_info,
