@@ -232,7 +232,7 @@
 					<!-- <button onclick="numericToJSON()">
 						Save Script to session
 					</button> -->
-					<button onclick="saveCutscenesToFile()">
+					<button onclick="saveCutscenesToFile(true, false)">
 						Save to PC
 					</button>
 					<button onclick="purgeUnusedItems()">
@@ -459,10 +459,26 @@
 
 		function purgeUnusedItems() {
 			// Add original point index to obejct
+			reference_data = {}
 			cutscene_data["points"] = cutscene_data["points"].map((item, index) => {
 				return {
 					...item,
-					...{"original_index": index}	
+					...{"original_segment": item.segment}	
+				}
+			})
+			cutscene_data["points"].forEach(point => {
+				reference_data[point.segment] = 0
+			})
+			cutscene_data["cutscenes"].forEach(cutscene => {
+				cutscene.point_sequence.forEach(point => {
+					if (Object.keys(reference_data).includes(point)) {
+						reference_data[point] += 1;
+					}
+				})
+			})
+			cutscene_data["points"].forEach(point => {
+				if (Object.keys(reference_data).includes(point.segment)) {
+					point.references = reference_data[point.segment]
 				}
 			})
 			const unused_count = cutscene_data["points"].filter(item => item.references == 0).length
@@ -471,7 +487,7 @@
 			// Reallocate cutscenes to use the shortened point file
 			let conversion = {}
 			cutscene_data["points"].forEach((item, index) => {
-				conversion[item["original_index"]] = index
+				conversion[item["original_segment"]] = item.segment
 			})
 			cutscene_data["cutscenes"].forEach(cutscene => {
 				cutscene.point_sequence.forEach((point, index) => {
@@ -480,8 +496,12 @@
 					}
 				})
 			})
+			cutscene_data["points"].forEach(point => {
+				point.segment = conversion[point.segment]
+			})
 			console.info(`${unused_count}/${original_count} items purged for being unused.`)
 			showScript(viewed_file)
+			saveCutscenesToFile(false, true);
 		}
 
 		function addCutscene() {
@@ -517,7 +537,7 @@
 		}
 
 		let new_file = []
-		function saveCutscenesToFile() {
+		function saveCutscenesToFile(force_download, get_file_size_diff) {
 			let dump_data = {}
 			// Write Header
 			new_file = [... cutscene_data["header_data"].slice()]
@@ -628,10 +648,15 @@
 						break;
 				}
 			})
-			console.log(`Old file size: ${file_bytes.length} bytes`)
-			console.log(`New file size: ${new_file.length} bytes`)
-			analyzeDiff(file_bytes, new_file, true);
-			// writeToFile();
+			if (get_file_size_diff) {
+				console.log(`Old file size: ${file_bytes.length} bytes`)
+				console.log(`New file size: ${new_file.length} bytes`)
+				console.log(`Reduction: ${100 - ((Math.floor((new_file.length / file_bytes.length) * 1000)) / 10)}%`)
+			}
+			// analyzeDiff(file_bytes, new_file, true);
+			if (force_download) {
+				writeToFile();
+			}
 			//console.log(new_file)
 		}
 
