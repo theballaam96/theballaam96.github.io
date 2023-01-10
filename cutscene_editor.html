@@ -640,7 +640,7 @@
 						break;
 					case 12:
 						new_file = new_file.concat(item["head"])
-						new_file = new_file.concat(item["read"])
+						new_file = new_file.concat(item["song"])
 						break;
 					default:
 						new_file = new_file.concat(item["head"])
@@ -788,14 +788,43 @@
 		}
 
 		function updateAllControls() {
-			if (point["command"] == 12) {
+			if (point_data["command"] == 12) {
 				updateSong(false);
-			} else if (point["command"] == 13) {
+			} else if (point_data["command"] == 13) {
 				updateSubcommand(false);
 				updateSubcommandParameters(false);
 			}
 			updateDuration();
 			updateEmptyScripts();
+		}
+
+		function updateCutscenePoints() {
+			point_data["points"].forEach((point, index) => {
+				const standard_axes = ["x", "y", "z"]
+				standard_axes.forEach(coord => {
+					if (document.getElementById(`point-define-pos-${index}-${coord}`).value == "") {
+						point[coord] = 0
+					} else {
+						point[coord] = document.getElementById(`point-define-pos-${index}-${coord}`).value
+					}
+					if (point_data["command"] == 4) {
+						if (document.getElementById(`point-define-rot-${index}-${coord}`).value == "") {
+							point["rot"][coord] = 0
+						} else {
+							point["rot"][coord] = document.getElementById(`point-define-rot-${index}-${coord}`).value
+						}
+					}
+				})
+				const extra = ["zoom", "roll"];
+				extra.forEach(ex => {
+					if (document.getElementById(`point-define-misc-${index}-${ex}`).value == "") {
+						point[ex] = 0
+					} else {
+						point[ex] = document.getElementById(`point-define-misc-${index}-${ex}`).value
+					}
+				})
+			})
+			updateControls(true);
 		}
 
 		function updateControls(preview_only) {
@@ -849,7 +878,7 @@
 										${["x", "y", "z"].map(item2 => `
 											<div class="flex-item">
 												<label for="point-define-pos-${index}-${item2}">${item2}</label>
-												<input type="number" id="point-define-pos-${index}-${item2}" value="${item[item2]}" style="width: 100px">
+												<input type="number" id="point-define-pos-${index}-${item2}" value="${item[item2]}" onfocusout="updateCutscenePoints();" style="width: 100px">
 											</div>
 										`).join("")}
 									</div>
@@ -860,7 +889,7 @@
 											${["x", "y", "z"].map(item2 => `
 												<div class="flex-item">
 													<label for="point-define-rot-${index}-${item2}">${item2}</label>
-													<input type="number" id="point-define-rot-${index}-${item2}" value="${item["rot"][item2]}" style="width: 100px">
+													<input type="number" id="point-define-rot-${index}-${item2}" value="${item["rot"][item2]}" onfocusout="updateCutscenePoints();" style="width: 100px">
 												</div>
 											`).join("")}
 										</div>
@@ -871,7 +900,7 @@
 										${["zoom", "roll"].map(item2 => `
 											<div class="flex-item">
 												<label for="point-define-misc-${index}-${item2}">${item2}</label>
-												<input type="number" id="point-define-misc-${index}-${item2}" value="${item[item2]}" style="width: 100px">
+												<input type="number" id="point-define-misc-${index}-${item2}" value="${item[item2]}" onfocusout="updateCutscenePoints();" style="width: 100px">
 											</div>
 										`).join("")}
 									</div>
@@ -1024,6 +1053,11 @@
 				point_data["code"] = code
 			} else {
 				parsePoint(point_data)
+				if ([4, 5].includes(point_data["command"])) {
+					point_data["point_start"] = Object.assign({}, [...point_data["points"]][0]);
+					point_data["point_start"]["x"] = [...point_data["points"]].length;
+					point_data["point_end"] = Object.assign({}, [...point_data["points"]][0]);
+				}
 			}
 			cutscene_data["points"].push(point_data)
 			reference =  cutscene_data["cutscenes"].find(item => item.index == file)
@@ -1956,11 +1990,11 @@
 								"roll":readData(data,1,info_l+13),
 							}
 							if (j == 0) {
-								info["point_start"] = point_item
+								info["point_start"] = Object.assign({}, point_item)
 							} else if (j == 1) {
-								info["point_end"] = point_item
+								info["point_end"] = Object.assign({}, point_item)
 							} else {
-								point_lst.push(point_item)
+								point_lst.push(Object.assign({}, point_item))
 							}
 							info_l += 0xE
 						}
@@ -1987,11 +2021,11 @@
 								"roll": readData(data,1,info_l+7),
 							}
 							if (j == 0) {
-								info["point_start"] = point_item
+								info["point_start"] = Object.assign({}, point_item)
 							} else if (j == 1) {
-								info["point_end"] = point_item
+								info["point_end"] = Object.assign({}, point_item)
 							} else {
-								point_lst.push(point_item)
+								point_lst.push(Object.assign({}, point_item))
 							}
 							info_l += 0x8
 						}
