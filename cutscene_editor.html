@@ -148,6 +148,29 @@
 		.code_sample {
 			padding-left: 15px;
 		}
+		.flex-container {
+			display: flex;
+		}
+		.flex-item {
+			flex: 1;
+		}
+		.code-item-edit {
+			background-color: goldenrod;
+			font-size: 1.3em;
+		}
+		.code-item-edit:hover {
+			background-color: darkgoldenrod;
+		}
+		.code-item-remove {
+			background-color: firebrick;
+			font-size: 1.5em;
+		}
+		.code-item-remove:hover {
+			background-color: darkred;
+		}
+		select {
+			padding: 5px;
+		}
 	</style>
 </head>
 <body>
@@ -250,12 +273,24 @@
 		}
 
 		class Code {
-			constructor(index, output=null) {
-				this.index = index
+			constructor(index, output=null, parameters, name=null) {
+				this.index = index;
 				if (output == null) {
-					this.output = (params) => {return [`function${index}(${params.join(", ")})`]}
+					this.output = (params) => {return [`function${index}(${params.join(", ")})`]};
 				} else {
-					this.output = output
+					this.output = output;
+				}
+				this.parameter_names = [...parameters]
+				this.param_count = parameters.length;
+				let args = ["arg0", "arg1", "arg2", "arg3"]
+				if (index == 10) {
+					args = [0, "arg1", "arg2", "arg3"]
+				}
+				this.tooltip = this.output(args);
+				if (name == null) {
+					this.name = this.tooltip[0]
+				} else {
+					this.name = name;
 				}
 			}
 		}
@@ -532,6 +567,181 @@
 			togglePromptState('new-item',false)
 		}
 
+		var edit_data = {};
+		var point_data = {};
+		var edit_line = 0;
+
+		function updateCommand() {
+			point_data["command"] = parseInt(document.getElementById("command-select").value);
+			if (point_data["command"] == 13) {
+				if (!Object.keys(point_data).includes("detailed_command")) {
+					const param_length= codeBlocks.find(item => item.index == 0).param_count;
+					point_data["detailed_command"] = {
+						"sub_command": 0,
+						"params": new Array(param_length).fill(0),
+					}
+				}
+			}
+			updateControls();
+		}
+
+		function updateSubcommand() {
+			const val = parseInt(document.getElementById("subcommand-select").value)
+			const matching_functions = codeBlocks.filter(item => item.index == val)
+			let param_length = 4;
+			if (matching_functions.length > 0) {
+				param_length = matching_functions[0].param_count;
+			}
+			if (Object.keys(point_data).includes("detailed_command")) {
+				if (val != point_data["detailed_command"]["sub_command"]) {
+					point_data["detailed_command"]["sub_command"] = new Array(param_length).fill(0);
+				}
+				point_data["detailed_command"]["sub_command"] = val;
+			} else {
+				point_data["detailed_command"] = {
+					"sub_command": val,
+					"params": new Array(param_length).fill(0),
+				}
+			}
+			updateControls();
+		}
+
+		function updateControls() {
+			var hook = document.getElementById("item-controls")
+			const command_names = {
+				4: "Points",
+				5: "Points (Detailed)",
+				13: "Function",
+			}
+			const command_indexes = [...Array(16).keys()].map(item => item + 1)
+			console.log(point_data)
+			hook.innerHTML = `
+				<div class="flex-container">
+					<div class="flex-item">
+						<label for="command-select">Command</label>
+						<select name="command" id="command-select" onchange="updateCommand();">
+							${command_indexes.map(item => 
+								`
+									<option
+										value="${item}"
+										class="command-item-${Object.keys(command_names).includes(item.toString()) ? "used" : `unused ${point_data["command"] == item ? "" : "hide"}`}"
+										${point_data["command"] == item ? "selected" : ""}
+									>
+										${(Object.keys(command_names).includes(item.toString())) ? command_names[item] : `Command ${item}`}
+									</option>
+								`
+							).join("")}
+						</select>
+					</div>
+				</div>
+				${(point_data["command"] == 4 ?
+					`<div>Command 4</div>`
+				: (point_data["command"] == 5 ?
+					`<div>Command 5</div>`
+				: (point_data["command"] == 13 ?
+					`<div class="flex-container">
+						<div class="flex-item">
+							<label for="subcommand-select">Sub-Command</label>
+							<select name="subcommand" id="subcommand-select" onchange="updateSubcommand();">
+								${codeBlocks.map(item => 
+									`
+										<option
+											value="${item.index}"
+											title="${item.tooltip.join("\n")}"
+											${point_data["detailed_command"]["sub_command"] == item.index ? "selected" : ""}
+										>
+											${item.name}
+										</option>
+									`
+								).join("")}
+							</select>
+						</div>
+					</div>`
+				:
+					`<div>Command ${point_data['command']}</div>`
+				)))}
+			`
+		}
+
+		function pushPrompt() {
+			/*
+				<div class="new_item prompt hide" id="new-item">
+					<div class="head">
+						Add Script Item
+					</div>
+					<label for="new-item-index">New Script ID: 0x</label>
+					<input id="new-item-index" type="text" pattern="[a-fA-F0-9]{1,4}" maxlength="4" onkeyup="this.value = filterNewItemInput(this.value)"/>
+					
+				</div>
+
+			*/
+			var hook = document.getElementById("new-item");
+			const used_points = cutscene_data["points"].map(item => item.segment)
+			point_data = {
+				"command": 5,
+				"points": [],
+				"segment": Math.min([...Array(1000).keys()].filter(item => !used_points.includes(item))),
+				"duration": 0,
+				"detailed_command": {
+					"sub_command": 0,
+					"params": [],
+				},
+				"head": [0, 0],
+				"read": [],
+			}
+			if (Object.keys(edit_data).length > 0) {
+				point_data = Object.assign({}, edit_data);
+			}
+			hook.innerHTML = `
+				<div class="head">
+					${(Object.keys(edit_data).length == 0) ? "Add" : "Edit"} Point
+				</div>
+				<label for="new-item-index"></label>
+				<div id="new-item-error" class="prompt-error"></div>
+				<div id="item-controls"></div>
+				<div class="button-array">
+					<div class="array-item" onclick="togglePromptState('new-item',true)">
+						<button class="cancel">Close</button>
+					</div>
+					<div class="array-item right" onclick="pushLine(${viewed_file}, ${edit_line})">
+						<button class="confirm">Confirm</button>
+					</div>
+				</div>
+			`
+			updateControls();
+			togglePromptState('new-item',false)
+		}
+
+
+		function initEditLine(file, line) {
+			edit_data = cutscene_data["cutscenes"].find(item => item.index == file).point_data[line]
+			edit_line = line
+			pushPrompt()
+		}
+
+		function editLine(file, line, new_json) {
+
+		}
+
+		function pushLine(file, line) {
+
+		}
+
+
+		function removeLine(file, line) {
+			old_data = cutscene_data["cutscenes"].find(item => item.index == file);
+			new_cs = cutscene_data["cutscenes"].filter(item => item.index != file);
+			new_cs.push({
+				"count": old_data["count"] - 1,
+				"index": old_data["index"],
+				"point_data": old_data["point_data"].filter((item, index) => index != line),
+				"point_durations": old_data["point_durations"].filter((item, index) => index != line),
+				"point_sequence": old_data["point_sequence"].filter((item, index) => index != line),
+			});
+			cutscene_data["cutscenes"] = new_cs.sort((a, b) => (a.index > b.index) ? 1 : -1);
+			showScript(file);
+		}
+
 		function showScript(script_index) {
 			viewed_file = script_index;
 			items = document.getElementsByClassName("map-item")
@@ -547,11 +757,19 @@
 			console.log(cutscene_data["cutscenes"])
 			var focused_cs = cutscene_data["cutscenes"].find(item => item.index == script_index)
 			if (focused_cs) {
-				focused_cs.point_data.forEach(item => {
+				focused_cs.point_data.forEach((item, index) => {
 					hook.innerHTML += `
 						<div class='code_item'>
-							<div class='code_duration'>${getDurationText(item)}</div>
-							<div class='code_sample'>${convertScriptLine(item)}</div>
+							<div class='flex-container'>
+								<div class='flex-item'>
+									<div class='code_duration'>${getDurationText(item)}</div>
+									<div class='code_sample'>${convertScriptLine(item)}</div>
+								</div>
+								<div class='flex-item'>
+									<button class='code-item-edit' onclick='initEditLine(${script_index}, ${index})'>&#9998;</button>
+									<button class='code-item-remove' onclick='removeLine(${script_index}, ${index})'>&#10799;</button>
+								</div>
+							</div>
 						</div>`
 				})
 				/*
@@ -703,14 +921,14 @@
 					`Player->paad->field_74 = ${params_lst[1]};`,
 					"setCharacterChangeParameters(BBlast,0x0,0);"
 				]
-			}),
+			}, ["paad->6C", "paad->74"]),
 			new Code(1, (params_lst) => {
 				return [
 					`handleRap(${params_lst[3]},0,200,${params_lst[0]};`
 				]
-			}),
-			new Code(2, (params_lst) => {return ["Player->paad->field_1F0 |= 8;"]}),
-			new Code(3, (params_lst) => {return ["Player->paad->field_1F0 &= 0xFFFFFFF7;"]}),
+			}, ["param 4", "?", "?", "param 1"]),
+			new Code(2, (params_lst) => {return ["Player->paad->field_1F0 |= 8;"]}, []),
+			new Code(3, (params_lst) => {return ["Player->paad->field_1F0 &= 0xFFFFFFF7;"]}, []),
 			new Code(4, (params_lst) => {
 				if (params_lst[0] == 0) {
 					if (params_lst[1] == 2) {
@@ -727,33 +945,33 @@
 				return [
 					`FUN_80724994(3,${params_lst[0]},${params_lst[1]},${params_lst[2]});`
 				]
-			}),
+			}, ["short (0) or long (1) function", "short (!= 2) or long (2) function", "param 2 in extra function"]),
 			new Code(5, (params_lst) => {
 				return [
 					`spawnCharacter(${params_lst[0]},0,0,0,0,0,0);`
 				]
-			}),
+			}, ["param 1"]),
 			new Code(6, (params_lst) => {
 				return [
 					`void* uvar0 = getSpawnerTiedActor(${params_lst[0]});`,
 					`setCutsceneTarget(uvar0,${params_lst[1] & 0xFF});`
 				]
-			}),
+			}, ["tied actor id", "setCutsceneTarget Param 2"]),
 			new Code(7, (params_lst) => {
 				return [
 					`changeCutsceneState(${params_lst[0] & 0xFF},${params_lst[1] & 0xFF})`
 				]
-			}),
+			}, ["param 1", "param 2"], "Change Cutscene State"),
 			new Code(8, (params_lst) => {
 				return [
 					`setCutsceneIndex(${params_lst[0] & 0xFF});`
 				]
-			}),
+			}, ["Cutscene Index"], "Set Cutscene Index"),
 			new Code(9, (params_lst) => {
 				return [
 					`FUN_8061DAAC(${params_lst[0]},${params_lst[1]},${params_lst[2]});`
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3"]),
 			new Code(10, (params_lst) => {
 				if (params_lst[0] == 0) {
 					code = [
@@ -773,18 +991,18 @@
 					])
 				}
 				return []
-			}),
+			}, ["Enable Function (0)", "Show (1) or Hide (0)"]),
 			new Code(11, (params_lst) => {
 				return [
 					`FUN_807289E8(${params_lst[0]},${params_lst[1]},${params_lst[2]},${params_lst[3]});`
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3", "Param 4"]),
 			new Code(12, (params_lst) => {
 				return [
 					`int uvar0 = ${params_lst[0]};`,
 					`FUN_8067AB20(CameraPointer,${params_lst[1]},0,1,&uvar0,0);`
 				]
-			}),
+			}, ["Uvar0 Value", "Param 2"]),
 			new Code(13, (params_lst) => {
 				return [
 					`int uvar0 = ${params_lst[0]};`,
@@ -792,33 +1010,33 @@
 					"int sstack = 0xFFFF;",
 					`FUN_8067AB20(CameraPointer,${params_lst[1]},0,0xE,&uvar0,0);`
 				]
-			}),
+			}, ["Uvar0 Value", "Param 2"]),
 			new Code(14, (params_lst) => {
 				return [
 					`FUN_80729AA4(${params_lst[0] & 0xFF});`
 				]
-			}),
+			}, ["Param 1"]),
 			new Code(15, (params_lst) => {
 				return [
-					`command_${sub_command}(${params_lst[0]},${params_lst[1]},${params_lst[2]},${params_lst[3]})`
+					`command_15(${params_lst[0]},${params_lst[1]},${params_lst[2]},${params_lst[3]})`
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3", "Param 4"]),
 			new Code(0x10, (params_lst) => {
 				return [
 					`FUN_8061F0B0(CameraPointer,${params_lst[1] & 0xFF},${params_lst[0]});`
 				]
-			}),
+			}, ["Param 2", "Param 3"]),
 			new Code(0x11, (params_lst) => {
 				return [
 					`FUN_806291B4(${params_lst[0] & 0xFF});`
 				]
-			}),
+			}, ["Param 1"]),
 			new Code(0x12, (params_lst) => {
 				return [
 					`int uvar0 = ${params_lst[0]};`,
 					`FUN_8067AB20(CameraPointer,${params_lst[1]},0,0x14,&uvar0,0);`
 				]
-			}),
+			}, ["Uvar0 Value", "Param 2"]),
 			new Code(0x13, (params_lst) => {
 				if (params_lst[0] == 0) {
 					code = [
@@ -842,7 +1060,7 @@
 					"renderActor(uvar0,0);",
 					"FUN_80614A64(uvar0);",
 				])
-			}),
+			}, ["Spawner Tied Actor ID (>0) or Player (0)", "Param 1", "Param 2"]),
 			new Code(0x14, (params_lst) => {
 				if (params_lst[0] > 0x7FF) {
 					if (params_lst[1] < 0x800) {
@@ -880,12 +1098,12 @@
 						`*(short*)(0x807F5D7C) = FUN_806086CC(0,0,uvar2->zPos,${params_lst[1] & 0xFF});`
 					])
 				}
-			}),
+			}, ["Param 1", "Param 2"], "Play SFX at location"),
 			new Code(0x15, (params_lst) => {
 				return [
 					`modifyObjectState(${params_lst[0]},${params_lst[1]&0xFF});`
 				]
-			}),
+			}, ["Object ID", "Target State"], "Modify Object Model 2 Instance State"),
 			new Code(0x16, (params_lst) => {
 				return [
 					`void* uvar0 = getSpawnerTiedActor(${params_lst[0]},0);`,
@@ -900,7 +1118,7 @@
 					"Player->obj_params_bitfield |= 4;",
 					"uvar0->control_state = 0x40;",
 				]
-			}),
+			}, ["Spawner ID"], "Attach actor to Vehicle"),
 			new Code(0x17, (params_lst) => {
 				if (params_lst[1] == 0) {
 					return [
@@ -910,10 +1128,10 @@
 				return [
 					`playSong(${params_lst[0]},${params_lst[1]}/DOUBLE_807580F8);`
 				]
-			}),
+			}, ["Song Index", "Volume"], "Play Song"),
 			new Code(0x18, (params_lst) => {
 				return ["FUN_8070E8DC(1);"]
-			}),
+			}, []),
 			new Code(0x19, (params_lst) => {
 				uvar0 = params_lst[0]
 				if (params_lst[0] < 1) {
@@ -930,34 +1148,34 @@
 					`int uvar1 = ${uvar1}`,
 					"FUN_80737924((&DAT_807F5D70)[uvar]);",
 				]
-			}),
+			}, ["?"]),
 			new Code(0x1A, (params_lst) => {
 				return ["FUN_80737924(SFXArray[*(short*)(0x807F5D7C)]);"]
-			}),
+			}, []),
 			new Code(0x1B, (params_lst) => {
 				return [`cancelMusic(${params_lst[0]},0);`]
-			}),
+			}, ["Song"], "Cancel Music"),
 			new Code(0x1C, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
 					"uvar0->rotation.x = character_change_pointer->field_2C8 & 0xFFF;"
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)"]),
 			new Code(0x1D, (params_lst) => {
 				return ["pauseCutscene();"]
-			}),
+			}, [], "Pause Cutscene"),
 			new Code(0x1E, (params_lst) => {
 				return [
 					"spawnActorWrapper(0x108,0x1D);",
 					`PTR_DAT_807FBB44->text_file = ${params_lst[0]}`,
 					`loadText(PTR_DAT_807FBB44,${params_lst[0]},${params_lst[1]&0xFF});`,
 				]
-			}),
+			}, ["Text File", "Text Index"], "Spawn Squawks with Text"),
 			new Code(0x1F, (params_lst) => {
 				return [
-					`command_${sub_command}(${params_lst[0]},${params_lst[1]},${params_lst[2]},${params_lst[3]})`
+					`command_31(${params_lst[0]},${params_lst[1]},${params_lst[2]},${params_lst[3]})`
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3", "Param 4"]),
 			new Code(0x20, (params_lst) => {
 				return [
 					`int* uvar0 = getSpawnerTiedActor(${params_lst[0]},0);`,
@@ -967,33 +1185,33 @@
 					"uvar0->control_state_progress = 0;",
 					"}",
 				]
-			}),
+			}, ["Spawner ID"]),
 			new Code(0x21, (params_lst) => {
 				return ["FUN_8061C2C4(CameraPointer,0x8000);"]
-			}),
+			}, []),
 			new Code(0x22, (params_lst) => {
 				if (params_lst[0] == 0) {
 					return ["deathwarp(Player);"]
 				}
 				return [`initMapChange(${params_lst[0]},${params_lst[1]});`]
-			}),
+			}, ["Deathwarp (0) or Map (>0)", "Exit"], "Warp to Map/Deathwarp if map is 0"),
 			new Code(0x23, (params_lst) => {
 				return [
 					`TransitionSpeed = ${params_lst[1]};`,
 					`TransitionType = ${params_lst[0]};`,
 				]
-			}),
+			}, ["Transition Speed", "Transition Type"], "Set Transition Properties"),
 			new Code(0x24, (params_lst) => {
 				return [
 					`FUN_80724994(1,${params_lst[0]},${params_lst[1]},${params_lst[2]});`
 				]
-			}),
+			}, ["Param 2", "Param 3", "Param 4"]),
 			new Code(0x25, (params_lst) => {
 				return ["FUN_806F397C();"]
-			}),
+			}, []),
 			new Code(0x26, (params_lst) => {
 				return [`FUN_80641874(${params_lst[0]},${params_lst[1]});`]
-			}),
+			}, ["Param 1", "Param 2"]),
 			new Code(0x27, (params_lst) => {
 				return [
 					`FUN_80656E58(${params_lst[0]}, ${params_lst[1] & 0xFF}, 0, ${params_lst[2]});`,
@@ -1001,7 +1219,7 @@
 					`FUN_80656E58(${params_lst[0]}, ${params_lst[1] & 0xFF}, 2, ${params_lst[2]});`,
 					`FUN_80656E58(${params_lst[0]}, ${params_lst[1] & 0xFF}, 3, ${params_lst[2]});`,
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3"]),
 			new Code(0x28, (params_lst) => {
 				return [
 					`int* uvar0 = getSpawnerTiedActor(${params_lst[0]},0);`,
@@ -1014,14 +1232,14 @@
 					"uvar1->obj_params_bitfield &= 0xFFFFFFFB;",
 					"}",
 				]
-			}),
+			}, ["Spawner ID 1", "Spawner ID 2"]),
 			new Code(0x29, (params_lst) => {
 				return [
 					"if (isISGActive() == 0) {",
 					`initTransitionWGamemode(${params_lst[0]},${params_lst[1]});`,
 					"}",
 				]
-			}),
+			}, ["Map", "Cutscene"], "Initiate Transition to Map with ISG Check"),
 			new Code(0x2A, (params_lst) => {
 				return [
 					`int* uvar0 = getSpawnerTiedActor(${params_lst[0]},0);`,
@@ -1029,10 +1247,10 @@
 					"uvar0->control_state = 0x3C;",
 					"}",
 				]
-			}),
+			}, ["Spawner ID"]),
 			new Code(0x2B, (params_lst) => {
 				return [`setIntroStoryPlaying(${params_lst[0]});`]
-			}),
+			}, ["Target State"]),
 			new Code(0x2C, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
@@ -1040,16 +1258,16 @@
 					`int uvar1 = FUN_80665DE0(afStack44[0],uvar0->xPos,uvar0->zPos);`,
 					"uvar0->rotation.x = uvar1;",
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Param 1", "Param 2"]),
 			new Code(0x2D, (params_lst) => {
 				return [`FUN_8061CF80(${params_lst[0]});`]
-			}),
+			}, ["Param 1"]),
 			new Code(0x2E, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
 					`uvar0->field_15E = ${params_lst[1] & 0xFF};`,
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Actor->0x15E"]),
 			new Code(0x2F, (params_lst) => {
 				code = [`modifyObjectState(${params_lst[0]},${params_lst[3]}`]
 				if (params_lst[1] != 0) {
@@ -1059,7 +1277,7 @@
 					code.push(`modifyObjectState(${params_lst[2]},${params_lst[3]}`)
 				}
 				return code
-			}),
+			}, ["Object ID 1", "Object ID 2", "Object ID 3", "Target State"], "Modify Multiple Object Model 2 Instance States"),
 			new Code(0x30, (params_lst) => {
 				code = [`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`]
 				if (params_lst[1] > 0x7FF) {
@@ -1073,7 +1291,7 @@
 					`uvar0->blue = ${params_lst[3] & 0xFF}`,
 					"uvar0->obj_params_bitfield |= 0x800000;",
 				])
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Red", "Green", "Blue"], "Modify Actor RGB Mask"),
 			new Code(0x31, (params_lst) => {
 				if (params_lst[0] == 0) {
 					return [
@@ -1085,12 +1303,12 @@
 					"FUN_80721560(0x20,0x82,0,100,100);",
 					"FUN_807215D0(1,0);",
 				]
-			}),
+			}, ["Param 4", "Param 5", "Param 6"]),
 			new Code(0x32, (params_lst) => {
 				return [
 					`FUN_8065F49C(${params_lst[0]},${params_lst[1]},${params_lst[2]},${params_lst[3]} * DOUBLE_807580A8);` // Water something?
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3", "Param 4"]),
 			new Code(0x33, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
@@ -1101,25 +1319,25 @@
 					`uvar1->field_32 = ${params_lst[3]};`,
 					"uvar1->field_31 = 1;",
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Field 0x33", "Field 0x22", "Field 0x32"]),
 			new Code(0x34, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
 					"uvar0->field_17C->field_30 = 0xFF;",
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)"]),
 			new Code(0x35, (params_lst) => {
 				if (params_lst[0] == 0) {
 					return ["BananaMedalGet();"]
 				}
 				return []
-			}),
+			}, ["Enable"], "Get Banana Medal"),
 			new Code(0x36, (params_lst) => {
 				return [
 					`tagKong(${params_lst[0]});`,
 					"clearGun(Player);",
 				]
-			}),
+			}, ["Kong Index"], "Tag Kong"),
 			new Code(0x37, (params_lst) => {
 				if (params_lst[0] == 0) {
 					code = ["int* uvar0 = Player;"]
@@ -1129,7 +1347,7 @@
 				return code.concat([
 					"FUN_80605314(uvar0,0);"
 				])
-			}),
+			}, ["Spawner ID (>0) or Player (0)"]),
 			new Code(0x38, (params_lst) => {
 				if (params_lst[0] == 0) {
 					code = ["int* uvar0 = Player;"]
@@ -1137,51 +1355,51 @@
 					code = [`int* uvar0 = getSpawnerTiedActor(${params_lst[0]},0);`]
 				}
 				return code.concat([`FUN_80604CBC(uvar0,${params_lst[1]},0,1);`])
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Param 2"]),
 			new Code(0x39, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
 					`FUN_8070D8C0(uvar0,${params_lst[1]},${params_lst[2]})`,
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Param 2", "Param 3"]),
 			new Code(0x3A, (params_lst) => {
 				return ["preventTransition();"]
-			}),
+			}, [], "Prevent Transition"),
 			new Code(0x3B, (params_lst) => {
 				return [
 					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
 					`uvar0->field_146 = ${params_lst[1]};`,
 				]
-			}),
+			}, ["Spawner ID (>0) or Player (0)", "Field 0x146"]),
 			new Code(0x3C, (params_lst) => {
 				return [
 					"int* uvar0 = getSpawnerTiedActor(1,0);",
 					`uvar0->field_17C->field_D |= ${params_lst[0]};`,
 				]
-			}),
+			}, ["Field 0xD"]),
 			new Code(0x3D, (params_lst) => {
 				return ["initMapChange(PreviousMap,0);"]
-			}),
+			}, [], "Warp to previous map"),
 			new Code(0x3E, (params_lst) => {
 				return ["initMapChange(0x22,0xC);"]
-			}),
+			}, [], "Warp to outside K. Rool's Ship"),
 			new Code(0x3F, (params_lst) => {
 				return [
 					`handleEndSequence(${params_lst[0]},${params_lst[1]},${params_lst[2]});`
 				]
-			}),
+			}, ["Param 1", "Param 2", "Param 3"], "Handle End Sequence"),
 			new Code(0x40, (params_lst) => {
 				return ["loadEndSequence(0);"]
-			}),
+			}, [], "Load End Sequence"),
 			new Code(0x41, (params_lst) => {
 				return ["exitMinigameOrBoss();"]
-			}),
+			}, [], "Exit Minigame/Boss"),
 			new Code(0x42, (params_lst) => {
 				if (params_lst[1] != 0) {
 					return [`spawnKRoolText(${params_lst[0] & 0xFF},${params_lst[1]},${params_lst[2]});`]
 				}
 				return [`spawnKRoolText(${params_lst[0] & 0xFF},0x5A,${params_lst[2]});`]
-			}),
+			}, ["Param 1", "Param 2", "Param 3"], "Spawn K. Rool speech text (From level story intros)"),
 			new Code(0x43, (params_lst) => {
 				return [
 					"if (isISGActive() == 0) {",
@@ -1189,13 +1407,13 @@
 					`initTransitionWGamemode(${params_lst[0]},${params_lst[1]});`,
 					"}",
 				]
-			}),
+			}, ["Map", "Cutscene", "Exit"], "Initiate Transition with non-zero exit with ISG Check"),
 			new Code(0x44, (params_lst) => {
 				return [`FUN_80602488(${params_lst[0]});`]
-			}),
+			}, ["Param 1"]),
 			new Code(0x45, (params_lst) => {
 				return ["setSpawnerTiedActorControlState(2,40);"]
-			}),
+			}, [], "Delete Actor from Spawner ID"),
 		]
 
 		function parseSubCommand(command, params) {
