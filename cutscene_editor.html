@@ -226,8 +226,7 @@
 				<strong>Raw Cutscene File:</strong>
 				<input type="file" id="file-selector" accept=".bin"/>
 			</div>
-			<div class="file-input-container" style="height:200px;margin-top:10px;overflow-y:scroll;" id="error_list"></div>
-			<div id="form-controls" class="hide">
+			<div id="form-controls" class="hide" style="margin-top: 10px">
 				<div>	
 					<!-- <button onclick="numericToJSON()">
 						Save Script to session
@@ -252,14 +251,14 @@
 					</button>
 					<button onclick="removeSelectedScript()">
 						Remove Selected Script
-					</button>
+					</button> -->
 					<button onclick="document.getElementById('import-selector').click()">
 						Import Script
 					</button>
-					<button onclick="exportScript()">
-						Export Script
-					</button> -->
-					<input type="file" id="import-selector" class="hide" accept=".script"/>
+					<button onclick="exportCutscene()">
+						Export Cutscene
+					</button>
+					<input type="file" id="import-selector" class="hide" accept=".json"/>
 				</div>
 				<div class="show-cutscene-numbers">
 					Show Cutscene Numbers (Names)
@@ -460,48 +459,123 @@
 		function purgeUnusedItems() {
 			// Add original point index to obejct
 			reference_data = {}
-			cutscene_data["points"] = cutscene_data["points"].map((item, index) => {
+			cutscene_data.points = cutscene_data.points.map((item, index) => {
 				return {
 					...item,
 					...{"original_segment": item.segment}	
 				}
 			})
-			cutscene_data["points"].forEach(point => {
+			cutscene_data.points.forEach(point => {
 				reference_data[point.segment] = 0
 			})
-			cutscene_data["cutscenes"].forEach(cutscene => {
+			cutscene_data.cutscenes.forEach(cutscene => {
 				cutscene.point_sequence.forEach(point => {
 					if (Object.keys(reference_data).includes(point)) {
 						reference_data[point] += 1;
 					}
 				})
 			})
-			cutscene_data["points"].forEach(point => {
+			cutscene_data.points.forEach(point => {
 				if (Object.keys(reference_data).includes(point.segment)) {
 					point.references = reference_data[point.segment]
 				}
 			})
-			const unused_count = cutscene_data["points"].filter(item => item.references == 0).length
-			const original_count = cutscene_data["points"].length
-			cutscene_data["points"] = cutscene_data["points"].filter(item => item.references > 0) // Purge all unused points
+			const unused_count = cutscene_data.points.filter(item => item.references == 0).length
+			const original_count = cutscene_data.points.length
+			cutscene_data.points = cutscene_data.points.filter(item => item.references > 0) // Purge all unused points
 			// Reallocate cutscenes to use the shortened point file
 			let conversion = {}
-			cutscene_data["points"].forEach((item, index) => {
+			cutscene_data.points.forEach((item, index) => {
 				conversion[item["original_segment"]] = item.segment
 			})
-			cutscene_data["cutscenes"].forEach(cutscene => {
+			cutscene_data.cutscenes.forEach(cutscene => {
 				cutscene.point_sequence.forEach((point, index) => {
 					if (Object.keys(conversion).includes(point)) {
 						cutscene.point_sequence[index] = conversion[point]
 					}
 				})
 			})
-			cutscene_data["points"].forEach(point => {
+			cutscene_data.points.forEach(point => {
 				point.segment = conversion[point.segment]
 			})
 			console.info(`${unused_count}/${original_count} items purged for being unused.`)
 			showScript(viewed_file)
 			saveCutscenesToFile(false, true);
+		}
+
+		function exportCutscene() {
+			if (viewed_file != -1) {
+				const json_original = cutscene_data["cutscenes"].find(item => item.index == viewed_file);
+				let json = JSON.parse(JSON.stringify(json_original)); // Create deep copy
+				json.point_data.forEach((point, index) => {
+					delete point.code;
+					delete point.references;
+					delete point.segment;
+					if ([4, 5, 12, 13].includes(point.command)) {
+						delete point.read;
+					}
+					point.duration = json.point_durations[index];
+				})
+				delete json.point_sequence;
+				delete json.point_durations;
+				delete json.count;
+				let saveJSON = (function () {
+					let a = document.createElement("a");
+					document.body.appendChild(a);
+					a.style = "display:none";
+					return function (data, name) {
+						a.href = `data:text/json;charset=utf-8,${encodeURIComponent(JSON.stringify(data, null, 4))}`;
+						a.download = name;
+						a.click();
+						a.remove();
+					};
+				}())
+				saveJSON(json,'output.json')
+			}
+		}
+
+		function importCutscene(txt_data) {
+			let data = JSON.parse(txt_data)
+			let point_durations = [];
+			let point_sequence = [];
+			let point_data = [];
+			data.point_data.forEach((point, index) => {
+				point_durations.push(point.duration);
+				delete point.duration;
+				const used_points = cutscene_data.points.map(item => item.segment)
+				const new_seg = Math.min(...[...Array(5000).keys()].filter(item => !used_points.includes(item)));
+				point.segment = new_seg;
+				point_sequence.push(new_seg);
+				point.references = 1;
+				if (point.command == 13) {
+					point.code = parseSubCommand(point.detailed_command.sub_command, point.detailed_command.params)
+				} else {
+					parsePoint(point)
+				}
+				cutscene_data["points"].push(point)
+				point_data.push(point)
+			})
+			const original_length = cutscene_data.cutscenes.length;
+			for (let i = original_length; i < data.index; i++) {
+				cutscene_data.cutscenes.push({
+					"index": i,
+					"count": 0,
+					"point_sequence": [],
+					"point_durations": [],
+					"point_data": [],
+				})
+			}
+			cutscene_data.cutscenes = cutscene_data.cutscenes.filter(item => item.index != data.index);
+			cutscene_data.cutscenes.push({
+				"index": data.index,
+				"count": point_durations.length,
+				"point_sequence": [...point_sequence],
+				"point_durations": [...point_durations],
+				"point_data": JSON.parse(JSON.stringify(point_data)), // Deep Copy
+			})
+			cutscene_data.cutscenes = cutscene_data.cutscenes.sort((a, b) => (a.index > b.index) ? 1 : -1);
+			populateSelectList(cutscene_data);
+			showScript(data.index);
 		}
 
 		function addCutscene() {
@@ -514,7 +588,6 @@
 				"point_durations": [],
 			})
 			populateSelectList(cutscene_data);
-			viewed_file = added;
 			showScript(added);
 		}
 
@@ -1055,8 +1128,13 @@
 				parsePoint(point_data)
 				if ([4, 5].includes(point_data["command"])) {
 					point_data["point_start"] = Object.assign({}, [...point_data["points"]][0]);
-					point_data["point_start"]["x"] = [...point_data["points"]].length;
 					point_data["point_end"] = Object.assign({}, [...point_data["points"]][0]);
+					["point_start", "point_end"].forEach(attr => {
+						Object.keys(point_data[attr]).forEach(key => {
+							point_data[attr][key] = 0;
+						})
+					})
+					point_data["point_start"]["x"] = [...point_data["points"]].length;
 				}
 			}
 			cutscene_data["points"].push(point_data)
@@ -1160,7 +1238,7 @@
 				var data = fr.result;
 				var enc = new TextDecoder("utf-8");
 				var arr = data;
-				importScript(enc.decode(arr));
+				importCutscene(enc.decode(arr));
 			};
 			fr.readAsArrayBuffer(document.getElementById("import-selector").files[0]);
         })		
