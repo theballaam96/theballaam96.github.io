@@ -767,6 +767,7 @@
 			if (point_data["command"] == 13) {
 				if (!Object.keys(point_data).includes("detailed_command")) {
 					const param_length= codeBlocks.find(item => item.index == 0).param_count;
+					console.log(param_length)
 					point_data["detailed_command"] = {
 						"sub_command": 0,
 						"params": new Array(param_length).fill(0),
@@ -787,7 +788,7 @@
 			}
 			if (Object.keys(point_data).includes("detailed_command")) {
 				if (val != point_data["detailed_command"]["sub_command"]) {
-					point_data["detailed_command"]["sub_command"] = new Array(param_length).fill(0);
+					point_data["detailed_command"]["params"] = new Array(param_length).fill(0);
 				}
 				point_data["detailed_command"]["sub_command"] = val;
 			} else {
@@ -1066,6 +1067,11 @@
 			var hook = document.getElementById("new-item");
 			const used_points = cutscene_data["points"].map(item => item.segment)
 			const new_seg = Math.min(...[...Array(5000).keys()].filter(item => !used_points.includes(item)));
+			const matching_functions = codeBlocks.filter(item => item.index == 0)
+			let param_length = 4;
+			if (matching_functions.length > 0) {
+				param_length = matching_functions[0].param_count;
+			}
 			point_data = {
 				"command": 5,
 				"points": [],
@@ -1073,7 +1079,7 @@
 				"duration": 0,
 				"detailed_command": {
 					"sub_command": 0,
-					"params": [],
+					"params": new Array(param_length).fill(0),
 				},
 				"head": [0, 0],
 				"read": [],
