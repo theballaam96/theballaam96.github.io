@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Homebrew Header Swapper</title>
+	<style>
+		body {
+			background-color: #222;
+		}
+		.container {
+            background-color: #222;
+            border: 2px gainsboro solid;
+            width: 30%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            border-radius: 5px;
+            color: gainsboro;
+            text-align: center;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            border: 1px solid #ccc;
+            display: inline-block;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: 0.5s ease-in-out;
+            border-radius: 5px;
+        }
+        .custom-file-upload:hover {
+            background-color: #333;
+        }
+        .outer {
+            display: table;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+        }
+        
+        .middle {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        @media (max-width: 1200px) {
+            .container {
+                width: 50%;
+            }
+        }
+
+        @media (max-width: 1000px) {
+            .container {
+                width: 80%;
+            }
+        }
+	</style>
+</head>
+<body>
+    <div class="outer">
+        <div class="middle">
+            <div class="container">
+                <h1>Homebrew Header Swapper</h1>
+                <p>The homebrew header can cause problems on older everdrives. This tool toggles whether the header is there or not.</p>
+                <p style="color:red">This tool only works on Donkey Kong 64 US .z64 ROMs and ROM Hacks</p>
+                <label for="rom" class="custom-file-upload">
+                    Upload ROM
+                </label>
+                <input id="rom" type="file" accept=".z64"/>
+                <p id="result"></p>
+            </div>
+        </div>
+    </div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script type="text/javascript">
+        function checkHomebrew(f) {
+            if ((f[0x3C] == 0x45) && (f[0x3D] == 0x44) && (f[0x3F] == 0x20)) {
+                return true;
+            }
+            return false;
+        }
+
+        function writeToFile(f, name) {
+			var write_bytes = new Uint8Array(f.length);
+			f.forEach((item,index) => {write_bytes[index] = item})
+			var saveByteArray = (function () {
+				var a = document.createElement("a");
+				document.body.appendChild(a);
+				a.style = "display:none";
+				return function (data, name) {
+					var blob = new Blob(data, {type: "octet/stream"}),
+					url = window.URL.createObjectURL(blob);
+					a.href = url;
+					a.download = name;
+					a.click();
+					a.remove();
+				};
+			}())
+			saveByteArray([write_bytes],name)
+		}
+
+		document.getElementById("rom").addEventListener("change", function() {
+			var fr = new FileReader();
+			fr.onload = function() {
+				var data = fr.result;
+				setup_data = fr.result;
+			    var array = new Uint8Array(data);
+			    file_bytes = array.slice()
+                const is_homebrew = checkHomebrew(file_bytes)
+                var result_hook = document.getElementById("result")
+                if (is_homebrew) {
+                    result_hook.innerText = "This ROM had a homebrew header"
+                    file_bytes[0x3C] = 0x44;
+                    file_bytes[0x3D] = 0x4F;
+                    file_bytes[0x3F] = 0x00;
+                } else {
+                    result_hook.innerText = "This ROM did not have a homebrew header"
+                    file_bytes[0x3C] = 0x45;
+                    file_bytes[0x3D] = 0x44;
+                    file_bytes[0x3F] = 0x20;
+                }
+                writeToFile(file_bytes, document.getElementById("rom").value.replace(/.*[\/\\]/, ''))
+			};
+			fr.readAsArrayBuffer(document.getElementById("rom").files[0]);
+        })
+	</script>
+</body>
+</html>
