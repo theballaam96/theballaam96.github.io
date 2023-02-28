@@ -134,6 +134,9 @@
 			width: 100%;
 			height: 100%;
 		}
+		.comment-line {
+			color: grey;
+		}
 		.hide {
 			display:none;
 		}
@@ -229,6 +232,7 @@
 		}
 		var file_bytes = []
 		var viewed_file = -1;
+		const COMMENT_TAG = "//"
 
 		function hex(val) {
 			return "0x" + val.toString(16).toUpperCase()
@@ -355,6 +359,10 @@
 					}
 				})
 			}
+			if (json.comment) {
+				string += (json.comment.length > 0 ? `${json.type == "comment" ? "" : " "}${COMMENT_TAG} ${json.comment}` : "")
+			}
+
 			string += "\n"
 			return string
 		}
@@ -451,106 +459,108 @@
 			var exec_count = 0;
 			var lines_with_errors = [];
 			lines.forEach((line, index) => {
-				var pars = line.split(" ")
-				var line_idx = (index + 1).toString();
-				if (pars[0] == "COND" || pars[0] == "CONDINV") {
-					cond_count += 1;
-					if (exec_count > 0) {
-						success = false;
-						can_update = false;
-						errors.push("[CRITICAL] Condition occurs after execution before ENDBLOCK on line " + line_idx)
-						lines_with_errors.push(index)
-					}
-				}
-				if (pars[0] == "EXEC") {
-					exec_count += 1;
-				}
-				if (pars[0] == "ENDBLOCK") {
-					if (exec_count == 0) {
-						success = false;
-						can_update = true;
-						errors.push("Endblock occurs on line " + line_idx + " without an execution, rendering this condition useless")
-						lines_with_errors.push(index)
-					}
-					cond_count = 0;
-					exec_count = 0;
-				} else {
-					var has_nan = isNaN(parseInt(pars[1]));
-					if (has_nan) {
-						success = false;
-						can_update = false;
-						errors.push("[CRITICAL] Non-Number function type provided on " + line_idx)
-						lines_with_errors.push(index)
-					} else {
-						if ((pars[1] % 1) != 0) {
+				var pars = line.split(COMMENT_TAG)[0].trim().split(" ")
+				if (line.split(COMMENT_TAG)[0].trim().length > 0) {
+					var line_idx = (index + 1).toString();
+					if (pars[0] == "COND" || pars[0] == "CONDINV") {
+						cond_count += 1;
+						if (exec_count > 0) {
 							success = false;
 							can_update = false;
-							errors.push("[CRITICAL] Non-Integer function type provided on " + line_idx)
+							errors.push("[CRITICAL] Condition occurs after execution before ENDBLOCK on line " + line_idx)
 							lines_with_errors.push(index)
 						}
 					}
-					var has_dec = false;
-					for (let a = 0; a < 3; a++) {
-						if (isNaN(parseInt(pars[3 + a]))) {
-							has_nan = true;
-						} else if ((pars[3 + a] % 1) != 0) {
-							has_dec = true;
+					if (pars[0] == "EXEC") {
+						exec_count += 1;
+					}
+					if (pars[0] == "ENDBLOCK") {
+						if (exec_count == 0) {
+							success = false;
+							can_update = true;
+							errors.push("Endblock occurs on line " + line_idx + " without an execution, rendering this condition useless")
+							lines_with_errors.push(index)
+						}
+						cond_count = 0;
+						exec_count = 0;
+					} else {
+						var has_nan = isNaN(parseInt(pars[1]));
+						if (has_nan) {
+							success = false;
+							can_update = false;
+							errors.push("[CRITICAL] Non-Number function type provided on " + line_idx)
+							lines_with_errors.push(index)
+						} else {
+							if ((pars[1] % 1) != 0) {
+								success = false;
+								can_update = false;
+								errors.push("[CRITICAL] Non-Integer function type provided on " + line_idx)
+								lines_with_errors.push(index)
+							}
+						}
+						var has_dec = false;
+						for (let a = 0; a < 3; a++) {
+							if (isNaN(parseInt(pars[3 + a]))) {
+								has_nan = true;
+							} else if ((pars[3 + a] % 1) != 0) {
+								has_dec = true;
+							}
+						}
+						if (has_nan) {
+							success = false;
+							can_update = false;
+							errors.push("[CRITICAL] One or more non-number parameter(s) provided on " + line_idx)
+							lines_with_errors.push(index)
+						}
+						if (has_dec) {
+							success = false;
+							can_update = false;
+							errors.push("[CRITICAL] One or more non-integer parameter(s) provided on " + line_idx)
+							lines_with_errors.push(index)
 						}
 					}
-					if (has_nan) {
+					if (cond_count > 5) {
 						success = false;
 						can_update = false;
-						errors.push("[CRITICAL] One or more non-number parameter(s) provided on " + line_idx)
+						errors.push("[CRITICAL] Condition count for a block exceeds 5 on line " + line_idx)
 						lines_with_errors.push(index)
 					}
-					if (has_dec) {
+					if (exec_count > 4) {
 						success = false;
 						can_update = false;
-						errors.push("[CRITICAL] One or more non-integer parameter(s) provided on " + line_idx)
+						errors.push("[CRITICAL] Execution count for a block exceeds 4 on line " + line_idx)
 						lines_with_errors.push(index)
 					}
-				}
-				if (cond_count > 5) {
-					success = false;
-					can_update = false;
-					errors.push("[CRITICAL] Condition count for a block exceeds 5 on line " + line_idx)
-					lines_with_errors.push(index)
-				}
-				if (exec_count > 4) {
-					success = false;
-					can_update = false;
-					errors.push("[CRITICAL] Execution count for a block exceeds 4 on line " + line_idx)
-					lines_with_errors.push(index)
-				}
-				if (pars.filter(item => item != "").length != 6 && pars[0] != "ENDBLOCK") {
-					success = false;
-					can_update = false;
-					errors.push("[CRITICAL] Invalid length on line " + line_idx)
-					lines_with_errors.push(index)
-				}
-				valid_pars = ["ENDBLOCK","COND","CONDINV","EXEC"]
-				if (valid_pars.indexOf(pars[0]) == -1) {
-					success = false;
-					can_update = false;
-					errors.push("[CRITICAL] Invalid line type on line " + line_idx)
-					lines_with_errors.push(index)
-				}
-				if (pars[0] == "ENDBLOCK" && pars.filter(item => item != "").length != 1) {
-					errors.push("Endblock on line " + line_idx + " has parameters when it should not")
-					lines_with_errors.push(index)
-				}
-				if (index == (lines.length - 1)) {
-					if (pars[0] != "ENDBLOCK") {
+					if (pars.filter(item => item != "").length != 6 && pars[0] != "ENDBLOCK") {
 						success = false;
-						errors.push("[CRITICAL] Trailing conditionals and executions without an endblock on line " + line_idx)
+						can_update = false;
+						errors.push("[CRITICAL] Invalid length on line " + line_idx)
 						lines_with_errors.push(index)
 					}
-				}
-				if (pars[0] != "ENDBLOCK" && pars[2] != "|") {
-					success = false;
-					can_update = true;
-					errors.push("Invalid separator on line " + line_idx)
-					lines_with_errors.push(index)
+					valid_pars = ["ENDBLOCK","COND","CONDINV","EXEC"]
+					if (valid_pars.indexOf(pars[0]) == -1) {
+						success = false;
+						can_update = false;
+						errors.push("[CRITICAL] Invalid line type on line " + line_idx)
+						lines_with_errors.push(index)
+					}
+					if (pars[0] == "ENDBLOCK" && pars.filter(item => item != "").length != 1) {
+						errors.push("Endblock on line " + line_idx + " has parameters when it should not")
+						lines_with_errors.push(index)
+					}
+					if (index == (lines.length - 1)) {
+						if (pars[0] != "ENDBLOCK") {
+							success = false;
+							errors.push("[CRITICAL] Trailing conditionals and executions without an endblock on line " + line_idx)
+							lines_with_errors.push(index)
+						}
+					}
+					if (pars[0] != "ENDBLOCK" && pars[2] != "|") {
+						success = false;
+						can_update = true;
+						errors.push("Invalid separator on line " + line_idx)
+						lines_with_errors.push(index)
+					}
 				}
 			})
 			document.getElementById("error_list").innerText = errors.join("\n")
@@ -621,6 +631,7 @@
 							"type": "execution",
 							"func": func,
 							"params": params.slice(),
+							"comment": line.includes(COMMENT_TAG) ? line.split(COMMENT_TAG)[1].trim() : "",
 						})
 					} else if (numeric_params[0] == "COND" || numeric_params[0] == "CONDINV") {
 						cond_count += 1;
@@ -636,10 +647,12 @@
 							"type": "condition",
 							"func": func,
 							"params": params.slice(),
+							"comment": line.includes(COMMENT_TAG) ? line.split(COMMENT_TAG)[1].trim() : "",
 						})
 					} else if (numeric_params[0] == "ENDBLOCK") {
 						block_arr.push({
 							"type": "endblock",
+							"comment": line.includes(COMMENT_TAG) ? line.split(COMMENT_TAG)[1].trim() : "",
 						})
 						if (cond_count <= 5 && exec_count <= 4) {
 							block_arr.forEach(block => {
@@ -649,6 +662,11 @@
 						block_arr = [];
 						cond_count = 0;
 						exec_count = 0;
+					} else if (numeric_params[0] == COMMENT_TAG) {
+						block_arr.push({
+							"type": "comment",
+							"comment": line.split(COMMENT_TAG)[1].trim()
+						})
 					}
 				})
 				var script_insert = {
@@ -718,6 +736,8 @@
 				} else if (found_code) {
 					code_data = line.split(" ")
 					func = code_data[0]
+					has_comment = line.trim().includes(COMMENT_TAG)
+					comment = has_comment ? line.split(COMMENT_TAG)[1].trim() : ""
 					param_funcs = ["COND","CONDINV","EXEC"]
 					if (param_funcs.includes(func.toUpperCase())) {
 						param_list = []
@@ -729,15 +749,18 @@
 							if (func.toUpperCase() == "CONDINV") {
 								sub_func += 0x8000
 							}
-							script_insert.script.push({"type": "condition","func":sub_func,"params":param_list})
+							script_insert.script.push({"type": "condition","func":sub_func,"params":param_list, "comment": comment})
 						} else {
-							script_insert.script.push({"type": "execution","func":code_data[1],"params":param_list})
+							script_insert.script.push({"type": "execution","func":code_data[1],"params":param_list, "comment": comment})
 						}
 					} else if (func.toUpperCase() == "ENDBLOCK") {
 						script_insert.script.push({"type":"endblock"})
+					} else if (has_comment) {
+						script_insert.script.push({"type": "comment", "comment": comment})
 					}
 				}
 			})
+			console.log(script_insert)
 			scripts = scripts.filter(item => item.id != script_insert.id)
 			scripts.push(script_insert)
 			populateSelectList(scripts)
@@ -756,6 +779,7 @@
 				export_item.script.forEach(item => {
 					head = ""
 					sub_func = -1
+					comment = ""
 					if (item.type == "condition" && item.func < 0x8000) {
 						head = "COND"
 						sub_func = item.func
@@ -767,13 +791,20 @@
 						sub_func = item.func
 					} else if (item.type == "endblock") {
 						head = "ENDBLOCK"
+					} else if (item.type == "comment") {
+						head = COMMENT_TAG
+					}
+					if (["condition", "execution", "endblock"].includes(item.type)) {
+						comment = item.comment.length > 0 ? `${COMMENT_TAG} ${item.comment}` : ""
 					}
 					if (head != "") {
 						if (sub_func == -1 && head == "ENDBLOCK") {
 							text.push(head)
 						} else {
-							if (head != "ENDBLOCK") {
-								text.push([head,sub_func,"|",item.params[0],item.params[1],item.params[2]].join(" "))
+							if (head == COMMENT_TAG) {
+								text.push([head, item.comment].join(" "))
+							} else if (head != "ENDBLOCK") {
+								text.push([head,sub_func,"|",item.params[0],item.params[1],item.params[2], comment].join(" "))
 							}
 						}
 					}
@@ -806,37 +837,49 @@
 				item = lines[l].innerText;
 				if (item) {
 					if (item != "") {
+						// Filter
+						let comment = ""
+						if (item.includes(COMMENT_TAG)) {
+							comment = item.split(COMMENT_TAG)[1].trim()
+						}
+						item = item.split(COMMENT_TAG)[0].trim()
+						// Process
 						index = current_numeric_line;
 						line_seg = item.split(" ")
-						if (line_seg[0] != "ENDBLOCK") {
-							func = parseInt(line_seg[1])
-							params = []
-							for (let a = 0; a < 3; a++) {
-								params.push(parseInt(line_seg[3 + a]))
-							}
-							if (line_seg[0] == "EXEC") {
-								grabExecution(0, func,params,0,0,"")
+						if (item) {
+							if (line_seg[0] != "ENDBLOCK") {
+								func = parseInt(line_seg[1])
+								params = []
+								for (let a = 0; a < 3; a++) {
+									params.push(parseInt(line_seg[3 + a]))
+								}
+								if (line_seg[0] == "EXEC") {
+									grabExecution(0, func,params,0,0,"")
+								} else {
+									if (line_seg[0] == "CONDINV") {
+										func += 0x8000
+									}
+									grabConditional(0, func,params,0,0,"")
+								}
 							} else {
-								if (line_seg[0] == "CONDINV") {
-									func += 0x8000
+								var hook = document.getElementById("c_comparison")
+								for (let t = 0; t < tab_indentation; t++) {
+									local_tab = 0
+									for (let a = 0; a < tab_indentation - t - 1; a++) {
+										local_tab += 1;
+									}
+									var block = document.createElement("div")
+									var block_text = document.createTextNode("}")
+									block.setAttribute("tabbing",local_tab);
+									block.classList.add("code-line")
+									block.appendChild(block_text)
+									hook.appendChild(block)
 								}
-								grabConditional(0, func,params,0,0,"")
+								tab_indentation = 0;
 							}
-						} else {
-							var hook = document.getElementById("c_comparison")
-							for (let t = 0; t < tab_indentation; t++) {
-								local_tab = 0
-								for (let a = 0; a < tab_indentation - t - 1; a++) {
-									local_tab += 1;
-								}
-								var block = document.createElement("div")
-								var block_text = document.createTextNode("}")
-								block.setAttribute("tabbing",local_tab);
-								block.classList.add("code-line")
-								block.appendChild(block_text)
-								hook.appendChild(block)
-							}
-							tab_indentation = 0;
+						}
+						if (comment.length > 0) {
+							display("comment", `${COMMENT_TAG} ${comment}`, [])
 						}
 						current_numeric_line++;
 					}
@@ -955,9 +998,11 @@
 					})
 				}
 			}
-			if (str.substring(str.length - 1) != "{") {
-				if (str.substring(str.length - 1) != "}") {
-					str += ";"
+			if (file != "comment") {
+				if (str.substring(str.length - 1) != "{") {
+					if (str.substring(str.length - 1) != "}") {
+						str += ";"
+					}
 				}
 			}
 			line_tabbing = 0
@@ -974,6 +1019,9 @@
 			var block_text = document.createTextNode(str)
 			block.setAttribute("tabbing",line_tabbing);
 			block.classList.add("code-line")
+			if (file == "comment") {
+				block.classList.add("comment-line")
+			}
 			block.appendChild(block_text)
 			hook.appendChild(block)
 			//hook.innerText += str + "\n"
