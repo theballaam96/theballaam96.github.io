@@ -1558,8 +1558,12 @@
 				]
 			}, ["Song Index", "Volume"], "Play Song"),
 			new Code(0x18, (params_lst) => {
-				return ["FUN_8070E8DC(1);"]
-			}, []),
+				return [
+					"FUN_8070E8DC(1);",
+					`int* uvar0 = getActorFromSpawnerTriggerOrPlayerIfZero(${params_lst[0]});`,
+					`FUN_8070D8C0(uvar0,${params_lst[1]},${params_lst[2]})`,
+				]
+			}, ["Spawn Trigger", "File", "Text Index"], "Load text from Char Spawner"),
 			new Code(0x19, (params_lst) => {
 				uvar0 = params_lst[0]
 				if (params_lst[0] < 1) {

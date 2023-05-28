@@ -184,10 +184,13 @@
 					<button onclick="document.getElementById('import-selector').click()">
 						Import Script
 					</button>
-					<button onclick="exportScript()">
-						Export Script
+					<button onclick="exportScriptToJSON()">
+						Export Script to JSON
 					</button>
-					<input type="file" id="import-selector" class="hide" accept=".script"/>
+					<button onclick="exportScript()">
+						Export Script to .script
+					</button>
+					<input type="file" id="import-selector" class="hide" accept=".script ,.json"/>
 				</div>
 				<div class="highlight-c-prompt">
 					Highlight associated C Line
@@ -708,62 +711,154 @@
 			}
 		}
 
-		function importScript(file_data) {
+		function importScript(file_data, file_type) {
 			const script_data = file_data.split("\r\n")
 			let found_data = false;
 			let found_code = false;
 			script_insert = {
 				"id": -1,
 				"behav_9C": 0,
+				"ignore": 0,
 				"script": []
 			}
-			script_data.forEach(line => {
-				if (line == ".data") {
-					found_data = true;
-				} else if (line == ".code") {
-					found_code = true;
-				} else if (found_data && !found_code) {
-					prop = line.split(" = ")[0]
-					val = line.split(" = ")[1]
-					if (val.toLowerCase().includes("0x")) {
-						val = parseInt(val.split("0x")[1],16)
-					}
-					if (prop == "id") {
-						script_insert.id = val
-					} else if (prop == "behav_9C") {
-						script_insert.behav_9C = val
-					}
-				} else if (found_code) {
-					code_data = line.split(" ")
-					func = code_data[0]
-					has_comment = line.trim().includes(COMMENT_TAG)
-					comment = has_comment ? line.split(COMMENT_TAG)[1].trim() : ""
-					param_funcs = ["COND","CONDINV","EXEC"]
-					if (param_funcs.includes(func.toUpperCase())) {
-						param_list = []
-						for (let k = 0; k < 3; k++) {
-							param_list.push(parseInt(code_data[k+3]))
+			if (file_type == "script") {
+				script_data.forEach(line => {
+					if (line == ".data") {
+						found_data = true;
+					} else if (line == ".code") {
+						found_code = true;
+					} else if (found_data && !found_code) {
+						prop = line.split(" = ")[0]
+						val = line.split(" = ")[1]
+						if (val.toLowerCase().includes("0x")) {
+							val = parseInt(val.split("0x")[1],16)
 						}
-						if (func.toUpperCase().indexOf("COND") > -1) {
-							sub_func = parseInt(code_data[1])
-							if (func.toUpperCase() == "CONDINV") {
-								sub_func += 0x8000
+						if (prop == "id") {
+							script_insert.id = val
+						} else if (prop == "behav_9C") {
+							script_insert.behav_9C = val
+						} else if (prop == "ignore") {
+							script_insert.ignore = ignore
+						}
+					} else if (found_code) {
+						code_data = line.split(" ")
+						func = code_data[0]
+						has_comment = line.trim().includes(COMMENT_TAG)
+						comment = has_comment ? line.split(COMMENT_TAG)[1].trim() : ""
+						param_funcs = ["COND","CONDINV","EXEC"]
+						if (param_funcs.includes(func.toUpperCase())) {
+							param_list = []
+							for (let k = 0; k < 3; k++) {
+								param_list.push(parseInt(code_data[k+3]))
 							}
-							script_insert.script.push({"type": "condition","func":sub_func,"params":param_list, "comment": comment})
-						} else {
-							script_insert.script.push({"type": "execution","func":code_data[1],"params":param_list, "comment": comment})
+							if (func.toUpperCase().indexOf("COND") > -1) {
+								sub_func = parseInt(code_data[1])
+								if (func.toUpperCase() == "CONDINV") {
+									sub_func += 0x8000
+								}
+								script_insert.script.push({"type": "condition","func":sub_func,"params":param_list, "comment": comment})
+							} else {
+								script_insert.script.push({"type": "execution","func":code_data[1],"params":param_list, "comment": comment})
+							}
+						} else if (func.toUpperCase() == "ENDBLOCK") {
+							script_insert.script.push({"type":"endblock"})
+						} else if (has_comment) {
+							script_insert.script.push({"type": "comment", "comment": comment})
 						}
-					} else if (func.toUpperCase() == "ENDBLOCK") {
-						script_insert.script.push({"type":"endblock"})
-					} else if (has_comment) {
-						script_insert.script.push({"type": "comment", "comment": comment})
 					}
+				})
+			} else if (file_type == "json") {
+				json_data = JSON.parse(file_data)
+				script_insert = {
+					"id": Object.keys(json_data).includes("id") ? json_data.id : 0,
+					"behav_9C": Object.keys(json_data).includes("behav_9C") ? json_data.behav_9C : 0,
+					"ignore": Object.keys(json_data).includes("ignore") ? json_data.ignore : 0,
+					"script": []
 				}
-			})
+				json_data.script.forEach(block => {
+					block.conditions.forEach(condition => {
+						script_insert.script.push({
+							"type": "condition",
+							"func": condition.inverted ? 0x8000 + condition.function : condition.function,
+							"params": condition.parameters.slice(),
+						})
+					})
+					block.executions.forEach(execution => {
+						script_insert.script.push({
+							"type": "execution",
+							"func": execution.function,
+							"params": execution.parameters.slice(),
+						})
+					})
+					script_insert.script.push({"type":"endblock"})
+				})
+			}
 			console.log(script_insert)
 			scripts = scripts.filter(item => item.id != script_insert.id)
 			scripts.push(script_insert)
 			populateSelectList(scripts)
+		}
+
+		function exportScriptToJSON() {
+			numericToJSON();
+			const export_item = scripts.find(item => item.id == viewed_file)
+			let data = {
+				"id": Object.keys(export_item).includes("id") ? Number(export_item.id) : 0,
+				"behav_9C": Object.keys(export_item).includes("behav_9C") ? Number(export_item.behav_9C) : 0,
+				"ignore": Object.keys(export_item).includes("ignore") ? export_item.ignore != 0 : false,
+				"output_version": 2,
+				"script": []
+			}
+			let current_block = {
+				"conditions": [],
+				"executions": [],
+			}
+			let arg_rep_idx = 0
+			let arg_replacements = []
+			export_item["script"].forEach(item => {
+				if (item.type == "condition") {
+					arg_replacements.push({
+						"function": item.func & 0x7FFF,
+						"inverted": (item.func & 0x8000) != 0,
+						"parameters": item.params.slice().map(i => Number(i)),
+					})
+					current_block.conditions.push(`ari_asdf_${arg_rep_idx}`)
+					arg_rep_idx += 1
+				} else if (item.type == "execution") {
+					arg_replacements.push({
+						"function": item.func,
+						"parameters": item.params.slice().map(i => Number(i)),
+					})
+					current_block.executions.push(`ari_asdf_${arg_rep_idx}`)
+					arg_rep_idx += 1
+				} else if (item.type == "endblock") {
+					data.script.push(JSON.parse(JSON.stringify(current_block)))
+					current_block.conditions = []
+					current_block.executions = []
+				}
+			})
+
+			let saveJSON = (function () {
+				let a = document.createElement("a");
+				document.body.appendChild(a);
+				a.style = "display:none";
+				return function (data, name) {
+					//a.href = URL.createObjectURL(new Blob([JSON.stringify(data, null, 4)], {type: "text/plain"}));
+					raw_json = JSON.stringify(data, null, 4)
+					arg_replacements.forEach((rep, idx) => {
+						console.log(raw_json)
+						raw_json = raw_json.replace(`ari_asdf_${idx}`, JSON.stringify(rep))
+						console.log(JSON.stringify(rep))
+						console.log(raw_json)
+					})
+					encoded_json = encodeURIComponent(raw_json.replaceAll("\"{", "{").replaceAll("}\"", "}"))
+					a.href = `data:text/json;charset=utf-8,${encoded_json}`;
+					a.download = name;
+					a.click();
+					a.remove();
+				};
+			}())
+			saveJSON(data,'output.json')
 		}
 
 		function exportScript() {
@@ -948,7 +1043,11 @@
 				var data = fr.result;
 				var enc = new TextDecoder("utf-8");
 				var arr = data;
-				importScript(enc.decode(arr));
+				let extension = null;
+				if (document.getElementById("import-selector").value.split(".").length > 1) {
+					extension = document.getElementById("import-selector").value.split(".")[1];
+					importScript(enc.decode(arr), extension.toLowerCase());
+				}
 			};
 			fr.readAsArrayBuffer(document.getElementById("import-selector").files[0]);
         })		
@@ -1644,8 +1743,31 @@
 					display(file, "*(short *)(behaviour + 0x8A) = %s", [str(params[1])])
 					break;
 				case 0xE:
+					p1copy = params[1]
+					if (params[1] < 0) {
+						p1copy += 0x7F;
+					}
+					p1copy = (p1copy >> 7) & 0xFF;
+					p2copy = params[2]
+					if (params[2] < 0) {
+						p2copy += 0x7F;
+					}
+					p2copy = (p2copy >> 7) & 0xFF;
+					if (p1copy == 0) {
+						p1copy = 0x7F;
+					}
+					if (p2copy == 0) {
+						p2copy = 0xFF;
+					}
 					display(file, "if (*(short *)(behaviour + %s) < 0) {", [hex(((params[0] & 1) * 2) + 0x10)])
-					display(file, "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s)", [hex(((params[0] & 1) * 2) + 0x10), str(params[0]), str(params[2] & 0x7F), str(params[1] & 2)])
+					display(file, "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s,%s,%s,0)", [
+						hex(((params[0] & 1) * 2) + 0x10),
+						str(params[0]), 
+						str(params[2] & 0x7F), 
+						str(params[1] & 2),
+						str(p2copy),
+						str(p1copy / 127)
+					])
 					display(file, "}",[])
 					break;
 				case 0xF:
@@ -2122,8 +2244,31 @@
 					display(file, "BYTE_80748094 = %s", [str(params[0])])
 					break;
 				case 0x7D:
+					p1copy = params[1]
+					if (params[1] < 0) {
+						p1copy += 0x7F;
+					}
+					p1copy = (p1copy >> 7) & 0xFF;
+					p2copy = params[2]
+					if (params[2] < 0) {
+						p2copy += 0x7F;
+					}
+					p2copy = (p2copy >> 7) & 0xFF;
+					if (p1copy == 0) {
+						p1copy = 0x7F;
+					}
+					if (p2copy == 0) {
+						p2copy = 0xFF;
+					}
 					display(file, "if (*(short *)(behaviour + %s) < 0) {", [hex((2 * params[1]) + 0x10)])
-					display(file, "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s)", [hex((2 * params[1]) + 0x10), str(params[0]), str(params[2] & 0x7F), str(params[1] & 2)])
+					display(file, "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s,%s,%s,*(char*)(0x80748094))", [
+						hex((2 * params[1]) + 0x10), 
+						str(params[0]), 
+						str(params[2] & 0x7F), 
+						str(params[1] & 2),
+						str(p2copy),
+						str(p1copy / 127)
+					])
 					display(file, "}",[])
 					break;
 				case 0x7E:

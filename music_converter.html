@@ -1,0 +1,52 @@
+<html>
+    <head>
+        <title>N64 Midi Tool (DK64 Edition)</title>
+        <style>
+            .hide {
+                display: none;
+            }
+        </style>
+    </head>
+    <body>
+        <p>Midi File</p>
+        <input type="file" id="file-selector" accept=".midi, .mid"/>
+        <div id="conversion-panel" class="hide">
+            <button onclick="toBinary()">Convert to binary</button>
+            <input type="number" />
+        </div>
+
+        <script src="script/n64miditool.js"></script>
+        <script>
+            let current_midi_file = []
+            let output_bin_file = []
+            document.getElementById("file-selector").addEventListener("change", function() {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    var data = fr.result;
+                    setup_data = fr.result;
+                    var array = new Uint8Array(data);
+                    current_midi_file = array.slice()
+                    document.getElementById("conversion-panel").classList.remove("hide")
+                    console.log(current_midi_file)
+                };
+                fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
+            })
+
+            function toBinary() {
+                loop = true // TODO: hook this up to UI
+                loop_point = 3072 // TODO: hook this up to UI
+                no_repeaters = true
+                output_bin_file = MidiToGEFormat(current_midi_file, [], loop, loop_point, no_repeaters)
+                data_len = output_bin_file.length
+                cap = 0x10
+                if ((data_len % cap) != 0) {
+                    for (let x = 0; x < (cap - (data_len % cap)); x++) {
+                        output_bin_file.push(0)
+                    } 
+                }
+                console.log(output_bin_file)
+                writeToFile(output_bin_file, "js_test.bin")
+            }
+        </script>
+    </body>
+</html>
