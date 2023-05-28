@@ -1,3 +1,11 @@
+/*
+    This is a javascript port of the MIDI -> Binary functionality (specifically for DK64) from N64 Midi Tool
+    As such, a lot of this code is very very similar to the cpp version made by jombo-23 and SubDrag
+
+    Converted by Ballaam
+    Please support the original creators of the cpp desktop applet @ https://github.com/jombo23/N64-Tools/tree/master/N64MidiTool
+*/
+
 const TRACK_LIMIT_BIG = 0x20
 const TRACK_LIMIT_SMALL = 16
 const EVENT_LIMIT = 0x30000

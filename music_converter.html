@@ -8,11 +8,15 @@
         </style>
     </head>
     <body>
-        <p>Midi File</p>
+        <h1>Donkey Kong 64 Midi Converter</h1>
+        <label for="file-selector">Midi File</label>
         <input type="file" id="file-selector" accept=".midi, .mid"/>
         <div id="conversion-panel" class="hide">
+            <div>
+                <label for="loop-point">Loop Point (Leave blank if doesn't loop)</label>
+                <input type="number" id="loop-point"/>
+            </div>
             <button onclick="toBinary()">Convert to binary</button>
-            <input type="number" />
         </div>
 
         <script src="script/n64miditool.js"></script>
@@ -33,9 +37,19 @@
             })
 
             function toBinary() {
-                loop = true // TODO: hook this up to UI
-                loop_point = 3072 // TODO: hook this up to UI
+                loop_raw = document.getElementById("loop-point").value
+                input_file_name = document.getElementById("file-selector").value
+                loop = loop_raw != "" // TODO: hook this up to UI
+                loop_point = Number(loop_raw) // TODO: hook this up to UI
                 no_repeaters = true
+                output_segments = input_file_name.split(".")[0].split("\\")
+                output_file = output_segments[output_segments.length - 1] + ".bin"
+
+
+                console.log("Does Loop:",loop)
+                console.log("Loop Point:",loop_point)
+                console.log("Disable Repeaters:",no_repeaters)
+                console.log("Output File:",output_file)
                 output_bin_file = MidiToGEFormat(current_midi_file, [], loop, loop_point, no_repeaters)
                 data_len = output_bin_file.length
                 cap = 0x10
@@ -45,7 +59,7 @@
                     } 
                 }
                 console.log(output_bin_file)
-                writeToFile(output_bin_file, "js_test.bin")
+                writeToFile(output_bin_file, output_file)
             }
         </script>
     </body>
