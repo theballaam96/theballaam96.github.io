@@ -49,6 +49,9 @@
 		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8/build/tonejs-ui.js"></script>
         <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
         <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0"></script>
+        <script src="script/libfluidsynth-2-3-0.min.js"></script>
+        <script src="script/js-synthesizer.min.js"></script>
+        <link rel="preload" as="script" href="script/js-synthesizer.worklet.min.js">
         <script src="script/n64miditool.js"></script>
     </head>
     <body>
@@ -77,6 +80,8 @@
                     <div id="midi-to-bin">
                         <label for="file-selector">Midi File</label>
                         <input type="file" id="file-selector" accept=".midi, .mid"/>
+                        <label for="soundfont-selector">SF2 File</label>
+                        <input type="file" id="soundfont-selector" accept=".sf2"/>
                         <div id="conversion-panel" class="hide">
                             <div id="stats">
                                 <div id="stat-duration"></div>
@@ -85,7 +90,11 @@
                                 <div id="stat-ppq"></div>
                             </div>
                             <div id="player">
-                                <!-- <tone-play-toggle></tone-play-toggle> -->
+                                <p>
+                                    <button type="button" onclick="playMusic()">Play</button>
+                                    Status: 
+                                    <span id="PlayingStatus"></span>
+                                </p>
                             </div>
                             <div>
                                 <label for="loop-point">Loop Point (Leave blank if doesn't loop)</label>
@@ -101,6 +110,7 @@
             </div>
         </div>
         <script src="script/nav.js"></script>
+        <script src="script/sfplayer.js"></script>
         <script>
             tabs = document.getElementsByClassName("tab")
             for (let t = 0; t < tabs.length; t++) {
@@ -131,16 +141,21 @@
                 document.getElementById("stat-ppq").innerText = `Pulses per Quarter-Note: ${midi_json.header.ppq}`
             }
 
+            function u8arrayToBuffer(array) {
+                return array.buffer.slice(array.byteOffset, array.byteLength + array.byteOffset)
+            }
+
             let current_midi_file = []
             let output_bin_file = []
             let ticks_per_quarter = 0
             let currentMidi = null;
             let midiURL = null;
-            let sfURL = "";
+            let sfURL = null;
+            let midiBuffer = null;
+            let sfBuffer = null;
             document.getElementById("file-selector").addEventListener("change", function(e) {
                 var fr = new FileReader();
                 fr.onload = function() {
-                    console.log(fr)
                     var data = fr.result;
                     setup_data = fr.result;
                     var array = new Uint8Array(data);
@@ -150,7 +165,7 @@
                     // Midi Stat stuff
                     const midi = new Midi(data);
                     updateStats(midi)
-                    console.log(midi)
+                    //console.log(midi)
                     /*
                     document
                         .querySelector("tone-play-toggle")
@@ -158,22 +173,24 @@
                     */
                     currentMidi = midi;
                     midiURL = URL.createObjectURL(e.target.files[0])
-                    updatePlayer()
+                    midiBuffer = u8arrayToBuffer(array)
+                    // updatePlayer()
                     
                 };
                 fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
             })
-
-            function updatePlayer() {
-                if (midiURL != null) {
-                    let hook = document.getElementById("player")
-                    hook.innerHTML = `
-                        <midi-player
-                            src=\"${midiURL}\"
-                            sound-font
-                        ></midi-player>`
-                }
-            }
+            document.getElementById("soundfont-selector").addEventListener("change", function(e) {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    var data = fr.result;
+                    var array = new Uint8Array(data);
+                    sfURL = URL.createObjectURL(e.target.files[0])
+                    sfBuffer = u8arrayToBuffer(array)
+                    // updatePlayer()
+                    
+                };
+                fr.readAsArrayBuffer(document.getElementById("soundfont-selector").files[0]);
+            })
 
             function toBinary() {
                 loop_raw = document.getElementById("loop-point").value
@@ -200,7 +217,7 @@
                 console.log(output_bin_file)
                 writeToFile(output_bin_file, output_file)
             }
-
+            /*
             const synths = [];
             document
                 .querySelector("tone-play-toggle")
@@ -237,6 +254,7 @@
                         }
                     }
                 });
+            */
         </script>
     </body>
 </html>
