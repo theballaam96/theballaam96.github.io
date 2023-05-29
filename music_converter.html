@@ -1,46 +1,185 @@
 <html>
     <head>
         <title>N64 Midi Tool (DK64 Edition)</title>
+        <link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/home.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="" />
         <style>
             .hide {
                 display: none;
             }
+            .tab {
+                border-bottom: 1px solid darkgoldenrod;
+                border-right: 1px solid darkgoldenrod;
+                cursor: pointer;
+                padding: 5px;
+                color: grey;
+                transition: 0.5s ease-in-out;
+            }
+            .tab.selected {
+                border-bottom: 3px solid darkgoldenrod;
+                color: white;
+            }
+            .tab:hover {
+                color: white;
+            }
+            .center-container {
+                width: 50%;
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .center-block {
+                width: 100%;
+            }
+            button {
+                width: 50%;
+            }
         </style>
+        <script type="text/javascript" src="https://unpkg.com/tone@latest/build/Tone.js"></script>
+		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8/build/tonejs-ui.js"></script>
+        <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
+        <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0"></script>
+        <script src="script/n64miditool.js"></script>
     </head>
     <body>
-        <h1>Donkey Kong 64 Midi Converter</h1>
-        <label for="file-selector">Midi File</label>
-        <input type="file" id="file-selector" accept=".midi, .mid"/>
-        <div id="conversion-panel" class="hide">
-            <div>
-                <label for="loop-point">Loop Point (Leave blank if doesn't loop)</label>
-                <input type="number" id="loop-point"/>
-            </div>
-            <button onclick="toBinary()">Convert to binary</button>
-        </div>
+        <nav id="navigation"></nav>
+		<nav id="navigation"></nav>
+        <div class="v_spacer">
 
-        <script src="script/n64miditool.js"></script>
+		</div>
+        <div class="flexsplitter center-container">
+            <div class="flexsplitter center-block">
+                <div class="homebox">
+                    <div class="header master_header">
+                        <strong>Donkey Kong 64 Midi Converter</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flexsplitter center-container">
+            <div class="flexsplitter center-block">
+                <div class="homebox" style="color:white">
+                    <div class="flexsplitter">
+                        <div class="tab selected" association="midi-to-bin">Midi to Bin</div>
+                        <div class="tab" association="midi-porting">Midi Porting</div>
+                    </div>
+                    <br>
+                    <div id="midi-to-bin">
+                        <label for="file-selector">Midi File</label>
+                        <input type="file" id="file-selector" accept=".midi, .mid"/>
+                        <div id="conversion-panel" class="hide">
+                            <div id="stats">
+                                <div id="stat-duration"></div>
+                                <div id="stat-durationticks"></div>
+                                <div id="stat-durationmeasures"></div>
+                                <div id="stat-ppq"></div>
+                            </div>
+                            <div id="player">
+                                <!-- <tone-play-toggle></tone-play-toggle> -->
+                            </div>
+                            <div>
+                                <label for="loop-point">Loop Point (Leave blank if doesn't loop)</label>
+                                <input type="number" id="loop-point"/>
+                            </div>
+                            <button onclick="toBinary()">Convert to binary</button>
+                        </div>
+                    </div>
+                    <div id="midi-porting" class="hide">
+                        Coming soon
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="script/nav.js"></script>
         <script>
+            tabs = document.getElementsByClassName("tab")
+            for (let t = 0; t < tabs.length; t++) {
+                tabs[t].addEventListener("click", function(e) {
+                    targ = e.target
+                    for (let u = 0; u < tabs.length; u++) {
+                        tabs[u].classList.remove("selected")
+                        assoc = tabs[u].getAttribute("association")
+                        document.getElementById(assoc).classList.add("hide")
+                    }
+                    targ.classList.add("selected")
+                    elm = targ.getAttribute("association")
+                    document.getElementById(elm).classList.remove("hide")
+                })
+            }
+
+            function updateStats(midi_json) {
+                second_floor_grade = 100
+                minutes = Math.floor(midi_json.duration / 60)
+                seconds = Math.floor((midi_json.duration - (60 * minutes)) * second_floor_grade) / second_floor_grade
+                s_str = seconds.toString()
+                if (seconds < 10) {
+                    s_str = "0" + s_str
+                }
+                document.getElementById("stat-duration").innerText = `Duration: ${minutes}:${s_str}`
+                document.getElementById("stat-durationticks").innerText = `Duration (Ticks): ${midi_json.durationTicks}`
+                document.getElementById("stat-durationmeasures").innerText = `Duration (Measures): ${(midi_json.durationTicks / midi_json.header.ppq) / 4}`
+                document.getElementById("stat-ppq").innerText = `Pulses per Quarter-Note: ${midi_json.header.ppq}`
+            }
+
             let current_midi_file = []
             let output_bin_file = []
-            document.getElementById("file-selector").addEventListener("change", function() {
+            let ticks_per_quarter = 0
+            let currentMidi = null;
+            let midiURL = null;
+            let sfURL = "";
+            document.getElementById("file-selector").addEventListener("change", function(e) {
                 var fr = new FileReader();
                 fr.onload = function() {
+                    console.log(fr)
                     var data = fr.result;
                     setup_data = fr.result;
                     var array = new Uint8Array(data);
                     current_midi_file = array.slice()
                     document.getElementById("conversion-panel").classList.remove("hide")
                     console.log(current_midi_file)
+                    // Midi Stat stuff
+                    const midi = new Midi(data);
+                    updateStats(midi)
+                    console.log(midi)
+                    /*
+                    document
+                        .querySelector("tone-play-toggle")
+                        .removeAttribute("disabled");
+                    */
+                    currentMidi = midi;
+                    midiURL = URL.createObjectURL(e.target.files[0])
+                    updatePlayer()
+                    
                 };
                 fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
             })
 
+            function updatePlayer() {
+                if (midiURL != null) {
+                    let hook = document.getElementById("player")
+                    hook.innerHTML = `
+                        <midi-player
+                            src=\"${midiURL}\"
+                            sound-font
+                        ></midi-player>`
+                }
+            }
+
             function toBinary() {
                 loop_raw = document.getElementById("loop-point").value
                 input_file_name = document.getElementById("file-selector").value
-                loop = loop_raw != "" // TODO: hook this up to UI
-                loop_point = Number(loop_raw) // TODO: hook this up to UI
+                loop = loop_raw != ""
+                loop_point = Number(loop_raw)
                 no_repeaters = true
                 output_segments = input_file_name.split(".")[0].split("\\")
                 output_file = output_segments[output_segments.length - 1] + ".bin"
@@ -61,6 +200,43 @@
                 console.log(output_bin_file)
                 writeToFile(output_bin_file, output_file)
             }
+
+            const synths = [];
+            document
+                .querySelector("tone-play-toggle")
+                .addEventListener("play", (e) => {
+                    const playing = e.detail;
+                    if (playing && currentMidi) {
+                        const now = Tone.now() + 0.5;
+                        currentMidi.tracks.forEach((track) => {
+                            //create a synth for each track
+                            const synth = new Tone.PolySynth(Tone.Synth, {
+                                envelope: {
+                                    attack: 0.02,
+                                    decay: 0.1,
+                                    sustain: 0.3,
+                                    release: 1,
+                                },
+                            }).toDestination();
+                            synths.push(synth);
+                            //schedule all of the events
+                            track.notes.forEach((note) => {
+                                synth.triggerAttackRelease(
+                                    note.name,
+                                    note.duration,
+                                    note.time + now,
+                                    note.velocity
+                                );
+                            });
+                        });
+                    } else {
+                        //dispose the synth and make a new one
+                        while (synths.length) {
+                            const synth = synths.shift();
+                            synth.disconnect();
+                        }
+                    }
+                });
         </script>
     </body>
 </html>
