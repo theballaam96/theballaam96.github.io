@@ -38,69 +38,22 @@
 button {
     width: 50%;
 }
-.layer {
-    fill: white;
-    transition: 0.5s ease-in-out;
-}
-@keyframes layer1 {
-    0%, 65% {
-      fill: #b2b2b2;
-    }
-    75%, 82% {
-      fill: #4b4b4b;
-    }
-    92%, 100% {
-      fill: #b2b2b2;
-    }
-}
-  
-@keyframes layer2 {
-    0%, 40% {
-      fill: #b2b2b2;
-    }
-    50%, 86% {
-      fill: #4b4b4b;
-    }
-    96%, 100% {
-      fill: #b2b2b2;
-    }
-}
-  
-@keyframes layer3 {
-    0%, 15% {
-      fill: #b2b2b2;
-    }
-    25%, 90% {
-      fill: #4b4b4b;
-    }
-    100% {
-      fill: #b2b2b2;
-    }
-}
 #play-button {
-    height: 1.75vw;
-    width: 1.75vw;
-    outline: none;
-    border: none;
-    padding: 0;
+    cursor: pointer;
+    border-radius: 5px;
+    width: 20px;
+    text-align: center;
+}
+#play-button.playbtn-play {
+    font-size: 1.75em;
+    margin-top: -0.075em;
 }
 #play-button:hover {
-    background-color: #eee;
+    background-color: white;
+    color: black;
 }
-#play-button:hover .layer {
-    fill: black;
-}
-#play-button.playbtn-buffer .layer {
-    animation: 4s linear infinite;
-}
-#play-button.playbtn-buffer .layer1 {
-    animation-name: layer1;
-}
-#play-button.playbtn-buffer .layer2 {
-    animation-name: layer2;
-}
-#play-button.playbtn-buffer .layer3 {
-    animation-name: layer3;
+#player-navigator {
+    width: 70%;
 }
 #stats {
     text-align: left;

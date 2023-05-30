@@ -66,10 +66,6 @@ function loadMusic() {
 }
 
 async function initializeSynthesizer(useDefaultSFont) {
-	if (synth && useDefaultSFont) {
-		return synth;
-	}
-
 	// Load Soundfont binary asynchronously
 	const promiseSFont = loadSFont(useDefaultSFont);
 	lastSFontIsDefault = useDefaultSFont;
@@ -110,30 +106,34 @@ function setPlayingStatus(status) {
             "class_set": "playbtn-play",
             "text": "Stop",
             "svg": "pause",
+			"html": "&#9632;",
         },
         {
             "target_status": "Preparing",
             "class_set": "playbtn-buffer",
             "text": "Buffering",
             "svg": "buffer",
+			"html": "",
         },
         {
             "target_status": "_",
             "class_set": "playbtn-stop",
             "text": "Play",
             "svg": "play",
+			"html": "&#9654;",
         },
     ]
     class_data.forEach(item => {
         hook.classList.remove(item["class_set"])
-        document.getElementById(item["class_set"]).classList.add("hide")
+        // document.getElementById(item["class_set"]).classList.add("hide")
     })
     let found_targ = false;
     class_data.forEach((item, index) => {
         if (!found_targ) {
             if ((item["target_status"] == status) || ((index + 1) == class_data.length)) {
                 hook.classList.add(item["class_set"])
-                document.getElementById(item["class_set"]).classList.remove("hide")
+				hook.innerHTML = item["html"]
+                // document.getElementById(item["class_set"]).classList.remove("hide")
                 found_targ = true;
             }
         }
@@ -144,7 +144,54 @@ function setPlayingStatus(status) {
 
 SAFE_BUFFER = 20
 playing_song = false
-ENABLE_LOOP = false
+ENABLE_LOOP = true
+player_position = 0
+player_cap = 0
+pressing_nav = false
+nav_location = 0
+
+function ticksToSeconds(position_t, cap_t, total_s) {
+	const ratio = position_t / cap_t;
+	const sec = ratio * total_s;
+	const minutes = Math.floor(sec / 60)
+	const seconds = Math.floor(sec - (60 * minutes))
+	let sec_str = seconds.toString()
+	if (seconds < 10) {
+		sec_str = "0" + sec_str
+	}
+	return `${minutes}:${sec_str}`
+}
+
+function updatePlayerNav(position, update_navigator) {
+	const total_seconds = Number(document.getElementById("player-navigator").getAttribute("t_s"))
+	document.getElementById("player-position-display").innerText = `${ticksToSeconds(position, player_cap, total_seconds)}/${ticksToSeconds(player_cap, player_cap, total_seconds)}`
+	if (update_navigator) {
+		document.getElementById("player-navigator").value = player_position;
+	}
+}
+
+function getLoopStatus() {
+	loop = document.getElementById("loop-check").checked
+	raw_loop_point = document.getElementById("loop-point").value
+	if (raw_loop_point == "") {
+		loop_point = 0
+	} else {
+		let numbers = []
+		for (let i = 0; i < 10; i++) {
+			numbers.push(i.toString())
+		}
+		const characters = raw_loop_point.split("").filter(item => !numbers.includes(item))
+		if (characters.length == 0) {
+			loop_point = Number(raw_loop_point)
+		} else {
+			loop_point = 0
+		}
+	}
+	return {
+		"loop": loop,
+		"point": loop_point
+	}
+}
 
 async function doPlay(progress) {
 	setPlayingStatus('Preparing');
@@ -171,24 +218,57 @@ async function doPlay(progress) {
         }, SAFE_BUFFER);
     }
 
+	let navigator_update;
+	navigator_update = setInterval(async () => {
+		if (playing_song) {
+			if (!pressing_nav) {
+				player_position = await synth.retrievePlayerCurrentTick();
+				player_cap = await synth.retrievePlayerTotalTicks();
+				updatePlayerNav(player_position, true);
+			}
+		} else {
+			clearInterval(navigator_update);
+		}
+	}, 1000);
+
 	// Wait for finishing playing
 	await synth.waitForPlayerStopped();
 
 	// Wait for all voices stopped
 	await synth.waitForVoicesStopped();
 
-    
 	// Reset synthesizer (release loaded SMF data)
 	await synth.resetPlayer();
     
 	setPlayingStatus('Stopped'); // TODO: Hook into looping
     
-    if ((playing_song) && (ENABLE_LOOP)) {
+	loop_data = getLoopStatus();
+	will_loop = ENABLE_LOOP && loop_data["loop"];
+    if ((playing_song) && (will_loop)) {
         setTimeout(function(){
             console.log("Waited a second");
-            doPlay(3072);
+            doPlay(loop_data["point"]);
         }, SAFE_BUFFER);
     }
+	if (!will_loop) {
+		playing_song = false;
+	}
+}
+
+function navigatorClick(pressing) {
+	pressing_nav = pressing;
+	if (pressing) {
+		nav_location = document.getElementById("player-navigator").value
+	} else {
+		synth.seekPlayer(nav_location)
+	}
+}
+
+function navigatorMove() {
+	if (pressing_nav) {
+		nav_location = document.getElementById("player-navigator").value
+		updatePlayerNav(nav_location, false)
+	}
 }
 
 function playMusic() {
@@ -198,18 +278,5 @@ function playMusic() {
 	} else if (playingStatus === 'Stopped') {
 		doPlay(0);
         playing_song = true;
-        // doPlay(100000);
 	}
 }
-
-// for UX
-function initializeFormInput() {
-	const DataSoundfontSelect = getFormInput('DataSoundfontSelect');
-	const DataSoundfontInput = getFormInput('DataSoundfontInput');
-	DataSoundfontInput.addEventListener('change', () => { DataSoundfontSelect.value = 'file'; }, false);
-
-	const DataSMFFileSelect = getFormInput('DataSMFFileSelect');
-	const DataSMFFileInput = getFormInput('DataSMFFileInput');
-	DataSMFFileInput.addEventListener('change', () => { DataSMFFileSelect.value = 'file'; }, false);
-}
-// initializeFormInput();
