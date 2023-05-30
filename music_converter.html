@@ -4,6 +4,7 @@
         <link rel="stylesheet" href="style/nav.css">
 		<link rel="stylesheet" href="style/main.css">
         <link rel="stylesheet" href="style/home.css">
+        <link rel="stylesheet" href="style/midi-converter.css">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
@@ -13,42 +14,9 @@
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
-        <style>
-            .hide {
-                display: none;
-            }
-            .tab {
-                border-bottom: 1px solid darkgoldenrod;
-                border-right: 1px solid darkgoldenrod;
-                cursor: pointer;
-                padding: 5px;
-                color: grey;
-                transition: 0.5s ease-in-out;
-            }
-            .tab.selected {
-                border-bottom: 3px solid darkgoldenrod;
-                color: white;
-            }
-            .tab:hover {
-                color: white;
-            }
-            .center-container {
-                width: 50%;
-                text-align: center;
-                margin-left: auto;
-                margin-right: auto;
-            }
-            .center-block {
-                width: 100%;
-            }
-            button {
-                width: 50%;
-            }
-        </style>
         <script type="text/javascript" src="https://unpkg.com/tone@latest/build/Tone.js"></script>
 		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8/build/tonejs-ui.js"></script>
         <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
-        <script src="https://cdn.jsdelivr.net/combine/npm/tone@14.7.58,npm/@magenta/music@1.23.1/es6/core.js,npm/focus-visible@5,npm/html-midi-player@1.5.0"></script>
         <script src="script/libfluidsynth-2-3-0.min.js"></script>
         <script src="script/js-synthesizer.min.js"></script>
         <link rel="preload" as="script" href="script/js-synthesizer.worklet.min.js">
@@ -78,29 +46,69 @@
                     </div>
                     <br>
                     <div id="midi-to-bin">
-                        <label for="file-selector">Midi File</label>
-                        <input type="file" id="file-selector" accept=".midi, .mid"/>
-                        <label for="soundfont-selector">SF2 File</label>
-                        <input type="file" id="soundfont-selector" accept=".sf2"/>
-                        <div id="conversion-panel" class="hide">
-                            <div id="stats">
-                                <div id="stat-duration"></div>
-                                <div id="stat-durationticks"></div>
-                                <div id="stat-durationmeasures"></div>
-                                <div id="stat-ppq"></div>
+                        <div class="flexsplitter">
+                            <div class="sep sep-left">
+                                <!-- Left box -->
+                                <h3>Song Loading</h3>
+                                <div class="flexsplitter">
+                                    <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
+                                    <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
+                                </div>
+                                <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
+                                <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
+                                <div class="req-midi">
+                                    <div id="stats">
+                                        <div id="stat-name"></div>
+                                        <div id="stat-duration"></div>
+                                        <div id="stat-durationticks"></div>
+                                        <div id="stat-durationmeasures"></div>
+                                        <div id="stat-ppq"></div>
+                                    </div>
+                                </div>
                             </div>
-                            <div id="player">
-                                <p>
-                                    <button type="button" onclick="playMusic()">Play</button>
-                                    Status: 
-                                    <span id="PlayingStatus"></span>
-                                </p>
+                            <div class="sep">
+                                <!-- Right box -->
+                                <h3>Song Actions</h3>
+                                <div class="req-midi" class="hide">
+                                    <div id="player" class="hide">
+                                        <div class="flexsplitter">
+                                            <p>Play Song:</p>
+                                            <button type="button" id="play-button" class="music-play" onclick="playMusic()">
+                                                <svg id="playbtn-play" fill="#000000" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                                                    <title>pause</title>
+                                                    <path class="layer" d="M5.92 24.096q0 0.832 0.576 1.408t1.44 0.608h4.032q0.832 0 1.44-0.608t0.576-1.408v-16.16q0-0.832-0.576-1.44t-1.44-0.576h-4.032q-0.832 0-1.44 0.576t-0.576 1.44v16.16zM18.016 24.096q0 0.832 0.608 1.408t1.408 0.608h4.032q0.832 0 1.44-0.608t0.576-1.408v-16.16q0-0.832-0.576-1.44t-1.44-0.576h-4.032q-0.832 0-1.408 0.576t-0.608 1.44v16.16z"></path>
+                                                </svg>
+                                                <svg id="playbtn-stop" height="100%" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                                        viewBox="0 0 512 512"  xml:space="preserve">
+                                                    <g>
+                                                        <path class="layer" d="M256,0C114.625,0,0,114.625,0,256c0,141.374,114.625,256,256,256c141.374,0,256-114.626,256-256
+                                                            C512,114.625,397.374,0,256,0z M351.062,258.898l-144,85.945c-1.031,0.626-2.344,0.657-3.406,0.031
+                                                            c-1.031-0.594-1.687-1.702-1.687-2.937v-85.946v-85.946c0-1.218,0.656-2.343,1.687-2.938c1.062-0.609,2.375-0.578,3.406,0.031
+                                                            l144,85.962c1.031,0.586,1.641,1.718,1.641,2.89C352.703,257.187,352.094,258.297,351.062,258.898z"/>
+                                                    </g>
+                                                </svg>
+                                                <svg id="playbtn-buffer" width="100%" height="100%" x="0px" y="0px" viewBox="0 0 313.3 321.4" style="enable-background:new 0 0 313.3 321.4;" xml:space="preserve">
+                                                    <path class="layer layer1" d="M157.1,0c3.8,0,7.9,1.5,11.4,3.2c45.6,21.1,91.2,42.4,136.7,63.8c3.3,1.5,8,2.1,8.1,7c0.1,5-4.7,5.6-7.9,7.1
+                                                  c-45.8,21.5-91.7,42.9-137.6,64.3c-7.4,3.4-14.8,3.5-22.2,0C99,123.6,52.3,101.9,5.8,80c-2.4-1.1-5.4-4-5.4-6c0-2,3.1-4.8,5.5-5.9
+                                                  C52.4,46.2,99.1,24.4,145.8,2.8C149.1,1.2,154.5,0,157.1,0z"/>
+                                                    <path class="layer layer2" d="M156.6,235c-3.1,0-7.7-1.7-11.3-3.3c-46.5-21.6-93-43.3-139.4-65.1c-2.4-1.1-5.8-4.1-5.6-5.8c0.3-2.4,3.2-5,5.7-6.3
+                                                  c7.5-4,15.3-7.3,23-10.9c7.9-3.7,15.7-3.6,23.6,0.1c30.4,14.3,61,28.4,91.4,42.7c8.6,4.1,16.8,4,25.4-0.1
+                                                  c30.4-14.3,60.9-28.4,91.4-42.7c7.7-3.6,15.4-3.7,23.1-0.1c8.2,3.8,16.4,7.4,24.4,11.5c2.1,1.1,4.9,3.7,4.7,5.4
+                                                  c-0.2,2.1-2.7,4.8-4.9,5.9c-46.8,22.1-93.7,44-140.7,65.8C164.2,233.5,159.9,235,156.6,235z"/>
+                                                    <path class="layer layer3" d="M156.8,321.4c-4.6,0-9.3-2.3-13.4-4.2c-45.2-20.9-90.3-42-135.4-63.1c-3.3-1.5-8-2.1-8-7.1c0-5,3.8-5.5,7-7.1
+                                                  c13.9-6.5,14.9-6.5,21.8-9.8c8-3.8,16-3.7,24.1,0.1c29.9,14,59.8,27.7,89.6,41.9c9.6,4.6,18.5,4.7,28.2,0.1 c29.8-14.2,59.8-27.9,89.6-41.9c8.2-3.9,16.3-4,24.5,0c7.8,3.8,15.8,7.2,23.5,11.1c2.1,1.1,4.8,3.3,4.8,5.4
+                                                  c-0.1,2.4-2.7,4.8-4.9,5.9c-32.2,15.3-64.5,30.3-96.8,45.4c-13.9,6.5-27.7,13.1-41.7,19.3C165.7,319.2,161.5,321.4,156.8,321.4z"/>
+                                                  </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="loop-point">Loop Point (Leave blank if doesn't loop)</label>
+                                        <input type="number" id="loop-point"/>
+                                    </div>
+                                    <button onclick="toBinary()">Convert to binary</button>
+                                </div>
                             </div>
-                            <div>
-                                <label for="loop-point">Loop Point (Leave blank if doesn't loop)</label>
-                                <input type="number" id="loop-point"/>
-                            </div>
-                            <button onclick="toBinary()">Convert to binary</button>
                         </div>
                     </div>
                     <div id="midi-porting" class="hide">
@@ -112,6 +120,9 @@
         <script src="script/nav.js"></script>
         <script src="script/sfplayer.js"></script>
         <script>
+            function clickEl(id) {
+                document.getElementById(id).click();
+            }
             tabs = document.getElementsByClassName("tab")
             for (let t = 0; t < tabs.length; t++) {
                 tabs[t].addEventListener("click", function(e) {
@@ -127,6 +138,10 @@
                 })
             }
 
+            function last(arr) {
+                return arr[arr.length - 1]
+            }
+
             function updateStats(midi_json) {
                 second_floor_grade = 100
                 minutes = Math.floor(midi_json.duration / 60)
@@ -135,10 +150,24 @@
                 if (seconds < 10) {
                     s_str = "0" + s_str
                 }
+                measures = (midi_json.durationTicks / midi_json.header.ppq) / 4
+                measures = Math.floor(measures * second_floor_grade) / second_floor_grade
+                name = last(document.getElementById("file-selector").value.split("\\"))
+                document.getElementById("stat-name").innerText = `MIDI Name: ${name}`;
                 document.getElementById("stat-duration").innerText = `Duration: ${minutes}:${s_str}`
                 document.getElementById("stat-durationticks").innerText = `Duration (Ticks): ${midi_json.durationTicks}`
-                document.getElementById("stat-durationmeasures").innerText = `Duration (Measures): ${(midi_json.durationTicks / midi_json.header.ppq) / 4}`
+                document.getElementById("stat-durationmeasures").innerText = `Duration (Measures): ${measures}`
                 document.getElementById("stat-ppq").innerText = `Pulses per Quarter-Note: ${midi_json.header.ppq}`
+
+                stats = ["stat-name","stat-duration","stat-durationticks","stat-durationmeasures","stat-ppq"]
+                stats.forEach(stat => {
+                    txt = document.getElementById(stat).innerText
+                    head = txt.split(":")[0]
+                    info = txt.split(":").filter((item, index) => {
+                        return index != 0
+                    }).join(":")
+                    document.getElementById(stat).innerHTML = `<strong>${head}</strong>: ${info}`
+                })
             }
 
             function u8arrayToBuffer(array) {
@@ -149,8 +178,6 @@
             let output_bin_file = []
             let ticks_per_quarter = 0
             let currentMidi = null;
-            let midiURL = null;
-            let sfURL = null;
             let midiBuffer = null;
             let sfBuffer = null;
             document.getElementById("file-selector").addEventListener("change", function(e) {
@@ -160,21 +187,17 @@
                     setup_data = fr.result;
                     var array = new Uint8Array(data);
                     current_midi_file = array.slice()
-                    document.getElementById("conversion-panel").classList.remove("hide")
+                    let midi_reqs = document.getElementsByClassName("req-midi")
+                    for (let m = 0; m < midi_reqs.length; m++) {
+                        midi_reqs[m].classList.remove("hide")
+                    }
                     console.log(current_midi_file)
                     // Midi Stat stuff
                     const midi = new Midi(data);
                     updateStats(midi)
                     //console.log(midi)
-                    /*
-                    document
-                        .querySelector("tone-play-toggle")
-                        .removeAttribute("disabled");
-                    */
-                    currentMidi = midi;
                     midiURL = URL.createObjectURL(e.target.files[0])
                     midiBuffer = u8arrayToBuffer(array)
-                    // updatePlayer()
                     
                 };
                 fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
@@ -186,8 +209,7 @@
                     var array = new Uint8Array(data);
                     sfURL = URL.createObjectURL(e.target.files[0])
                     sfBuffer = u8arrayToBuffer(array)
-                    // updatePlayer()
-                    
+                    document.getElementById("player").classList.remove("hide")             
                 };
                 fr.readAsArrayBuffer(document.getElementById("soundfont-selector").files[0]);
             })
@@ -217,44 +239,6 @@
                 console.log(output_bin_file)
                 writeToFile(output_bin_file, output_file)
             }
-            /*
-            const synths = [];
-            document
-                .querySelector("tone-play-toggle")
-                .addEventListener("play", (e) => {
-                    const playing = e.detail;
-                    if (playing && currentMidi) {
-                        const now = Tone.now() + 0.5;
-                        currentMidi.tracks.forEach((track) => {
-                            //create a synth for each track
-                            const synth = new Tone.PolySynth(Tone.Synth, {
-                                envelope: {
-                                    attack: 0.02,
-                                    decay: 0.1,
-                                    sustain: 0.3,
-                                    release: 1,
-                                },
-                            }).toDestination();
-                            synths.push(synth);
-                            //schedule all of the events
-                            track.notes.forEach((note) => {
-                                synth.triggerAttackRelease(
-                                    note.name,
-                                    note.duration,
-                                    note.time + now,
-                                    note.velocity
-                                );
-                            });
-                        });
-                    } else {
-                        //dispose the synth and make a new one
-                        while (synths.length) {
-                            const synth = synths.shift();
-                            synth.disconnect();
-                        }
-                    }
-                });
-            */
         </script>
     </body>
 </html>

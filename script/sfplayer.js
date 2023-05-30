@@ -100,13 +100,53 @@ async function initializeSynthesizer(useDefaultSFont) {
 		
 	return synth;
 }
+setPlayingStatus("Stopped")
 
 function setPlayingStatus(status) {
-	document.getElementById('PlayingStatus').innerText = status;
+    const hook = document.getElementById("play-button")
+    const class_data = [
+        {
+            "target_status": "Playing",
+            "class_set": "playbtn-play",
+            "text": "Stop",
+            "svg": "pause",
+        },
+        {
+            "target_status": "Preparing",
+            "class_set": "playbtn-buffer",
+            "text": "Buffering",
+            "svg": "buffer",
+        },
+        {
+            "target_status": "_",
+            "class_set": "playbtn-stop",
+            "text": "Play",
+            "svg": "play",
+        },
+    ]
+    class_data.forEach(item => {
+        hook.classList.remove(item["class_set"])
+        document.getElementById(item["class_set"]).classList.add("hide")
+    })
+    let found_targ = false;
+    class_data.forEach((item, index) => {
+        if (!found_targ) {
+            if ((item["target_status"] == status) || ((index + 1) == class_data.length)) {
+                hook.classList.add(item["class_set"])
+                document.getElementById(item["class_set"]).classList.remove("hide")
+                found_targ = true;
+            }
+        }
+    })
+    console.log(`Status: ${status}`)
 	playingStatus = status;
 }
 
-async function doPlay() {
+SAFE_BUFFER = 20
+playing_song = false
+ENABLE_LOOP = false
+
+async function doPlay(progress) {
 	setPlayingStatus('Preparing');
 
 	const [synth, musicBin] = await Promise.all([
@@ -123,6 +163,13 @@ async function doPlay() {
 	await synth.playPlayer();
 
 	setPlayingStatus('Playing');
+    if (progress != 0) {
+        // Start track mid-song
+        setTimeout(function(){
+            console.log("Waited a second");
+            synth.seekPlayer(progress);
+        }, SAFE_BUFFER);
+    }
 
 	// Wait for finishing playing
 	await synth.waitForPlayerStopped();
@@ -130,17 +177,28 @@ async function doPlay() {
 	// Wait for all voices stopped
 	await synth.waitForVoicesStopped();
 
+    
 	// Reset synthesizer (release loaded SMF data)
 	await synth.resetPlayer();
-
-	setPlayingStatus('Stopped');
+    
+	setPlayingStatus('Stopped'); // TODO: Hook into looping
+    
+    if ((playing_song) && (ENABLE_LOOP)) {
+        setTimeout(function(){
+            console.log("Waited a second");
+            doPlay(3072);
+        }, SAFE_BUFFER);
+    }
 }
 
 function playMusic() {
 	if (playingStatus === 'Playing') {
+        playing_song = false;
 		synth.stopPlayer();
 	} else if (playingStatus === 'Stopped') {
-		doPlay();
+		doPlay(0);
+        playing_song = true;
+        // doPlay(100000);
 	}
 }
 

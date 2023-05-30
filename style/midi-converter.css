@@ -1,0 +1,123 @@
+.hide {
+    display: none;
+}
+.tab {
+    border-bottom: 1px solid darkgoldenrod;
+    border-right: 1px solid darkgoldenrod;
+    cursor: pointer;
+    padding: 5px;
+    color: grey;
+    transition: 0.5s ease-in-out;
+}
+.tab.selected {
+    border-bottom: 3px solid darkgoldenrod;
+    color: white;
+}
+.tab:hover {
+    color: white;
+}
+.center-container {
+    width: 50%;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media only screen and (max-width: 1500px) {
+    .center-container {
+        width: 75%;
+    }
+}
+@media only screen and (max-width: 1000px) {
+    .center-container {
+        width: 90%;
+    }
+}
+.center-block {
+    width: 100%;
+}
+button {
+    width: 50%;
+}
+.layer {
+    fill: white;
+    transition: 0.5s ease-in-out;
+}
+@keyframes layer1 {
+    0%, 65% {
+      fill: #b2b2b2;
+    }
+    75%, 82% {
+      fill: #4b4b4b;
+    }
+    92%, 100% {
+      fill: #b2b2b2;
+    }
+}
+  
+@keyframes layer2 {
+    0%, 40% {
+      fill: #b2b2b2;
+    }
+    50%, 86% {
+      fill: #4b4b4b;
+    }
+    96%, 100% {
+      fill: #b2b2b2;
+    }
+}
+  
+@keyframes layer3 {
+    0%, 15% {
+      fill: #b2b2b2;
+    }
+    25%, 90% {
+      fill: #4b4b4b;
+    }
+    100% {
+      fill: #b2b2b2;
+    }
+}
+#play-button {
+    height: 1.75vw;
+    width: 1.75vw;
+    outline: none;
+    border: none;
+    padding: 0;
+}
+#play-button:hover {
+    background-color: #eee;
+}
+#play-button:hover .layer {
+    fill: black;
+}
+#play-button.playbtn-buffer .layer {
+    animation: 4s linear infinite;
+}
+#play-button.playbtn-buffer .layer1 {
+    animation-name: layer1;
+}
+#play-button.playbtn-buffer .layer2 {
+    animation-name: layer2;
+}
+#play-button.playbtn-buffer .layer3 {
+    animation-name: layer3;
+}
+#stats {
+    text-align: left;
+    padding: 5px;
+}
+.sep {
+    padding: 5px;
+    flex: 1;
+}
+.sep-left {
+    border-right: 2px solid darkgoldenrod;
+}
+.midi-loaders {
+    flex: 1;
+}
+.vert-center {
+    display: table-cell;
+    height: 100%;
+    vertical-align: middle;
+}
