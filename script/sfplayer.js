@@ -260,12 +260,13 @@ function navigatorClick(pressing) {
 	if (pressing) {
 		nav_location = document.getElementById("player-navigator").value
 	} else {
+		navigatorMove(true);
 		synth.seekPlayer(nav_location)
 	}
 }
 
-function navigatorMove() {
-	if (pressing_nav) {
+function navigatorMove(ignore_press) {
+	if ((pressing_nav) || (ignore_press)) {
 		nav_location = document.getElementById("player-navigator").value
 		updatePlayerNav(nav_location, false)
 	}
