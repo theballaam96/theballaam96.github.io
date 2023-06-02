@@ -9,6 +9,7 @@
 const TRACK_LIMIT_BIG = 0x20
 const TRACK_LIMIT_SMALL = 16
 const EVENT_LIMIT = 0x30000
+const POINTER_TABLE_OFFSET = 0x101C50
 
 class Event {
     constructor() {
@@ -1321,4 +1322,32 @@ function writeToFile(new_file, file_name) {
         };
     }())
     saveByteArray([write_bytes],file_name)
+}
+
+function finishPreload(z64_data) {
+    rom_f = new BufferFile(z64_data);
+    rom_f.seek(POINTER_TABLE_OFFSET)
+    const midi_table = POINTER_TABLE_OFFSET + (rom_f.readNum(4) & 0x7FFFFFFF);
+    let song_data = [];
+    for (let s = 0; s < 175; s++) {
+        rom_f.seek(midi_table + (s * 4));
+        const f_start = POINTER_TABLE_OFFSET + (rom_f.readNum(4) & 0x7FFFFFFF);
+        const f_finish = POINTER_TABLE_OFFSET + (rom_f.readNum(4) & 0x7FFFFFFF);
+        const f_size = f_finish - f_start;
+        song_data.push(f_size);
+    }
+    return {
+        "song_data": song_data.slice(),
+    }
+}
+
+function writeToROMInternal(rom_array, slot, compressed_midi) {
+    rom_f = new BufferFile(rom_array);
+    rom_f.seek(POINTER_TABLE_OFFSET)
+    const midi_table = POINTER_TABLE_OFFSET + (rom_f.readNum(4) & 0x7FFFFFFF);
+    rom_f.seek(midi_table + (slot * 4))
+    const f_start = POINTER_TABLE_OFFSET + (rom_f.readNum(4) & 0x7FFFFFFF);
+    rom_f.seek(f_start)
+    rom_f.writeBytes(compressed_midi, compressed_midi.length);
+    return rom_f.data.slice();
 }

@@ -19,6 +19,7 @@
         <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
         <script src="script/libfluidsynth-2-3-0.min.js"></script>
         <script src="script/js-synthesizer.min.js"></script>
+        <script src="script/pako.js"></script>
         <link rel="preload" as="script" href="script/js-synthesizer.worklet.min.js">
         <script src="script/n64miditool.js"></script>
     </head>
@@ -56,6 +57,7 @@
                                 </div>
                                 <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
                                 <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
+                                <input type="file" class="hide" id="rom-selector" accept=".z64"/>
                                 <div class="req-midi">
                                     <div id="stats">
                                         <div id="stat-name"></div>
@@ -94,16 +96,34 @@
                                         <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
                                     </div>
                                     <div class="flexsplitter">
-                                        <div class="sep">
+                                        <div class="sep" style="text-align:left">
                                             <label>Loop:</label>
                                             <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
                                         </div>
                                         <div id="loop-point-info" class="sep hide" style="flex:2">
                                             <label for="loop-point">Loop Point (Ticks)</label>
-                                            <input type="number" id="loop-point" value="0"/>
+                                            <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
                                         </div>
                                     </div>
-                                    <button onclick="toBinary()">Convert to binary</button>
+                                    <div class="flexsplitter">
+                                        <div class="sep">
+                                            <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
+                                        </div>
+                                        <div class="sep">
+                                            <div class="req-no-preload">
+                                                <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
+                                            </div>
+                                            <div class="req-preload hide">
+                                                <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
+                                            </div>
+                                            <div class="req-preload">
+                                                <div class="list-choice">
+                                                    <div class="list-choice-title">Select Song</div>
+                                                    <div class="list-choice-objects" id="song_list">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +192,9 @@
             }
 
             let current_midi_file = []
+            let compressed_midi = []
             let output_bin_file = []
+            let rom_file = []
             let ticks_per_quarter = 0
             let currentMidi = null;
             let midiBuffer = null;
@@ -216,8 +238,22 @@
                 };
                 fr.readAsArrayBuffer(document.getElementById("soundfont-selector").files[0]);
             })
+            document.getElementById("rom-selector").addEventListener("change", function(e) {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    var data = fr.result;
+                    rom_file = new Uint8Array(data);
+                    const song_data = finishPreload(rom_file);
+                    const any_song_loaded = loadSongList(compressed_midi.length, song_data["song_data"])
+                    setPreloadState(any_song_loaded);
+                    if (!any_song_loaded) {
+                        throw new Error("Song too big for ROM.")
+                    }
+                };
+                fr.readAsArrayBuffer(document.getElementById("rom-selector").files[0]);
+            })
 
-            function toBinary() {
+            function toBinary(write_binary) {
                 input_file_name = document.getElementById("file-selector").value
                 loop_data = getLoopStatus()
                 loop = loop_data["loop"]
@@ -225,7 +261,6 @@
                 no_repeaters = true
                 output_segments = input_file_name.split(".")[0].split("\\")
                 output_file = output_segments[output_segments.length - 1] + ".bin"
-
 
                 console.log("Does Loop:",loop)
                 console.log("Loop Point:",loop_point)
@@ -240,7 +275,9 @@
                     } 
                 }
                 console.log(output_bin_file)
-                writeToFile(output_bin_file, output_file)
+                if (write_binary) {
+                    writeToFile(output_bin_file, output_file)
+                }
             }
 
             function toggleLoop() {
@@ -250,8 +287,250 @@
                 } else {
                     hook.classList.add("hide")
                 }
-                console.log()
+                setPreloadState(false);
             }
+
+            function setPreloadState(show) {
+                const preloaders = document.getElementsByClassName("req-preload")
+                const anti_preloaders = document.getElementsByClassName("req-no-preload")
+                for (let p = 0; p < preloaders.length; p++) {
+                    if (show) {
+                        preloaders[p].classList.remove("hide")
+                    } else {
+                        preloaders[p].classList.add("hide")
+                    }
+                }
+                for (let p = 0; p < anti_preloaders.length; p++) {
+                    if (show) {
+                        anti_preloaders[p].classList.add("hide")
+                    } else {
+                        anti_preloaders[p].classList.remove("hide")
+                    }
+                }
+            }
+            
+            function preloadROMWrite() {
+                toBinary(false)
+                const data = new Uint8Array(output_bin_file.slice());
+                compressed_midi = Array.from(pako.gzip(data, {"level": 9}));
+                clickEl("rom-selector");
+            }
+
+            function writeToROM() {
+                let slot_childen = document.getElementById("song_list").getElementsByTagName("input")
+                let slot = null;
+                for (let s = 0; s < slot_childen.length; s++) {
+                    if (slot_childen[s].checked) {
+                        slot = Number(slot_childen[s].getAttribute("song-id"))
+                    }
+                }
+                if (slot != null) {
+                    const new_rom = writeToROMInternal(rom_file.slice(), slot, compressed_midi.slice());
+                    writeToFile(new_rom, "song-altered-dk64.z64");
+                }
+            }
+
+            const SONG_ITEMS = [
+                "Silence",
+                "Jungle Japes (Starting Area)",
+                "Cranky's Lab",
+                "Jungle Japes (Minecart)",
+                "Jungle Japes (Army Dillo)",
+                "Jungle Japes (Caves/Underground)",
+                "Funky's Hut",
+                "Unused Coin Pickup",
+                "Bonus Minigames",
+                "Triangle Trample",
+                "Guitar Gazump",
+                "Bongo Blast",
+                "Trombone Tremor",
+                "Saxaphone Slam",
+                "Angry Aztec",
+                "Transformation",
+                "Mini Monkey",
+                "Hunky Chunky",
+                "GB/Key Get",
+                "Angry Aztec (Beetle Slide)",
+                "Oh Banana",
+                "Angry Aztec (Temple)",
+                "Company Coin Get",
+                "Banana Coin Get",
+                "Going through Vulture Ring",
+                "Angry Aztec (Dogadon)",
+                "Angry Aztec (5DT)",
+                "Frantic Factory (Car Race)",
+                "Frantic Factory",
+                "Snide's HQ",
+                "Jungle Japes (Tunnels)",
+                "Candy's Music Shop",
+                "Minecart Coin Get",
+                "Melon Slice Get",
+                "Pause Menu",
+                "Crystal Coconut Get",
+                "Rambi",
+                "Angry Aztec (Tunnels)",
+                "Water Droplets",
+                "Frantic Factory (Mad Jack)",
+                "Success",
+                "Start (To pause game)",
+                "Failure",
+                "DK Transition (Opening)",
+                "DK Transition (Closing)",
+                "Unused High-Pitched Japes",
+                "Fairy Tick",
+                "Melon Slice Drop",
+                "Angry Aztec (Chunky Klaptraps)",
+                "Frantic Factory (Crusher Room)",
+                "Jungle Japes (Baboon Blast)",
+                "Frantic Factory (R&D)",
+                "Frantic Factory (Production Room)",
+                "Troff 'n' Scoff",
+                "Boss Defeat",
+                "Angry Aztec (Baboon Blast)",
+                "Gloomy Galleon (Outside)",
+                "Boss Unlock",
+                "Awaiting Entering the Boss",
+                "Generic Twinkly Sounds",
+                "Gloomy Galleon (Pufftoss)",
+                "Gloomy Galleon (Seal Race)",
+                "Gloomy Galleon (Tunnels)",
+                "Gloomy Galleon (Lighthouse)",
+                "Battle Arena",
+                "Drop Coins (Minecart)",
+                "Fairy Nearby",
+                "Checkpoint",
+                "Fungi Forest (Day)",
+                "Blueprint Get",
+                "Fungi Forest (Night)",
+                "Strong Kong",
+                "Rocketbarrel Boost",
+                "Orangstand Sprint",
+                "Fungi Forest (Minecart)",
+                "DK Rap",
+                "Blueprint Drop",
+                "Gloomy Galleon (2DS)",
+                "Gloomy Galleon (5DS/Submarine)",
+                "Gloomy Galleon (Pearls Chest)",
+                "Gloomy Galleon (Mermaid Palace)",
+                "Fungi Forest (Dogadon)",
+                "Mad Maze Maul",
+                "Crystal Caves",
+                "Crystal Caves (Giant Kosha Tantrum)",
+                "Nintendo Logo (Old?)",
+                "Success (Races)",
+                "Failure (Races & Try Again)",
+                "Bonus Barrel Introduction",
+                "Stealthy Snoop",
+                "Minecart Mayhem",
+                "Gloomy Galleon (Mechanical Fish)",
+                "Gloomy Galleon (Baboon Blast)",
+                "Fungi Forest (Anthill)",
+                "Fungi Forest (Barn)",
+                "Fungi Forest (Mill)",
+                "Generic Seaside Sounds",
+                "Fungi Forest (Spider)",
+                "Fungi Forest (Mushroom Top Rooms)",
+                "Fungi Forest (Giant Mushroom)",
+                "Boss Introduction",
+                "Tag Barrel (All of them)",
+                "Crystal Caves (Beetle Race)",
+                "Crystal Caves (Igloos)",
+                "Mini Boss",
+                "Creepy Castle",
+                "Creepy Castle (Minecart)",
+                "Baboon Balloon",
+                "Gorilla Gone",
+                "DK Isles",
+                "DK Isles (K Rool's Ship)",
+                "DK Isles (Banana Fairy Island)",
+                "DK Isles (K-Lumsy's Prison)",
+                "Hideout Helm (Blast-O-Matic On)",
+                "Move Get",
+                "Gun Get",
+                "Hideout Helm (Blast-O-Matic Off)",
+                "Hideout Helm (Bonus Barrels)",
+                "Crystal Caves (Cabins)",
+                "Crystal Caves (Rotating Room)",
+                "Crystal Caves (Tile Flipping)",
+                "Creepy Castle (Tunnels)",
+                "Intro Story Medley",
+                "Training Grounds",
+                "Enguarde",
+                "K-Lumsy Celebration",
+                "Creepy Castle (Crypt)",
+                "Headphones Get",
+                "Pearl Get",
+                "Creepy Castle (Dungeon w/ Chains)",
+                "Angry Aztec (Lobby)",
+                "Jungle Japes (Lobby)",
+                "Frantic Factory (Lobby)",
+                "Gloomy Galleon (Lobby)",
+                "Main Menu",
+                "Creepy Castle (Inner Crypts)",
+                "Creepy Castle (Ballroom)",
+                "Creepy Castle (Greenhouse)",
+                "K Rool's Theme",
+                "Fungi Forest (Winch)",
+                "Creepy Castle (Wind Tower)",
+                "Creepy Castle (Tree)",
+                "Creepy Castle (Museum)",
+                "BBlast Final Star",
+                "Drop Rainbow Coin",
+                "Rainbow Coin Get",
+                "Normal Star",
+                "Bean Get",
+                "Crystal Caves (Army Dillo)",
+                "Creepy Castle (Kut Out)",
+                "Creepy Castle (Dungeon w/out Chains)",
+                "Banana Medal Get",
+                "K Rool's Battle",
+                "Fungi Forest (Lobby)",
+                "Crystal Caves (Lobby)",
+                "Creepy Castle (Lobby)",
+                "Hideout Helm (Lobby)",
+                "Creepy Castle (Trash Can)",
+                "End Sequence",
+                "K-Lumsy Ending",
+                "Jungle Japes",
+                "Jungle Japes (Cranky's Area)",
+                "K Rool Takeoff",
+                "Crystal Caves (Baboon Blast)",
+                "Fungi Forest (Baboon Blast)",
+                "Creepy Castle (Baboon Blast)",
+                "DK Isles (Snide's Room)",
+                "K Rool's Entrance",
+                "Monkey Smash",
+                "Fungi Forest (Rabbit Race)",
+                "Game Over",
+                "Wrinkly Kong",
+                "100th CB Get",
+                "K Rool's Defeat",
+                "Nintendo Logo",
+            ]
+
+            function loadSongList(max_size, sizes=null) {
+                const hook = document.getElementById("song_list");
+                html = "";
+                let permit_total = false;
+                SONG_ITEMS.forEach((song, index) => {
+                    permit = max_size == -1;
+                    if (max_size >= 0) {
+                        if (sizes != null) {
+                            permit = sizes[index] >= max_size;
+                        }
+                    }
+                    if (permit) {
+                        permit_total = true;
+                        html += `<label>
+                            <input type=\"radio\" name=\"Select Song\" song-id=\"${index}\">
+                            <span>${song}</span>
+                            </label>`
+                    }
+                })
+                hook.innerHTML = html;
+                return permit_total;
+            }
+            loadSongList(-1);
         </script>
     </body>
 </html>
