@@ -6,10 +6,15 @@
     Please support the original creators of the cpp desktop applet @ https://github.com/jombo23/N64-Tools/tree/master/N64MidiTool
 */
 
+/* requirements:
+    file-buffer.js
+*/
+
 const TRACK_LIMIT_BIG = 0x20
 const TRACK_LIMIT_SMALL = 16
 const EVENT_LIMIT = 0x30000
 const POINTER_TABLE_OFFSET = 0x101C50
+let instrument_change_addresses = [];
 
 class Event {
     constructor() {
@@ -20,69 +25,6 @@ class Event {
         this.delta_time = 0
         this.obsolete_event = false
         this.duration_time = 0
-    }
-}
-
-class BufferFile {
-    constructor(data) {
-        this.data = data
-        this.read_header = 0
-    }
-
-    wipe(data = []) {
-        this.data = data
-        this.read_header = 0
-    }
-
-    seek(point) {
-        this.read_header = point
-    }
-
-    readBytes(size) {
-        let arr = []
-        for (let i = 0; i < size; i++) {
-            arr.push(this.data[this.read_header + i])
-        }
-        this.read_header += size
-        return arr.slice()
-    }
-
-    readNum(size) {
-        let amt = 0;
-        const arr = this.readBytes(size)
-        for (let i = 0; i < size; i++) {
-            amt *= 256
-            amt += arr[i]
-        }
-        return amt
-    }
-
-    writeBytes(arr, size) {
-        arr.forEach((a, index) => {
-            let address = this.read_header + index
-            if (this.data.length >= address) {
-                this.data[address] = a
-            } else {
-                let diff = address - this.data.length
-                for (let d = 0; d < diff; d++) {
-                    this.data.push(0)
-                }
-                this.data.push(a)
-            }
-        })
-        this.read_header += size
-    }
-
-    writeNum(value, size) {
-        let running_value = value;
-        if (size > 0) {
-            let arr = Array(size).fill(0)
-            for (let i = 0; i < size; i++) {
-                arr[i] = running_value & 0xFF
-                running_value >>= 8
-            }
-            this.writeBytes(arr.reverse(), size)
-        }
     }
 }
 
@@ -333,6 +275,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     numberTracks = 0
     track_events = []
     track_event_count = Array(TRACK_LIMIT_BIG).fill(0)
+    instrument_change_addresses = []
     for (let x = 0; x < TRACK_LIMIT_BIG; x++) {
         track_events.push([])
         for (let y = 0; y < EVENT_LIMIT; y++) {
@@ -542,6 +485,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             } else if (eventInBounds(eventVal, previous_event_value, 0xC0, 0xD0, status_bit)) {
                 // Instrument Change
                 instrument = null
+                instrument_change_addresses.push(position)
                 if (status_bit) {
                     instrument = eventVal
                 } else {
@@ -1350,4 +1294,38 @@ function writeToROMInternal(rom_array, slot, compressed_midi) {
     rom_f.seek(f_start)
     rom_f.writeBytes(compressed_midi, compressed_midi.length);
     return rom_f.data.slice();
+}
+
+async function readMidiPorting(data) {
+    let midi_f = new BufferFile(data)
+    let selected_template = null;
+    const settings = document.getElementById("template_select").getElementsByTagName("input")
+    for (let s = 0; s < settings.length; s++) {
+        if (settings[s].checked) {
+            selected_template = settings[s].getAttribute("template-file")
+        }
+    }
+    if (selected_template) {
+        await fetch(`./data/midi_conversions/${selected_template}`)
+            .then(response => response.json())
+            .then(json => {
+                const ins_keys = Object.keys(json)
+                instrument_change_addresses.forEach(addr => {
+                    midi_f.seek(addr)
+                    const old_instrument = midi_f.readNum(1) + 1;
+                    if (ins_keys.includes(old_instrument.toString())) {
+                        const new_ins = json[old_instrument]["new_instrument"];
+                        if (new_ins >= -1) {
+                            midi_f.seek(addr)
+                            console.log(old_instrument - 1, "->", new_ins - 1);
+                            midi_f.writeNum(new_ins - 1, 1);
+                        }
+                    }
+                })
+                if (midi_f.data.length > 0) {
+                    const name = last(document.getElementById("file-selector").value.split("\\"));
+                    writeToFile(midi_f.data, `CONVERTED_${name}`)
+                }
+            });
+    }
 }

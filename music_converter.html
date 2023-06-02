@@ -14,13 +14,14 @@
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
+        <script src="script/file-buffer.js"></script>
         <script type="text/javascript" src="https://unpkg.com/tone@latest/build/Tone.js"></script>
 		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8/build/tonejs-ui.js"></script>
         <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
         <script src="script/libfluidsynth-2-3-0.min.js"></script>
         <script src="script/js-synthesizer.min.js"></script>
         <script src="script/pako.js"></script>
-        <link rel="preload" as="script" href="script/js-synthesizer.worklet.min.js">
+        <link as="script" href="script/js-synthesizer.worklet.min.js">
         <script src="script/n64miditool.js"></script>
     </head>
     <body>
@@ -46,29 +47,29 @@
                         <div class="tab" association="midi-porting">Midi Porting</div>
                     </div>
                     <br>
-                    <div id="midi-to-bin">
-                        <div class="flexsplitter">
-                            <div id="left-separator" class="sep">
-                                <!-- Left box -->
-                                <h3>Song Loading</h3>
-                                <div class="flexsplitter">
-                                    <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
-                                    <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
-                                </div>
-                                <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
-                                <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
-                                <input type="file" class="hide" id="rom-selector" accept=".z64"/>
-                                <div class="req-midi">
-                                    <div id="stats">
-                                        <div id="stat-name"></div>
-                                        <div id="stat-duration"></div>
-                                        <div id="stat-durationticks"></div>
-                                        <div id="stat-durationmeasures"></div>
-                                        <div id="stat-ppq"></div>
-                                    </div>
+                    <div class="flexsplitter">
+                        <div id="left-separator" class="sep">
+                            <!-- Left box -->
+                            <h3>Song Loading</h3>
+                            <div class="flexsplitter">
+                                <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
+                                <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
+                            </div>
+                            <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
+                            <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
+                            <input type="file" class="hide" id="rom-selector" accept=".z64"/>
+                            <div class="req-midi">
+                                <div id="stats">
+                                    <div id="stat-name"></div>
+                                    <div id="stat-duration"></div>
+                                    <div id="stat-durationticks"></div>
+                                    <div id="stat-durationmeasures"></div>
+                                    <div id="stat-ppq"></div>
                                 </div>
                             </div>
-                            <div class="sep req-midi hide">
+                        </div>
+                        <div class="sep req-midi hide">
+                            <div id="midi-to-bin">
                                 <!-- Right box -->
                                 <h3>Song Actions</h3>
                                 <div class="req-midi" class="hide">
@@ -126,10 +127,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="midi-porting" class="hide">
+                                <div class="list-choice">
+                                    <div class="list-choice-title">Select Template</div>
+                                    <div class="list-choice-objects" id="template_select"></div>
+                                </div>
+                                <button onclick="instrumentChange()">
+                                    Write new MIDI
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    <div id="midi-porting" class="hide">
-                        Coming soon
                     </div>
                 </div>
             </div>
@@ -541,6 +548,29 @@
                 return permit_total;
             }
             loadSongList(-1);
+
+            function instrumentChange() {
+                toBinary(false);
+                readMidiPorting(current_midi_file.slice());
+            }
+
+            const TEMPLATE_DATA = [
+                {"file": "bk", "name": "Banjo-Kazooie"},
+                {"file": "bt", "name": "Banjo-Tooie"},
+            ]
+
+            function loadTemplates() {
+                const hook = document.getElementById("template_select");
+                html = "";
+                TEMPLATE_DATA.forEach(template => {
+                    html += `<label>
+                        <input type=\"radio\" name=\"Select Song\" template-file=\"${template['file']}.json\">
+                        <span>${template['name']}</span>
+                        </label>`
+                })
+                hook.innerHTML = html;
+            }
+            loadTemplates();
         </script>
     </body>
 </html>
