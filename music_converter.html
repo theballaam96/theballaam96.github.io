@@ -222,6 +222,7 @@
                     //console.log(midi)
                     midiURL = URL.createObjectURL(e.target.files[0])
                     midiBuffer = u8arrayToBuffer(array)
+                    setPreloadState(false);
                     
                 };
                 fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
