@@ -47,6 +47,20 @@
                         <div class="tab" association="midi-porting">Midi Porting</div>
                     </div>
                     <br>
+                    <div style="text-align:left">
+                        <div id="exp-midi-to-bin">
+                            <strong>Midi to Binary</strong><br>
+                            Converts a MIDI File into a binary format that can be read and played by Donkey Kong 64 in-game.<br>
+                            The binary file can either be extracted as a standalone file for usage in <span style="font-style:italics">Randomizer</span> or <span style="font-style:italics">Cranky's Lab</span>
+                            , or imported straight into a ROM.
+                        </div>
+                        <div id="exp-midi-porting" class="hide">
+                            <strong>Midi Porting</strong><br>
+                            Converts a MIDI File from one game into the Donkey Kong 64 soundfont. Currently only supports the N64 Banjo titles due to 
+                            their similarities to DK64 music-wise enabling music to sound very similar between games. However, this tool does have the
+                            functionality to expand to any midi format from any game or general MIDI in general.
+                        </div>
+                    </div>
                     <div class="flexsplitter">
                         <div id="left-separator" class="sep">
                             <!-- Left box -->
@@ -155,10 +169,12 @@
                         tabs[u].classList.remove("selected")
                         assoc = tabs[u].getAttribute("association")
                         document.getElementById(assoc).classList.add("hide")
+                        document.getElementById(`exp-${assoc}`).classList.add("hide")
                     }
                     targ.classList.add("selected")
                     elm = targ.getAttribute("association")
                     document.getElementById(elm).classList.remove("hide")
+                    document.getElementById(`exp-${elm}`).classList.remove("hide")
                 })
             }
 
