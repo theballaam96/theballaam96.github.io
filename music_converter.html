@@ -223,7 +223,9 @@
                     midiURL = URL.createObjectURL(e.target.files[0])
                     midiBuffer = u8arrayToBuffer(array)
                     setPreloadState(false);
-                    
+                    if (synth) {
+                        synth.stopPlayer();
+                    }
                 };
                 fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
             })
@@ -235,7 +237,10 @@
                     sfURL = URL.createObjectURL(e.target.files[0])
                     sfBuffer = u8arrayToBuffer(array)
                     document.getElementById("player").classList.remove("hide")             
-                    document.getElementById("player-sep").classList.remove("hide")             
+                    document.getElementById("player-sep").classList.remove("hide")
+                    if (synth) {
+                        synth.stopPlayer();
+                    }
                 };
                 fr.readAsArrayBuffer(document.getElementById("soundfont-selector").files[0]);
             })
