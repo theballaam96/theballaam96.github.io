@@ -223,6 +223,7 @@
                     midiURL = URL.createObjectURL(e.target.files[0])
                     midiBuffer = u8arrayToBuffer(array)
                     setPreloadState(false);
+                    document.getElementById("loop-check").checked = false;
                     if (synth) {
                         synth.stopPlayer();
                     }
