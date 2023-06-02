@@ -116,7 +116,7 @@
                                             <div class="req-preload hide">
                                                 <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
                                             </div>
-                                            <div class="req-preload">
+                                            <div class="req-preload hide">
                                                 <div class="list-choice">
                                                     <div class="list-choice-title">Select Song</div>
                                                     <div class="list-choice-objects" id="song_list">
@@ -306,6 +306,9 @@
                     } else {
                         anti_preloaders[p].classList.remove("hide")
                     }
+                }
+                if (!show) {
+                    document.getElementById("rom-selector").value = null;
                 }
             }
             
