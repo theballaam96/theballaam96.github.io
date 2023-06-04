@@ -589,6 +589,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             track_events[trackNum][track_event_count[trackNum]].contents = [0x2E, 0x00, 0xFF]
             track_events[trackNum][track_event_count[trackNum]].delta_time = 0
             track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
+            pre_loop_offset = track_event_count[trackNum]
             track_event_count[trackNum] += 1
             didLoop = true
         }
@@ -634,6 +635,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         track_events[trackNum][track_event_count[trackNum]].delta_time = loop_point
                     }
                     track_event_count[trackNum] += 1
+                    pre_loop_offset = track_event_count[trackNum]
                     track_events[trackNum][track_event_count[trackNum]].delta_time = abs_time - loop_point
                     track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
                     track_events[trackNum][track_event_count[trackNum]].contents = null
