@@ -269,6 +269,21 @@ function eventInBounds(event_value, previous_event_value, lower_bound, upper_bou
     return false
 }
 
+let track_events = [];
+
+function getTrackEvent(trackNum, eventIndex) {
+    if (track_events[trackNum].length > eventIndex) {
+        diff = eventIndex - track_events[trackNum].length;
+        for (let d = 0; d < diff; d++) {
+            track_events[trackNum].push(null);
+        }
+    }
+    if (track_events[trackNum][eventIndex] == null) {
+        track_events[trackNum][eventIndex] = new Event();
+    }
+    return track_events[trackNum][eventIndex];
+}
+
 function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     unused_storage = null
     attempt = new BufferFile([])
@@ -278,9 +293,6 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     instrument_change_addresses = []
     for (let x = 0; x < TRACK_LIMIT_BIG; x++) {
         track_events.push([])
-        for (let y = 0; y < EVENT_LIMIT; y++) {
-            track_events[x].push(new Event())
-        }
     }
     data = in_file.slice()
     data_size = data.length
@@ -566,7 +578,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
         endFlag = false
         didLoop = false
         if ((has_loop) && (loop_point == 0) && (highest_abs_time_by_track[trackNum] > 0)) {
-            te = track_events[trackNum][track_event_count[trackNum]]
+            te = getTrackEvent(trackNum, track_event_count[trackNum])
             te.type = 0xFF
             te.abs_time = 0
             te.content_size = 3
@@ -587,7 +599,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             alt_length = gvlb.alt_length
             timeTag = gvlb.vlength
             abs_time += timeTag
-            te = track_events[trackNum][track_event_count[trackNum]]
+            te = getTrackEvent(trackNum, track_event_count[trackNum])
             ste = te;
             te.delta_time = timeTag
             te.obsolete_event = false
@@ -596,7 +608,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             if ((has_loop) && (!didLoop) && (highest_abs_time_by_track[trackNum] > loop_point)) {
                 // Handle Looping
                 if (abs_time == loop_point) {
-                    te = track_events[trackNum][track_event_count[trackNum]]
+                    te = getTrackEvent(trackNum, track_event_count[trackNum])
                     te.type = 0xFF
                     te.abs_time = abs_time
                     te.content_size = 3
@@ -604,7 +616,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     te.delta_time = timeTag
                     te.obsolete_event = false
                     track_event_count[trackNum] += 1
-                    te = track_events[trackNum][track_event_count[trackNum]]
+                    te = getTrackEvent(trackNum, track_event_count[trackNum])
                     ste = te;
                     te.delta_time = 0
                     te.obsolete_event = false
@@ -612,18 +624,18 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     te.abs_time = abs_time
                     didLoop = true
                 } else if (abs_time > loop_point) {
-                    te = track_events[trackNum][track_event_count[trackNum]]
+                    te = getTrackEvent(trackNum, track_event_count[trackNum])
                     te.type = 0xFF
                     te.abs_time = loop_point
                     te.content_size = 3
                     te.contents = [0x2E, 0x00, 0xFF]
                     if (track_event_count[trackNum] > 0) {
-                        te.delta_time = loop_point - track_events[trackNum][track_event_count[trackNum] - 1].abs_time
+                        te.delta_time = loop_point - getTrackEvent(trackNum, track_event_count[trackNum] - 1).abs_time
                     } else {
                         te.delta_time = loop_point
                     }
                     track_event_count[trackNum] += 1
-                    te = track_events[trackNum][track_event_count[trackNum]]
+                    te = getTrackEvent(trackNum, track_event_count[trackNum])
                     ste = te;
                     te.delta_time = abs_time - loop_point
                     te.obsolete_event = false
@@ -654,13 +666,13 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 if (sub_type == 0x2F) { // End of Track event
                     endFlag = true
                     if ((has_loop) && (highest_abs_time_by_track[trackNum] > loop_point)) {
-                        previous_event = track_events[trackNum][track_event_count[trackNum] - 1]
+                        previous_event = getTrackEvent(trackNum, track_event_count[trackNum] - 1)
                         if ((previous_event.type == 0xFF) && (previous_event.content_size > 0) && (previous_event.contents[0] == 0x2E)) {
                             previous_event.type = 0xFF
                             previous_event.content_size = 1
                             previous_event.contents = [0x2F]
                         } else {
-                            nte = track_events[trackNum][track_event_count[trackNum] + 1]
+                            nte = getTrackEvent(trackNum, track_event_count[trackNum] + 1)
                             nte.abs_time = highest_abs_time
                             nte.delta_time = 0
                             nte.duration_time = ste.duration_time
@@ -775,7 +787,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 alt_length = rmb.altLength
                 velocity = rmb.returnByte
                 for (test_backwards = track_event_count[trackNum] - 1; test_backwards >= 0; test_backwards--) {
-                    tbte = track_events[trackNum][test_backwards];
+                    tbte = getTrackEvent(trackNum, test_backwards);
                     if ((tbte.type == 0x90 + (current_event_value % 0x10)) && (!tbte.obsolete_event)) {
                         if (tbte.contents[0] == note_number) {
                             tbte.duration_time = abs_time - tbte.abs_time
@@ -812,7 +824,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 velocity = rmb.returnByte
                 if (velocity == 0) { // simulate note off
                     for (test_backwards = track_event_count[trackNum] - 1; test_backwards >= 0; test_backwards--) {
-                        tbte = track_events[trackNum][test_backwards];
+                        tbte = getTrackEvent(trackNum, test_backwards);
                         if (tbte.type == current_event_value && (!tbte.obsolete_event)) {
                             if (tbte.contents[0] == note_number) {
                                 tbte.duration_time = abs_time - tbte.abs_time
@@ -827,7 +839,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 } else {
                     // Check if no note off received, if so, turn it off and restart note
                     for (test_backwards = track_event_count[trackNum] - 1; test_backwards >= 0; test_backwards--) {
-                        tbte = track_events[trackNum][test_backwards]
+                        tbte = getTrackEvent(trackNum, test_backwards)
                         if (tbte.type == current_event_value && (!tbte.obsolete_event)) {
                             if (tbte.contents[0] == note_number) {
                                 if (tbte.duration_time == 0) { // Means unfinished note
@@ -966,7 +978,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
         if (track_event_count[i] > 0) {
             attempt.writeNum(start_position, 4)
             for (let j = 0; j < track_event_count[i]; j++) {
-                track_event = track_events[i][j]
+                track_event = getTrackEvent(i, j)
                 length_time_delta = 0
                 rvlb = ReturnVLBytes(track_event.delta_time + time_offset, length_time_delta)
                 length_time_delta = rvlb.lngth
@@ -1018,7 +1030,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
         if (track_event_count[i] > 0) {
             previous_track_event = 0
             for (let j = 0; j < track_event_count[i]; j++) {
-                track_event = track_events[i][j]
+                track_event = getTrackEvent(i, j)
                 if (track_event.obsolete_event) {
                     time_offset += track_event.delta_time
                 } else {
@@ -1046,7 +1058,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             }
         }
         for (let j = 0; j < track_event_count[i]; j++) {
-            track_events[i][j].contents = null
+            getTrackEvent(i, j).contents = null
         }
     }
     out_data = attempt.data
