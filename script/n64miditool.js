@@ -305,7 +305,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     repeatPattern = null
     alt_offset = 0
     alt_length = 0
-    unknown_shit = false
+    unknown_var = false
     highest_abs_time = 0
     highest_abs_time_by_track = Array(TRACK_LIMIT_SMALL).fill(0)
     for (let trackNum = 0; trackNum < numberTracks; trackNum++) {
@@ -340,8 +340,6 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             status_bit = false
             if (eventVal <= 0x7F) { // Continuation
                 status_bit = true
-            } else {
-                status_bit = false
             }
             if (eventVal == 0xFF) { // Meta Event
                 rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
@@ -437,12 +435,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0x90, 0xA0, status_bit)) {
-                current_event_value = null
-                note_number = null
-                if (status_bit) {
-                    note_number = eventVal
-                    current_event_value = previous_event_value
-                } else {
+                current_event_value = previous_event_value
+                note_number = eventVal
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -462,10 +457,8 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xB0, 0xC0, status_bit)) {
                 // Controller Change
-                controller_type = null
-                if (status_bit) {
-                    controller_type = eventVal
-                } else {
+                controller_type = eventVal
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -484,43 +477,33 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xC0, 0xD0, status_bit)) {
                 // Instrument Change
-                instrument = null
+                instrument = eventVal
                 instrument_change_addresses.push(position)
-                if (status_bit) {
-                    instrument = eventVal
-                } else {
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                     instrument = rmb.returnByte
-                }
-                if (!status_bit) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xD0, 0xE0, status_bit)) {
                 // Channel Aftertouch
-                amount = null
-                if (status_bit) {
-                    amount = eventVal
-                } else {
+                amount = eventVal
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                     amount = rmb.returnByte
-                }
-                if (!status_bit) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xE0, 0xF0, status_bit)) {
                 // Pitch Bend
-                value_lsb = null
-                if (status_bit) {
-                    value_lsb = eventVal
-                } else {
+                value_lsb = eventVal
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -553,8 +536,8 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_length = rmb.altLength
                 }
             } else {
-                if (!unknown_shit) {
-                    unknown_shit = true
+                if (!unknown_var) {
+                    unknown_var = true
                     throw new Error(`Invalid Midi Character Found (${eventVal})`)
                 }
             }
@@ -583,13 +566,14 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
         endFlag = false
         didLoop = false
         if ((has_loop) && (loop_point == 0) && (highest_abs_time_by_track[trackNum] > 0)) {
-            track_events[trackNum][track_event_count[trackNum]].type = 0xFF
-            track_events[trackNum][track_event_count[trackNum]].abs_time = 0
-            track_events[trackNum][track_event_count[trackNum]].content_size = 3
-            track_events[trackNum][track_event_count[trackNum]].contents = [0x2E, 0x00, 0xFF]
-            track_events[trackNum][track_event_count[trackNum]].delta_time = 0
-            track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
-            pre_loop_offset = track_event_count[trackNum]
+            te = track_events[trackNum][track_event_count[trackNum]]
+            te.type = 0xFF
+            te.abs_time = 0
+            te.content_size = 3
+            te.contents = [0x2E, 0x00, 0xFF]
+            te.delta_time = 0
+            te.obsolete_event = false
+            ste = te;
             track_event_count[trackNum] += 1
             didLoop = true
         }
@@ -603,43 +587,48 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             alt_length = gvlb.alt_length
             timeTag = gvlb.vlength
             abs_time += timeTag
-            pre_loop_offset = track_event_count[trackNum]
-            track_events[trackNum][track_event_count[trackNum]].delta_time = timeTag
-            track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
-            track_events[trackNum][track_event_count[trackNum]].contents = null
-            track_events[trackNum][track_event_count[trackNum]].abs_time = abs_time
+            te = track_events[trackNum][track_event_count[trackNum]]
+            ste = te;
+            te.delta_time = timeTag
+            te.obsolete_event = false
+            te.contents = null
+            te.abs_time = abs_time
             if ((has_loop) && (!didLoop) && (highest_abs_time_by_track[trackNum] > loop_point)) {
                 // Handle Looping
                 if (abs_time == loop_point) {
-                    track_events[trackNum][track_event_count[trackNum]].type = 0xFF
-                    track_events[trackNum][track_event_count[trackNum]].abs_time = abs_time
-                    track_events[trackNum][track_event_count[trackNum]].content_size = 3
-                    track_events[trackNum][track_event_count[trackNum]].contents = [0x2E, 0x00, 0xFF]
-                    track_events[trackNum][track_event_count[trackNum]].delta_time = timeTag
-                    track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
+                    te = track_events[trackNum][track_event_count[trackNum]]
+                    te.type = 0xFF
+                    te.abs_time = abs_time
+                    te.content_size = 3
+                    te.contents = [0x2E, 0x00, 0xFF]
+                    te.delta_time = timeTag
+                    te.obsolete_event = false
                     track_event_count[trackNum] += 1
-                    pre_loop_offset = track_event_count[trackNum]
-                    track_events[trackNum][track_event_count[trackNum]].delta_time = 0
-                    track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
-                    track_events[trackNum][track_event_count[trackNum]].contents = null
-                    track_events[trackNum][track_event_count[trackNum]].abs_time = abs_time
+                    te = track_events[trackNum][track_event_count[trackNum]]
+                    ste = te;
+                    te.delta_time = 0
+                    te.obsolete_event = false
+                    te.contents = null
+                    te.abs_time = abs_time
                     didLoop = true
                 } else if (abs_time > loop_point) {
-                    track_events[trackNum][track_event_count[trackNum]].type = 0xFF
-                    track_events[trackNum][track_event_count[trackNum]].abs_time = loop_point
-                    track_events[trackNum][track_event_count[trackNum]].content_size = 3
-                    track_events[trackNum][track_event_count[trackNum]].contents = [0x2E, 0x00, 0xFF]
+                    te = track_events[trackNum][track_event_count[trackNum]]
+                    te.type = 0xFF
+                    te.abs_time = loop_point
+                    te.content_size = 3
+                    te.contents = [0x2E, 0x00, 0xFF]
                     if (track_event_count[trackNum] > 0) {
-                        track_events[trackNum][track_event_count[trackNum]].delta_time = loop_point - track_events[trackNum][track_event_count[trackNum] - 1].abs_time
+                        te.delta_time = loop_point - track_events[trackNum][track_event_count[trackNum] - 1].abs_time
                     } else {
-                        track_events[trackNum][track_event_count[trackNum]].delta_time = loop_point
+                        te.delta_time = loop_point
                     }
                     track_event_count[trackNum] += 1
-                    pre_loop_offset = track_event_count[trackNum]
-                    track_events[trackNum][track_event_count[trackNum]].delta_time = abs_time - loop_point
-                    track_events[trackNum][track_event_count[trackNum]].obsolete_event = false
-                    track_events[trackNum][track_event_count[trackNum]].contents = null
-                    track_events[trackNum][track_event_count[trackNum]].abs_time = abs_time
+                    te = track_events[trackNum][track_event_count[trackNum]]
+                    ste = te;
+                    te.delta_time = abs_time - loop_point
+                    te.obsolete_event = false
+                    te.contents = null
+                    te.abs_time = abs_time
                     didLoop = true
                 }
             }
@@ -667,34 +656,35 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     if ((has_loop) && (highest_abs_time_by_track[trackNum] > loop_point)) {
                         previous_event = track_events[trackNum][track_event_count[trackNum] - 1]
                         if ((previous_event.type == 0xFF) && (previous_event.content_size > 0) && (previous_event.contents[0] == 0x2E)) {
-                            track_events[trackNum][track_event_count[trackNum] - 1].type = 0xFF
-                            track_events[trackNum][track_event_count[trackNum] - 1].content_size = 1
-                            track_events[trackNum][track_event_count[trackNum] - 1].contents = [0x2F]
+                            previous_event.type = 0xFF
+                            previous_event.content_size = 1
+                            previous_event.contents = [0x2F]
                         } else {
-                            track_events[trackNum][track_event_count[trackNum] + 1].abs_time = highest_abs_time
-                            track_events[trackNum][track_event_count[trackNum] + 1].delta_time = 0
-                            track_events[trackNum][track_event_count[trackNum] + 1].duration_time = track_events[trackNum][pre_loop_offset].duration_time
-                            track_events[trackNum][track_event_count[trackNum] + 1].obsolete_event = track_events[trackNum][pre_loop_offset].obsolete_event
-                            track_events[trackNum][track_event_count[trackNum] + 1].type = 0xFF
-                            track_events[trackNum][track_event_count[trackNum] + 1].content_size = 1
-                            track_events[trackNum][track_event_count[trackNum] + 1].contents = [0x2F]
-                            track_events[trackNum][pre_loop_offset].type = 0xFF
+                            nte = track_events[trackNum][track_event_count[trackNum] + 1]
+                            nte.abs_time = highest_abs_time
+                            nte.delta_time = 0
+                            nte.duration_time = ste.duration_time
+                            nte.obsolete_event = ste.obsolete_event
+                            nte.type = 0xFF
+                            nte.content_size = 1
+                            nte.contents = [0x2F]
+                            ste.type = 0xFF
                             if (highest_abs_time > (previous_event.abs_time + previous_event.duration_time)) {
-                                track_events[trackNum][pre_loop_offset].delta_time = highest_abs_time - (previous_event.abs_time + previous_event.duration_time)
-                                track_events[trackNum][pre_loop_offset].abs_time = highest_abs_time
+                                ste.delta_time = highest_abs_time - (previous_event.abs_time + previous_event.duration_time)
+                                ste.abs_time = highest_abs_time
                             } else {
-                                track_events[trackNum][pre_loop_offset].delta_time = 0
-                                track_events[trackNum][pre_loop_offset].abs_time = previous_event.abs_time
+                                ste.delta_time = 0
+                                ste.abs_time = previous_event.abs_time
                             }
-                            track_events[trackNum][pre_loop_offset].content_size = 7
-                            track_events[trackNum][pre_loop_offset].contents = [0x2D, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00]
-                            track_events[trackNum][pre_loop_offset].obsolete_event = false
+                            ste.content_size = 7
+                            ste.contents = [0x2D, 0xFF, 0xFF, 0x00, 0x00, 0x00, 0x00]
+                            ste.obsolete_event = false
                             track_event_count[trackNum] += 1
                         }
                     } else {
-                        track_events[trackNum][pre_loop_offset].type = 0xFF
-                        track_events[trackNum][pre_loop_offset].content_size = 1
-                        track_events[trackNum][pre_loop_offset].contents = [0x2F]
+                        ste.type = 0xFF
+                        ste.content_size = 1
+                        ste.contents = [0x2F]
                     }
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -703,9 +693,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_length = rmb.altLength
                     length = rmb.returnByte
                 } else if (sub_type == 0x51) { // Set Tempo Event
-                    track_events[trackNum][pre_loop_offset].type = 0xFF
-                    track_events[trackNum][pre_loop_offset].content_size = 4
-                    track_events[trackNum][pre_loop_offset].contents = [0x51, null, null, null]
+                    ste.type = 0xFF
+                    ste.content_size = 4
+                    ste.contents = [0x51, null, null, null]
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -717,21 +707,21 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     repeatPattern = rmb.altPattern
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
-                    track_events[trackNum][pre_loop_offset].contents[1] = rmb.returnByte
+                    ste.contents[1] = rmb.returnByte
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
-                    track_events[trackNum][pre_loop_offset].contents[2] = rmb.returnByte
+                    ste.contents[2] = rmb.returnByte
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
-                    track_events[trackNum][pre_loop_offset].contents[3] = rmb.returnByte
+                    ste.contents[3] = rmb.returnByte
                 } else if ((sub_type < 0x7F) && (![0x51,0x2F].includes(sub_type))) { // Various unused meta events
-                    track_events[trackNum][pre_loop_offset].type = 0xFF
+                    ste.type = 0xFF
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -745,9 +735,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         alt_offset = rmb.altOffset
                         alt_length = rmb.altLength
                     }
-                    track_events[trackNum][pre_loop_offset].obsolete_event = true
+                    ste.obsolete_event = true
                 } else if (sub_type == 0x7F) { // Unused Sequencer Specific Event
-                    track_events[trackNum][pre_loop_offset].type = 0xFF
+                    ste.type = 0xFF
                     gvlb = GetVLBytes(temp, position, original, repeatPattern, alt_offset, alt_length, false)
                     position = gvlb.offset
                     original = gvlb.original
@@ -762,17 +752,17 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         alt_offset = rmb.altOffset
                         alt_length = rmb.altLength
                     }
-                    track_events[trackNum][pre_loop_offset].obsolete_event = true
+                    ste.obsolete_event = true
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0x80, 0x90, status_bit)) {
                 current_event_value = null
                 note_number = null
                 if (status_bit) {
-                    track_events[trackNum][pre_loop_offset].type = previous_event_value
+                    ste.type = previous_event_value
                     note_number = eventVal
                     current_event_value = previous_event_value
                 } else {
-                    track_events[trackNum][pre_loop_offset].type = eventVal
+                    ste.type = eventVal
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -797,10 +787,10 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     }
                     test_backwards -= 1
                 }
-                track_events[trackNum][pre_loop_offset].duration_time = 0
-                track_events[trackNum][pre_loop_offset].content_size = 2
-                track_events[trackNum][pre_loop_offset].contents = [note_number, velocity]
-                track_events[trackNum][pre_loop_offset].obsolete_event = true
+                ste.duration_time = 0
+                ste.content_size = 2
+                ste.contents = [note_number, velocity]
+                ste.obsolete_event = true
 
                 if (!status_bit) {
                     previous_event_value = eventVal
@@ -809,11 +799,11 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 current_event_value = null
                 note_number = null
                 if (status_bit) {
-                    track_events[trackNum][pre_loop_offset].type = previous_event_value
+                    ste.type = previous_event_value
                     note_number = eventVal
                     current_event_value = previous_event_value
                 } else {
-                    track_events[trackNum][pre_loop_offset].type = eventVal
+                    ste.type = eventVal
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -839,10 +829,10 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         }
                         test_backwards -= 1
                     }
-                    track_events[trackNum][pre_loop_offset].duration_time = 0
-                    track_events[trackNum][pre_loop_offset].content_size = 2
-                    track_events[trackNum][pre_loop_offset].contents = [note_number, velocity]
-                    track_events[trackNum][pre_loop_offset].obsolete_event = true
+                    ste.duration_time = 0
+                    ste.content_size = 2
+                    ste.contents = [note_number, velocity]
+                    ste.obsolete_event = true
                 } else {
                     // Check if no note off received, if so, turn it off and restart note
                     test_backwards = track_event_count[trackNum] - 1
@@ -857,9 +847,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         }
                         test_backwards -= 1
                     }
-                    track_events[trackNum][pre_loop_offset].duration_time = 0
-                    track_events[trackNum][pre_loop_offset].content_size = 2
-                    track_events[trackNum][pre_loop_offset].contents = [note_number, velocity]
+                    ste.duration_time = 0
+                    ste.content_size = 2
+                    ste.contents = [note_number, velocity]
                 }
                 if (!status_bit) {
                     previous_event_value = eventVal
@@ -868,7 +858,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 controller_type = null
                 if (status_bit) {
                     controller_type = eventVal
-                    track_events[trackNum][pre_loop_offset].type = previous_event_value
+                    ste.type = previous_event_value
                 } else {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -876,7 +866,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                     controller_type = rmb.returnByte
-                    track_events[trackNum][pre_loop_offset].type = eventVal
+                    ste.type = eventVal
                 }
                 rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                 position = rmb.offset
@@ -884,8 +874,8 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 alt_offset = rmb.altOffset
                 alt_length = rmb.altLength
                 controller_value = rmb.returnByte
-                track_events[trackNum][pre_loop_offset].content_size = 2
-                track_events[trackNum][pre_loop_offset].contents = [controller_type, controller_value]
+                ste.content_size = 2
+                ste.contents = [controller_type, controller_value]
                 if (!status_bit) {
                     previous_event_value = eventVal
                 }
@@ -893,7 +883,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 instrument = null
                 if (status_bit) {
                     instrument = eventVal
-                    track_events[trackNum][pre_loop_offset].type = previous_event_value
+                    ste.type = previous_event_value
                 } else {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -901,24 +891,24 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                     instrument = rmb.returnByte
-                    track_events[trackNum][pre_loop_offset].type = eventVal
+                    ste.type = eventVal
                 }
                 if ((eventVal % 0x10) == 9) { // Drums in GM
                     instrument = instrument
                 } else {
                     instrument = instrument
                 }
-                track_events[trackNum][pre_loop_offset].content_size = 1
-                track_events[trackNum][pre_loop_offset].contents = [instrument]
+                ste.content_size = 1
+                ste.contents = [instrument]
                 if (!status_bit) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xD0, 0xE0, status_bit)) { // Channel aftertouch
-                track_events[trackNum][pre_loop_offset].type = eventVal
+                ste.type = eventVal
                 amount = null
                 if (status_bit) {
                     amount = eventVal
-                    track_events[trackNum][pre_loop_offset].type = previous_event_value
+                    ste.type = previous_event_value
                 } else {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -926,19 +916,19 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                     amount = rmb.returnByte
-                    track_events[trackNum][pre_loop_offset].type = eventVal
+                    ste.type = eventVal
                 }
-                track_events[trackNum][pre_loop_offset].content_size = 1
-                track_events[trackNum][pre_loop_offset].contents = [amount]
+                ste.content_size = 1
+                ste.contents = [amount]
                 if (!status_bit) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xE0, 0xF0, status_bit)) { // Pitch Bend
-                track_events[trackNum][pre_loop_offset].type = eventVal
+                ste.type = eventVal
                 value_lsb = null
                 if (status_bit) {
                     value_lsb = eventVal
-                    track_events[trackNum][pre_loop_offset].type = previous_event_value
+                    ste.type = previous_event_value
                 } else {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -946,7 +936,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                     value_lsb = rmb.returnByte
-                    track_events[trackNum][pre_loop_offset].type = eventVal
+                    ste.type = eventVal
                 }
                 rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                 position = rmb.offset
@@ -954,13 +944,13 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 alt_offset = rmb.altOffset
                 alt_length = rmb.altLength
                 value_msb = rmb.returnByte
-                track_events[trackNum][pre_loop_offset].content_size = 2
-                track_events[trackNum][pre_loop_offset].contents = [value_lsb, value_msb]
+                ste.content_size = 2
+                ste.contents = [value_lsb, value_msb]
                 if (!status_bit) {
                     previous_event_value = eventVal
                 }
             } else if ([0xF0,0xF7].includes(eventVal)) {
-                track_events[trackNum][pre_loop_offset].type = eventVal
+                ste.type = eventVal
                 gvlb = GetVLBytes(temp, position, original, repeatPattern, alt_offset, alt_length, false)
                 position = gvlb.offset
                 original = gvlb.original
@@ -975,10 +965,10 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     alt_offset = rmb.altOffset
                     alt_length = rmb.altLength
                 }
-                track_events[trackNum][pre_loop_offset].obsolete_event = true
+                ste.obsolete_event = true
             } else {
-                if (!unknown_shit) {
-                    unknown_shit = true
+                if (!unknown_var) {
+                    unknown_var = true
                     throw new Error("Invalid Midi Character found")
                 }
             }
@@ -1114,8 +1104,6 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
         }
     }
     if (no_repeaters) {
-        out_array = []
-        output_spot = 0
         in_data = attempt.data
         size_in = in_data.length
         temp.wipe(in_data)
@@ -1137,15 +1125,13 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         end_spot = offset[x+1]
                     }
                 }
-                y = offset[x]
-                while (y < end_spot) {
+                for (y = offset[x]; y < end_spot; y++) {
                     best_match_offset = -1
                     best_match_loop_count = -1
-                    z = output_start
-                    while (z < output_spot) {
+                    for (z = output_start; z < output_spot; z++) {
                         match = 0
                         match_offset = 0
-                        while (true) {
+                        for (match_offset = 0; z + match_offset < output_spot; match_offset++) {
                             temp.seek(y+match_offset)
                             if (out_array[z+match_offset] != temp.readNum(1)) {
                                 break
@@ -1156,28 +1142,21 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                             if ([0xFE, 0xFF].includes(out_array[z+match_offset])) {
                                 break
                             }
-                            if (z + match_offset >= output_spot) {
-                                break
-                            }
                             seeAnFF = false
                             checkFF = y+match_offset
                             while ((checkFF < end_spot) && (checkFF < (y+match_offset + 5))) {
                                 temp.seek(checkFF)
-                                if (temp.readNum(1) == 0xFF) {
-                                    seeAnFF = true
-                                }
+                                seeAnFF |= (temp.readNum(1) == 0xFF);
                                 checkFF += 1
                             }
                             if (seeAnFF) {
                                 break
                             }
-                            match_offset += 1
                         }
                         if ((match_offset > best_match_loop_count) && (match_offset > 6)) {
                             best_match_loop_count = match_offset
                             best_match_offset = z
                         }
-                        z += 1
                     }
                     loop_check = Math.floor((y - offset[x]) / 2)
                     if (loop_check > 0xFD) {
@@ -1194,12 +1173,11 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         out_array[output_spot + 1] = dist_back & 0xFF
                         out_array[output_spot + 2] = best_match_loop_count
                         output_spot += 3
-                        y += best_match_loop_count
+                        y += (best_match_loop_count - 1)
                     } else {
                         temp.seek(y)
                         out_array[output_spot] = temp.readNum(1)
                         output_spot += 1
-                        y += 1
                     }
                 }
             } else {
@@ -1218,23 +1196,20 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                         end_spot = offset_new[x+1]
                     }
                 }
-                y = offset_new[x]
                 found_start = false
                 start_pos = 0
-                while (y < end_spot) {
+                for (y = offset_new[x]; y < end_spot; y++) {
                     if ((out_array[y] == 0xFF) && (out_array[y+1] == 0x2E) && (out_array[y+2] == 0) && (out_array[y+3] == 0xFF)) {
                         found_start = true
                         start_pos = y + 4
-                        y += 4
+                        y += 3
                     } else if ((out_array[y] == 0xFF) && (out_array[y+1] == 0x2d) && (out_array[y+2] == 0xFF) && (out_array[y+3] == 0xFF)) {
                         if (found_start) {
                             distance = (y + 8) - start_pos
                             WriteLongToBuffer(out_array, y+4, distance)
                             found_start = false
                         }
-                        y += 8
-                    } else {
-                        y += 1
+                        y += 7
                     }
                 }
             }
