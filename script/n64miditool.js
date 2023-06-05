@@ -755,13 +755,10 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     ste.obsolete_event = true
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0x80, 0x90, status_bit)) {
-                current_event_value = null
-                note_number = null
-                if (status_bit) {
-                    ste.type = previous_event_value
-                    note_number = eventVal
-                    current_event_value = previous_event_value
-                } else {
+                current_event_value = previous_event_value
+                note_number = eventVal
+                ste.type = previous_event_value
+                if (!status_bit) {
                     ste.type = eventVal
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -777,32 +774,27 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 alt_offset = rmb.altOffset
                 alt_length = rmb.altLength
                 velocity = rmb.returnByte
-                test_backwards = track_event_count[trackNum] - 1
-                while (test_backwards >= 0) {
-                    if ((track_events[trackNum][test_backwards].type == 0x90 + (current_event_value % 0x10)) && (!track_events[trackNum][test_backwards].obsolete_event)) {
-                        if (track_events[trackNum][test_backwards].contents[0] == note_number) {
-                            track_events[trackNum][test_backwards].duration_time = abs_time - track_events[trackNum][test_backwards].abs_time
+                for (test_backwards = track_event_count[trackNum] - 1; test_backwards >= 0; test_backwards--) {
+                    tbte = track_events[trackNum][test_backwards];
+                    if ((tbte.type == 0x90 + (current_event_value % 0x10)) && (!tbte.obsolete_event)) {
+                        if (tbte.contents[0] == note_number) {
+                            tbte.duration_time = abs_time - tbte.abs_time
                             break
                         }
                     }
-                    test_backwards -= 1
                 }
                 ste.duration_time = 0
                 ste.content_size = 2
                 ste.contents = [note_number, velocity]
                 ste.obsolete_event = true
-
                 if (!status_bit) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0x90, 0xA0, status_bit)) {
-                current_event_value = null
-                note_number = null
-                if (status_bit) {
-                    ste.type = previous_event_value
-                    note_number = eventVal
-                    current_event_value = previous_event_value
-                } else {
+                current_event_value = previous_event_value
+                note_number = eventVal
+                ste.type = previous_event_value
+                if (!status_bit) {
                     ste.type = eventVal
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
@@ -819,15 +811,14 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 alt_length = rmb.altLength
                 velocity = rmb.returnByte
                 if (velocity == 0) { // simulate note off
-                    test_backwards = track_event_count[trackNum] - 1
-                    while (test_backwards >= 0) {
-                        if (track_events[trackNum][test_backwards].type == current_event_value && (!track_events[trackNum][test_backwards].obsolete_event)) {
-                            if (track_events[trackNum][test_backwards].contents[0] == note_number) {
-                                track_events[trackNum][test_backwards].duration_time = abs_time - track_events[trackNum][test_backwards].abs_time
+                    for (test_backwards = track_event_count[trackNum] - 1; test_backwards >= 0; test_backwards--) {
+                        tbte = track_events[trackNum][test_backwards];
+                        if (tbte.type == current_event_value && (!tbte.obsolete_event)) {
+                            if (tbte.contents[0] == note_number) {
+                                tbte.duration_time = abs_time - tbte.abs_time
                                 break
                             }
                         }
-                        test_backwards -= 1
                     }
                     ste.duration_time = 0
                     ste.content_size = 2
@@ -835,17 +826,16 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     ste.obsolete_event = true
                 } else {
                     // Check if no note off received, if so, turn it off and restart note
-                    test_backwards = track_event_count[trackNum] - 1
-                    while (test_backwards >= 0) {
-                        if (track_events[trackNum][test_backwards].type == current_event_value && (!track_events[trackNum][test_backwards].obsolete_event)) {
-                            if (track_events[trackNum][test_backwards].contents[0] == note_number) {
-                                if (track_events[trackNum][test_backwards].duration_time == 0) { // Means unfinished note
-                                    track_events[trackNum][test_backwards].duration_time = abs_time - track_events[trackNum][test_backwards].abs_time
+                    for (test_backwards = track_event_count[trackNum] - 1; test_backwards >= 0; test_backwards--) {
+                        tbte = track_events[trackNum][test_backwards]
+                        if (tbte.type == current_event_value && (!tbte.obsolete_event)) {
+                            if (tbte.contents[0] == note_number) {
+                                if (tbte.duration_time == 0) { // Means unfinished note
+                                    tbte.duration_time = abs_time - tbte.abs_time
                                 }
                                 break
                             }
                         }
-                        test_backwards -= 1
                     }
                     ste.duration_time = 0
                     ste.content_size = 2
@@ -855,11 +845,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xB0, 0xC0, status_bit)) { // Controller change
-                controller_type = null
-                if (status_bit) {
-                    controller_type = eventVal
-                    ste.type = previous_event_value
-                } else {
+                controller_type = eventVal
+                ste.type = previous_event_value
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -880,11 +868,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xC0, 0xD0, status_bit)) { // Change instrument
-                instrument = null
-                if (status_bit) {
-                    instrument = eventVal
-                    ste.type = previous_event_value
-                } else {
+                instrument = eventVal
+                ste.type = previous_event_value
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -904,12 +890,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xD0, 0xE0, status_bit)) { // Channel aftertouch
-                ste.type = eventVal
-                amount = null
-                if (status_bit) {
-                    amount = eventVal
-                    ste.type = previous_event_value
-                } else {
+                ste.type = previous_event_value
+                amount = eventVal
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
@@ -924,12 +907,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                     previous_event_value = eventVal
                 }
             } else if (eventInBounds(eventVal, previous_event_value, 0xE0, 0xF0, status_bit)) { // Pitch Bend
-                ste.type = eventVal
-                value_lsb = null
-                if (status_bit) {
-                    value_lsb = eventVal
-                    ste.type = previous_event_value
-                } else {
+                ste.type = previous_event_value
+                value_lsb = eventVal
+                if (!status_bit) {
                     rmb = ReadMidiByte(temp, position, repeatPattern, alt_offset, alt_length, false)
                     position = rmb.offset
                     repeatPattern = rmb.altPattern
