@@ -284,8 +284,7 @@ function getTrackEvent(trackNum, eventIndex) {
     return track_events[trackNum][eventIndex];
 }
 
-function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
-    unused_storage = null
+function MidiToGEFormat(in_file, has_loop, loop_point, no_repeaters) {
     attempt = new BufferFile([])
     numberTracks = 0
     track_events = []

@@ -296,7 +296,7 @@
                 console.log("Loop Point:",loop_point)
                 console.log("Disable Repeaters:",no_repeaters)
                 console.log("Output File:",output_file)
-                output_bin_file = MidiToGEFormat(current_midi_file, [], loop, loop_point, no_repeaters)
+                output_bin_file = MidiToGEFormat(current_midi_file, loop, loop_point, no_repeaters)
                 data_len = output_bin_file.length
                 cap = 0x10
                 if ((data_len % cap) != 0) {
