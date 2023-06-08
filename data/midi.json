@@ -246,15 +246,15 @@
        "game":"not_applicable",
        "custom":true
     },
-    "Goldeneye Bunker 1.bin":{
+    "Bunker 1.bin":{
        "folder":"bgm",
        "game":"goldeneye"
     },
-    "Goldeneye Bunker 2.bin":{
+    "Bunker 2.bin":{
        "folder":"bgm",
        "game":"goldeneye"
     },
-    "Goldeneye Bunker Lobby.bin":{
+    "Bunker (DK64 Lobby Style).bin":{
        "folder":"bgm",
        "game":"goldeneye",
        "custom":true
