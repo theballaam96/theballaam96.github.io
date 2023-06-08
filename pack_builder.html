@@ -19,10 +19,12 @@
         <style>
             .game-header {
                 background-color: rgba(0,0,0,0.8);
-                padding: 20px 5px;
+                border: 2px solid white;
+                border-radius: 5px;
+                padding: 5px;
                 cursor: pointer;
-                border-top: 2px solid white;
                 transition: 0.5s ease-in-out;
+                margin: 5px;
             }
             .game-header:hover {
                 background-color: rgba(255, 255, 255, 0.2);
@@ -33,10 +35,16 @@
                 padding-left: 10px;
                 border-bottom: 1px solid white;
             }
+            .panel-sep {
+                display: flex;
+            }
+            .panel-sep-anti {
+                display: block;
+            }
             .game-handler {
                 flex: 1;
-                min-width: 33%;
-                max-width: 33%;
+                min-width: 50%;
+                max-width: 50%;
             }
             .popup_background {
                 background-color: rgba(0,0,0,0.5);
@@ -114,27 +122,49 @@
             .name_meta_data {
                 padding-left: 5px;
             }
+            #song_selected_count {
+                transition: 0.5s ease-in-out;
+                width: fit-content;
+            }
+            .errored {
+                background-color: #b00000;
+            }
+            #button-panel {
+                margin-top: 10px;
+            }
             @media only screen and (max-width: 1500px) {
                 .popup_prompt {
                     width: 70%;
                 }
             }
-            @media only screen and (max-width: 1000px) {
-                .game-handler {
-                    flex: 1;
-                    min-width: 50%;
-                    max-width: 50%;
-                }
-                .popup_prompt {
-                    width: 90%;
-                }
-            }
-            @media only screen and (max-width: 750px) {
+            @media only screen and (max-width: 1200px) {
                 .game-handler {
                     flex: 1;
                     min-width: 100%;
                     max-width: 100%;
                 }
+            }
+            button {
+                width: calc(100% - 10px);
+                margin: 5px;
+            }
+            @media only screen and (max-width: 1000px) {
+                .popup_prompt {
+                    width: 90%;
+                }
+            }
+            @media only screen and (max-width: 800px) {
+                .panel-sep {
+                    display: block;
+                }
+                .panel-sep-anti {
+                    display: flex;
+                }
+                .sep-left {
+                    border-right: none;
+                }
+            }
+            @media only screen and (max-width: 750px) {
                 .midi-checkbox {
                     min-width: calc(50% - 10px - 2px - 10px);
                     max-width: calc(50% - 10px - 2px - 10px);
@@ -177,13 +207,19 @@
         </div>
         <div class="flexsplitter">
             <div class="homebox" style="color:white">
-                <div class="flexsplitter">
-                    <button style="flex:1" onclick="buildPack()">Build Pack</button>
-                    <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
-                    <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All</button>
+                <div class="panel-sep">
+                    <div class="sep sep-left">
+                        <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
+                        <div class="panel-sep-anti" id="button-panel" style="flex:2">
+                            <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
+                            <button style="flex:1" onclick="buildPack()">Build Pack</button>
+                        </div>
+                        <div id="song_selected_count">0 songs selected</div>
+                    </div>
+                    <div class="sep" style="flex:2">
+                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap"></div>
+                    </div>
                 </div>
-                <div id="song_selected_count">0 songs selected</div>
-                <div id="song_list" class="flexsplitter" style="flex-wrap:wrap"></div>
             </div>
         </div>
         <div class="popup_background hide" id="popup">
@@ -490,6 +526,10 @@
 
             async function buildPack() {
                 if (getSongSelectedCount() < 1) {
+                    document.getElementById("song_selected_count").classList.add("errored");
+                    setTimeout(() => {
+                        document.getElementById("song_selected_count").classList.remove("errored");
+                    }, 2000);
                     return;
                 }
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
@@ -577,9 +617,9 @@
                         all_checked = false;
                     }
                 }
-                text = "Select All";
+                text = "Select All Songs";
                 if (all_checked) {
-                    text = "Deselect All";
+                    text = "Deselect All Songs";
                 }
                 document.getElementById("select-all-songs").innerText = text;
                 updateCount();
