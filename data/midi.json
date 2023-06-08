@@ -1,331 +1,490 @@
 {
     "Among us - Trap Remix.bin":{
        "folder":"bgm",
-       "game":"amongus"
+       "game":"amongus",
+       "composer":"Leonz",
+       "converter":"GlitchGlider"
     },
     "Ancient Lake.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Banjos House.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Furnace Fun.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Grunty Fight.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Gruntys Lair.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Inside Tickers Tower.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Mumbos Hut.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Mumbos Mountain.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Pause menu.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Spiral Mountain.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Treasure Trove Cove.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
-    "Treasure Trove Cove - Inside Nipper.bin":{
+    "Inside Nipper.bin":{
        "folder":"bgm",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Bismuth"
     },
     "Blue Resort.bin":{
        "folder":"bgm",
-       "game":"bomberman64"
+       "game":"bomberman64",
+       "composer":"Akifumi Tada",
+       "converter":"AaronDobbe"
     },
     "Boss challenge.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "In the final.bin":{
        "folder":"bgm",
-       "game":"bowsers_inside_story"
+       "game":"bowsers_inside_story",
+       "composer":"Yoko Shimomura",
+       "converter":"Wolfeni"
     },
     "Banjo House Blues.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Boggys Igloo.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Bottles House.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Cauldron Keep Interior.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Cauldron Keep.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "CCL Canary Mary.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Chilli Fights.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Clinkers Cavern.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Credits Roll.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Fun n Games.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Game Select.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Grunty Industries (Exterior).bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Grunty Industries (Interior).bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Hag 1.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Happy Jinjo House.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Heggys Shed.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Isle o Hags.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Jiggywiggy Challenge.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Jiggywiggy Temple.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Jinjo Village.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Lord Woo Fak Fak.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Mayahem Temple.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Mingy Jongo.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Mr Patch.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Mumbos Skull.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Targitzans Temple.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Targitzan.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Terry.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Tower of Tragedy.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Weldar.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Witchyworld.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Zombie Jingaling.bin":{
        "folder":"bgm",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Crash Dash.bin":{
        "folder":"bgm",
-       "game":"crash2"
+       "game":"crash2",
+       "composer":"Josh Mancell",
+       "converter":"GlitchGlider"
     },
     "Snow Go.bin":{
        "folder":"bgm",
-       "game":"crash2"
+       "game":"crash2",
+       "composer":"Josh Mancell",
+       "converter":"GlitchGlider"
     },
     "Deku Palace.bin":{
        "folder":"bgm",
-       "game":"majora"
+       "game":"majora",
+       "composer":"Koji Kondo",
+       "converter":"Wolfeni"
     },
     "Unatco.bin":{
        "folder":"bgm",
-       "game":"deus_ex"
+       "game":"deus_ex",
+       "composer":"Michiel van den Bos",
+       "converter":"GlitchGlider"
     },
     "Stickerbush Symphony.bin":{
        "folder":"bgm",
-       "game":"dkc"
+       "game":"dkc",
+       "composer":"David Wise",
+       "converter":"Wolfeni"
     },
     "Rickety Rails.bin":{
        "folder":"bgm",
-       "game":"dkc_returns"
+       "game":"dkc_returns",
+       "composer":"Kenji Yamamoto",
+       "converter":"Bismuth"
     },
     "Character select (DKR).bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "alt_name": "Character select",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Menu (DKR).bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "alt_name": "Menu",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Wizpig.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Ballaam"
     },
     "Forested Temple.bin":{
        "folder":"bgm",
-       "game":"final_fantasy_7"
+       "game":"final_fantasy_7",
+       "composer":"Nobuo Uematsu",
+       "converter":"OnlySpaghettiCode"
     },
     "Funky Kong Anthem.bin":{
        "folder":"bgm",
        "game":"not_applicable",
-       "custom":true
+       "custom":true,
+       "composer":"GlitchGlider"
     },
     "Lost Legends.bin":{
        "folder":"bgm",
        "game":"not_applicable",
-       "custom":true
+       "custom":true,
+       "composer":"GlitchGlider"
     },
     "Porrel.bin":{
        "folder":"bgm",
        "game":"not_applicable",
-       "custom":true
+       "custom":true,
+       "composer":"GlitchGlider"
     },
     "Bunker 1.bin":{
        "folder":"bgm",
-       "game":"goldeneye"
+       "game":"goldeneye",
+       "composer":"Graeme Norgate",
+       "converter":"Bismuth"
     },
     "Bunker 2.bin":{
        "folder":"bgm",
-       "game":"goldeneye"
+       "game":"goldeneye",
+       "composer":"Graeme Norgate",
+       "converter":"Bismuth"
     },
     "Bunker (DK64 Lobby Style).bin":{
        "folder":"bgm",
        "game":"goldeneye",
-       "custom":true
+       "custom":true,
+       "composer":"Graeme Norgate",
+       "converter":"Bismuth"
     },
     "Greenwood village.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Haunted Woods.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Inside the deku tree.bin":{
        "folder":"bgm",
-       "game":"ocarina"
+       "game":"ocarina",
+       "composer":"Koji Kondo",
+       "converter":"Wolfeni, GlitchGlider"
     },
     "Jungle Falls.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Cavern of Rememberance.bin":{
        "folder":"bgm",
-       "game":"kh2"
+       "game":"kh2",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode"
     },
     "Laytons Theme.bin":{
        "folder":"bgm",
-       "game":"layton_curious"
+       "game":"layton_curious",
+       "composer":"Tomohito Nishiura",
+       "converter":"Ballaam"
     },
     "Tower of Spirits Staircase.bin":{
        "folder":"bgm",
-       "game":"spirit_tracks"
+       "game":"spirit_tracks",
+       "composer":"Koji Kondo",
+       "converter":"GlitchGlider"
     },
     "Full of Danger.bin":{
        "folder":"bgm",
-       "game":"mario_party_1"
+       "game":"mario_party_1",
+       "composer":"Yasunori Mitsuda",
+       "converter":"Bismuth"
     },
     "Lets Go Lightly.bin":{
        "folder":"bgm",
-       "game":"mario_party_1"
+       "game":"mario_party_1",
+       "composer":"Yasunori Mitsuda",
+       "converter":"Bismuth"
     },
     "Final Hours.bin":{
        "folder":"bgm",
-       "game":"majora"
+       "game":"majora",
+       "composer":"Koji Kondo",
+       "converter":"Ballaam"
     },
     "Great Bay Temple.bin":{
        "folder":"bgm",
-       "game":"majora"
+       "game":"majora",
+       "composer":"Koji Kondo",
+       "converter":"Wolfeni"
     },
     "Termina Field.bin":{
        "folder":"bgm",
-       "game":"majora"
+       "game":"majora",
+       "composer":"Koji Kondo",
+       "converter":"OnlySpaghettiCode"
     },
     "Stone Tower Temple.bin":{
        "folder":"bgm",
-       "game":"majora"
+       "game":"majora",
+       "composer":"Koji Kondo",
+       "converter":"ZeldaBoy14, Bismuth"
     },
     "Gerudo Valley.bin":{
        "folder":"bgm",
-       "game":"ocarina"
+       "game":"ocarina",
+       "composer":"Koji Kondo",
+       "converter":"OnlySpaghettiCode"
     },
     "Pirate Lagoon.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Cold Spaghetti.bin":{
        "folder":"bgm",
-       "game":"pizza_tower"
+       "game":"pizza_tower",
+       "composer":"Mr. Sauceman",
+       "converter":"AaronDobbe"
     },
     "Pokemon Trainer Battle.bin":{
        "folder":"bgm",
-       "game":"pokemon_red"
+       "game":"pokemon_red_yellow_blue"
     },
     "Shopkeepers Revenge.bin":{
        "folder":"bgm",
@@ -338,7 +497,8 @@
     },
     "File Select (SM64).bin":{
        "folder":"bgm",
-       "game":"mario_64"
+       "game":"mario_64",
+       "alt_name": "File Select"
     },
     "Inside the Castle Walls.bin":{
        "folder":"bgm",
@@ -354,7 +514,8 @@
     },
     "Main Theme (Subway Surfers).bin":{
        "folder":"bgm",
-       "game":"subway_surfers"
+       "game":"subway_surfers",
+       "alt_name": "Main Theme"
     },
     "Dragon Roost Island.bin":{
        "folder":"bgm",
@@ -374,7 +535,8 @@
     },
     "Success (Banjo Kazooie).bin":{
        "folder":"events",
-       "game":"bk"
+       "game":"bk",
+       "alt_name": "Success"
     },
     "Failure.bin":{
        "folder":"events",
@@ -398,7 +560,8 @@
     },
     "Success (Banjo Tooie).bin":{
        "folder":"majoritems",
-       "game":"bt"
+       "game":"bt",
+       "alt_name": "Success"
     },
     "Im Loving It.bin":{
        "folder":"majoritems",
@@ -443,5 +606,29 @@
     "PS1 Bios Startup.bin":{
        "folder":"minoritems",
        "game":"not_applicable"
+    },
+    "Winds Across the Plains.bin":{
+       "folder":"bgm",
+       "game":"fire_emblem_blazing_blade",
+       "composer":"Yuka Tsujiyoko",
+       "converter":"AaronDobbe"
+    },
+    "Scorch n Torch.bin":{
+       "folder":"bgm",
+       "game":"dkc_tropical",
+       "composer":"David Wise",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Forest Stronghold.bin":{
+       "folder":"bgm",
+       "game":"un_squadron",
+       "composer":"Takashi Tateishi",
+       "converter":"Mr_Rippe"
+    },
+    "Midna's Lament.bin":{
+       "folder":"bgm",
+       "game":"twilight_princess",
+       "composer":"Toru Minegishi",
+       "converter":"OnlySpaghettiCode"
     }
  }
