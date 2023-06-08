@@ -214,7 +214,7 @@
                         <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
                             <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
-                            <button style="flex:1" class="hide" onclick="uploadPack()">Upload Pack</button>
+                            <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
                             <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
                             <button style="flex:1" onclick="buildPack()">Build Pack</button>
                         </div>
@@ -342,6 +342,11 @@
             }
             let midi_data_copy = null;
             let current_game = null;
+            let uploaded_pack_data = {};
+
+            function last(array) {
+                return array[array.length - 1];
+            }
 
             async function getMidiData() {
                 await fetch("./data/midi.json")
@@ -411,8 +416,8 @@
                                                 <div class='name_data'>
                                                     <strong>${displayed_song_name.replace('.bin','')}</strong>
                                                     <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                        ${composer != '' ? `<div title='Composer of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
-                                                        ${converter != '' ? `<div title='Converter into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
+                                                        ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
+                                                        ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
                                                     </div>
                                                 </div>
                                                 <img class="tick" src='./assets/tick.svg'>
@@ -529,7 +534,7 @@
             }
 
             async function buildPack() {
-                if (getSongSelectedCount() < 1) {
+                if ((getSongSelectedCount() < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
                     document.getElementById("song_selected_count").classList.add("errored");
                     setTimeout(() => {
                         document.getElementById("song_selected_count").classList.remove("errored");
@@ -537,7 +542,7 @@
                     return;
                 }
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
-                let folder_data = {};
+                let folder_data = {...uploaded_pack_data}
                 for (let c = 0; c < checkboxes.length; c++) {
                     if (checkboxes[c].getAttribute("ticked") == "true") {
                         const data = idToSongInfo(checkboxes[c].getAttribute("song-id"));
@@ -719,15 +724,107 @@
                 fr.readAsArrayBuffer(document.getElementById("uploaded_pack").files[0]);
             })
 
+            function waitFor(conditionFunction) {
+                const poll = resolve => {
+                    if(conditionFunction()) resolve();
+                    else setTimeout(_ => poll(resolve), 400);
+                }
+                return new Promise(poll);
+            }
+
+            function checkArrayMatch(array_a, array_b) {
+                if (array_a.length != array_b.length) {
+                    return false; // Mismatching array size
+                }
+                for (let a = 0; a < array_a.length; a++) {
+                    if (array_a[a] != array_b[a]) {
+                        return false; // Byte mismatch
+                    }
+                }
+                return true;
+            }
+
             async function handlePack(data) {
-                const zip = new JSZip();
-                zip.loadAsync(data).then((zip) => {
-                    for (let [filename, file] of Object.entries(zip.files)) {
-                        if (!file.dir) {
-                            console.log(filename, file)
+                // Load all data
+                let site_data = {};
+                uploaded_pack_data = {};
+                const song_list = Object.keys(midi_data_copy)
+                let req = new Array(song_list.length).fill(null);
+                let loaded_count = 0;
+                for (let s = 0; s < song_list.length; s++) {
+                    song = song_list[s];
+                    const folder = midi_data_copy[song].folder;
+                    req[s] = new XMLHttpRequest();
+                    req[s].open("GET", `./assets/midis/${song}`, true);
+                    req[s].responseType = "arraybuffer";
+                    req[s].onload = (event) => {
+                        const arrayBuffer = req[s].response; // Note: not req.responseText
+                        if (arrayBuffer) {
+                            const byteArray = new Uint8Array(arrayBuffer);
+                            const song = song_list[s];
+                            loaded_count++;
+                            site_data[song] = {
+                                "group": midi_data_copy[song].folder,
+                                "data": Array.from(byteArray),
+                            }
+                        }
+                    };
+                    req[s].send(null);
+                }
+                const new_zip = new JSZip();
+                let site_song_data = {};
+                let compressed_data = {}
+                const zip_data = await new_zip.loadAsync(data);
+                for (let [filename_0, file_0] of Object.entries(zip_data.files)) {
+                    if (!file_0.dir) {
+                        const fileData = await zip_data.files[filename_0].async("Uint8Array");
+                        const file_path_array = filename_0.split("/")
+                        const file_group = file_path_array[file_path_array.length - 2];
+                        compressed_data[filename_0] = {
+                            "group": file_group,
+                            "data": Array.from(fileData)
+                        };
+                    }
+                }
+                await waitFor(_ => loaded_count >= song_list.length);
+                // Parse data for matching arrays
+                let matching_songs = [];
+                Object.keys(compressed_data).forEach(song_a => {
+                    const found_song = Object.keys(site_data).find(item => {
+                        return checkArrayMatch(compressed_data[song_a].data, site_data[item].data)
+                    })
+                    if (found_song) {
+                        if (!matching_songs.includes(found_song)) {
+                            matching_songs.push(found_song)
+                        }
+                    } else {
+                        // Song isn't on site. TODO: Handle persisting these songs
+                        const item_name = last(song_a.split("/"));
+                        const item_group = compressed_data[song_a].group;
+                        const item_data = compressed_data[song_a].data;
+                        if (!Object.keys(uploaded_pack_data).includes(item_group)) {
+                            uploaded_pack_data[item_group] = []
+                        }
+                        uploaded_pack_data[item_group].push({
+                            "song": item_name,
+                            "data": new Blob([new Uint8Array(item_data)])
+                        })
+                    }
+                })
+                const checkboxes = document.getElementsByClassName("midi-checkbox")
+                for (let c = 0; c < checkboxes.length; c++) {
+                    checkboxes[c].setAttribute("ticked", "false");
+                }
+                matching_songs.forEach(song => {
+                    const game = midi_data_copy[song].game;
+                    const id = convertSongName(game, song);
+                    for (c = 0; c < checkboxes.length; c++) {
+                        if (checkboxes[c].getAttribute("song-id") == id) {
+                            checkboxes[c].setAttribute("ticked", "true");
                         }
                     }
                 })
+                updateMaster();
             }
 
             function uploadPack() {

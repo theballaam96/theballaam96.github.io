@@ -683,7 +683,7 @@
        "composer":"Takashi Tateishi",
        "converter":"Mr_Rippe"
     },
-    "Midna's Lament.bin":{
+    "Midnas Lament.bin":{
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi",
@@ -694,5 +694,11 @@
        "game":"not_applicable",
        "composer":"Toru Minegishi",
        "converter":"UmedMuzl"
+    },
+    "Faron Woods.bin":{
+       "folder":"bgm",
+       "game":"twilight_princess",
+       "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
+       "converter":"OnlySpaghettiCode"
     }
  }
