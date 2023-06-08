@@ -190,6 +190,8 @@
             }
             #song_selected_count {
                 padding: 5px;
+                margin-left: auto;
+                margin-right: auto;
             }
         </style>
     </head>
@@ -212,6 +214,8 @@
                         <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
                             <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
+                            <button style="flex:1" class="hide" onclick="uploadPack()">Upload Pack</button>
+                            <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
                             <button style="flex:1" onclick="buildPack()">Build Pack</button>
                         </div>
                         <div id="song_selected_count">0 songs selected</div>
@@ -269,8 +273,8 @@
                 "deus_ex": {
                     "name": "Deus Ex",
                 },
-                "dkc": {
-                    "name": "Donkey Kong Country",
+                "dkc2": {
+                    "name": "Donkey Kong Country 2: Diddy's Kong Quest",
                 },
                 "dkc_returns": {
                     "name": "Donkey Kong Country Returns",
@@ -705,6 +709,29 @@
                     checkboxes[c].setAttribute("ticked",state);
                 }
                 updateMaster();
+            }
+
+            document.getElementById("uploaded_pack").addEventListener("change", function(e) {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    handlePack(fr.result);
+                };
+                fr.readAsArrayBuffer(document.getElementById("uploaded_pack").files[0]);
+            })
+
+            async function handlePack(data) {
+                const zip = new JSZip();
+                zip.loadAsync(data).then((zip) => {
+                    for (let [filename, file] of Object.entries(zip.files)) {
+                        if (!file.dir) {
+                            console.log(filename, file)
+                        }
+                    }
+                })
+            }
+
+            function uploadPack() {
+                document.getElementById("uploaded_pack").click();
             }
         </script>
     </body>
