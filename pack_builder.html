@@ -1,0 +1,325 @@
+<html>
+    <head>
+        <title>DK64 Randomizer Cosmetic Pack Builder</title>
+        <link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/home.css">
+        <link rel="stylesheet" href="style/midi-converter.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="" />
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+        <style>
+            .game-header {
+                background-color: rgba(0,0,0,0.8);
+                padding: 20px 5px;
+                cursor: pointer;
+                border-bottom: 2px solid white;
+            }
+            .game-songs {
+                background-color: rgba(0,0,0,0.2);
+                padding-bottom: 10px;
+                padding-left: 10px;
+                border-bottom: 1px solid white;
+            }
+            .game-handler {
+                flex: 1;
+                min-width: 33%;
+            }
+        </style>
+    </head>
+    <body>
+        <nav id="navigation"></nav>
+		<nav id="navigation"></nav>
+        <div class="v_spacer">
+
+		</div>
+        <div class="flexsplitter">
+            <div class="homebox">
+                <div class="header master_header">
+                    <strong>DK64 Randomizer Pack Builder</strong>
+                </div>
+            </div>
+        </div>
+        <div class="flexsplitter">
+            <div class="homebox" style="color:white">
+                <button onclick="buildPack()">Build Pack</button>
+                <div id="song_list" class="flexsplitter" style="flex-wrap:wrap"></div>
+            </div>
+        </div>
+        <script src="script/nav.js"></script>
+        <script>
+            /*
+                TODO:
+                - Put "Other" at the end
+            */
+            const game_data = {
+                "amongus": {
+                    "name": "Among Us",
+                },
+                "dkr": {
+                    "name": "Diddy Kong Racing",
+                },
+                "bk": {
+                    "name": "Banjo-Kazooie",
+                },
+                "bomberman64": {
+                    "name": "Bomberman 64",
+                },
+                "bowsers_inside_story": {
+                    "name": "Mario & Luigi: Bowser's Inside Story",
+                },
+                "bt": {
+                    "name": "Banjo-Tooie",
+                },
+                "crash2": {
+                    "name": "Crash Bandicoot 2: Cortex Strikes Back",
+                },
+                "majora": {
+                    "name": "The Legend of Zelda: Majora's Mask",
+                },
+                "deus_ex": {
+                    "name": "Deus Ex",
+                },
+                "dkc": {
+                    "name": "Donkey Kong Country",
+                },
+                "dkc_returns": {
+                    "name": "Donkey Kong Country Returns",
+                },
+                "ducktales": {
+                    "name": "Duck Tales",
+                },
+                "final_fantasy_7": {
+                    "name": "Final Fantasy 7",
+                },
+                "not_applicable": {
+                    "name": "Other",
+                },
+                "goldeneye": {
+                    "name": "Goldeneye 007",
+                },
+                "ocarina": {
+                    "name": "The Legend of Zelda: Ocarina of Time",
+                },
+                "kh2": {
+                    "name": "Kingdom Hearts 2",
+                },
+                "layton_curious": {
+                    "name": "Professor Layton and the Curious Village",
+                },
+                "spirit_tracks": {
+                    "name": "The Legend of Zelda: Spirit Tracks",
+                },
+                "mario_party_1": {
+                    "name": "Mario Party 1",
+                },
+                "pizza_tower": {
+                    "name": "Pizza Tower",
+                },
+                "pokemon_red": {
+                    "name": "Pokemon Red",
+                },
+                "mario_64": {
+                    "name": "Super Mario 64",
+                },
+                "skyward_sword": {
+                    "name": "The Legend of Zelda: Skyward Sword",
+                },
+                "subway_surfers": {
+                    "name": "Subway Surfers",
+                },
+                "wind_waker": {
+                    "name": "The Legend of Zelda: The Wind Waker",
+                },
+                "yakuza": {
+                    "name": "Yakuza 0",
+                },
+                "pokemon_snap": {
+                    "name": "Pokemon Snap",
+                }
+            }
+            let midi_data_copy = null;
+
+            async function getMidiData() {
+                await fetch("./data/midi.json")
+                    .then(response => response.json())
+                    .then(json => {
+                        midi_data_copy = json;
+                        const hook = document.getElementById("song_list")
+                        let html = ""
+                        let songs_by_game = {}
+                        Object.keys(json).forEach(key => {
+                            // html += `<div>${key}</div>`
+                            const game = game_data[json[key].game].name;
+                            if (!Object.keys(songs_by_game).includes(game)) {
+                                songs_by_game[game] = [key]
+                            } else {
+                                songs_by_game[game].push(key)
+                            }
+                        })
+                        songs_by_game = Object.keys(songs_by_game).sort().reduce(
+                            (obj, key) => { 
+                                obj[key] = songs_by_game[key]; 
+                                return obj;
+                            }, {}
+                        );
+                        Object.keys(songs_by_game).forEach(game_pretty => {
+                            let game = null;
+                            Object.keys(game_data).forEach(item => {
+                                if (game_data[item].name == game_pretty) {
+                                    game = item;
+                                }
+                            })
+                            console.log(game_pretty, game)
+                            if (game != null) {
+                                const song_list = songs_by_game[game_pretty]
+                                const song_html = song_list.map(song => `<div><input type='checkbox' class='midi-checkbox' id='${convertSongName(game, song)}' onclick='updateMaster(\"${game}\")' game='${game}'/>${song}</div>`).join("")
+                                const game_name = game_data[game].name;
+                                html += `<div class='game-handler'>
+                                    <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>${game_name}</div>
+                                    <div class='game-songs hide' game='${game}'>
+                                        <button class='game-select-master' game='${game}' onclick='selectMaster(\"${game}\")'>Select All</button>
+                                        ${song_html}
+                                    </div>
+                                </div>`
+                            }
+                        })
+                        hook.innerHTML = html;
+                    })
+            }
+            getMidiData();
+
+            function convertSongName(game, song) {
+                return `${game}|${song.replaceAll(" ", "_").replaceAll(".bin","")}`
+            }
+
+            function idToSongInfo(id) {
+                if (midi_data_copy != null) {
+                    let song = null;
+                    let folder = null;
+                    Object.keys(midi_data_copy).forEach(song_name => {
+                        if (convertSongName(midi_data_copy[song_name].game, song_name) == id) {
+                            song = song_name;
+                            folder = midi_data_copy[song_name].folder;
+                        }
+                    })
+                    if (song != null) {
+                        return {
+                            "song": song,
+                            "folder": folder
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function toggleGameVisibility(game_name, el) {
+                const song_el = document.getElementsByClassName("game-songs");
+                for (let s = 0; s < song_el.length; s++) {
+                    if (song_el[s].getAttribute("game") == game_name) {
+                        song_el[s].classList.toggle("hide")
+                        el.classList.toggle("collapsed")
+                    }
+                }
+            }
+
+            async function buildPack() {
+                const checkboxes = document.getElementsByClassName("midi-checkbox");
+                let folder_data = {};
+                for (let c = 0; c < checkboxes.length; c++) {
+                    if (checkboxes[c].checked) {
+                        const data = idToSongInfo(checkboxes[c].getAttribute("id"));
+                        if (data != null) {
+                            let content = null;
+                            await fetch(`./assets/midis/${data.song}`)
+                                .then(response => content = response.blob())
+                            if (Object.keys(folder_data).includes(data.folder)) {
+                                folder_data[data.folder].push({
+                                    "song": data.song,
+                                    "data": content
+                                })
+                            } else {
+                                folder_data[data.folder] = [{
+                                    "song": data.song,
+                                    "data": content
+                                }]
+                            }
+                        }
+                    }
+                }
+                const zip = new JSZip();
+
+                Object.keys(folder_data).forEach(folder => {
+                    const files  = folder_data[folder];
+                    const f_zip = zip.folder(folder)
+                    files.forEach(file => {
+                        f_zip.file(file.song, file.data)
+                    })
+                })
+
+                zip.generateAsync({type:"blob"}).then(function(content) {
+                    // see FileSaver.js
+                    saveAs(content, "example.zip");
+                });
+            }
+
+            function selectMaster(game) {
+                const checkboxes = document.getElementsByClassName("midi-checkbox");
+                let all_checked = true;
+                let all_unchecked = true;
+                for (let c = 0; c < checkboxes.length; c++) {
+                    if (checkboxes[c].getAttribute("game") == game) {
+                        if (checkboxes[c].checked) {
+                            all_unchecked = false;
+                        } else {
+                            all_checked = false;
+                        }
+                    }
+                }
+                let setting = true;
+                if (all_checked) {
+                    setting = false;
+                }
+                for (let c = 0; c < checkboxes.length; c++) {
+                    if (checkboxes[c].getAttribute("game") == game) {
+                        checkboxes[c].checked = setting;
+                    }
+                }
+                updateMaster(game);
+            }
+
+            function updateMaster(game) {
+                const checkboxes = document.getElementsByClassName("midi-checkbox");
+                let all_checked = true;
+                let all_unchecked = true;
+                for (let c = 0; c < checkboxes.length; c++) {
+                    if (checkboxes[c].getAttribute("game") == game) {
+                        if (checkboxes[c].checked) {
+                            all_unchecked = false;
+                        } else {
+                            all_checked = false;
+                        }
+                    }
+                }
+                let text = "Select All";
+                if (all_checked) {
+                    text = "Deselect All";
+                }
+                const select_buttons = document.getElementsByClassName("game-select-master");
+                for (let s = 0; s < select_buttons.length; s++) {
+                    if (select_buttons[s].getAttribute("game") == game) {
+                        select_buttons[s].innerText = text;
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
