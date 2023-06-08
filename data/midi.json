@@ -7,47 +7,47 @@
        "folder":"bgm",
        "game":"dkr"
     },
-    "BK Banjos House.bin":{
+    "Banjos House.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Furnace Fun.bin":{
+    "Furnace Fun.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Grunty Fight.bin":{
+    "Grunty Fight.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Gruntys Lair.bin":{
+    "Gruntys Lair.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Inside Tickers Tower.bin":{
+    "Inside Tickers Tower.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Mumbos Hut.bin":{
+    "Mumbos Hut.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Mumbos Mountain.bin":{
+    "Mumbos Mountain.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Pause menu.bin":{
+    "Pause menu.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Spiral Mountain.bin":{
+    "Spiral Mountain.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK Treasure Trove Cove shorter.bin":{
+    "Treasure Trove Cove.bin":{
        "folder":"bgm",
        "game":"bk"
     },
-    "BK TTC Inside Nipper.bin":{
+    "Treasure Trove Cove - Inside Nipper.bin":{
        "folder":"bgm",
        "game":"bk"
     },
@@ -59,7 +59,7 @@
        "folder":"bgm",
        "game":"dkr"
     },
-    "Bowsers Inside Story - In the final.bin":{
+    "In the final.bin":{
        "folder":"bgm",
        "game":"bowsers_inside_story"
     },
@@ -311,7 +311,7 @@
        "folder":"bgm",
        "game":"majora"
     },
-    "MM_STT.bin":{
+    "Stone Tower Temple.bin":{
        "folder":"bgm",
        "game":"majora"
     },
@@ -368,15 +368,15 @@
        "folder":"bgm",
        "game":"yakuza"
     },
-    "BK Church Door Open.bin":{
+    "Church Door Open.bin":{
        "folder":"events",
        "game":"bk"
     },
-    "BK Grunty Door Open.bin":{
+    "Grunty Door Open.bin":{
        "folder":"events",
        "game":"bk"
     },
-    "BK Success.bin":{
+    "Success.bin":{
        "folder":"events",
        "game":"bk"
     },
@@ -396,7 +396,7 @@
        "folder":"majoritems",
        "game":"amongus"
     },
-    "BK Jinjo.bin":{
+    "Jinjo.bin":{
        "folder":"majoritems",
        "game":"bk"
     },
@@ -412,15 +412,15 @@
        "folder":"majoritems",
        "game":"not_applicable"
     },
-    "BK Grunty Tile.bin":{
+    "Grunty Tile.bin":{
        "folder":"minoritems",
        "game":"bk"
     },
-    "BK Red Feather Collect.bin":{
+    "Red Feather Collect.bin":{
        "folder":"minoritems",
        "game":"bk"
     },
-    "BK Small Item.bin":{
+    "Small Item.bin":{
        "folder":"minoritems",
        "game":"bk"
     },
