@@ -21,7 +21,7 @@
                 background-color: rgba(0,0,0,0.8);
                 padding: 20px 5px;
                 cursor: pointer;
-                border-bottom: 2px solid white;
+                border-top: 2px solid white;
                 transition: 0.5s ease-in-out;
             }
             .game-header:hover {
@@ -158,11 +158,13 @@
                 padding: 4px 20px 0;
                 width: 100%;
             }
+            #song_selected_count {
+                padding: 5px;
+            }
         </style>
     </head>
     <body>
         <nav id="navigation"></nav>
-		<nav id="navigation"></nav>
         <div class="v_spacer">
 
 		</div>
@@ -177,11 +179,10 @@
             <div class="homebox" style="color:white">
                 <div class="flexsplitter">
                     <button style="flex:1" onclick="buildPack()">Build Pack</button>
-                    <input style="flex:1" type="text" placeholder="Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
-                    <button style="flex:1" onclick="selectAllSongs()">Select All</button>
+                    <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
+                    <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All</button>
                 </div>
                 <div id="song_selected_count">0 songs selected</div>
-                
                 <div id="song_list" class="flexsplitter" style="flex-wrap:wrap"></div>
             </div>
         </div>
@@ -370,8 +371,8 @@
                                                 <div class='name_data'>
                                                     <strong>${displayed_song_name.replace('.bin','')}</strong>
                                                     <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                        ${composer != '' ? `<div>&#9834; ${composer}</div>` : ''}
-                                                        ${converter != '' ? `<div>&#127898; ${converter}</div>` : ''}
+                                                        ${composer != '' ? `<div title='Composer of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
+                                                        ${converter != '' ? `<div title='Converter into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
                                                     </div>
                                                 </div>
                                                 <img class="tick" src='./assets/tick.svg'>
@@ -419,16 +420,19 @@
                 if (midi_data_copy != null) {
                     let song = null;
                     let folder = null;
+                    let download = null;
                     Object.keys(midi_data_copy).forEach(song_name => {
                         if (convertSongName(midi_data_copy[song_name].game, song_name) == id) {
                             song = song_name;
                             folder = midi_data_copy[song_name].folder;
+                            download = `./assets/midis/${song}`;
                         }
                     })
                     if (song != null) {
                         return {
                             "song": song,
-                            "folder": folder
+                            "folder": folder,
+                            "download": download
                         }
                     }
                 }
@@ -495,7 +499,7 @@
                         const data = idToSongInfo(checkboxes[c].getAttribute("song-id"));
                         if (data != null) {
                             let content = null;
-                            await fetch(`./assets/midis/${data.song}`)
+                            await fetch(data.download)
                                 .then(response => content = response.blob())
                             if (Object.keys(folder_data).includes(data.folder)) {
                                 folder_data[data.folder].push({
@@ -563,6 +567,21 @@
                     text = "Deselect All";
                 }
                 document.getElementById("game-select-toggle").innerText = text;
+                const all_checkboxes = document.getElementsByClassName("midi-checkbox");
+                all_checked = true;
+                all_unchecked = true;
+                for (c = 0; c < all_checkboxes.length; c++) {
+                    if (all_checkboxes[c].getAttribute("ticked") == "true") {
+                        all_unchecked = false;
+                    } else {
+                        all_checked = false;
+                    }
+                }
+                text = "Select All";
+                if (all_checked) {
+                    text = "Deselect All";
+                }
+                document.getElementById("select-all-songs").innerText = text;
                 updateCount();
             }
 
@@ -632,8 +651,18 @@
 
             function selectAllSongs() {
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
+                let all_checked = true;
                 for (let c = 0; c < checkboxes.length; c++) {
-                    checkboxes[c].setAttribute("ticked","true");
+                    if (checkboxes[c].getAttribute("ticked") == "false") {
+                        all_checked = false;
+                    }
+                }
+                let state = "true"
+                if (all_checked) {
+                    state = "false";
+                }
+                for (let c = 0; c < checkboxes.length; c++) {
+                    checkboxes[c].setAttribute("ticked",state);
                 }
                 updateMaster();
             }

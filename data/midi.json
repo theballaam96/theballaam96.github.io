@@ -383,7 +383,7 @@
        "folder":"bgm",
        "game":"goldeneye",
        "custom":true,
-       "composer":"Graeme Norgate",
+       "composer":"Graeme Norgate, Bismuth",
        "converter":"Bismuth"
     },
     "Greenwood village.bin":{
@@ -484,128 +484,186 @@
     },
     "Pokemon Trainer Battle.bin":{
        "folder":"bgm",
-       "game":"pokemon_red_yellow_blue"
+       "game":"pokemon_red_yellow_blue",
+       "composer":"Junichi Masuda",
+       "converter":"Bismuth"
     },
     "Shopkeepers Revenge.bin":{
        "folder":"bgm",
        "game":"not_applicable",
-       "custom":true
+       "custom":true,
+       "composer":"GlitchGlider"
     },
     "Bob-Omb Battlefield.bin":{
        "folder":"bgm",
-       "game":"mario_64"
+       "game":"mario_64",
+       "composer":"Koji Kondo",
+       "converter":"Bismuth"
     },
     "File Select (SM64).bin":{
        "folder":"bgm",
        "game":"mario_64",
-       "alt_name": "File Select"
+       "alt_name": "File Select",
+       "composer":"Koji Kondo",
+       "converter":"Ballaam"
     },
     "Inside the Castle Walls.bin":{
        "folder":"bgm",
-       "game":"mario_64"
+       "game":"mario_64",
+       "composer":"Koji Kondo",
+       "converter":"Bismuth"
     },
     "Moldarach and Koloktos.bin":{
        "folder":"bgm",
-       "game":"skyward_sword"
+       "game":"skyward_sword",
+       "composer":"Mahito Yokota",
+       "converter":"Ballaam"
     },
     "Star City.bin":{
        "folder":"bgm",
-       "game":"dkr"
+       "game":"dkr",
+       "composer":"David Wise",
+       "converter":"Bismuth"
     },
     "Main Theme (Subway Surfers).bin":{
        "folder":"bgm",
        "game":"subway_surfers",
-       "alt_name": "Main Theme"
+       "alt_name": "Main Theme",
+       "composer":"David Butterfield",
+       "converter":"GlitchGlider"
     },
     "Dragon Roost Island.bin":{
        "folder":"bgm",
-       "game":"wind_waker"
+       "game":"wind_waker",
+       "composer":"Kenta Nagata",
+       "converter":"OnlySpaghettiCode"
     },
     "Pledge of Demon.bin":{
        "folder":"bgm",
-       "game":"yakuza"
+       "game":"yakuza",
+       "composer":"Hidenori Shoji",
+       "converter":"GlitchGlider"
     },
     "Church Door Open.bin":{
        "folder":"events",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Grunty Door Open.bin":{
        "folder":"events",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Success (Banjo Kazooie).bin":{
        "folder":"events",
        "game":"bk",
-       "alt_name": "Success"
+       "alt_name": "Success",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Failure.bin":{
        "folder":"events",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Flute Jingle 1.bin":{
        "folder":"events",
-       "game":"pokemon_snap"
+       "game":"pokemon_snap",
+       "composer":"Ikuko Mimori",
+       "converter":"Ballaam"
     },
     "Flute Jingle 2.bin":{
        "folder":"events",
-       "game":"pokemon_snap"
+       "game":"pokemon_snap",
+       "composer":"Ikuko Mimori",
+       "converter":"Ballaam"
     },
     "Report Body.bin":{
        "folder":"majoritems",
-       "game":"amongus"
+       "game":"amongus",
+       "composer":"Kristi Anderson, CinderSlays",
+       "converter":"GlitchGlider"
     },
     "Jinjo.bin":{
        "folder":"majoritems",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Success (Banjo Tooie).bin":{
        "folder":"majoritems",
        "game":"bt",
-       "alt_name": "Success"
+       "alt_name": "Success",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
-    "Im Loving It.bin":{
+    "Im Loving It (McDonalds).bin":{
        "folder":"majoritems",
-       "game":"not_applicable"
+       "game":"not_applicable",
+       "composer":"Pusha T, Justin Timberlake",
+       "converter":"UmedMuzl"
     },
     "Never Gonna Give You Up (Jingle).bin":{
        "folder":"majoritems",
-       "game":"not_applicable"
+       "game":"not_applicable",
+       "composer":"Rick Astley",
+       "converter":"GlitchGlider"
     },
     "Grunty Tile.bin":{
        "folder":"minoritems",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Red Feather Collect.bin":{
        "folder":"minoritems",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Small Item.bin":{
        "folder":"minoritems",
-       "game":"bk"
+       "game":"bk",
+       "composer":"Grant Kirkhope",
+       "converter":"Gloomy"
     },
     "Collect Note.bin":{
        "folder":"minoritems",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Gold Feather Collect.bin":{
        "folder":"minoritems",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Select Clockwork.bin":{
        "folder":"minoritems",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Treble Clef Collect.bin":{
        "folder":"minoritems",
-       "game":"bt"
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam"
     },
     "Discord Notification.bin":{
        "folder":"minoritems",
-       "game":"not_applicable"
+       "game":"not_applicable",
+       "converter":"GlitchGlider"
     },
     "PS1 Bios Startup.bin":{
        "folder":"minoritems",
-       "game":"not_applicable"
+       "game":"not_applicable",
+       "composer":"Takafumi Fujisawa",
+       "converter":"GlitchGlider"
     },
     "Winds Across the Plains.bin":{
        "folder":"bgm",
@@ -630,5 +688,11 @@
        "game":"twilight_princess",
        "composer":"Toru Minegishi",
        "converter":"OnlySpaghettiCode"
+    },
+    "Gamecube Startup.bin":{
+       "folder":"events",
+       "game":"not_applicable",
+       "composer":"Toru Minegishi",
+       "converter":"UmedMuzl"
     }
  }
