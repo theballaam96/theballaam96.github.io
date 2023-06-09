@@ -776,5 +776,24 @@
        "game":"twilight_princess",
        "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
        "converter":"OnlySpaghettiCode"
+    },
+    "Predule.bin":{
+       "folder":"bgm",
+       "game":"final_fantasy_7",
+       "composer":"Nobuo Uematsu",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Fresh Prince of Bel Air.bin":{
+       "folder":"bgm",
+       "game":"not_applicable",
+       "composer":"DJ Jazzy Jeff and Will Smith",
+       "converter":"UmedMuzl",
+       "audio":"https://www.youtube.com/watch?v=_qbAnARQUAY"
+    },
+    "Scars of the Scouring.bin":{
+       "folder":"bgm",
+       "game":"fire_emblem_blazing_blade",
+       "composer":"Yuka Tsujiyoko",
+       "converter":"AaronDobbe"
     }
  }
