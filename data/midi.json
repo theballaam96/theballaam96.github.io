@@ -82,7 +82,8 @@
        "folder":"bgm",
        "game":"bomberman64",
        "composer":"Akifumi Tada",
-       "converter":"AaronDobbe"
+       "converter":"AaronDobbe",
+       "audio":"https://www.youtube.com/watch?v=4I96x8zK46A"
     },
     "Boss challenge.bin":{
        "folder":"bgm",
@@ -100,13 +101,15 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/SM4EQ7kc2fA"
     },
     "Boggys Igloo.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/xq_tTvYoH-U"
     },
     "Bottles House.bin":{
        "folder":"bgm",
@@ -118,49 +121,57 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/oNDRQByRTKg"
     },
     "Cauldron Keep.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/lO4pq8yMqeo"
     },
     "CCL Canary Mary.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/vqRMq8YRvmE"
     },
     "Chilli Fights.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/tJZIf9mJii4"
     },
     "Clinkers Cavern.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/y0kHJlhU7GA"
     },
     "Credits Roll.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/np-jhjQOgUQ"
     },
     "Fun n Games.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/EK1IP_ouhQw"
     },
     "Game Select.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/ZMrXyiihYBQ"
     },
     "Grunty Industries (Exterior).bin":{
        "folder":"bgm",
@@ -178,19 +189,22 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/kj72htTum8w"
     },
     "Happy Jinjo House.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/4EqxOi3blnE"
     },
     "Heggys Shed.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/2D4kOO8v5Xs"
     },
     "Isle o Hags.bin":{
        "folder":"bgm",
@@ -202,7 +216,8 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/nALedBD8mo8"
     },
     "Jiggywiggy Temple.bin":{
        "folder":"bgm",
@@ -214,13 +229,15 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/e0dJmM0kHKo"
     },
     "Lord Woo Fak Fak.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/NbgLJcxCOCc"
     },
     "Mayahem Temple.bin":{
        "folder":"bgm",
@@ -232,13 +249,15 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/KmzoL14xJz4"
     },
     "Mr Patch.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/J9lAIdgxju0"
     },
     "Mumbos Skull.bin":{
        "folder":"bgm",
@@ -256,25 +275,29 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/5Y-2vP-LMks"
     },
     "Terry.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/ll43fkiM5BQ"
     },
     "Tower of Tragedy.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/mnb6Vv6Ezc4"
     },
     "Weldar.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/qV-etLtsEjU"
     },
     "Witchyworld.bin":{
        "folder":"bgm",
@@ -286,37 +309,43 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/iu0LzZrr6T0"
     },
     "Crash Dash.bin":{
        "folder":"bgm",
        "game":"crash2",
        "composer":"Josh Mancell",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/08a1Eris_CE"
     },
     "Snow Go.bin":{
        "folder":"bgm",
        "game":"crash2",
        "composer":"Josh Mancell",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/NQnspzFgFzc"
     },
     "Deku Palace.bin":{
        "folder":"bgm",
        "game":"majora",
        "composer":"Koji Kondo",
-       "converter":"Wolfeni"
+       "converter":"Wolfeni",
+       "audio":"https://www.youtube.com/watch?v=GLGgLDVFfm8"
     },
     "Unatco.bin":{
        "folder":"bgm",
        "game":"deus_ex",
        "composer":"Michiel van den Bos",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/Y3sTs-3omuA"
     },
     "Stickerbush Symphony.bin":{
        "folder":"bgm",
        "game":"dkc2",
        "composer":"David Wise",
-       "converter":"Wolfeni"
+       "converter":"Wolfeni",
+       "audio":"https://www.youtube.com/watch?v=gGfVZb7Lb_g"
     },
     "Rickety Rails.bin":{
        "folder":"bgm",
@@ -342,7 +371,8 @@
        "folder":"bgm",
        "game":"dkr",
        "composer":"David Wise",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://www.youtube.com/watch?v=MrEGof9y0oE"
     },
     "Forested Temple.bin":{
        "folder":"bgm",
@@ -354,19 +384,22 @@
        "folder":"bgm",
        "game":"not_applicable",
        "custom":true,
-       "composer":"GlitchGlider"
+       "composer":"GlitchGlider",
+       "audio":"https://youtu.be/YKgbQA5k6QM"
     },
     "Lost Legends.bin":{
        "folder":"bgm",
        "game":"not_applicable",
        "custom":true,
-       "composer":"GlitchGlider"
+       "composer":"GlitchGlider",
+       "audio":"https://youtu.be/WKEt7kFHa2k"
     },
     "Porrel.bin":{
        "folder":"bgm",
        "game":"not_applicable",
        "custom":true,
-       "composer":"GlitchGlider"
+       "composer":"GlitchGlider",
+       "audio":"https://youtu.be/HQ6XrXaEpwM"
     },
     "Bunker 1.bin":{
        "folder":"bgm",
@@ -403,7 +436,8 @@
        "folder":"bgm",
        "game":"ocarina",
        "composer":"Koji Kondo",
-       "converter":"Wolfeni, GlitchGlider"
+       "converter":"Wolfeni, GlitchGlider",
+       "audio":"https://www.youtube.com/watch?v=ZoZN097vW_g"
     },
     "Jungle Falls.bin":{
        "folder":"bgm",
@@ -421,13 +455,15 @@
        "folder":"bgm",
        "game":"layton_curious",
        "composer":"Tomohito Nishiura",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://www.youtube.com/watch?v=XOIWVRcCzWI"
     },
     "Tower of Spirits Staircase.bin":{
        "folder":"bgm",
        "game":"spirit_tracks",
        "composer":"Koji Kondo",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/5L5OMnJ_zaY"
     },
     "Full of Danger.bin":{
        "folder":"bgm",
@@ -445,13 +481,15 @@
        "folder":"bgm",
        "game":"majora",
        "composer":"Koji Kondo",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/xjr2Em3K-0s"
     },
     "Great Bay Temple.bin":{
        "folder":"bgm",
        "game":"majora",
        "composer":"Koji Kondo",
-       "converter":"Wolfeni"
+       "converter":"Wolfeni",
+       "audio":"https://www.youtube.com/watch?v=WroWnuxlXGI&feature=youtu.be"
     },
     "Termina Field.bin":{
        "folder":"bgm",
@@ -481,7 +519,8 @@
        "folder":"bgm",
        "game":"pizza_tower",
        "composer":"Mr. Sauceman",
-       "converter":"AaronDobbe"
+       "converter":"AaronDobbe",
+       "audio":"https://www.youtube.com/watch?v=zZQkUTzQTys&t=8"
     },
     "Pokemon Trainer Battle.bin":{
        "folder":"bgm",
@@ -493,7 +532,8 @@
        "folder":"bgm",
        "game":"not_applicable",
        "custom":true,
-       "composer":"GlitchGlider"
+       "composer":"GlitchGlider",
+       "audio":"https://www.youtube.com/watch?v=99LN9ykdMEw"
     },
     "Bob-Omb Battlefield.bin":{
        "folder":"bgm",
@@ -506,7 +546,8 @@
        "game":"mario_64",
        "alt_name": "File Select",
        "composer":"Koji Kondo",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/GY33252V8tY"
     },
     "Inside the Castle Walls.bin":{
        "folder":"bgm",
@@ -518,7 +559,8 @@
        "folder":"bgm",
        "game":"skyward_sword",
        "composer":"Mahito Yokota",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/Zlr3xwlwZaA"
     },
     "Star City.bin":{
        "folder":"bgm",
@@ -531,7 +573,8 @@
        "game":"subway_surfers",
        "alt_name": "Main Theme",
        "composer":"David Butterfield",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://www.youtube.com/watch?v=0p6_v_DJLPM&feature=youtu.be"
     },
     "Dragon Roost Island.bin":{
        "folder":"bgm",
@@ -543,7 +586,8 @@
        "folder":"bgm",
        "game":"yakuza",
        "composer":"Hidenori Shoji",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/5g_Ggmk_nXU"
     },
     "Church Door Open.bin":{
        "folder":"events",
@@ -574,19 +618,22 @@
        "folder":"events",
        "game":"pokemon_snap",
        "composer":"Ikuko Mimori",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/FcVbAOCKdTQ"
     },
     "Flute Jingle 2.bin":{
        "folder":"events",
        "game":"pokemon_snap",
        "composer":"Ikuko Mimori",
-       "converter":"Ballaam"
+       "converter":"Ballaam",
+       "audio":"https://youtu.be/g6j90klL0Cg"
     },
     "Report Body.bin":{
        "folder":"majoritems",
        "game":"amongus",
        "composer":"Kristi Anderson, CinderSlays",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/yLsz8gIvsmQ"
     },
     "Jinjo.bin":{
        "folder":"majoritems",
@@ -658,13 +705,15 @@
     "Discord Notification.bin":{
        "folder":"minoritems",
        "game":"not_applicable",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://youtu.be/Op_mKcw1alE"
     },
     "PS1 Bios Startup.bin":{
        "folder":"minoritems",
        "game":"not_applicable",
        "composer":"Takafumi Fujisawa",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://www.youtube.com/watch?v=Sk0vJW-iyzA"
     },
     "Winds Across the Plains.bin":{
        "folder":"bgm",
@@ -694,7 +743,8 @@
        "folder":"events",
        "game":"not_applicable",
        "composer":"Toru Minegishi",
-       "converter":"UmedMuzl"
+       "converter":"UmedMuzl",
+       "audio":"https://www.youtube.com/watch?v=UCq_tvn-_ck"
     },
     "Faron Woods.bin":{
        "folder":"bgm",
