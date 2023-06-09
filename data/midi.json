@@ -560,6 +560,7 @@
        "game":"skyward_sword",
        "composer":"Mahito Yokota",
        "converter":"Ballaam",
+       "hidden":true,
        "audio":"https://youtu.be/Zlr3xwlwZaA"
     },
     "Star City.bin":{

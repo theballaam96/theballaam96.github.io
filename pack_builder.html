@@ -403,13 +403,21 @@
                         Object.keys(json).forEach(key => {
                             // html += `<div>${key}</div>`
                             const game = game_data[json[key].game].name;
-                            if (json[key].game == "not_applicable") {
-                                other.push(key)
-                            } else {
-                                if (!Object.keys(songs_by_game).includes(game)) {
-                                    songs_by_game[game] = [key]
+                            let hidden = false;
+                            if (Object.keys(json[key]).includes("hidden")) {
+                                if (json[key].hidden) {
+                                    hidden = true;
+                                }
+                            }
+                            if (!hidden) {
+                                if (json[key].game == "not_applicable") {
+                                    other.push(key)
                                 } else {
-                                    songs_by_game[game].push(key)
+                                    if (!Object.keys(songs_by_game).includes(game)) {
+                                        songs_by_game[game] = [key]
+                                    } else {
+                                        songs_by_game[game].push(key)
+                                    }
                                 }
                             }
                         })
