@@ -3,7 +3,8 @@
        "folder":"bgm",
        "game":"amongus",
        "composer":"Leonz",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://www.youtube.com/watch?v=vQXwwtIMcAI"
     },
     "Ancient Lake.bin":{
        "folder":"bgm",
@@ -696,6 +697,30 @@
        "converter":"UmedMuzl"
     },
     "Faron Woods.bin":{
+       "folder":"bgm",
+       "game":"twilight_princess",
+       "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Sacred Grove.bin":{
+       "folder":"bgm",
+       "game":"twilight_princess",
+       "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Moon.bin":{
+       "folder":"bgm",
+       "game":"ducktales",
+       "composer":"Hiroshige Tonomura",
+       "converter":"Mr_Rippe"
+    },
+    "Zoras Domain.bin":{
+       "folder":"bgm",
+       "game":"twilight_princess",
+       "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Lake Hylia.bin":{
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",

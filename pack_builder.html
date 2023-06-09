@@ -84,16 +84,19 @@
                 font-weight: 600;
                 margin-top: 10px;
             }
+            .midi-checkbox-container {
+                flex: 1;
+                min-width: calc(33% - 10px - 2px - 10px);
+                max-width: calc(33% - 10px - 2px - 10px);
+                margin: 5px;
+            }
             .midi-checkbox {
                 border: 1px solid white;
                 border-radius: 5px;
                 cursor: pointer;
                 padding: 5px;
                 transition: 0.5s ease-in-out;
-                flex: 1;
-                min-width: calc(33% - 10px - 2px - 10px);
-                max-width: calc(33% - 10px - 2px - 10px);
-                margin: 5px;
+                /*width: 100%;*/
             }
             .midi-checkbox:hover {
                 background-color: rgb(255, 255, 255, 0.15);
@@ -165,33 +168,69 @@
                 }
             }
             @media only screen and (max-width: 750px) {
-                .midi-checkbox {
+                .midi-checkbox-container {
                     min-width: calc(50% - 10px - 2px - 10px);
                     max-width: calc(50% - 10px - 2px - 10px);
                 }
             }
             @media only screen and (max-width: 500px) {
-                .midi-checkbox {
+                .midi-checkbox-container {
                     min-width: calc(100% - 10px - 2px - 10px);
                     max-width: calc(100% - 10px - 2px - 10px);
                 }
             }
             input[type=text] {
                 background-color: #303245;
-                border-radius: 12px;
+                border-radius: 5px;
                 border: 0;
                 box-sizing: border-box;
                 color: #eee;
                 font-size: 18px;
                 height: 100%;
                 outline: 0;
-                padding: 4px 20px 0;
-                width: 100%;
+                padding: 7px 20px;
+                width: -webkit-fill-available;
+                width: -moz-fill-available;
+                /*width: fill-available;*/
+                margin: 5px;
             }
             #song_selected_count {
                 padding: 5px;
                 margin-left: auto;
                 margin-right: auto;
+            }
+            .audio_container {
+                margin-left: auto;
+                text-align: right;
+                width: calc(2.5em - 5px);
+                height: 50%;
+            }
+            .audio_controller {
+                width: calc(2.5em - 5px);
+                height: calc(2.5em - 5px);
+                background-color: #15172b;
+                position: absolute;
+                transform: translate(calc(7px - (2 * (5px + 1px))), calc(0px - 2.5em));
+                border-top: 1px solid white;
+                border-left: 1px solid white;
+                border-top-left-radius: 5px;
+                padding-left: 5px;
+                padding-top: 5px;
+            }
+            .audio_interaction {
+                border-radius: 5px;
+                border: 1px solid white;
+                height: -webkit-fill-available;
+                height: -moz-fill-available;
+                /*height: fill-available;*/
+                vertical-align: middle;
+                line-height: calc(2.5em - 5px - 2px);
+                text-align: center;
+                cursor: pointer;
+                transition: 0.5s ease-in-out;
+            }
+            .audio_interaction:hover {
+                background-color: rgba(255, 255, 255, 0.2);
             }
         </style>
     </head>
@@ -242,6 +281,7 @@
                 </div>
             </div>
         </div>
+        <div id="audio-event"></div>
         <script src="script/nav.js"></script>
         <script>
             const ZELDA_NAME = "The Legend of Zelda: "
@@ -338,6 +378,9 @@
                 },
                 "twilight_princess": {
                     "name": `${ZELDA_NAME}Twilight Princess`
+                },
+                "ducktales": {
+                    "name": "DuckTales"
                 }
             }
             let midi_data_copy = null;
@@ -393,6 +436,7 @@
                                     let displayed_song_name = song;
                                     let composer = "";
                                     let converter = "";
+                                    let audio = null;
                                     if (Object.keys(midi_data_copy[song]).includes("alt_name")) {
                                         displayed_song_name = midi_data_copy[song].alt_name;
                                     }
@@ -405,23 +449,37 @@
                                     if (Object.keys(midi_data_copy[song]).includes("converter")) {
                                         converter = midi_data_copy[song].converter;
                                     }
+                                    if (Object.keys(midi_data_copy[song]).includes("audio")) {
+                                        audio = midi_data_copy[song].audio;
+                                    }
                                     local_html[group] += 
-                                        `<div 
-                                            class='midi-checkbox noselect' 
-                                            song-id='${convertSongName(game, song)}' 
-                                            onclick='updateTickbox(this,\"${game}\")' 
-                                            ticked='false' 
-                                            game='${game}'>
-                                            <div class='flexsplitter'>
-                                                <div class='name_data'>
-                                                    <strong>${displayed_song_name.replace('.bin','')}</strong>
-                                                    <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                        ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
-                                                        ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
+                                        `
+                                        <div class='midi-checkbox-container'>
+                                            <div 
+                                                class='midi-checkbox noselect' 
+                                                song-id='${convertSongName(game, song)}' 
+                                                onclick='updateTickbox(this,\"${game}\")' 
+                                                ticked='false' 
+                                                game='${game}'>
+                                                <div class='flexsplitter'>
+                                                    <div class='name_data'>
+                                                        <strong>${displayed_song_name.replace('.bin','')}</strong>
+                                                        <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
+                                                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
+                                                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
+                                                        </div>
                                                     </div>
+                                                    <img class="tick" src='./assets/tick.svg'>
                                                 </div>
-                                                <img class="tick" src='./assets/tick.svg'>
                                             </div>
+                                            ${
+                                                audio != null ?
+                                                `<div class='audio_container${isCreditHidden() ? ' hide' : ''}'>
+                                                    <div class='audio_controller'>
+                                                        <div class='audio_interaction' onclick='playSong(\"${audio}\")'>&#9654;</div>
+                                                    </div>
+                                                </div>` : ''
+                                            }
                                         </div>`
                                 })
                                 let local_html_total = "";
@@ -688,12 +746,20 @@
 
             function handleCredits() {
                 const credit_info = document.getElementById("popup").getElementsByClassName("name_meta_data");
+                const audio_containers = document.getElementById("popup").getElementsByClassName("audio_container");
                 const hide = document.getElementById("credits_hidden").checked;
                 for (let c = 0; c < credit_info.length; c++) {
                     if (hide) {
                         credit_info[c].classList.add("hide");
                     } else {
                         credit_info[c].classList.remove("hide");
+                    }
+                }
+                for (let a = 0; a < audio_containers.length; a++) {
+                    if (hide) {
+                        audio_containers[a].classList.add("hide");
+                    } else {
+                        audio_containers[a].classList.remove("hide");
                     }
                 }
             }
@@ -829,6 +895,10 @@
 
             function uploadPack() {
                 document.getElementById("uploaded_pack").click();
+            }
+
+            function playSong(url) {
+                window.open(url, "_blank")
             }
         </script>
     </body>
