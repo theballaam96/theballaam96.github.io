@@ -529,7 +529,7 @@
        "converter":"Bismuth"
     },
     "Shopkeepers Revenge.bin":{
-       "folder":"bgm",
+       "folder":"events",
        "game":"not_applicable",
        "custom":true,
        "composer":"GlitchGlider",
@@ -795,5 +795,34 @@
        "game":"fire_emblem_blazing_blade",
        "composer":"Yuka Tsujiyoko",
        "converter":"AaronDobbe"
+    },
+    "Metal Man.bin":{
+       "folder":"bgm",
+       "game":"mega_man_2",
+       "composer":"Takashi Tateishi",
+       "converter":"Mr_Rippe"
+    },
+    "Let the Battles Begin.bin":{
+       "folder":"bgm",
+       "game":"final_fantasy_7",
+       "composer":"Nobuo Uematsu",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Stanley Steemer Jingle.bin":{
+       "folder":"events",
+       "game":"not_applicable",
+       "converter":"UmedMuzl"
+    },
+    "Still the Road is Full of Dangers.bin":{
+       "folder":"bgm",
+       "game":"mario_rpg",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Beware the Forests Mushrooms.bin":{
+       "folder":"bgm",
+       "game":"mario_rpg",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode"
     }
  }

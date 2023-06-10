@@ -381,6 +381,12 @@
                 },
                 "ducktales": {
                     "name": "DuckTales"
+                },
+                "mega_man_2": {
+                    "name": "Mega Man 2"
+                },
+                "mario_rpg": {
+                    "name": "Super Mario RPG: Legend of the Seven Stars"
                 }
             }
             let midi_data_copy = null;
@@ -532,18 +538,21 @@
                     let song = null;
                     let folder = null;
                     let download = null;
-                    Object.keys(midi_data_copy).forEach(song_name => {
+                    let song_index = null;
+                    Object.keys(midi_data_copy).forEach((song_name, index) => {
                         if (convertSongName(midi_data_copy[song_name].game, song_name) == id) {
                             song = song_name;
                             folder = midi_data_copy[song_name].folder;
                             download = `./assets/midis/${song}`;
+                            song_index = index;
                         }
                     })
                     if (song != null) {
                         return {
                             "song": song,
                             "folder": folder,
-                            "download": download
+                            "download": download,
+                            "index": song_index,
                         }
                     }
                 }
@@ -907,6 +916,63 @@
 
             function playSong(url) {
                 window.open(url, "_blank")
+            }
+
+            function convertSelectionsToString() {
+                const B64_chars = [
+                    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q",
+                    "R","S","T","U","V","W","X","Y","Z",
+                    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
+                    "r","s","t","u","v","w","x","y","z",
+                    "$","?","!","=","(",")","[","]",":","#",
+                    "+","/"
+                ];
+                let activated = [];
+                const checkboxes = document.getElementsByClassName("midi-checkbox")
+                for (let c = 0; c < checkboxes.length; c++) {
+                    const index = idToSongInfo(checkboxes[c].getAttribute("song-id")).index;
+                    if (activated.length <= index) {
+                        const diff = (index - activated.length) + 1;
+                        for (let d = 0; d < diff; d++) {
+                            activated.push(false)
+                        }
+                    }
+                    activated[index] = checkboxes[c].getAttribute("ticked") == "true"
+                }
+                const BIT_SIZE_PER_CHAR = 6;
+                const B64_SIZE = Math.ceil(activated.length / BIT_SIZE_PER_CHAR);
+                let base64num = new Array(B64_SIZE).fill(0)
+                activated.forEach((bit, index) => {
+                    if (bit) {
+                        base64num[Math.floor(index / BIT_SIZE_PER_CHAR)] |= (1 << (index % BIT_SIZE_PER_CHAR))
+                    }
+                })
+                let b64_string = "";
+                let prev_char = "";
+                let counter = 0;
+                let char_seq = []
+                let count_seq = []
+                base64num.forEach((character, index) => {
+                    const new_char = B64_chars[character];
+                    if (new_char == prev_char) {
+                        counter++;
+                    }
+                    if ((prev_char != new_char) || ((index + 1) == B64_SIZE)) {
+                        // Push to string
+                        char_seq.push(new_char)
+                        count_seq.push(counter+1)
+                        prev_char = new_char;
+                        counter = 0;
+                    }
+                })
+                for (let c = 0; c < char_seq.length; c++) {
+                    if (count_seq[c] > 1) {
+                        b64_string += count_seq[c].toString();
+                    }
+                    b64_string += char_seq[c];
+                }
+                console.log(b64_string)
+                console.log(base64num.map(character => B64_chars[character]).join(""))
             }
         </script>
     </body>
