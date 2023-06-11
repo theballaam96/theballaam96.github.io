@@ -824,5 +824,23 @@
        "game":"mario_rpg",
        "composer":"Yoko Shimomura",
        "converter":"OnlySpaghettiCode"
+    },
+    "And My Names Booster.bin":{
+       "folder":"bgm",
+       "game":"mario_rpg",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Welcome to Booster Tower.bin":{
+       "folder":"bgm",
+       "game":"mario_rpg",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode"
+    },
+    "Outset Island.bin":{
+       "folder":"bgm",
+       "game":"wind_waker",
+       "composer":"Hajime Wakai, Kenta Nagata, Toru Minegishi, Koji Kondo",
+       "converter":"OnlySpaghettiCode"
     }
  }

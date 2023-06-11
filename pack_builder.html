@@ -97,6 +97,7 @@
                 padding: 5px;
                 transition: 0.5s ease-in-out;
                 /*width: 100%;*/
+                min-height: calc(100% - 12px);
             }
             .midi-checkbox:hover {
                 background-color: rgb(255, 255, 255, 0.15);
@@ -251,12 +252,13 @@
                 <div class="panel-sep">
                     <div class="sep sep-left">
                         <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
+                        <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
-                            <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
                             <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
                             <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
                             <button style="flex:1" onclick="buildPack()">Build Pack</button>
                         </div>
+                        <button style="flex:1" onclick="getShareLink()">Get Shareable Link</button>
                         <div id="song_selected_count">0 songs selected</div>
                     </div>
                     <div class="sep" style="flex:2">
@@ -398,7 +400,7 @@
             }
 
             async function getMidiData() {
-                await fetch("./data/midi.json")
+                await fetch("./data/midi.json", {cache: "no-store"})
                     .then(response => response.json())
                     .then(json => {
                         midi_data_copy = json;
@@ -466,6 +468,7 @@
                                     if (Object.keys(midi_data_copy[song]).includes("audio")) {
                                         audio = midi_data_copy[song].audio;
                                     }
+                                    const state_index = Object.keys(midi_data_copy).indexOf(song);
                                     local_html[group] += 
                                         `
                                         <div class='midi-checkbox-container'>
@@ -473,7 +476,7 @@
                                                 class='midi-checkbox noselect' 
                                                 song-id='${convertSongName(game, song)}' 
                                                 onclick='updateTickbox(this,\"${game}\")' 
-                                                ticked='false' 
+                                                ticked=${parseSeed(state_index) ? 'true' : 'false'} 
                                                 game='${game}'>
                                                 <div class='flexsplitter'>
                                                     <div class='name_data'>
@@ -525,6 +528,7 @@
                             }
                         })
                         hook.innerHTML = html;
+                        updateMaster();
                     })
             }
             getMidiData();
@@ -918,15 +922,27 @@
                 window.open(url, "_blank")
             }
 
+            function getShareLink() {
+                const seed = convertSelectionsToString();
+                console.log(seed)
+                const stateObj = {s: seed};
+                let url = new URL(window.location.href);
+                url.searchParams.set("s",seed.toString());
+                console.log(url.toString())
+                window.history.replaceState(stateObj, "", url.toString());
+            }
+            const B64_chars = [
+                "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q",
+                "R","S","T","U","V","W","X","Y","Z",
+                "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
+                "r","s","t","u","v","w","x","y","z",
+                "$","?","_",".","!","*","'","@",";",",",
+                "~",":"
+            ];
+            const nums = ["0","1","2","3","4","5","6","7","8","9"];
+            const BIT_SIZE_PER_CHAR = 6;
+
             function convertSelectionsToString() {
-                const B64_chars = [
-                    "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q",
-                    "R","S","T","U","V","W","X","Y","Z",
-                    "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
-                    "r","s","t","u","v","w","x","y","z",
-                    "$","?","!","=","(",")","[","]",":","#",
-                    "+","/"
-                ];
                 let activated = [];
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
                 for (let c = 0; c < checkboxes.length; c++) {
@@ -939,7 +955,6 @@
                     }
                     activated[index] = checkboxes[c].getAttribute("ticked") == "true"
                 }
-                const BIT_SIZE_PER_CHAR = 6;
                 const B64_SIZE = Math.ceil(activated.length / BIT_SIZE_PER_CHAR);
                 let base64num = new Array(B64_SIZE).fill(0)
                 activated.forEach((bit, index) => {
@@ -951,28 +966,58 @@
                 let prev_char = "";
                 let counter = 0;
                 let char_seq = []
-                let count_seq = []
                 base64num.forEach((character, index) => {
-                    const new_char = B64_chars[character];
-                    if (new_char == prev_char) {
-                        counter++;
+                    if ((index == 0) || char_seq[char_seq.length - 1][0] != B64_chars[character]) {
+                        char_seq.push([])
                     }
-                    if ((prev_char != new_char) || ((index + 1) == B64_SIZE)) {
-                        // Push to string
-                        char_seq.push(new_char)
-                        count_seq.push(counter+1)
-                        prev_char = new_char;
-                        counter = 0;
+                    char_seq[char_seq.length - 1].push(B64_chars[character])
+                })
+                char_seq.forEach(subset => {
+                    if (subset.length > 1) {
+                        b64_string += subset.length.toString()
+                    }
+                    b64_string += subset[0];
+                })
+                return b64_string;
+            }
+
+            function unpackSeed(seed) {
+                const characters = seed.split("");
+                let count_string = "";
+                let unpacked_seed_nums = [];
+                characters.forEach(char => {
+                    if (nums.includes(char)) {
+                        count_string += char;
+                    } else {
+                        let count = 1;
+                        if (count_string != "") {
+                            count = Number(count_string);
+                        }
+                        if (B64_chars.includes(char)) {
+                            for (let c = 0; c < count; c++) {
+                                unpacked_seed_nums.push(B64_chars.indexOf(char));
+                            }
+                        }
+                        count_string = "";
                     }
                 })
-                for (let c = 0; c < char_seq.length; c++) {
-                    if (count_seq[c] > 1) {
-                        b64_string += count_seq[c].toString();
-                    }
-                    b64_string += char_seq[c];
+                return unpacked_seed_nums.slice()
+            }
+
+            function parseSeed(index) {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const seed = urlParams.get("s")
+                if (seed == null) {
+                    return false; // No data
                 }
-                console.log(b64_string)
-                console.log(base64num.map(character => B64_chars[character]).join(""))
+                const seed_arr = unpackSeed(seed);
+                const loc = Math.floor(index / BIT_SIZE_PER_CHAR);
+                const subposition = index % BIT_SIZE_PER_CHAR;
+                if (loc >= seed_arr.length) {
+                    return false; // Data is past seed boundaries
+                }
+                return (seed_arr[loc] & (1 << subposition)) != 0; // Extracted from seed
             }
         </script>
     </body>
