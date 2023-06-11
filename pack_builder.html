@@ -233,6 +233,19 @@
             .audio_interaction:hover {
                 background-color: rgba(255, 255, 255, 0.2);
             }
+            .audio-close-container {
+                text-align: right;
+            }
+            .audio-close {
+                width: fit-content;
+                margin-left: auto;
+                padding: 5px;
+                transition: 0.5s ease-in-out;
+                border-radius: 5px;
+            }
+            .audio-close:hover {
+                background-color: rgba(255, 255, 255, 0.4);
+            }
         </style>
     </head>
     <body>
@@ -283,7 +296,18 @@
                 </div>
             </div>
         </div>
-        <div id="audio-event"></div>
+        <div class="popup_background hide" id="audio-event">
+            <div class="popup_prompt" style="width:fit-content">
+                <div class="audio-close-container">
+                    <div class="audio-close noselect" onclick="closeSong()">Close</div>
+                </div>
+                <div id="audio-event-content">
+                    <audio controls>
+                        <source src="https://cdn.discordapp.com/attachments/1097234540373745854/1106055293495943168/BK_Grunty_Fight.mp3" type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        </div>
         <script src="script/nav.js"></script>
         <script>
             const ZELDA_NAME = "The Legend of Zelda: "
@@ -493,7 +517,7 @@
                                                 audio != null ?
                                                 `<div class='audio_container${isCreditHidden() ? ' hide' : ''}'>
                                                     <div class='audio_controller'>
-                                                        <div class='audio_interaction' onclick='playSong(\"${audio}\")'>&#9654;</div>
+                                                        <div class='audio_interaction' onclick='playSong(\"${audio}\",\"${converter}\")'>&#9654;</div>
                                                     </div>
                                                 </div>` : ''
                                             }
@@ -918,8 +942,56 @@
                 document.getElementById("uploaded_pack").click();
             }
 
-            function playSong(url) {
-                window.open(url, "_blank")
+            function playSong(url, converter) {
+                const hook = document.getElementById("audio-event-content");
+                if (url.includes("cdn.discordapp.com")) {
+                    // Embedded audio
+                    hook.innerHTML = `
+                        <audio controls>
+                            <source src="${url}" type="audio/mpeg">
+                        </audio>
+                    `
+                } else if ((url.includes("youtube")) || (url.includes("youtu.be"))) {
+                    const CONVERTER_NO_EXTERNAL = []; // Any users who make their videos non-distributable on external websites will just open a new tab to YT
+                    if (CONVERTER_NO_EXTERNAL.includes(converter)) {
+                        window.open(url, "_blank")
+                        return;
+                    }
+                    // Embedded YT Link
+                    let video_id = null;
+                    if (url.includes("youtube")) {
+                        // Full YT Link
+                        const queryString = `?${url.split("?")[1]}`;
+                        const urlParams = new URLSearchParams(queryString);
+                        video_id = urlParams.get("v")
+                    } else if (url.includes("youtu.be")) {
+                        // YT URL Shortener
+                        video_id = last(url.split("/"))
+                    }
+                    if (video_id != null) {
+                        hook.innerHTML = `
+                            <iframe 
+                                width="560"
+                                height="315"
+                                src="https://www.youtube.com/embed/${video_id}"
+                                title="YouTube video player"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen
+                                ></iframe>
+                        `
+                    }
+
+                } else {
+                    window.open(url, "_blank")
+                    return;
+                }
+                document.getElementById("audio-event").classList.remove("hide")
+            }
+
+            function closeSong() {
+                document.getElementById("audio-event-content").innerHTML = ""
+                document.getElementById("audio-event").classList.add("hide")
             }
 
             function getShareLink() {
