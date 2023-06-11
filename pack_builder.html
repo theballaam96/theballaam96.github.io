@@ -947,7 +947,7 @@
                 if (url.includes("cdn.discordapp.com")) {
                     // Embedded audio
                     hook.innerHTML = `
-                        <audio controls>
+                        <audio controls autoplay>
                             <source src="${url}" type="audio/mpeg">
                         </audio>
                     `

@@ -28,7 +28,8 @@
        "folder":"bgm",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1106055293495943168/BK_Grunty_Fight.mp3"
     },
     "Gruntys Lair.bin":{
        "folder":"bgm",
@@ -115,7 +116,8 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1100895994704568400/BT_Bottles_House.mp3"
     },
     "Cauldron Keep Interior.bin":{
        "folder":"bgm",
@@ -177,13 +179,15 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1100440794978074625/BT_Grunty_Industries_Exterior.mp3"
     },
     "Grunty Industries (Interior).bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1105846578662617098/BT_Grunty_Industries_Interior.mp3"
     },
     "Hag 1.bin":{
        "folder":"bgm",
@@ -210,7 +214,8 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1100895729012191393/BT_Isle_O_Hags.mp3"
     },
     "Jiggywiggy Challenge.bin":{
        "folder":"bgm",
@@ -243,7 +248,8 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1100441113841639504/BT_Mayahem_Temple.mp3"
     },
     "Mingy Jongo.bin":{
        "folder":"bgm",
@@ -263,13 +269,15 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1100440500537921586/BT_Mumbos_Skull.mp3"
     },
     "Targitzans Temple.bin":{
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1105846953943773184/BT_Targitzans_Temple.mp3"
     },
     "Targitzan.bin":{
        "folder":"bgm",
@@ -303,7 +311,8 @@
        "folder":"bgm",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1100896261374214174/BT_Witchyworld.mp3"
     },
     "Zombie Jingaling.bin":{
        "folder":"bgm",
@@ -378,7 +387,8 @@
        "folder":"bgm",
        "game":"final_fantasy_7",
        "composer":"Nobuo Uematsu",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1115321431853641819/FF7_Forested_Temple.mp3"
     },
     "Funky Kong Anthem.bin":{
        "folder":"bgm",
@@ -449,7 +459,8 @@
        "folder":"bgm",
        "game":"kh2",
        "composer":"Yoko Shimomura",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1115491000308207716/KH2_Cavern_of_Rememberance.mp3"
     },
     "Laytons Theme.bin":{
        "folder":"bgm",
@@ -495,7 +506,8 @@
        "folder":"bgm",
        "game":"majora",
        "composer":"Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1115490723828088852/MM_Termina_Field.mp3"
     },
     "Stone Tower Temple.bin":{
        "folder":"bgm",
@@ -507,7 +519,8 @@
        "folder":"bgm",
        "game":"ocarina",
        "composer":"Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1114709632338907136/OOT_Gerudo_Valley.mp3"
     },
     "Pirate Lagoon.bin":{
        "folder":"bgm",
@@ -581,7 +594,8 @@
        "folder":"bgm",
        "game":"wind_waker",
        "composer":"Kenta Nagata",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1115133978568040479/WW_Dragon_Roost_Island.mp3"
     },
     "Pledge of Demon.bin":{
        "folder":"bgm",
@@ -594,26 +608,30 @@
        "folder":"events",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113494196263862302/BK_Church_Open.mp3"
     },
     "Grunty Door Open.bin":{
        "folder":"events",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113494358134628463/BK_Grunty_Door_Open.mp3"
     },
     "Success (Banjo Kazooie).bin":{
        "folder":"events",
        "game":"bk",
        "alt_name": "Success",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113494882993057842/BK_Success.mp3"
     },
     "Failure.bin":{
        "folder":"events",
        "game":"bt",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113494561604517908/BT_Failure.mp3"
     },
     "Flute Jingle 1.bin":{
        "folder":"events",
@@ -640,44 +658,51 @@
        "folder":"majoritems",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113493758290440273/BK_Jinjo.mp3"
     },
     "Success (Banjo Tooie).bin":{
        "folder":"majoritems",
        "game":"bt",
        "alt_name": "Success",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113494720098873364/BT_Success.mp3"
     },
     "Im Loving It (McDonalds).bin":{
        "folder":"majoritems",
        "game":"not_applicable",
        "composer":"Pusha T, Justin Timberlake",
-       "converter":"UmedMuzl"
+       "converter":"UmedMuzl",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1115706183299387412/McD_Im_Loving_It.mp3"
     },
     "Never Gonna Give You Up (Jingle).bin":{
        "folder":"majoritems",
        "game":"not_applicable",
        "composer":"Rick Astley",
-       "converter":"GlitchGlider"
+       "converter":"GlitchGlider",
+       "audio":"https://www.youtube.com/watch?v=O7PdvglVTcs"
     },
     "Grunty Tile.bin":{
        "folder":"minoritems",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113493398364631100/BK_Grunty_Tile.mp3"
     },
     "Red Feather Collect.bin":{
        "folder":"minoritems",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113492827423391925/BK_Red_Feather_Collect.mp3"
     },
     "Small Item.bin":{
        "folder":"minoritems",
        "game":"bk",
        "composer":"Grant Kirkhope",
-       "converter":"Gloomy"
+       "converter":"Gloomy",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1113493627902115960/BK_Small_Item.mp3"
     },
     "Collect Note.bin":{
        "folder":"minoritems",
@@ -720,25 +745,29 @@
        "folder":"bgm",
        "game":"fire_emblem_blazing_blade",
        "composer":"Yuka Tsujiyoko",
-       "converter":"AaronDobbe"
+       "converter":"AaronDobbe",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116420495089348668/FETBB_Winds_Across_the_Plains.mp3"
     },
     "Scorch n Torch.bin":{
        "folder":"bgm",
        "game":"dkc_tropical",
        "composer":"David Wise",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116420154222461049/DKCTF_Scorch_n_Torch.mp3"
     },
     "Forest Stronghold.bin":{
        "folder":"bgm",
        "game":"un_squadron",
        "composer":"Takashi Tateishi",
-       "converter":"Mr_Rippe"
+       "converter":"Mr_Rippe",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116432152536563753/UN_Squadron_Forest_Stronghold.mp3"
     },
     "Midnas Lament.bin":{
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116420725180485734/TP_Midnas_Lament.mp3"
     },
     "Gamecube Startup.bin":{
        "folder":"events",
@@ -751,37 +780,43 @@
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116550554836021309/TP_Faron_Woods.mp3"
     },
     "Sacred Grove.bin":{
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116550975109468270/TP_Sacred_Grove.mp3"
     },
     "Moon.bin":{
        "folder":"bgm",
        "game":"ducktales",
        "composer":"Hiroshige Tonomura",
-       "converter":"Mr_Rippe"
+       "converter":"Mr_Rippe",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116551596164251708/Ducktales_Moon.mp3"
     },
     "Zoras Domain.bin":{
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116552354456674334/TP_Zoras_Domain.mp3"
     },
     "Lake Hylia.bin":{
        "folder":"bgm",
        "game":"twilight_princess",
        "composer":"Toru Minegishi, Asuka Ota, Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116552634174808146/TP_Lake_Hylia.mp3"
     },
     "Predule.bin":{
        "folder":"bgm",
        "game":"final_fantasy_7",
        "composer":"Nobuo Uematsu",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116745652928532573/FF7_Prelude.mp3"
     },
     "Fresh Prince of Bel Air.bin":{
        "folder":"bgm",
@@ -794,53 +829,69 @@
        "folder":"bgm",
        "game":"fire_emblem_blazing_blade",
        "composer":"Yuka Tsujiyoko",
-       "converter":"AaronDobbe"
+       "converter":"AaronDobbe",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1116746168630792332/FETBB_Scars_of_Scouring.mp3"
     },
     "Metal Man.bin":{
        "folder":"bgm",
        "game":"mega_man_2",
        "composer":"Takashi Tateishi",
-       "converter":"Mr_Rippe"
+       "converter":"Mr_Rippe",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117146856187756605/MM2_Metal_Man.mp3"
     },
     "Let the Battles Begin.bin":{
        "folder":"bgm",
        "game":"final_fantasy_7",
        "composer":"Nobuo Uematsu",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117147122614153226/FF7_Let_the_Battles_Begin.mp3"
     },
     "Stanley Steemer Jingle.bin":{
        "folder":"events",
        "game":"not_applicable",
-       "converter":"UmedMuzl"
+       "converter":"UmedMuzl",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117147372942794876/Stanley_Steemer_Jingle.mp3"
     },
     "Still the Road is Full of Dangers.bin":{
        "folder":"bgm",
        "game":"mario_rpg",
        "composer":"Yoko Shimomura",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117147741269786644/SMRPG_Still_the_Road_is_Full_of_Dangers.mp3"
     },
     "Beware the Forests Mushrooms.bin":{
        "folder":"bgm",
        "game":"mario_rpg",
        "composer":"Yoko Shimomura",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117147996644188252/SMRPG_Beware_the_Forests_Mushrooms.mp3"
     },
     "And My Names Booster.bin":{
        "folder":"bgm",
        "game":"mario_rpg",
        "composer":"Yoko Shimomura",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117300110112604160/SMRPG_And_my_Names_Booster.mp3"
     },
     "Welcome to Booster Tower.bin":{
        "folder":"bgm",
        "game":"mario_rpg",
        "composer":"Yoko Shimomura",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117300417265672252/SMRPG_Welcome_to_Booster_Tower.mp3"
     },
     "Outset Island.bin":{
        "folder":"bgm",
        "game":"wind_waker",
        "composer":"Hajime Wakai, Kenta Nagata, Toru Minegishi, Koji Kondo",
-       "converter":"OnlySpaghettiCode"
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117300636820709396/WW_Outset_Island.mp3"
+    },
+    "Nimbus Land.bin":{
+       "folder":"bgm",
+       "game":"mario_rpg",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117504287405264967/SMRPG_Nimbus_Land.mp3"
     }
  }
