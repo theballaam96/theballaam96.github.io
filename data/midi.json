@@ -893,5 +893,26 @@
        "composer":"Yoko Shimomura",
        "converter":"OnlySpaghettiCode",
        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117504287405264967/SMRPG_Nimbus_Land.mp3"
+    },
+    "Old King Coal.bin":{
+       "folder":"bgm",
+       "game":"bt",
+       "composer":"Grant Kirkhope",
+       "converter":"Ballaam",
+       "hidden":true
+    },
+    "Chemical Plant Zone.bin":{
+       "folder":"bgm",
+       "game":"sonic_2",
+       "composer":"Masato Nakamura",
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117677107032641566/Sonic_2_Chemical_Plant_Zone.mp3"
+    },
+    "Boundless Ocean.bin":{
+       "folder":"bgm",
+       "game":"final_fantasy_3",
+       "composer":"Nobuo Uematsu",
+       "converter":"Mr_Rippe",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117677372473344071/FF3_Boundless_Ocean.mp3"
     }
  }

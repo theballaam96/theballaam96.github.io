@@ -72,7 +72,7 @@
        "new_instrument":32
     },
     "23":{
-       "new_instrument":23,
+       "new_instrument":34,
        "info":"5?"
     },
     "24":{
@@ -111,7 +111,8 @@
        "new_instrument":42
     },
     "35":{
-       "new_instrument":-1
+       "new_instrument":23,
+       "info":"Low wood sound? Best seems to be a xylophone if pitched down?"
     },
     "36":{
        "new_instrument":-1,
@@ -223,7 +224,7 @@
        "new_instrument":58
     },
     "70":{
-       "new_instrument":-1
+       "new_instrument":47
     },
     "71":{
        "new_instrument":47
@@ -290,7 +291,8 @@
        "new_instrument":-1
     },
     "92":{
-       "new_instrument":-1
+       "new_instrument":41,
+       "info":"Choir of some kind?"
     },
     "93":{
        "new_instrument":-1
@@ -302,7 +304,8 @@
        "new_instrument":-1
     },
     "96":{
-       "new_instrument":-1
+       "new_instrument":-1,
+       "info":"? Wind kinda thing?"
     },
     "97":{
        "new_instrument":-1
