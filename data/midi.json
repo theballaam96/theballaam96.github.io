@@ -914,5 +914,12 @@
        "composer":"Nobuo Uematsu",
        "converter":"Mr_Rippe",
        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117677372473344071/FF3_Boundless_Ocean.mp3"
+    },
+    "Cavi Cape.bin":{
+       "folder":"bgm",
+       "game":"bowsers_inside_story",
+       "composer":"Yoko Shimomura",
+       "converter":"OnlySpaghettiCode",
+       "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1117988570477629490/BiS_Cavi_Cape.mp3"
     }
  }
