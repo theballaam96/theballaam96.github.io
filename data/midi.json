@@ -677,7 +677,7 @@
         "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1115706183299387412/McD_Im_Loving_It.mp3"
     },
     "Never Gonna Give You Up (Jingle).bin": {
-        "folder": "majoritems",
+        "folder": "events",
         "game": "not_applicable",
         "composer": "Rick Astley",
         "converter": "GlitchGlider",
@@ -735,7 +735,7 @@
         "audio": "https://youtu.be/Op_mKcw1alE"
     },
     "PS1 Bios Startup.bin": {
-        "folder": "minoritems",
+        "folder": "events",
         "game": "not_applicable",
         "composer": "Takafumi Fujisawa",
         "converter": "GlitchGlider",
@@ -967,6 +967,35 @@
         "folder": "bgm",
         "game": "undertale",
         "composer": "Toby Fox",
+        "converter": "Bismuth",
+        "publish_date": "14-06-2023"
+    },
+    "Jiggy Collection.bin": {
+        "folder": "majoritems",
+        "game": "bk",
+        "composer": "Grant Kirkhope",
+        "converter": "Bismuth",
+        "publish_date": "14-06-2023"
+    },
+    "Beta Factory.bin": {
+        "folder": "bgm",
+        "game": "donkey_kong_64",
+        "composer": "Grant Kirkhope",
+        "converter": "Bismuth",
+        "publish_date": "14-06-2023"
+    },
+    "Candys Music Shop Alternate Edition.bin": {
+        "folder": "bgm",
+        "game": "donkey_kong_64",
+        "composer": "Grant Kirkhope",
+        "converter": "Bismuth",
+        "publish_date": "14-06-2023",
+        "custom": true
+    },
+    "Windows 95 Startup.bin": {
+        "folder": "events",
+        "game": "not_applicable",
+        "composer": "Brian Eno",
         "converter": "Bismuth",
         "publish_date": "14-06-2023"
     }
