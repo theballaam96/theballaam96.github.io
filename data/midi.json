@@ -962,5 +962,12 @@
         "converter": "UmedMuzl",
         "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118394569076248627/MKW_Rainbow_Road.wav",
         "publish_date": "13-06-2023"
+    },
+    "Spider Dance.bin": {
+        "folder": "bgm",
+        "game": "undertale",
+        "composer": "Toby Fox",
+        "converter": "Bismuth",
+        "publish_date": "14-06-2023"
     }
 }

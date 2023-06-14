@@ -519,6 +519,7 @@
             }
 
             function toggleGameVisibility(game_name, el) {
+                window.scrollTo(0,0);
                 document.getElementById("popup").classList.remove("hide")
                 const song_el = document.getElementsByClassName("game-songs");
                 document.getElementById("prompt_head").innerText = game_data[game_name].name;
