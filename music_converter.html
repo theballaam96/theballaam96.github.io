@@ -277,7 +277,7 @@
                     const any_song_loaded = loadSongList(compressed_midi.length, song_data["song_data"])
                     setPreloadState(any_song_loaded);
                     if (!any_song_loaded) {
-                        throw new Error("Song too big for ROM.")
+                        throw new Error(`Song too big for ROM. (${compressed_midi.length} bytes)`)
                     }
                 };
                 fr.readAsArrayBuffer(document.getElementById("rom-selector").files[0]);
