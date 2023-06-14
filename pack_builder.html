@@ -48,7 +48,7 @@
             }
             .popup_background {
                 background-color: rgba(0,0,0,0.5);
-                position:absolute;
+                position:fixed;
                 top:0;
                 left:0;
                 width:100%;
@@ -245,6 +245,9 @@
             }
             .audio-close:hover {
                 background-color: rgba(255, 255, 255, 0.4);
+            }
+            .fixed-body {
+                overflow-y: clip;
             }
         </style>
     </head>
@@ -496,6 +499,7 @@
                 document.getElementById("popup").classList.add("hide");
                 document.getElementById("popup_controls").innerHTML = "";
                 updateCount()
+                document.body.classList.remove("fixed-body")
             }
 
             function destroyPopup() {
@@ -519,7 +523,7 @@
             }
 
             function toggleGameVisibility(game_name, el) {
-                window.scrollTo(0,0);
+                document.body.classList.add("fixed-body")
                 document.getElementById("popup").classList.remove("hide")
                 const song_el = document.getElementsByClassName("game-songs");
                 document.getElementById("prompt_head").innerText = game_data[game_name].name;
