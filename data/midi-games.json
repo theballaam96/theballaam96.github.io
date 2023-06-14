@@ -1,116 +1,125 @@
 {
-    "amongus":{
-       "name":"Among Us"
+    "amongus": {
+        "name": "Among Us"
     },
-    "dkr":{
-       "name":"Diddy Kong Racing"
+    "dkr": {
+        "name": "Diddy Kong Racing"
     },
-    "bk":{
-       "name":"Banjo-Kazooie"
+    "bk": {
+        "name": "Banjo-Kazooie"
     },
-    "bomberman64":{
-       "name":"Bomberman 64"
+    "bomberman64": {
+        "name": "Bomberman 64"
     },
-    "bowsers_inside_story":{
-       "name":"Mario & Luigi: Bowser's Inside Story"
+    "bowsers_inside_story": {
+        "name": "Mario & Luigi: Bowser's Inside Story"
     },
-    "bt":{
-       "name":"Banjo-Tooie"
+    "bt": {
+        "name": "Banjo-Tooie"
     },
-    "crash2":{
-       "name":"Crash Bandicoot 2: Cortex Strikes Back"
+    "crash2": {
+        "name": "Crash Bandicoot 2: Cortex Strikes Back"
     },
-    "majora":{
-       "name":"Majora's Mask",
-       "series":"zelda"
+    "majora": {
+        "name": "Majora's Mask",
+        "series": "zelda"
     },
-    "deus_ex":{
-       "name":"Deus Ex"
+    "deus_ex": {
+        "name": "Deus Ex"
     },
-    "dkc2":{
-       "name":"Donkey Kong Country 2: Diddy's Kong Quest"
+    "dkc2": {
+        "name": "Donkey Kong Country 2: Diddy's Kong Quest"
     },
-    "dkc_returns":{
-       "name":"Donkey Kong Country Returns"
+    "dkc_returns": {
+        "name": "Donkey Kong Country Returns"
     },
-    "final_fantasy_3":{
-       "name":"Final Fantasy 3"
+    "final_fantasy_3": {
+        "name": "Final Fantasy 3"
     },
-    "final_fantasy_7":{
-       "name":"Final Fantasy 7"
+    "final_fantasy_7": {
+        "name": "Final Fantasy 7"
     },
-    "not_applicable":{
-       "name":"Other"
+    "not_applicable": {
+        "name": "Other"
     },
-    "goldeneye":{
-       "name":"Goldeneye 007"
+    "goldeneye": {
+        "name": "Goldeneye 007"
     },
-    "ocarina":{
-       "name":"Ocarina of Time",
-       "series":"zelda"
+    "ocarina": {
+        "name": "Ocarina of Time",
+        "series": "zelda"
     },
-    "kh2":{
-       "name":"Kingdom Hearts 2"
+    "kh2": {
+        "name": "Kingdom Hearts 2"
     },
-    "layton_curious":{
-       "name":"Professor Layton and the Curious Village"
+    "layton_curious": {
+        "name": "Professor Layton and the Curious Village"
     },
-    "spirit_tracks":{
-       "name":"Spirit Tracks",
-       "series":"zelda"
+    "spirit_tracks": {
+        "name": "Spirit Tracks",
+        "series": "zelda"
     },
-    "mario_party_1":{
-       "name":"Mario Party 1"
+    "mario_party_1": {
+        "name": "Mario Party 1"
     },
-    "pizza_tower":{
-       "name":"Pizza Tower"
+    "pizza_tower": {
+        "name": "Pizza Tower"
     },
-    "pokemon_red_yellow_blue":{
-       "name":"Pokemon Red, Yellow & Blue"
+    "pokemon_red_yellow_blue": {
+        "name": "Pokemon Red, Yellow & Blue"
     },
-    "mario_64":{
-       "name":"Super Mario 64"
+    "mario_64": {
+        "name": "Super Mario 64"
     },
-    "skyward_sword":{
-       "name":"Skyward Sword",
-       "series":"zelda"
+    "skyward_sword": {
+        "name": "Skyward Sword",
+        "series": "zelda"
     },
-    "subway_surfers":{
-       "name":"Subway Surfers"
+    "subway_surfers": {
+        "name": "Subway Surfers"
     },
-    "wind_waker":{
-       "name":"The Wind Waker",
-       "series":"zelda"
+    "wind_waker": {
+        "name": "The Wind Waker",
+        "series": "zelda"
     },
-    "yakuza":{
-       "name":"Yakuza 0"
+    "yakuza": {
+        "name": "Yakuza 0"
     },
-    "pokemon_snap":{
-       "name":"Pokemon Snap"
+    "pokemon_snap": {
+        "name": "Pokemon Snap"
     },
-    "fire_emblem_blazing_blade":{
-       "name":"Fire Emblem: The Blazing Blade"
+    "fire_emblem_blazing_blade": {
+        "name": "Fire Emblem: The Blazing Blade"
     },
-    "dkc_tropical":{
-       "name":"Donkey Kong Country: Tropical Freeze"
+    "dkc_tropical": {
+        "name": "Donkey Kong Country: Tropical Freeze"
     },
-    "un_squadron":{
-       "name":"U.N. Squadron"
+    "un_squadron": {
+        "name": "U.N. Squadron"
     },
-    "twilight_princess":{
-       "name":"Twilight Princess",
-       "series":"zelda"
+    "twilight_princess": {
+        "name": "Twilight Princess",
+        "series": "zelda"
     },
-    "ducktales":{
-       "name":"DuckTales"
+    "ducktales": {
+        "name": "DuckTales"
     },
-    "mega_man_2":{
-       "name":"Mega Man 2"
+    "mega_man_2": {
+        "name": "Mega Man 2"
     },
-    "mario_rpg":{
-       "name":"Super Mario RPG: Legend of the Seven Stars"
+    "mario_rpg": {
+        "name": "Super Mario RPG: Legend of the Seven Stars"
     },
-    "sonic_2":{
-       "name":"Sonic the Hedgehog 2"
+    "sonic_2": {
+        "name": "Sonic the Hedgehog 2"
+    },
+    "chrono_trigger": {
+        "name": "Chrono Trigger"
+    },
+    "super_mario_sunshine": {
+        "name": "Super Mario Sunshine"
+    },
+    "mario_kart_wii": {
+        "name": "Mario Kart Wii"
     }
- }
+}
