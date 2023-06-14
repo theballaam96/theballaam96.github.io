@@ -228,7 +228,8 @@
         "folder": "bgm",
         "game": "bt",
         "composer": "Grant Kirkhope",
-        "converter": "Ballaam"
+        "converter": "Ballaam",
+        "audio":"https://www.youtube.com/watch?v=NCuWaWTBaqw"
     },
     "Jinjo Village.bin": {
         "folder": "bgm",
@@ -708,25 +709,29 @@
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
-        "converter": "Ballaam"
+        "converter": "Ballaam",
+        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552282766774292/collect-note.wav"
     },
     "Gold Feather Collect.bin": {
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
-        "converter": "Ballaam"
+        "converter": "Ballaam",
+        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552747151724705/gold-feather.wav"
     },
     "Select Clockwork.bin": {
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
-        "converter": "Ballaam"
+        "converter": "Ballaam",
+        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552547108589578/select-clockwork.wav"
     },
     "Treble Clef Collect.bin": {
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
-        "converter": "Ballaam"
+        "converter": "Ballaam",
+        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552409795465267/treble-collect.wav"
     },
     "Discord Notification.bin": {
         "folder": "minoritems",
