@@ -557,18 +557,27 @@
                         const data = idToSongInfo(checkboxes[c].getAttribute("song-id"));
                         if (data != null) {
                             let content = null;
+                            let allowed = true;
                             await fetch(data.download)
-                                .then(response => content = response.blob())
-                            if (Object.keys(folder_data).includes(data.folder)) {
-                                folder_data[data.folder].push({
-                                    "song": data.song,
-                                    "data": content
+                                .then((response) => {
+                                    if (!response.ok) {
+                                        allowed = false;
+                                    } else {
+                                        content = response.blob();
+                                    }
                                 })
-                            } else {
-                                folder_data[data.folder] = [{
-                                    "song": data.song,
-                                    "data": content
-                                }]
+                            if (allowed) {
+                                if (Object.keys(folder_data).includes(data.folder)) {
+                                    folder_data[data.folder].push({
+                                        "song": data.song,
+                                        "data": content
+                                    })
+                                } else {
+                                    folder_data[data.folder] = [{
+                                        "song": data.song,
+                                        "data": content
+                                    }]
+                                }
                             }
                         }
                     }
@@ -807,25 +816,27 @@
                 // Parse data for matching arrays
                 let matching_songs = [];
                 Object.keys(compressed_data).forEach(song_a => {
-                    const found_song = Object.keys(site_data).find(item => {
-                        return checkArrayMatch(compressed_data[song_a].data, site_data[item].data)
-                    })
-                    if (found_song) {
-                        if (!matching_songs.includes(found_song)) {
-                            matching_songs.push(found_song)
-                        }
-                    } else {
-                        // Song isn't on site. TODO: Handle persisting these songs
-                        const item_name = last(song_a.split("/"));
-                        const item_group = compressed_data[song_a].group;
-                        const item_data = compressed_data[song_a].data;
-                        if (!Object.keys(uploaded_pack_data).includes(item_group)) {
-                            uploaded_pack_data[item_group] = []
-                        }
-                        uploaded_pack_data[item_group].push({
-                            "song": item_name,
-                            "data": new Blob([new Uint8Array(item_data)])
+                    if (last(song_a.split("/")).toLowerCase() != "predule.bin") { // Temporarily installed to weed out the bad bin
+                        const found_song = Object.keys(site_data).find(item => {
+                            return checkArrayMatch(compressed_data[song_a].data, site_data[item].data)
                         })
+                        if (found_song) {
+                            if (!matching_songs.includes(found_song)) {
+                                matching_songs.push(found_song)
+                            }
+                        } else {
+                            // Song isn't on site. TODO: Handle persisting these songs
+                            const item_name = last(song_a.split("/"));
+                            const item_group = compressed_data[song_a].group;
+                            const item_data = compressed_data[song_a].data;
+                            if (!Object.keys(uploaded_pack_data).includes(item_group)) {
+                                uploaded_pack_data[item_group] = []
+                            }
+                            uploaded_pack_data[item_group].push({
+                                "song": item_name,
+                                "data": new Blob([new Uint8Array(item_data)])
+                            })
+                        }
                     }
                 })
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
