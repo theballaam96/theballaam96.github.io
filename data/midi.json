@@ -229,7 +229,7 @@
         "game": "bt",
         "composer": "Grant Kirkhope",
         "converter": "Ballaam",
-        "audio":"https://www.youtube.com/watch?v=NCuWaWTBaqw"
+        "audio": "https://www.youtube.com/watch?v=NCuWaWTBaqw"
     },
     "Jinjo Village.bin": {
         "folder": "bgm",
@@ -710,28 +710,28 @@
         "game": "bt",
         "composer": "Grant Kirkhope",
         "converter": "Ballaam",
-        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552282766774292/collect-note.wav"
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118552282766774292/collect-note.wav"
     },
     "Gold Feather Collect.bin": {
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
         "converter": "Ballaam",
-        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552747151724705/gold-feather.wav"
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118552747151724705/gold-feather.wav"
     },
     "Select Clockwork.bin": {
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
         "converter": "Ballaam",
-        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552547108589578/select-clockwork.wav"
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118552547108589578/select-clockwork.wav"
     },
     "Treble Clef Collect.bin": {
         "folder": "minoritems",
         "game": "bt",
         "composer": "Grant Kirkhope",
         "converter": "Ballaam",
-        "audio":"https://cdn.discordapp.com/attachments/1097234540373745854/1118552409795465267/treble-collect.wav"
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118552409795465267/treble-collect.wav"
     },
     "Discord Notification.bin": {
         "folder": "minoritems",
@@ -1003,5 +1003,61 @@
         "composer": "Brian Eno",
         "converter": "Bismuth",
         "publish_date": "14-06-2023"
+    },
+    "Forever in the Plains.bin": {
+        "folder": "bgm",
+        "game": "bowsers_inside_story",
+        "composer": "Yoko Shimomura",
+        "converter": "OnlySpaghettiCode",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118995083195318456/BiS_Forever_in_the_Plains.mp3",
+        "publish_date": "15-06-2023"
+    },
+    "Plack Beach.bin": {
+        "folder": "bgm",
+        "game": "bowsers_inside_story",
+        "composer": "Yoko Shimomura",
+        "converter": "OnlySpaghettiCode",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118995339748315238/BiS_Plack_Beach.mp3",
+        "publish_date": "15-06-2023"
+    },
+    "Dimble Wood.bin": {
+        "folder": "bgm",
+        "game": "bowsers_inside_story",
+        "composer": "Yoko Shimomura",
+        "converter": "OnlySpaghettiCode",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118995585719091230/BiS_Dimble_Wood.mp3",
+        "publish_date": "15-06-2023"
+    },
+    "Shine Get.bin": {
+        "folder": "majoritems",
+        "game": "super_mario_sunshine",
+        "composer": "Koji Kondo",
+        "converter": "UmedMuzl",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118996296720724078/SMS_Shine_Get.wav",
+        "publish_date": "15-06-2023"
+    },
+    "Littleroot Town.bin": {
+        "folder": "bgm",
+        "game": "pokemon_rubby_sapphire_and_emerald",
+        "composer": "Go Ichinose",
+        "converter": "UmedMuzl",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118996769158742128/Littleroot_Town.wav",
+        "publish_date": "15-06-2023"
+    },
+    "Mii Channel.bin": {
+        "folder": "bgm",
+        "game": "not_applicable",
+        "composer": "Kazumi Totaka",
+        "converter": "UmedMuzl",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118997096117321848/Mii_Channel.wav",
+        "publish_date": "15-06-2023"
+    },
+    "Companions.bin": {
+        "folder": "bgm",
+        "game": "fire_emblem_blazing_blade",
+        "composer": "Yuka Tsujiyoko",
+        "converter": "AaronDobbe",
+        "audio": "https://cdn.discordapp.com/attachments/1097234540373745854/1118998701000638495/FETBB_Companions.mp3",
+        "publish_date": "15-06-2023"
     }
 }
