@@ -555,7 +555,7 @@
                         })
                         const game_name = game_pretty;
                         html += `<div class='game-handler'>
-                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",\"${game_pretty}\",this)'>${game_name}</div>
+                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>${game_name}</div>
                             <div class='game-songs hide' game='${game}'>
                                 ${local_html_total}
                             </div>
@@ -631,7 +631,8 @@
                 hidePopup()
             }
 
-            function toggleGameVisibility(game_internal, game_pretty, el) {
+            function toggleGameVisibility(game_internal, el) {
+                const game_pretty = el.innerText;
                 document.body.classList.add("fixed-body")
                 document.getElementById("popup").classList.remove("hide")
                 const song_el = document.getElementsByClassName("game-songs");
