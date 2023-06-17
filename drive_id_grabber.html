@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>Google Drive ID Grabber</title>
+        <style>
+            #link-converter {
+                padding: 20px;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <input type="text" id="link-converter" />
+        <script>
+            function getFileIdFromURL(url) {
+                const file_delimiter_open = "open?id="
+                if (url.includes(file_delimiter_open)) {
+                  const queryString = url.split(file_delimiter_open)[1]
+                  const pre_amp = queryString.split("&")[0]
+                  return pre_amp
+                }
+                const file_delimiter = "/file/d/"
+                if (url.includes(file_delimiter)) {
+                  const post_file = url.split(file_delimiter)[1]
+                  const pre_slash = post_file.split("/")[0]
+                  const pre_qmark = pre_slash.split("?")[0]
+                  return pre_qmark;
+                }
+                return null;
+            }
+            
+            document.getElementById("link-converter").addEventListener("keyup", (e) => {
+                const link = e.target.value;
+                if (link.includes("drive.google.com")) {
+                    e.target.value = getFileIdFromURL(link);
+                }
+            })
+        </script>
+    </body>
+</html>

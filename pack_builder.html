@@ -249,6 +249,18 @@
             .fixed-body {
                 overflow-y: clip;
             }
+            .load_bar {
+                height: 10px;
+            }
+            #loading_bar {
+                margin-top: 20px;
+            }
+            #loading_left{
+                background-color: #7c80a3;
+            }
+            #loading_right{
+                background-color: #20254f;
+            }
         </style>
     </head>
     <body>
@@ -311,163 +323,258 @@
                 </div>
             </div>
         </div>
+        <div class="popup_background" id="load-event">
+            <div class="popup_prompt">
+                <div class="popup_head">Loading Site Data</div>
+                <div id="loading_bar" class="flexsplitter load_bar">
+                    <div id="loading_left" class="load_bar" style="flex:0"></div>
+                    <div id="loading_right" class="load_bar" style="flex:100"></div>
+                </div>
+                <div id="loading_text"></div>
+            </div>
+        </div>
         <script src="script/nav.js"></script>
-        <script>
+        <script>          
             const ZELDA_NAME = "The Legend of Zelda: "
-            let game_data = {}
             let midi_data_copy = null;
             let current_game = null;
             let uploaded_pack_data = {};
+            let api_key = "AIzaSyA9CnqJmq2lf-jC_WwcXyXfyoqa6Bs7HC0"
+            let api_key_check_ran = false;
+            const MISC_NAME = "Other"
+            fetch("DRIVE_API_KEY", {cache: "no-store"})
+                .then(async (response) => {
+                    if (response.ok) {
+                        const new_key = await response.text()
+                        api_key = new_key;
+                    }
+                    api_key_check_ran = true;
+                })
+            
 
             function last(array) {
                 return array[array.length - 1];
             }
-            async function getMidiData() {
-                const resp = await fetch("./data/midi-games.json", {cache: "no-store"})
-                const resp_json = await resp.json()
-                game_data = {...resp_json}
-                Object.keys(game_data).forEach(game_short => {
-                    if (Object.keys(game_data[game_short]).includes("series")) {
-                        if (game_data[game_short].series == "zelda") {
-                            game_data[game_short].name = ZELDA_NAME + game_data[game_short].name
+
+            function uuidv4() {
+                return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                );
+              }
+
+            function getCellValue(reference, index) {
+                const val = reference.c[index].v.replaceAll("|","");
+                if ((val == null) || (val == undefined)) {
+                    return null;
+                }
+                if (val.trim() == "") {
+                    return null;
+                }
+                return val.trim()
+            }
+
+            class MIDIHeader {
+                constructor (construction_index, mandatory) {
+                    this.construction_index = construction_index
+                    this.mandatory = mandatory
+                }
+            }
+
+            class MIDIInfo {
+                constructor (name, game, group, composer, converter, drive_id, timestamp, audio, index) {
+                    this.name = name;
+                    this.game = game;
+                    this.group = group;
+                    this.composer = composer;
+                    this.converter = converter;
+                    this.drive_id = drive_id;
+                    this.timestamp = timestamp;
+                    this.audio = audio;
+                    this.index = index
+                }
+            }
+            
+            let pack_zip_data = null;
+
+            async function getSpreadsheetData() {
+                const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
+                const sheetId = "0"
+                const tab_name = "Song Uploads"
+                const res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=0`)
+                const text = await res.text()
+                json = JSON.parse(text.substr(47).slice(0, -2))
+                let counter = 0;
+                midi_data_copy = [];
+                for (let i = 1; i < json.table.rows.length; i++) {
+                    const ref = json.table.rows[i];
+                    const headers = [
+                        new MIDIHeader(6, false), // Timestamp
+                        new MIDIHeader(1, true), // Game
+                        new MIDIHeader(0, true), // Name
+                        new MIDIHeader(2, true), // Folder/Group
+                        new MIDIHeader(3, false), // Composer
+                        new MIDIHeader(4, false), // Converter
+                        new MIDIHeader(5, true), // Drive ID
+                        new MIDIHeader(7, false), // Audio
+                    ]
+                    let params = new Array(headers.length).fill(null);
+                    let permit = true;
+                    headers.forEach((header, index) => {
+                        const value = getCellValue(ref, index);
+                        if ((value == null) && (header.mandatory)) {
+                            permit = false;
                         }
+                        params[header.construction_index] = value;
+                    })
+                    if (permit) {
+                        midi_data_copy.push(new MIDIInfo(...params, counter++))
+                    }
+                }
+            }
+
+            const total_prog = 5;
+            async function getMidiData() {
+                let prog = 0;
+                updateProgress(prog++, total_prog, "Initializing");
+                await waitFor(_ => api_key_check_ran);
+                updateProgress(prog++, total_prog, "Loaded API Key");
+                await getSpreadsheetData()
+                updateProgress(prog++, total_prog, "Grabbed midi data");
+                const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
+                const pack_sheet_id = "1917417042"
+				const pack_res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${pack_sheet_id}`, {cache: "no-store"})
+				const pack_res_text = await pack_res.text()
+                const pack_json = JSON.parse(pack_res_text.substr(47).slice(0, -2))
+                const zip_id = pack_json.table.rows[0].c[0].v;
+                let ban = false;
+                if (zip_id == null) {
+                    ban = true;
+                } else if (zip_id.trim().length == 0) {
+                    ban = true;
+                }
+                if (ban) {
+                    throw new Error("No pack.zip ID loaded. This is likely due to a song upload occurring.")
+                    return;
+                }
+                const zip_url = getDriveDownload(zip_id);
+                const zip_res = await fetch(zip_url);
+                pack_zip_data = await zip_res.blob();
+                updateProgress(prog++, total_prog, "Grabbing Pack.zip");
+                const hook = document.getElementById("song_list")
+                let html = ""
+                let songs_by_game = {}
+                let other = []
+                midi_data_copy.forEach(song => {
+                    const game_name = song.game;
+                    if (game_name == MISC_NAME) {
+                        other.push(song)
+                    } else {
+                        if (!Object.keys(songs_by_game).includes(game_name)) {
+                            songs_by_game[game_name] = []
+                        }
+                        songs_by_game[game_name].push(song)
                     }
                 })
-                await fetch("./data/midi.json", {cache: "no-store"})
-                    .then(response => response.json())
-                    .then(json => {
-                        midi_data_copy = json;
-                        const hook = document.getElementById("song_list")
-                        let html = ""
-                        let songs_by_game = {}
-                        let other = []
-                        Object.keys(json).forEach(key => {
-                            // html += `<div>${key}</div>`
-                            const game = game_data[json[key].game].name;
-                            let hidden = false;
-                            if (Object.keys(json[key]).includes("hidden")) {
-                                if (json[key].hidden) {
-                                    hidden = true;
-                                }
+                songs_by_game = Object.keys(songs_by_game).sort().reduce(
+                    (obj, key) => { 
+                        obj[key] = songs_by_game[key]; 
+                        return obj;
+                    }, {}
+                );
+                songs_by_game[MISC_NAME] = other.slice();
+                const char_upper_alpha_idx = Array.from(Array(26)).map((e, i) => i + 65);
+                const char_lower_alpha_idx = Array.from(Array(26)).map((e, i) => i + 97);
+                const char_upper_alpha = char_upper_alpha_idx.map((x) => String.fromCharCode(x));
+                const char_lower_alpha = char_lower_alpha_idx.map((x) => String.fromCharCode(x));
+                const char_num = Array.from(Array(10).keys()).map(x => x.toString())
+                const char_alphanumeric = char_upper_alpha + char_lower_alpha + char_num;
+                Object.keys(songs_by_game).forEach(game_pretty => {
+                    let game = game_pretty.split("").filter(item => char_alphanumeric.includes(item)).join("").toLowerCase();
+                    if (game != null) {
+                        const song_list = songs_by_game[game_pretty].sort()
+                        // <input type='checkbox' class='midi-checkbox' id='' onclick='updateMaster(\"${game}\")' game='${game}'/>
+                        let local_html = {};
+                        song_list.forEach(song => {
+                            const group = song.group;
+                            let displayed_song_name = song.name;
+                            let composer = song.composer ? song.composer : "";
+                            let converter = song.converter ? song.converter : "";
+                            let audio = song.audio;
+                            if (!Object.keys(local_html).includes(group)) {
+                                local_html[group] = "";
                             }
-                            if (!hidden) {
-                                if (json[key].game == "not_applicable") {
-                                    other.push(key)
-                                } else {
-                                    if (!Object.keys(songs_by_game).includes(game)) {
-                                        songs_by_game[game] = [key]
-                                    } else {
-                                        songs_by_game[game].push(key)
-                                    }
-                                }
-                            }
-                        })
-                        songs_by_game = Object.keys(songs_by_game).sort().reduce(
-                            (obj, key) => { 
-                                obj[key] = songs_by_game[key]; 
-                                return obj;
-                            }, {}
-                        );
-                        songs_by_game[game_data["not_applicable"].name] = other.slice();
-                        Object.keys(songs_by_game).forEach(game_pretty => {
-                            let game = null;
-                            Object.keys(game_data).forEach(item => {
-                                if (game_data[item].name == game_pretty) {
-                                    game = item;
-                                }
-                            })
-                            if (game != null) {
-                                const song_list = songs_by_game[game_pretty].sort()
-                                // <input type='checkbox' class='midi-checkbox' id='' onclick='updateMaster(\"${game}\")' game='${game}'/>
-                                let local_html = {};
-                                song_list.forEach(song => {
-                                    const group = midi_data_copy[song].folder;
-                                    let displayed_song_name = song;
-                                    let composer = "";
-                                    let converter = "";
-                                    let audio = null;
-                                    if (Object.keys(midi_data_copy[song]).includes("alt_name")) {
-                                        displayed_song_name = midi_data_copy[song].alt_name;
-                                    }
-                                    if (!Object.keys(local_html).includes(group)) {
-                                        local_html[group] = "";
-                                    }
-                                    if (Object.keys(midi_data_copy[song]).includes("composer")) {
-                                        composer = midi_data_copy[song].composer;
-                                    }
-                                    if (Object.keys(midi_data_copy[song]).includes("converter")) {
-                                        converter = midi_data_copy[song].converter;
-                                    }
-                                    if (Object.keys(midi_data_copy[song]).includes("audio")) {
-                                        audio = midi_data_copy[song].audio;
-                                    }
-                                    const state_index = Object.keys(midi_data_copy).indexOf(song);
-                                    local_html[group] += 
-                                        `
-                                        <div class='midi-checkbox-container'>
-                                            <div 
-                                                class='midi-checkbox noselect' 
-                                                song-id='${convertSongName(game, song)}' 
-                                                onclick='updateTickbox(this,\"${game}\")' 
-                                                ticked=${parseSeed(state_index) ? 'true' : 'false'} 
-                                                game='${game}'>
-                                                <div class='flexsplitter'>
-                                                    <div class='name_data'>
-                                                        <strong>${displayed_song_name.replace('.bin','')}</strong>
-                                                        <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
-                                                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
-                                                        </div>
-                                                    </div>
-                                                    <img class="tick" src='./assets/tick.svg'>
+                            const state_index = song.index;
+                            local_html[group] += 
+                                `
+                                <div class='midi-checkbox-container'>
+                                    <div 
+                                        class='midi-checkbox noselect' 
+                                        song-id='${song.index}' 
+                                        onclick='updateTickbox(this,\"${game}\")' 
+                                        ticked=${parseSeed(state_index) ? 'true' : 'false'} 
+                                        game='${game}'>
+                                        <div class='flexsplitter'>
+                                            <div class='name_data'>
+                                                <strong>${displayed_song_name.replace('.bin','')}</strong>
+                                                <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
+                                                    ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
+                                                    ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
                                                 </div>
                                             </div>
-                                            ${
-                                                audio != null ?
-                                                `<div class='audio_container${isCreditHidden() ? ' hide' : ''}'>
-                                                    <div class='audio_controller'>
-                                                        <div class='audio_interaction' onclick='playSong(\"${audio}\",\"${converter}\")'>&#9654;</div>
-                                                    </div>
-                                                </div>` : ''
-                                            }
-                                        </div>`
-                                })
-                                let local_html_total = "";
-                                const group_priority = {
-                                    "bgm": "Background Music",
-                                    "events": "Events",
-                                    "majoritems": "Major Items",
-                                    "minoritems": "Minor Items"
-                                }
-                                let first = true;
-                                Object.keys(group_priority).forEach(group => {
-                                    if (Object.keys(local_html).includes(group)) {
-                                        local_html_total += `${first ? '' : '<br>'}
-                                            <div class='popup_subtitle'>${group_priority[group]}</div>
-                                            <div class='flexsplitter' style='flex-wrap:wrap'>
-                                                ${local_html[group]}
-                                            </div>
-                                        `
-                                        first = false;
-                                    }
-                                })
-                                const game_name = game_data[game].name;
-                                html += `<div class='game-handler'>
-                                    <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>${game_name}</div>
-                                    <div class='game-songs hide' game='${game}'>
-                                        ${local_html_total}
+                                            <img class="tick" src='./assets/tick.svg'>
+                                        </div>
                                     </div>
+                                    ${
+                                        audio != null ?
+                                        `<div class='audio_container${isCreditHidden() ? ' hide' : ''}'>
+                                            <div class='audio_controller'>
+                                                <div class='audio_interaction' onclick='playSong(\"${audio}\",\"${converter}\")'>&#9654;</div>
+                                            </div>
+                                        </div>` : ''
+                                    }
                                 </div>`
+                        })
+                        let local_html_total = "";
+                        const group_priority = {
+                            "bgm": "Background Music",
+                            "events": "Events",
+                            "majoritems": "Major Items",
+                            "minoritems": "Minor Items"
+                        }
+                        let first = true;
+                        Object.keys(group_priority).forEach(group => {
+                            if (Object.keys(local_html).includes(group)) {
+                                local_html_total += `${first ? '' : '<br>'}
+                                    <div class='popup_subtitle'>${group_priority[group]}</div>
+                                    <div class='flexsplitter' style='flex-wrap:wrap'>
+                                        ${local_html[group]}
+                                    </div>
+                                `
+                                first = false;
                             }
                         })
-                        hook.innerHTML = html;
-                        updateMaster();
-                    })
+                        const game_name = game_pretty;
+                        html += `<div class='game-handler'>
+                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",\"${game_pretty}\",this)'>${game_name}</div>
+                            <div class='game-songs hide' game='${game}'>
+                                ${local_html_total}
+                            </div>
+                        </div>`
+                    }
+                })
+                hook.innerHTML = html;
+                updateProgress(prog++, total_prog, "Populated Site");
+                updateMaster();
+                updateProgress(prog++, total_prog, "Updated Master");
             }
             getMidiData();
 
             function convertSongName(game, song) {
                 return `${game}|${song.replaceAll(" ", "_").replaceAll(".bin","")}`
+            }
+
+            function getDriveDownload(drive_id) {
+                return `https://www.googleapis.com/drive/v3/files/${drive_id}?alt=media&key=${api_key}`
             }
 
             function idToSongInfo(id) {
@@ -476,20 +583,22 @@
                     let folder = null;
                     let download = null;
                     let song_index = null;
-                    Object.keys(midi_data_copy).forEach((song_name, index) => {
-                        if (convertSongName(midi_data_copy[song_name].game, song_name) == id) {
-                            song = song_name;
-                            folder = midi_data_copy[song_name].folder;
-                            download = `./assets/midis/${song}`;
-                            song_index = index;
-                        }
-                    })
+                    let drive_id = null;
+                    const entry = midi_data_copy.find(item => item.index == id);
+                    if (entry) {
+                        song = entry.name;
+                        folder = entry.group;
+                        download = getDriveDownload(entry.drive_id);
+                        song_index = id;
+                        drive_id = entry.drive_id
+                    }
                     if (song != null) {
                         return {
                             "song": song,
                             "folder": folder,
                             "download": download,
                             "index": song_index,
+                            "drive_id": drive_id
                         }
                     }
                 }
@@ -522,13 +631,13 @@
                 hidePopup()
             }
 
-            function toggleGameVisibility(game_name, el) {
+            function toggleGameVisibility(game_internal, game_pretty, el) {
                 document.body.classList.add("fixed-body")
                 document.getElementById("popup").classList.remove("hide")
                 const song_el = document.getElementsByClassName("game-songs");
-                document.getElementById("prompt_head").innerText = game_data[game_name].name;
+                document.getElementById("prompt_head").innerText = game_pretty;
                 for (let s = 0; s < song_el.length; s++) {
-                    if (song_el[s].getAttribute("game") == game_name) {
+                    if (song_el[s].getAttribute("game") == game_internal) {
                         document.getElementById("popup_controls").innerHTML = song_el[s].innerHTML;
                         let songs_set = {};
                         const inputs = song_el[s].getElementsByClassName("midi-checkbox");
@@ -541,9 +650,22 @@
                         }
                         updateMaster();
                         handleCredits();
-                        current_game = game_name;
+                        current_game = game_internal;
                         return;
                     }
+                }
+            }
+
+            let folder_data = {}
+            let build_progress = 0;
+            let build_limit = 0;
+
+            function updateProgress(progress, total, text="") {
+                document.getElementById("loading_left").style.flex = progress.toString()
+                document.getElementById("loading_right").style.flex = (total - progress).toString()
+                document.getElementById("loading_text").innerText = text;
+                if (progress == total) {
+                    document.getElementById("load-event").classList.add("hide")
                 }
             }
 
@@ -555,45 +677,43 @@
                     }, 2000);
                     return;
                 }
+                if (pack_zip_data == null) {
+                    return;
+                }
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
-                let folder_data = {...uploaded_pack_data}
+                folder_data = {...uploaded_pack_data}
+                let data_array = []
                 for (let c = 0; c < checkboxes.length; c++) {
                     if (checkboxes[c].getAttribute("ticked") == "true") {
                         const data = idToSongInfo(checkboxes[c].getAttribute("song-id"));
                         if (data != null) {
-                            let content = null;
-                            let allowed = true;
-                            await fetch(data.download)
-                                .then((response) => {
-                                    if (!response.ok) {
-                                        allowed = false;
-                                    } else {
-                                        content = response.blob();
-                                    }
-                                })
-                            if (allowed) {
-                                if (Object.keys(folder_data).includes(data.folder)) {
-                                    folder_data[data.folder].push({
-                                        "song": data.song,
-                                        "data": content
-                                    })
-                                } else {
-                                    folder_data[data.folder] = [{
-                                        "song": data.song,
-                                        "data": content
-                                    }]
-                                }
+                            data_array.push(data)
+                        }
+                    }
+                }
+                const zip_full = new JSZip();
+                pack_zip_jszip = await zip_full.loadAsync(pack_zip_data);
+                for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
+                    if (!file_0.dir) {
+                        const found_data = data_array.find(item => item.drive_id == filename_0.replace(".bin",""));
+                        if (found_data) {
+                            const fileData = await pack_zip_jszip.files[filename_0].async("blob");
+                            if (!Object.keys(folder_data).includes(found_data.folder)) {
+                                folder_data[found_data.folder] = []
                             }
+                            folder_data[found_data.folder].push({
+                                "song": found_data.song,
+                                "data": fileData
+                            })
                         }
                     }
                 }
                 const zip = new JSZip();
-
                 Object.keys(folder_data).forEach(folder => {
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        f_zip.file(file.song, file.data)
+                        f_zip.file(`${file.song}.bin`, file.data)
                     })
                 })
 
@@ -779,28 +899,23 @@
                 // Load all data
                 let site_data = {};
                 uploaded_pack_data = {};
-                const song_list = Object.keys(midi_data_copy)
-                let req = new Array(song_list.length).fill(null);
+                let req = new Array(midi_data_copy.length).fill(null);
                 let loaded_count = 0;
-                for (let s = 0; s < song_list.length; s++) {
-                    song = song_list[s];
-                    const folder = midi_data_copy[song].folder;
-                    req[s] = new XMLHttpRequest();
-                    req[s].open("GET", `./assets/midis/${song}`, true);
-                    req[s].responseType = "arraybuffer";
-                    req[s].onload = (event) => {
-                        const arrayBuffer = req[s].response; // Note: not req.responseText
-                        if (arrayBuffer) {
-                            const byteArray = new Uint8Array(arrayBuffer);
-                            const song = song_list[s];
-                            loaded_count++;
-                            site_data[song] = {
-                                "group": midi_data_copy[song].folder,
-                                "data": Array.from(byteArray),
+                const zip_full = new JSZip();
+                pack_zip_jszip = await zip_full.loadAsync(pack_zip_data);
+                for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
+                    if (!file_0.dir) {
+                        const filename_id = filename_0.replace(".bin","")
+                        const song = midi_data_copy.find(item => item.drive_id == filename_id)
+                        loaded_count++;
+                        if (song) {
+                            const fileData = await pack_zip_jszip.files[filename_0].async("Uint8Array");
+                            site_data[`${song.drive_id}.bin`] = {
+                                "group": song.group,
+                                "data": Array.from(fileData)
                             }
                         }
-                    };
-                    req[s].send(null);
+                    }
                 }
                 const new_zip = new JSZip();
                 let site_song_data = {};
@@ -817,7 +932,8 @@
                         };
                     }
                 }
-                await waitFor(_ => loaded_count >= song_list.length);
+                await waitFor(_ => loaded_count >= midi_data_copy.length);
+
                 // Parse data for matching arrays
                 let matching_songs = [];
                 Object.keys(compressed_data).forEach(song_a => {
@@ -848,12 +964,15 @@
                 for (let c = 0; c < checkboxes.length; c++) {
                     checkboxes[c].setAttribute("ticked", "false");
                 }
-                matching_songs.forEach(song => {
-                    const game = midi_data_copy[song].game;
-                    const id = convertSongName(game, song);
-                    for (c = 0; c < checkboxes.length; c++) {
-                        if (checkboxes[c].getAttribute("song-id") == id) {
-                            checkboxes[c].setAttribute("ticked", "true");
+                matching_songs.forEach(m_drive_id => {
+                    const entry = midi_data_copy.find(item => item.drive_id == m_drive_id.replace(".bin",""))
+                    if (entry) {
+                        const game = entry.game;
+                        const id = entry.index;
+                        for (c = 0; c < checkboxes.length; c++) {
+                            if (checkboxes[c].getAttribute("song-id") == id) {
+                                checkboxes[c].setAttribute("ticked", "true");
+                            }
                         }
                     }
                 })
@@ -918,11 +1037,9 @@
 
             function getShareLink() {
                 const seed = convertSelectionsToString();
-                console.log(seed)
                 const stateObj = {s: seed};
                 let url = new URL(window.location.href);
                 url.searchParams.set("s",seed.toString());
-                console.log(url.toString())
                 window.history.replaceState(stateObj, "", url.toString());
             }
             const B64_chars = [
