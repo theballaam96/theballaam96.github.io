@@ -390,7 +390,16 @@
                     this.drive_id = drive_id;
                     this.timestamp = timestamp;
                     this.audio = audio;
-                    this.index = index
+                    this.index = index;
+                    this.days_since_submission = null;
+                    this.is_new = false;
+                    if (timestamp != null) {
+                        const current_dt = new Date();
+                        const timestamp_dt = new Date(timestamp);
+                        const diff_dt = current_dt - timestamp_dt;
+                        this.days_since_submission = Math.floor(diff_dt / (1000 * 60 * 60 * 24));
+                        this.is_new = this.days_since_submission < 7;
+                    }
                 }
             }
             
@@ -584,6 +593,7 @@
                     let download = null;
                     let song_index = null;
                     let drive_id = null;
+                    let game = null;
                     const entry = midi_data_copy.find(item => item.index == id);
                     if (entry) {
                         song = entry.name;
@@ -591,10 +601,12 @@
                         download = getDriveDownload(entry.drive_id);
                         song_index = id;
                         drive_id = entry.drive_id
+                        game = entry.game;
                     }
                     if (song != null) {
                         return {
                             "song": song,
+                            "game": game,
                             "folder": folder,
                             "download": download,
                             "index": song_index,
@@ -704,6 +716,7 @@
                             }
                             folder_data[found_data.folder].push({
                                 "song": found_data.song,
+                                "game": found_data.game,
                                 "data": fileData
                             })
                         }
@@ -714,7 +727,7 @@
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        f_zip.file(`${file.song}.bin`, file.data)
+                        f_zip.file(`${file.game} ${file.song}.bin`, file.data)
                     })
                 })
 
