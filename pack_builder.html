@@ -751,6 +751,12 @@
                 }
             }
 
+            function filterFilename(unsafe_filename) {
+                const bad_characters = "#%&{}<>*?$!'\":@+`|=".split("");
+                const split_filename = unsafe_filename.split("")
+                return split_filename.filter(item => !bad_characters.includes(item)).join("")
+            }
+
             async function buildPack() {
                 if ((getSongSelectedCount() < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
                     document.getElementById("song_selected_count").classList.add("errored");
@@ -796,7 +802,7 @@
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        f_zip.file(`${file.game} ${file.song}.bin`, file.data)
+                        f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data)
                     })
                 })
 
