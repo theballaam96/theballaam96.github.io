@@ -401,6 +401,21 @@
                         this.is_new = this.days_since_submission < 7;
                     }
                 }
+
+                update_entry(replacement) {
+                    let converter_list = this.converter.split(",").map(item => item.trim());
+                    replacement.split(",").map(item => item.trim()).forEach(item => {
+                        if (!converter_list.includes(item)) {
+                            converter_list.push(item);
+                        }
+                    })
+                    this.converter = converter_list.join(", ");
+                    this.drive_id = replacement.drive_id;
+                    this.audio = replacement.audio ? replacement.audio : this.audio;
+                    this.timestamp = replacement.timestamp;
+                    this.days_since_submission = replacement.days_since_submission;
+                    this.is_new = replacement.is_new;
+                }
             }
             
             let pack_zip_data = null;
@@ -414,6 +429,7 @@
                 json = JSON.parse(text.substr(47).slice(0, -2))
                 let counter = 0;
                 midi_data_copy = [];
+                let used_game_song_combos = [];
                 for (let i = 1; i < json.table.rows.length; i++) {
                     const ref = json.table.rows[i];
                     const headers = [
@@ -436,11 +452,25 @@
                         params[header.construction_index] = value;
                     })
                     if (permit) {
-                        midi_data_copy.push(new MIDIInfo(...params, counter++))
+                        const new_data = new MIDIInfo(...params, counter)
+                        const game_song_combo = `${new_data.game}|${new_data.name}`
+                        if (!used_game_song_combos.includes(game_song_combo)) {
+                            // Completely new song
+                            midi_data_copy.push(new_data)
+                            used_game_song_combos.push(game_song_combo)
+                        } else {
+                            // Used song, update existing entry
+                            const existing_entry = midi_data_copy.find(item => ((item.game == new_data.game) && (item.name == new_data.name)));
+                            if (existing_entry) {
+                                existing_entry.update_entry(new_data)
+                            }
+                        }
+                        counter++
                     }
                 }
             }
 
+            const site_is_down = true;
             const total_prog = 5;
             async function getMidiData() {
                 let prog = 0;
@@ -576,7 +606,12 @@
                 updateMaster();
                 updateProgress(prog++, total_prog, "Updated Master");
             }
-            getMidiData();
+            
+            if ((!site_is_down) || (window.location.origin.includes("localhost"))) {
+                getMidiData();
+            } else {
+                updateProgress(0, 1, "Site is down for Maintainence. Please check back later")
+            }
 
             function convertSongName(game, song) {
                 return `${game}|${song.replaceAll(" ", "_").replaceAll(".bin","")}`
