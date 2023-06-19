@@ -337,6 +337,7 @@
         <script>          
             const ZELDA_NAME = "The Legend of Zelda: "
             let midi_data_copy = null;
+            let total_data_copy = null;
             let current_game = null;
             let uploaded_pack_data = {};
             let api_key = "AIzaSyA9CnqJmq2lf-jC_WwcXyXfyoqa6Bs7HC0"
@@ -380,6 +381,15 @@
                 }
             }
 
+            class OldMIDIInfo {
+                constructor (drive_id, audio, converter, timestamp) {
+                    this.converter = converter;
+                    this.drive_id = drive_id;
+                    this.audio = audio;
+                    this.timestamp = timestamp;
+                }
+            }
+
             class MIDIInfo {
                 constructor (name, game, group, composer, converter, drive_id, timestamp, audio, index) {
                     this.name = name;
@@ -393,6 +403,7 @@
                     this.index = index;
                     this.days_since_submission = null;
                     this.is_new = false;
+                    this.older_revisions = null;
                     if (timestamp != null) {
                         const current_dt = new Date();
                         const timestamp_dt = new Date(timestamp);
@@ -403,8 +414,17 @@
                 }
 
                 update_entry(replacement) {
+                    if (this.older_revisions == null) {
+                        this.older_revisions = [];
+                    }
+                    this.older_revisions.push(new OldMIDIInfo(
+                        this.drive_id,
+                        this.audio,
+                        this.converter,
+                        this.timestamp,
+                    ))
                     let converter_list = this.converter.split(",").map(item => item.trim());
-                    replacement.split(",").map(item => item.trim()).forEach(item => {
+                    replacement.converter.split(",").map(item => item.trim()).forEach(item => {
                         if (!converter_list.includes(item)) {
                             converter_list.push(item);
                         }
@@ -420,6 +440,18 @@
             
             let pack_zip_data = null;
 
+            function clone(instance) {
+                return Object.assign(
+                    Object.create(
+                        // Set the prototype of the new object to the prototype of the instance.
+                        // Used to allow new object behave like class instance.
+                        Object.getPrototypeOf(instance),
+                    ),
+                    // Prevent shallow copies of nested structures like arrays, etc
+                    JSON.parse(JSON.stringify(instance)),
+                );
+              }
+
             async function getSpreadsheetData() {
                 const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
                 const sheetId = "0"
@@ -429,6 +461,7 @@
                 json = JSON.parse(text.substr(47).slice(0, -2))
                 let counter = 0;
                 midi_data_copy = [];
+                total_data_copy = [];
                 let used_game_song_combos = [];
                 for (let i = 1; i < json.table.rows.length; i++) {
                     const ref = json.table.rows[i];
@@ -454,6 +487,7 @@
                     if (permit) {
                         const new_data = new MIDIInfo(...params, counter)
                         const game_song_combo = `${new_data.game}|${new_data.name}`
+                        total_data_copy.push(clone(new_data))
                         if (!used_game_song_combos.includes(game_song_combo)) {
                             // Completely new song
                             midi_data_copy.push(new_data)
@@ -470,7 +504,7 @@
                 }
             }
 
-            const site_is_down = true;
+            const site_is_down = false;
             const total_prog = 5;
             async function getMidiData() {
                 let prog = 0;
@@ -878,6 +912,18 @@
                 return document.getElementById("credits_hidden").checked;
             }
 
+            function getUpdatedVersion(drive_id) {
+                let found_id = null;
+                midi_data_copy.forEach(item => {
+                    if (item.older_revisions != null) {
+                        if (item.older_revisions.map(a => a.drive_id).includes(drive_id)) {
+                            found_id = item.drive_id;
+                        }
+                    }
+                })
+                return found_id;
+            }
+
             function handleCredits() {
                 const credit_info = document.getElementById("popup").getElementsByClassName("name_meta_data");
                 const audio_containers = document.getElementById("popup").getElementsByClassName("audio_container");
@@ -955,17 +1001,20 @@
                 for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
                     if (!file_0.dir) {
                         const filename_id = filename_0.replace(".bin","")
-                        const song = midi_data_copy.find(item => item.drive_id == filename_id)
+                        const song = total_data_copy.find(item => item.drive_id == filename_id)
                         loaded_count++;
                         if (song) {
                             const fileData = await pack_zip_jszip.files[filename_0].async("Uint8Array");
                             site_data[`${song.drive_id}.bin`] = {
                                 "group": song.group,
-                                "data": Array.from(fileData)
+                                "data": Array.from(fileData),
+                                "selected_version": song.drive_id,
+                                "updated_version": getUpdatedVersion(song.drive_id) ? getUpdatedVersion(song.drive_id) : song.drive_id,
                             }
                         }
                     }
                 }
+                console.log(site_data)
                 const new_zip = new JSZip();
                 let site_song_data = {};
                 let compressed_data = {}
@@ -991,8 +1040,9 @@
                             return checkArrayMatch(compressed_data[song_a].data, site_data[item].data)
                         })
                         if (found_song) {
-                            if (!matching_songs.includes(found_song)) {
-                                matching_songs.push(found_song)
+                            const new_song = site_data[found_song].updated_version;
+                            if (!matching_songs.includes(new_song)) {
+                                matching_songs.push(new_song)
                             }
                         } else {
                             // Song isn't on site. TODO: Handle persisting these songs
