@@ -284,9 +284,9 @@
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
                             <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
                             <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
-                            <button style="flex:1" onclick="buildPack()">Build Pack</button>
+                            <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
                         </div>
-                        <button style="flex:1" onclick="getShareLink()">Get Shareable Link</button>
+                        <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
                         <div id="song_selected_count">0 songs selected</div>
                     </div>
                     <div class="sep" style="flex:2">
@@ -639,6 +639,9 @@
                 updateProgress(prog++, total_prog, "Populated Site");
                 updateMaster();
                 updateProgress(prog++, total_prog, "Updated Master");
+                if (willAutoDownload()) {
+                    document.getElementById("build-pack-button").click();
+                }
             }
             
             if ((!site_is_down) || (window.location.origin.includes("localhost"))) {
@@ -1139,11 +1142,15 @@
                 document.getElementById("audio-event").classList.add("hide")
             }
 
-            function getShareLink() {
+            function getShareLink(force_download) {
+                if (force_download == undefined) {
+                    force_download = false;
+                }
                 const seed = convertSelectionsToString();
                 const stateObj = {s: seed};
                 let url = new URL(window.location.href);
                 url.searchParams.set("s",seed.toString());
+                url.searchParams.set("download", force_download.toString())
                 window.history.replaceState(stateObj, "", url.toString());
             }
             const B64_chars = [
@@ -1217,6 +1224,13 @@
                     }
                 })
                 return unpacked_seed_nums.slice()
+            }
+
+            function willAutoDownload() {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const will_download = urlParams.get("download") == "true";
+                return will_download;
             }
 
             function parseSeed(index) {
