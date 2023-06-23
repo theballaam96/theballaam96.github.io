@@ -1,6 +1,0 @@
-if (checkFlag(0x2F>7,'Permanent') == 0) {
-if (checkFlag(0x0C>4,'Temporary') !== 0) {
-changeTriggerActiveStateOfFirstInstanceOfType('Cutscene Trigger',1)
-setFlag(0x2F>7,True,'Permanent')
-}
-}

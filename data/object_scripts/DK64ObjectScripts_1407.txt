@@ -1,6 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-if (checkFlag(0x07>3,'Permanent') !== 0) {
-FUN_80724994(1,1,0,0)
-FUN_8064199C(behaviour,2,0)
-}
-}

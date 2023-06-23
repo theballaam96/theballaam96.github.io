@@ -1,9 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_8064199C(behaviour,6,50)
-*(byte *)(behaviour + 0x4B) = 1
-}
-if (*(byte *)(behaviour + 0x48) == 1) {
-if (*(code *)(80748068)(behaviour,this->id,73,2) !== 0) {
-*(byte *)(behaviour + 0x4B) = 1
-}
-}

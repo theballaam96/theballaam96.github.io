@@ -1,9 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-*(byte *)(behaviour + 0x60) = 1
-*(ushort *)(behaviour + 0x62) = 0
-*(byte *)(behaviour + 0x66) = 255
-*(byte *)(behaviour + 0x4B) = 1
-}
-if (*(byte *)(behaviour + 0x48) == 1) {
-*(code *)(0x80747EA8)(behaviour,this->id,10,5)
-}

@@ -1,5 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-*(byte *)(behaviour + 0x6F) = 0
-FUN_8072EE0C(this->id,1,2)
-FUN_8064199C(behaviour,2,0)
-}
