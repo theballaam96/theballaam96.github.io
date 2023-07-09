@@ -17,7 +17,7 @@
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
         <style>
-            .game-header {
+            #song_list .game-header {
                 background-color: rgba(0,0,0,0.8);
                 border: 2px solid white;
                 border-radius: 5px;
@@ -26,8 +26,26 @@
                 transition: 0.5s ease-in-out;
                 margin: 5px;
             }
-            .game-header:hover {
+            #song_list[render=grid] .game-header {
+                min-height: 15vh;
+                max-height: 15vh;
+            }
+            #song_list .game-header:hover {
                 background-color: rgba(255, 255, 255, 0.2);
+            }
+            #song_list .game-header .game-icon {
+                display: none;
+            }
+            #song_list[render=grid] .game-header .game-icon {
+                text-align: center;
+                padding: 5px;
+                display: block;
+            }
+            #song_list[render=grid] .game-header .game-internal-name {
+                text-align: center;
+                overflow: hidden;
+                font-size: 1vw;
+                padding: 5px;
             }
             .game-songs {
                 background-color: rgba(0,0,0,0.2);
@@ -45,6 +63,10 @@
                 flex: 1;
                 min-width: 50%;
                 max-width: 50%;
+            }
+            #song_list[render=grid] .game-handler {
+                min-width: calc(100% / 6);
+                max-width: calc(100% / 6);
             }
             .popup_background {
                 background-color: rgba(0,0,0,0.5);
@@ -279,7 +301,7 @@
             <div class="homebox" style="color:white">
                 <div class="panel-sep">
                     <div class="sep sep-left">
-                        <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game..." id="search-game" onkeyup="filterGame(this.value)"/>
+                        <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame(this.value)"/>
                         <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
                             <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
@@ -342,6 +364,7 @@
             let uploaded_pack_data = {};
             let api_key = "AIzaSyA9CnqJmq2lf-jC_WwcXyXfyoqa6Bs7HC0"
             let api_key_check_ran = false;
+            const BASE_NO_ICON_IMG = "https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/question.png"
             const MISC_NAME = "Other"
             fetch("DRIVE_API_KEY", {cache: "no-store"})
                 .then(async (response) => {
@@ -350,8 +373,7 @@
                         api_key = new_key;
                     }
                     api_key_check_ran = true;
-                })
-            
+                })            
 
             function last(array) {
                 return array[array.length - 1];
@@ -452,13 +474,29 @@
                 );
               }
 
+            let icon_data = {}
+
             async function getSpreadsheetData() {
                 const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
                 const sheetId = "0"
                 const tab_name = "Song Uploads"
-                const res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=0`)
+                const iconId = "1845127615"
+                // Get generic data
+                const res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${sheetId}`)
                 const text = await res.text()
                 json = JSON.parse(text.substr(47).slice(0, -2))
+                // Get icon data
+                const icon_res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${iconId}`)
+                const icon_text = await icon_res.text()
+                icon_json = JSON.parse(icon_text.substr(47).slice(0, -2))
+                icon_json.table.rows.forEach((row, index) => {
+                    if (index > 0) {
+                        if (row.c[1].v != null) {
+                            icon_data[row.c[0].v] = row.c[1].v
+                        }
+                    }
+                })
+
                 let counter = 0;
                 midi_data_copy = [];
                 total_data_copy = [];
@@ -628,7 +666,18 @@
                         })
                         const game_name = game_pretty;
                         html += `<div class='game-handler'>
-                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>${game_name}</div>
+                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
+                                <div class='game-icon'>
+                                    <img src=${
+                                        Object.keys(icon_data).includes(game_name) ?
+                                        icon_data[game_name] :
+                                        BASE_NO_ICON_IMG
+                                    } height=\"64px\"/>
+                                </div>
+                                <div class='game-internal-name'>
+                                    ${game_name}
+                                </div>
+                            </div>
                             <div class='game-songs hide' game='${game}'>
                                 ${local_html_total}
                             </div>
@@ -716,7 +765,7 @@
             }
 
             function toggleGameVisibility(game_internal, el) {
-                const game_pretty = el.innerText;
+                const game_pretty = el.getElementsByClassName("game-internal-name")[0].innerText;
                 document.body.classList.add("fixed-body")
                 document.getElementById("popup").classList.remove("hide")
                 const song_el = document.getElementsByClassName("game-songs");
@@ -755,7 +804,7 @@
             }
 
             function filterFilename(unsafe_filename) {
-                const bad_characters = "#%&{}<>*?$!'\":@+`|=".split("");
+                const bad_characters = "#%&{}<>*?$!'\":@+`|=/".split("");
                 const split_filename = unsafe_filename.split("")
                 return split_filename.filter(item => !bad_characters.includes(item)).join("")
             }
@@ -868,15 +917,23 @@
                 document.getElementById("select-all-songs").innerText = text;
                 updateCount();
             }
-
             function filterGame(text) {
                 const force_enable = text.replace(" ","").length == 0;
                 const handlers = document.getElementsByClassName("game-handler")
                 for (let h = 0; h < handlers.length; h++) {
-                    const game_name = handlers[h].getElementsByClassName("game-header")[0].innerText.toLowerCase();
+                    const game_name = handlers[h].getElementsByClassName("game-internal-name")[0].innerText.toLowerCase();
                     if (force_enable || game_name.includes(text.toLowerCase())) {
                         handlers[h].classList.remove("hide");
                     } else {
+                        // Check for songs
+                        const contained_songs = handlers[h].getElementsByClassName("name_data");
+                        for (let c = 0; c < contained_songs.length; c++) {
+                            const song_name = contained_songs[c].getElementsByTagName("strong")[0].innerText.toLowerCase();
+                            if (force_enable || song_name.includes(text.toLowerCase())) {
+                                handlers[h].classList.remove("hide");
+                                return;
+                            }
+                        }
                         handlers[h].classList.add("hide");
                     }
                 }
