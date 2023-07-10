@@ -575,6 +575,12 @@
                 let html = ""
                 let songs_by_game = {}
                 let other = []
+                midi_data_copy.sort(function(a, b) {
+                    // Sort songs alphabetically
+                    var textA = a.name.toUpperCase();
+                    var textB = b.name.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                });
                 midi_data_copy.forEach(song => {
                     const game_name = song.game;
                     if (game_name == MISC_NAME) {
