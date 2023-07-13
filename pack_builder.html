@@ -40,6 +40,7 @@
                 text-align: center;
                 padding: 5px;
                 display: block;
+                height: 64px;
             }
             #song_list[render=grid] .game-header .game-internal-name {
                 text-align: center;
@@ -283,6 +284,18 @@
             #loading_right{
                 background-color: #20254f;
             }
+            .game-image {
+                max-width: 128px;
+                max-height: 64px;
+                /*vertical-align: middle;*/
+            }
+            /*
+            .icon-alignment {
+                display: inline-block;
+                height: 100%;
+                vertical-align: middle;
+            }
+            */
         </style>
     </head>
     <body>
@@ -309,10 +322,14 @@
                             <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
                         </div>
                         <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
+                        <div style="text-align: center">
+                            <label for="min-view">Minimal View</label>
+                            <input id="min-view" type="checkbox" onclick="handleMinView()"/>
+                        </div>
                         <div id="song_selected_count">0 songs selected</div>
                     </div>
                     <div class="sep" style="flex:2">
-                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap"></div>
+                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid"></div>
                     </div>
                 </div>
             </div>
@@ -674,11 +691,13 @@
                         html += `<div class='game-handler'>
                             <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
                                 <div class='game-icon'>
-                                    <img src=${
+                                    <span class='icon-alignment'></span>
+                                    <img class='game-image' src=${
                                         Object.keys(icon_data).includes(game_name) ?
                                         icon_data[game_name] :
                                         BASE_NO_ICON_IMG
-                                    } height=\"64px\"/>
+                                    }
+                                    />
                                 </div>
                                 <div class='game-internal-name'>
                                     ${game_name}
@@ -1310,6 +1329,14 @@
                     return false; // Data is past seed boundaries
                 }
                 return (seed_arr[loc] & (1 << subposition)) != 0; // Extracted from seed
+            }
+
+            function handleMinView() {
+                let setting = "grid";
+                if (document.getElementById("min-view").checked) {
+                    setting = "minimal";
+                }
+                document.getElementById("song_list").setAttribute("render",setting);
             }
         </script>
     </body>
