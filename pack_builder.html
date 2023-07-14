@@ -171,6 +171,10 @@
                     min-width: 100%;
                     max-width: 100%;
                 }
+                #song_list[render=grid] .game-handler {
+                    min-width: calc(100% / 4);
+                    max-width: calc(100% / 4);
+                }
             }
             button {
                 width: calc(100% - 10px);
@@ -180,8 +184,13 @@
                 .popup_prompt {
                     width: 90%;
                 }
-            }
-            @media only screen and (max-width: 800px) {
+                #song_list[render=grid] .game-handler {
+                    min-width: calc(100% / 3);
+                    max-width: calc(100% / 3);
+                }
+                #song_list[render=grid] .game-header .game-internal-name {
+                    font-size: 2vw;
+                }
                 .panel-sep {
                     display: block;
                 }
@@ -1339,6 +1348,31 @@
                 }
                 document.getElementById("song_list").setAttribute("render",setting);
             }
+
+            function setMinView(state) {
+                console.log(state);
+                document.getElementById("min-view").checked = state;
+                handleMinView();
+            }
+
+            let previous_width = null;
+            function handleSize() {
+                const force_limit = 980;
+                const width = document.documentElement.clientWidth;
+                console.log(width)
+                if (width <= force_limit) {
+                    if ((previous_width == null) || (previous_width > force_limit)) {
+                        setMinView(true);
+                    }
+                } else {
+                    if ((previous_width == null) || (previous_width <= force_limit)) {
+                        setMinView(false);
+                    }
+                }
+                previous_width = width;
+            }
+            window.onresize = handleSize;
+            handleSize();
         </script>
     </body>
 </html>
