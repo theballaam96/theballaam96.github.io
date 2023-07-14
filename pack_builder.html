@@ -172,8 +172,11 @@
                     max-width: 100%;
                 }
                 #song_list[render=grid] .game-handler {
-                    min-width: calc(100% / 4);
-                    max-width: calc(100% / 4);
+                    min-width: calc(100% / 3);
+                    max-width: calc(100% / 3);
+                }
+                #song_list[render=grid] .game-header .game-internal-name {
+                    font-size: 2vw;
                 }
             }
             button {
@@ -183,13 +186,6 @@
             @media only screen and (max-width: 1000px) {
                 .popup_prompt {
                     width: 90%;
-                }
-                #song_list[render=grid] .game-handler {
-                    min-width: calc(100% / 3);
-                    max-width: calc(100% / 3);
-                }
-                #song_list[render=grid] .game-header .game-internal-name {
-                    font-size: 2vw;
                 }
                 .panel-sep {
                     display: block;
