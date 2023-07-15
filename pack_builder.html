@@ -727,7 +727,9 @@
                 }
                 const zip_url = getDriveDownload(zip_id);
                 const zip_res = await fetch(zip_url);
-                lazyLoadImages();
+                if (getCookie("min-view") != "minimal") {
+                    lazyLoadImages();
+                }
                 pack_zip_data = await zip_res.blob();
                 updateProgress(prog++, total_prog, "Grabbing Pack.zip");
                 const hook = document.getElementById("song_list")
