@@ -80,13 +80,18 @@
                 min-width: calc(100% / 6);
                 max-width: calc(100% / 6);
             }
-            .popup_background {
+            .popup_background, .popup_background-fade {
                 background-color: rgba(0,0,0,0.5);
                 position:fixed;
                 top:0;
                 left:0;
                 width:100%;
                 height:100%;
+            }
+            .popup_background-fade {
+                background-color: rgba(0, 0, 0, 1);
+                opacity: 100;
+                transition: 0.5s ease-in-out;
             }
             .popup_prompt {
                 background-color: #15172b;
@@ -404,7 +409,7 @@
                 </div>
                 <div id="audio-event-content">
                     <audio controls>
-                        <source src="https://cdn.discordapp.com/attachments/1097234540373745854/1106055293495943168/BK_Grunty_Fight.mp3" type="audio/mpeg">
+                        <source src="" type="audio/mpeg">
                     </audio>
                 </div>
             </div>
@@ -428,6 +433,7 @@
                 <div id="loading_text"></div>
             </div>
         </div>
+        <div id="lazy-loader"><img id=lazy-img-loader height="1px" width="1px"/></div>
         <script src="script/nav.js"></script>
         <script>          
             const ZELDA_NAME = "The Legend of Zelda: "
@@ -632,6 +638,8 @@
                     if (index > 0) {
                         if (row.c[1].v != null) {
                             icon_data[row.c[0].v] = row.c[1].v
+                            //document.getElementById("lazy-img-loader").setAttribute("src",row.c[1].v)
+                            //document.getElementById("lazy-loader").innerHTML += `<img src='${row.c[1].v}' height="1px" width="1px" async />`
                         }
                     }
                 })
@@ -682,8 +690,18 @@
                 updateRecent()
             }
 
+            function ReLoadImages(){
+                document.getElementById("lazy-loader").remove()
+            }
+
+            function lazyLoadImages() {
+                document.getElementById("lazy-loader").innerHTML = Object.keys(icon_data).map(key => `
+                    <img src='${icon_data[key]}' height="1px" width="1px" async loading=lazy />
+                `).join("")
+            }
+
             const site_is_down = false;
-            const total_prog = 5;
+            const total_prog = 6;
             async function getMidiData() {
                 let prog = 0;
                 updateProgress(prog++, total_prog, "Initializing");
@@ -709,6 +727,7 @@
                 }
                 const zip_url = getDriveDownload(zip_id);
                 const zip_res = await fetch(zip_url);
+                lazyLoadImages();
                 pack_zip_data = await zip_res.blob();
                 updateProgress(prog++, total_prog, "Grabbing Pack.zip");
                 const hook = document.getElementById("song_list")
@@ -823,7 +842,7 @@
                                         Object.keys(icon_data).includes(game_name) ?
                                         icon_data[game_name] :
                                         BASE_NO_ICON_IMG
-                                    }' />
+                                    }' loading=lazy />
                                     ${Object.keys(icon_data).includes(game_name) ?
                                         "" :
                                         `<div class='game-image-replacement'>${game_name}</div>`
@@ -838,9 +857,12 @@
                                 ${local_html_total}
                             </div>
                         </div>`
+                        //hook.innerHTML = html // Start loading
                     }
                 })
                 hook.innerHTML = html;
+                updateProgress(prog++, total_prog, "Lazy Loading Images");
+                ReLoadImages();
                 updateProgress(prog++, total_prog, "Populated Site");
                 updateMaster();
                 updateProgress(prog++, total_prog, "Updated Master");
