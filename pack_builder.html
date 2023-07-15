@@ -708,6 +708,9 @@
                 await waitFor(_ => api_key_check_ran);
                 updateProgress(prog++, total_prog, "Loaded API Key");
                 await getSpreadsheetData()
+                if (getCookie("min-view") != "minimal") {
+                    lazyLoadImages();
+                }
                 updateProgress(prog++, total_prog, "Grabbed midi data");
                 const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
                 const pack_sheet_id = "1917417042"
@@ -727,9 +730,6 @@
                 }
                 const zip_url = getDriveDownload(zip_id);
                 const zip_res = await fetch(zip_url);
-                if (getCookie("min-view") != "minimal") {
-                    lazyLoadImages();
-                }
                 pack_zip_data = await zip_res.blob();
                 updateProgress(prog++, total_prog, "Grabbing Pack.zip");
                 const hook = document.getElementById("song_list")
