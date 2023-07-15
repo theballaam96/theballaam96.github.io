@@ -369,9 +369,9 @@
                         <button style="flex:1" onclick="submitSong()">Submit song</button>
                         <div style="text-align: center">
                             <label for="min-view">Minimal View</label>
-                            <input id="min-view" type="checkbox" onclick="handleMinView()"/>
+                            <input id="min-view" type="checkbox"/>
                             <label for="text-view">Grid Text Shown</label>
-                            <input id="text-view" type="checkbox" onclick="handleTextView()"/>
+                            <input id="text-view" type="checkbox"/>
                         </div>
                         <div id="song_selected_count">0 songs selected</div>
                     </div>
@@ -386,7 +386,7 @@
                 <div class="popup_head" id="prompt_head">Add songs to pack</div>
                 <div>
                     Hide Credits:
-                    <input type="checkbox" id="credits_hidden" onclick="handleCredits()"/>
+                    <input type="checkbox" id="credits_hidden"/>
                 </div>
                 <div id="popup_controls"></div>
                 <hr>
@@ -590,6 +590,30 @@
               }
 
             let icon_data = {}
+            
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for(let i = 0; i <ca.length; i++) {
+                  let c = ca[i];
+                  while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                  }
+                  if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                  }
+                }
+                return "";
+              }
+
+            function setPackCookie(cname, cvalue, exdays=60) {
+                const d = new Date();
+                d.setTime(d.getTime() + (exdays*24*60*60*1000));
+                let expires = "expires="+ d.toUTCString();
+                document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                console.log(cname, cvalue, exdays)
+            }
 
             async function getSpreadsheetData() {
                 const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
@@ -820,6 +844,16 @@
                 updateProgress(prog++, total_prog, "Populated Site");
                 updateMaster();
                 updateProgress(prog++, total_prog, "Updated Master");
+                // Update click events
+                console.log(document.cookie)
+                setMinView(getCookie("min-view") == "minimal", false)
+                setTextView(getCookie("text-view") == "show", false)
+                document.getElementById("credits_hidden").checked = getCookie("credits") == "true";
+                document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
+                document.getElementById("min-view").addEventListener("click", () => {handleMinView(true)});
+                document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
+
+
                 if (willAutoDownload()) {
                     document.getElementById("build-pack-button").click();
                 }
@@ -956,7 +990,7 @@
                             new_inputs[n].setAttribute("ticked", songs_set[new_inputs[n].getAttribute("song-id")]);
                         }
                         updateMaster();
-                        handleCredits();
+                        handleCredits(false);
                         current_game = game_internal;
                         return;
                     }
@@ -1164,7 +1198,7 @@
                 return found_id;
             }
 
-            function handleCredits() {
+            function handleCredits(update_cookie) {
                 const credit_info = document.getElementById("popup").getElementsByClassName("name_meta_data");
                 const audio_containers = document.getElementById("popup").getElementsByClassName("audio_container");
                 const hide = document.getElementById("credits_hidden").checked;
@@ -1181,6 +1215,9 @@
                     } else {
                         audio_containers[a].classList.remove("hide");
                     }
+                }
+                if (update_cookie) {
+                    setPackCookie("credits", hide);
                 }
             }
 
@@ -1488,26 +1525,36 @@
                 return (seed_arr[loc] & (1 << subposition)) != 0; // Extracted from seed
             }
 
-            function handleMinView() {
+            function handleMinView(update_cookie) {
                 let setting = "grid";
                 if (document.getElementById("min-view").checked) {
                     setting = "minimal";
                 }
                 document.getElementById("song_list").setAttribute("render",setting);
+                if (update_cookie) {
+                    setPackCookie("min-view", setting);
+                }
             }
 
-            function handleTextView() {
+            function handleTextView(update_cookie) {
                 let setting = "hide";
                 if (document.getElementById("text-view").checked) {
                     setting = "show";
                 }
                 document.getElementById("song_list").setAttribute("gridtext",setting);
+                if (update_cookie) {
+                    setPackCookie("text-view", setting);
+                }
             }
 
-            function setMinView(state) {
-                console.log(state);
+            function setMinView(state, update_cookie) {
                 document.getElementById("min-view").checked = state;
-                handleMinView();
+                handleMinView(update_cookie);
+            }
+
+            function setTextView(state, update_cookie) {
+                document.getElementById("text-view").checked = state;
+                handleTextView(update_cookie);
             }
 
             function submitSong() {
@@ -1522,11 +1569,11 @@
                 console.log(width)
                 if (width <= force_limit) {
                     if ((previous_width == null) || (previous_width > force_limit)) {
-                        setMinView(true);
+                        setMinView(true, false);
                     }
                 } else {
                     if ((previous_width == null) || (previous_width <= force_limit)) {
-                        setMinView(false);
+                        setMinView(false, false);
                     }
                 }
                 previous_width = width;
