@@ -27,8 +27,12 @@
                 margin: 5px;
             }
             #song_list[render=grid] .game-header {
-                min-height: 15vh;
-                max-height: 15vh;
+                min-height: calc(64px + 10px + 15px);
+                max-height: calc(64px + 10px + 15px);
+            }
+            #song_list[render=grid][gridtext=show] .game-header {
+                min-height: calc(15vh + 15px);
+                max-height: calc(15vh + 15px);
             }
             #song_list .game-header:hover {
                 background-color: rgba(255, 255, 255, 0.2);
@@ -48,6 +52,12 @@
                 font-size: 1vw;
                 padding: 5px;
                 height: calc(15vh - 64px - 10px - 10px);
+                transition: 0.5s ease-in-out;
+                opacity: 100%;
+            }
+            #song_list[render=grid][gridtext=hide] .game-header .game-internal-name {
+                display: none;
+                opacity: 0;
             }
             .game-songs {
                 background-color: rgba(0,0,0,0.2);
@@ -295,6 +305,33 @@
                 max-height: 64px;
                 /*vertical-align: middle;*/
             }
+            .game-image-replacement {
+                height: 64px;
+                font-size: 1vw;
+                overflow: hidden;
+            }
+            #song_list[gridtext=hide] .game-image.no-icon {
+                display: none;
+            }
+            #song_list[gridtext=show] .game-image-replacement {
+                display: none;
+            }
+            .game-fullness-panel {
+                height: 10px;
+                padding: 2.5px;
+            }
+            .panel-all, .panel-some {
+                width: 10px;
+                height: 10px;
+                margin-left: auto;
+                border-radius: 10px;
+            }
+            .panel-all {
+                background-color: green;
+            }
+            .panel-some {
+                background-color: white;
+            }
             /*
             .icon-alignment {
                 display: inline-block;
@@ -328,14 +365,18 @@
                             <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
                         </div>
                         <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
+                        <button style="flex:1" onclick="openChangelog()">Song Changelog</button>
+                        <button style="flex:1" onclick="submitSong()">Submit song</button>
                         <div style="text-align: center">
                             <label for="min-view">Minimal View</label>
                             <input id="min-view" type="checkbox" onclick="handleMinView()"/>
+                            <label for="text-view">Grid Text Shown</label>
+                            <input id="text-view" type="checkbox" onclick="handleTextView()"/>
                         </div>
                         <div id="song_selected_count">0 songs selected</div>
                     </div>
                     <div class="sep" style="flex:2">
-                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid"></div>
+                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
                     </div>
                 </div>
             </div>
@@ -366,6 +407,15 @@
                         <source src="https://cdn.discordapp.com/attachments/1097234540373745854/1106055293495943168/BK_Grunty_Fight.mp3" type="audio/mpeg">
                     </audio>
                 </div>
+            </div>
+        </div>
+        <div class="popup_background hide" id="new-songs">
+            <div class="popup_prompt">
+                <div class="audio-close-container">
+                    <div class="audio-close noselect" onclick="closeChangelog()">Close</div>
+                </div>
+                <div class="popup_head" id="prompt_head">Song Changelog</div>
+                <div id="popup_recent"></div>
             </div>
         </div>
         <div class="popup_background" id="load-event">
@@ -435,6 +485,46 @@
                 }
             }
 
+            let recent_history = {}
+            const timeframe_names = ["This week", "Last Week", "2 weeks ago", "3 weeks ago", "Last Month", "Older"]
+            const timeframe_limit = [7, 14, 21, 28, 60, 999999]
+
+            function pushToRecent(game, song, is_update, time_ago) {
+                if (time_ago != null) {
+                    let time_name = last(timeframe_names);
+                    timeframe_limit.forEach((lim, index) => {
+                        if ((time_name == last(timeframe_names)) && (time_ago < lim)) {
+                            time_name = timeframe_names[index]
+                        }
+                    })
+                    if (!Object.keys(recent_history).includes(time_name)) {
+                        recent_history[time_name] = []
+                    }
+                    recent_history[time_name].push({
+                        "game": game,
+                        "song": song,
+                        "is_update": is_update,
+                        "days_ago": time_ago
+                    })
+                }   
+            }
+
+            function updateRecent() {
+                Object.keys(recent_history).forEach(key => {
+                    recent_history[key].sort()
+                    recent_history[key].reverse()
+                })
+                document.getElementById("popup_recent").innerHTML = `
+                    ${timeframe_names.map(frame => `${!Object.keys(recent_history).includes(frame) ? "" : `
+                        <div class="popup_subtitle">${frame}</div>
+                        <ul>${recent_history[frame].map(song => `
+                            <li>${song.is_update ? "[UPDATE] " : ""}
+                            ${song.game}: ${song.song}</li>
+                        `).join("")}</ul>
+                    `}`).join("")}
+                `
+            }
+            
             class MIDIInfo {
                 constructor (name, game, group, composer, converter, drive_id, timestamp, audio, index) {
                     this.name = name;
@@ -456,6 +546,7 @@
                         this.days_since_submission = Math.floor(diff_dt / (1000 * 60 * 60 * 24));
                         this.is_new = this.days_since_submission < 7;
                     }
+                    pushToRecent(this.game, this.name, false, this.days_since_submission)
                 }
 
                 update_entry(replacement) {
@@ -480,6 +571,7 @@
                     this.timestamp = replacement.timestamp;
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
+                    pushToRecent(this.game, this.name, true, this.days_since_submission)
                 }
             }
             
@@ -563,6 +655,7 @@
                         counter++
                     }
                 }
+                updateRecent()
             }
 
             const site_is_down = false;
@@ -652,6 +745,7 @@
                                         song-id='${song.index}' 
                                         onclick='updateTickbox(this,\"${game}\")' 
                                         ticked=${parseSeed(state_index) ? 'true' : 'false'} 
+                                        group='${group}'
                                         game='${game}'>
                                         <div class='flexsplitter'>
                                             <div class='name_data'>
@@ -698,16 +792,23 @@
                             <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
                                 <div class='game-icon'>
                                     <span class='icon-alignment'></span>
-                                    <img class='game-image' src=${
+                                    <img class='game-image ${
+                                        Object.keys(icon_data).includes(game_name) ? 
+                                        "" : "no-icon"
+                                    }' src='${
                                         Object.keys(icon_data).includes(game_name) ?
                                         icon_data[game_name] :
                                         BASE_NO_ICON_IMG
+                                    }' />
+                                    ${Object.keys(icon_data).includes(game_name) ?
+                                        "" :
+                                        `<div class='game-image-replacement'>${game_name}</div>`
                                     }
-                                    />
                                 </div>
                                 <div class='game-internal-name'>
                                     ${game_name}
                                 </div>
+                                <div class='game-fullness-panel'></div>
                             </div>
                             <div class='game-songs hide' game='${game}'>
                                 ${local_html_total}
@@ -736,6 +837,46 @@
 
             function getDriveDownload(drive_id) {
                 return `https://www.googleapis.com/drive/v3/files/${drive_id}?alt=media&key=${api_key}`
+            }
+
+            const group_internal_to_name = {
+                "bgm": "Background Music",
+                "events": "Events",
+                "majoritems": "Major Items",
+                "minoritems": "Minor Items",
+            }
+
+            function updateFullnessIndicators() {
+                const game_boxes = document.getElementsByClassName("game-handler");
+                for (let g = 0; g < game_boxes.length; g++) {
+                    const song_boxes = game_boxes[g].getElementsByClassName("midi-checkbox")
+                    let filled_counts = {}
+                    let total_counts = {}
+                    let has_song = false;
+                    let has_all_songs = true;
+                    for (let s = 0; s < song_boxes.length; s++) {
+                        const group = song_boxes[s].getAttribute("group")
+                        if (!Object.keys(filled_counts).includes(group)) {
+                            filled_counts[group] = 0
+                        }
+                        if (!Object.keys(total_counts).includes(group)) {
+                            total_counts[group] = 0
+                        }
+                        const ticked = song_boxes[s].getAttribute("ticked") == "true";
+                        total_counts[group] += 1;
+                        if (ticked) {
+                            has_song = true;
+                            filled_counts[group] += 1;
+                        } else {
+                            has_all_songs = false;
+                        }
+                    }
+                    const hint_text = Object.keys(filled_counts).map(key => `${group_internal_to_name[key]}: ${filled_counts[key]}/${total_counts[key]}`).join("\n")
+                    game_boxes[g].getElementsByClassName("game-fullness-panel")[0].innerHTML = `
+                        ${has_song ? `<div class="${has_all_songs ? "panel-all" : "panel-some"}" title="${hint_text}"></div>` : ""}
+                    `;
+
+                }
             }
 
             function idToSongInfo(id) {
@@ -793,6 +934,7 @@
                     }
                 }
                 hidePopup()
+                updateFullnessIndicators()
             }
 
             function toggleGameVisibility(game_internal, el) {
@@ -1003,6 +1145,7 @@
                     song_text = "song";
                 }
                 document.getElementById("song_selected_count").innerText = `${count} ${song_text} selected.`
+                updateFullnessIndicators();
             }
 
             function isCreditHidden() {
@@ -1230,6 +1373,14 @@
                 document.getElementById("audio-event").classList.add("hide")
             }
 
+            function openChangelog() {
+                document.getElementById("new-songs").classList.remove("hide")
+            }
+
+            function closeChangelog() {
+                document.getElementById("new-songs").classList.add("hide")
+            }
+
             function getShareLink(force_download) {
                 if (force_download == undefined) {
                     force_download = false;
@@ -1345,10 +1496,23 @@
                 document.getElementById("song_list").setAttribute("render",setting);
             }
 
+            function handleTextView() {
+                let setting = "hide";
+                if (document.getElementById("text-view").checked) {
+                    setting = "show";
+                }
+                document.getElementById("song_list").setAttribute("gridtext",setting);
+            }
+
             function setMinView(state) {
                 console.log(state);
                 document.getElementById("min-view").checked = state;
                 handleMinView();
+            }
+
+            function submitSong() {
+                const LINK = "https://script.google.com/macros/s/AKfycbwetNkcuX68j1hSMt0U2F_xmTHFe3hQp6my3cnHXwxICMJVt5NTyD8_aYcrMqEuSwuyfQ/exec"
+                window.open(LINK, "_blank");
             }
 
             let previous_width = null;
