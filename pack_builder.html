@@ -419,7 +419,7 @@
                 <div class="audio-close-container">
                     <div class="audio-close noselect" onclick="closeChangelog()">Close</div>
                 </div>
-                <div class="popup_head" id="prompt_head">Song Changelog</div>
+                <div class="popup_head">Song Changelog</div>
                 <div id="popup_recent"></div>
             </div>
         </div>
@@ -495,7 +495,7 @@
             const timeframe_names = ["This week", "Last Week", "2 weeks ago", "3 weeks ago", "Last Month", "Older"]
             const timeframe_limit = [7, 14, 21, 28, 60, 999999]
 
-            function pushToRecent(game, song, is_update, time_ago) {
+            function getTimeframeName(time_ago) {
                 if (time_ago != null) {
                     let time_name = last(timeframe_names);
                     timeframe_limit.forEach((lim, index) => {
@@ -503,16 +503,40 @@
                             time_name = timeframe_names[index]
                         }
                     })
+                    return time_name
+                }
+                return last(timeframe_names);
+            }
+
+            function pushToRecent(game, song, time_ago) {
+                if (time_ago != null) {
+                    const time_name = getTimeframeName(time_ago)
                     if (!Object.keys(recent_history).includes(time_name)) {
                         recent_history[time_name] = []
                     }
+                    is_update = midi_data_copy.filter(item => (item.name == song) && (item.game == game)).length > 0
                     recent_history[time_name].push({
                         "game": game,
                         "song": song,
                         "is_update": is_update,
                         "days_ago": time_ago
                     })
-                }   
+                    return recent_history[time_name].length - 1;
+                }
+                return null;
+            }
+
+            function updateChangelogEntry(entry_index, time_ago, new_data) {
+                if ((time_ago != null) && (entry_index != null)) {
+                    const time_name = getTimeframeName(time_ago);
+                    if (Object.keys(recent_history).includes(time_name)) {
+                        console.log(recent_history[time_name][entry_index]);
+                        console.log(recent_history[time_name], entry_index);
+                        Object.keys(new_data).forEach(key => {
+                            recent_history[time_name][entry_index][key] = new_data[key]
+                        })
+                    }
+                }
             }
 
             function updateRecent() {
@@ -552,7 +576,7 @@
                         this.days_since_submission = Math.floor(diff_dt / (1000 * 60 * 60 * 24));
                         this.is_new = this.days_since_submission < 7;
                     }
-                    pushToRecent(this.game, this.name, false, this.days_since_submission)
+                    this.changelog_entry = pushToRecent(this.game, this.name, this.days_since_submission)
                 }
 
                 update_entry(replacement) {
@@ -577,7 +601,6 @@
                     this.timestamp = replacement.timestamp;
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
-                    pushToRecent(this.game, this.name, true, this.days_since_submission)
                 }
             }
             
