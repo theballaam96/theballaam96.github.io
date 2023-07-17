@@ -27,12 +27,15 @@
                 margin: 5px;
             }
             #song_list[render=grid] .game-header {
-                min-height: calc(64px + 10px + 15px);
-                max-height: calc(64px + 10px + 15px);
+                min-height: calc(64px + 10px + 30px);
+                max-height: calc(64px + 10px + 30px);
             }
             #song_list[render=grid][gridtext=show] .game-header {
                 min-height: calc(15vh + 15px);
                 max-height: calc(15vh + 15px);
+            }
+            #song_list[render=grid][gridtext=hide] .game-icon {
+                margin-top: 15px;
             }
             #song_list .game-header:hover {
                 background-color: rgba(255, 255, 255, 0.2);
