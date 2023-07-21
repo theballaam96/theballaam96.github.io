@@ -451,6 +451,13 @@
             let api_key_check_ran = false;
             const BASE_NO_ICON_IMG = "https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/question.png"
             const MISC_NAME = "Other"
+            
+            const REGULAR_FORMAT = "bin"
+            const ENCODED_FORMAT = "candy"
+            const FORMATS = [REGULAR_FORMAT, ENCODED_FORMAT]
+            let OUTPUT_FORMAT = REGULAR_FORMAT
+            const ENABLE_OUTPUT_CONTROL = false;
+
             fetch("DRIVE_API_KEY", {cache: "no-store"})
                 .then(async (response) => {
                     if (response.ok) {
@@ -541,6 +548,32 @@
                         Object.keys(new_data).forEach(key => {
                             recent_history[time_name][entry_index][key] = new_data[key]
                         })
+                    }
+                }
+            }
+            function handleElDeletion() {
+                const backdrops = document.getElementsByClassName("popup_background")
+                for (let b = 0; b < backdrops.length; b++) {
+                    if (backdrops[b].getAttribute("id") != "load-event") {
+                        backdrops[b].addEventListener("click", (e) => {
+                            if (e.target.getAttribute("class")) {
+                                if (e.target.getAttribute("class").includes("popup_background")) {
+                                    e.target.classList.add("hide")
+                                }
+                            }
+                        })
+                    }
+                }
+            }
+            handleElDeletion()
+
+            document.onkeyup = (e) => {
+                if (e.key == "Escape") {
+                    const backdrops = document.getElementsByClassName("popup_background")
+                    for (let b = 0; b < backdrops.length; b++) {
+                        if (backdrops[b].getAttribute("id") != "load-event") {
+                            backdrops[b].classList.add("hide")
+                        }
                     }
                 }
             }
@@ -1631,6 +1664,51 @@
             }
             window.onresize = handleSize;
             handleSize();
+
+            /*
+                Candy file format
+                HEADER - Size 0x28
+                    [0x00] u32 location_bitfield
+                    [0x04] u32 song_bitfield
+                    [0x08] u32 song_length (s)
+                    [0x0C] s8[0x28-0xC] 0xFF bytes
+                FILE
+
+            */
+
+            function readFile(file, start, size) {
+                let value = 0;
+                for (let i = 0; i < size; i++) {
+                    value <<= 8;
+                    value += file[start + i];
+                }
+                return value;
+            }
+
+            function getSongLength(file) {
+                // Get song length from file array
+                const PPQ = readFile(file, 0x40, 4);
+                for (let i = 0; i < 16; i++) {
+                    const track_header = readFile(file, i * 4, 4);
+                    if (track_header != 0) {
+                        
+                    }
+                }
+            }
+
+            function processFile(file, in_format, out_format) {
+                // Convert file to bin. File is blob
+                processing_file = new Array.from(new Uint8Array(file));
+                if (in_format == ENCODED_FORMAT) {
+                    processing_file = processing_file.slice(0x28);
+                }
+                // Convert file to candy.
+                if (out_format == ENCODED_FORMAT) {
+                    header = new Array(0x28).fill(0xFF);
+                    processing_file = header + processing_file;
+                }
+                return new Blob([new Uint8Array(processing_file)]);
+            }
         </script>
     </body>
 </html>
