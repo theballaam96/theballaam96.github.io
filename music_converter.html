@@ -79,6 +79,7 @@
                                     <div id="stat-durationticks"></div>
                                     <div id="stat-durationmeasures"></div>
                                     <div id="stat-ppq"></div>
+                                    <div id="stat-size"></div>
                                 </div>
                             </div>
                         </div>
@@ -182,6 +183,36 @@
                 return arr[arr.length - 1]
             }
 
+            function updateStatStyle() {
+                stats = ["stat-name","stat-duration","stat-durationticks","stat-durationmeasures","stat-ppq"]
+                stats.forEach(stat => {
+                    txt = document.getElementById(stat).innerText
+                    head = txt.split(":")[0]
+                    info = txt.split(":").filter((item, index) => {
+                        return index != 0
+                    }).join(":")
+                    document.getElementById(stat).innerHTML = `<strong>${head}</strong>: ${info}`
+                })
+            }
+
+            const VANILLA_BIN_LIMIT = 16512
+            const RANDO_BIN_LIMIT = 32768
+
+            function updateBinarySize() {
+                toBinary(false)
+                const data = new Uint8Array(output_bin_file.slice());
+                document.getElementById("stat-size").innerHTML = `<strong>Binary Size</strong>: ${data.length} ${
+                    data.length > VANILLA_BIN_LIMIT ?
+                    `<span title='${
+                        data.length > RANDO_BIN_LIMIT ? "File is too big for DK64 Randomizer" : "File is too big for vanilla DK64, but not randomizer"
+                    }' class='${
+                        data.length > RANDO_BIN_LIMIT ? "major-warning" : "minor-warning"
+                    }'>&nbsp;&#9888;</span>` :
+                    ""
+                } <span class="reload noselect" id="recalculate-binary" title="Recalculate" onclick="updateBinarySize()">&#x21bb;</span>`
+                updateStatStyle()
+            }
+
             function updateStats(midi_json) {
                 second_floor_grade = 100
                 minutes = Math.floor(midi_json.duration / 60)
@@ -198,16 +229,9 @@
                 document.getElementById("stat-durationticks").innerText = `Duration (Ticks): ${midi_json.durationTicks}`
                 document.getElementById("stat-durationmeasures").innerText = `Duration (Measures): ${measures}`
                 document.getElementById("stat-ppq").innerText = `Pulses per Quarter-Note: ${midi_json.header.ppq}`
+                updateBinarySize()
 
-                stats = ["stat-name","stat-duration","stat-durationticks","stat-durationmeasures","stat-ppq"]
-                stats.forEach(stat => {
-                    txt = document.getElementById(stat).innerText
-                    head = txt.split(":")[0]
-                    info = txt.split(":").filter((item, index) => {
-                        return index != 0
-                    }).join(":")
-                    document.getElementById(stat).innerHTML = `<strong>${head}</strong>: ${info}`
-                })
+                updateStatStyle()
             }
 
             function u8arrayToBuffer(array) {

@@ -169,3 +169,20 @@ button:hover {
 .homebox {
     border-color: white;
 }
+.reload {
+    font-family: Lucida Sans Unicode;
+    cursor: pointer;
+    transition: 0.5s ease-in-out;
+}
+.reload:hover {
+    color: grey;
+}
+.major-warning, .minor-warning {
+    font-weight: bold;
+}
+.major-warning {
+    color: red;
+}
+.minor-warning {
+    color: yellow;
+}
