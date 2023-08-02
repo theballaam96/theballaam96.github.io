@@ -14,6 +14,9 @@
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
         <style>
@@ -228,20 +231,22 @@
                     max-width: calc(100% - 10px - 2px - 10px);
                 }
             }
-            input[type=text] {
+            input[type=text], #advf-container select {
                 background-color: #303245;
                 border-radius: 5px;
                 border: 0;
                 box-sizing: border-box;
                 color: #eee;
                 font-size: 18px;
-                height: 100%;
                 outline: 0;
                 padding: 7px 20px;
                 width: -webkit-fill-available;
                 width: -moz-fill-available;
                 /*width: fill-available;*/
                 margin: 5px;
+            }
+            #search-game {
+                height: 100%;
             }
             #song_selected_count {
                 padding: 5px;
@@ -343,6 +348,48 @@
             .panel-some {
                 background-color: white;
             }
+            #advf-container {
+                margin-top: 20px;
+            }
+            #advf-container input, #advf-container select {
+                margin-bottom: 10px;
+            }
+            .slider-range {
+                border-radius: 50px;
+                height: 8px;
+                margin-top: 10px;
+                margin-bottom: calc(40px);
+                width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .slider-range .ui-slider-range {
+                background-color: cornflowerblue;
+            }
+            .slider-range .ui-slider-handle {
+                border-radius: 100px;
+                background-color: cornflowerblue;
+                top: calc(-0.3em - 1px);
+            }
+            .slider-range .ui-slider-timecode {
+                position: absolute;
+                color: white;
+                font-weight: bold;
+                top: 20px;
+            }
+            .advf-hint {
+                font-size: 75%;
+                font-style: italic;
+                padding-bottom: 5px;
+            }
+            #tag-list {
+                flex-wrap: wrap;
+            }
+            .advf-tag-container {
+                flex: 1;
+                min-width: 33%;
+                max-width: 33%;
+            }
             /*
             .icon-alignment {
                 display: inline-block;
@@ -368,7 +415,10 @@
             <div class="homebox" style="color:white">
                 <div class="panel-sep">
                     <div class="sep sep-left">
-                        <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame(this.value)"/>
+                        <div class="flexsplitter">
+                            <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
+                            <button style="width:fit-content" onclick="openFiltering()">&#9881;</button>
+                        </div>
                         <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
                             <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
@@ -384,7 +434,7 @@
                             <label for="text-view">Grid Text Shown</label>
                             <input id="text-view" type="checkbox"/>
                         </div>
-                        <div id="song_selected_count">0 songs selected</div>
+                        <div id="song_selected_count">0/0 songs selected</div>
                     </div>
                     <div class="sep" style="flex:2">
                         <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
@@ -429,6 +479,55 @@
                 <div id="popup_recent"></div>
             </div>
         </div>
+        <div class="popup_background hide" id="advanced-filter">
+            <div class="popup_prompt">
+                <div class="audio-close-container">
+                    <div class="audio-close noselect" onclick="closeFiltering()">Close</div>
+                </div>
+                <div class="popup_head">Advanced Filters</div>
+                <div id="advf-container">
+                    <label for="advf-game">Game Name</label>
+                    <input type="text" id="advf-game" placeholder="Game Name..." />
+                    
+                    <label for="advf-song">Song Name</label>
+                    <input type="text" id="advf-song" placeholder="Song Name..." />
+
+                    <label for="advf-group">Group</label>
+                    <select id="advf-group">
+                        <option selected>Any</option>
+                        <option>Background Music</option>
+                        <option>Events</option>
+                        <option>Major Items</option>
+                        <option>Minor Items</option>
+                    </select>
+
+                    <label for="advf-bgm-length">BGM Length</label>
+                    <div class="slider-range" id="advf-bgm-length"></div>
+
+                    <label for="advf-noloop-length">Non-Looping Lengths</label>
+                    <div class="slider-range" id="advf-noloop-length"></div>
+
+                    <label for="advf-composer">Composers</label>
+                    <div class="advf-hint">Split names with comma (Eg. Koji Kondo, Grant Kirkhope)</div>
+                    <input type="text" id="advf-composer" placeholder="Composer Name..." />
+
+                    <label for="advf-converter">Converters</label>
+                    <div class="advf-hint">Split names with comma (Eg. Ballaam, Adeleine64DS)</div>
+                    <input type="text" id="advf-converter" placeholder="Converter Name..." />
+
+                    <label>Tags</label>
+                    <div class="advf-hint">Select all that you are happy with</div>
+                    <div id="tag-list" class="flexsplitter"></div>
+
+                    <br />
+                    <label for="advf-safe">Only select safe songs</label>
+                    <input type="checkbox" id="advf-safe" />
+                    <div class="advf-hint">Applies various internal filters to minimize amount of songs which will break the music engine</div>
+
+                    <button onclick="compileAdvancedFilters()">Apply</button>
+                </div>
+            </div>
+        </div>
         <div class="popup_background" id="load-event">
             <div class="popup_prompt">
                 <div class="popup_head">Loading Site Data</div>
@@ -452,11 +551,31 @@
             const BASE_NO_ICON_IMG = "https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/question.png"
             const MISC_NAME = "Other"
             
+            const char_upper_alpha_idx = Array.from(Array(26)).map((e, i) => i + 65);
+            const char_lower_alpha_idx = Array.from(Array(26)).map((e, i) => i + 97);
+            const char_upper_alpha = char_upper_alpha_idx.map((x) => String.fromCharCode(x));
+            const char_lower_alpha = char_lower_alpha_idx.map((x) => String.fromCharCode(x));
+            const char_num = Array.from(Array(10).keys()).map(x => x.toString())
+            const char_alphanumeric = char_upper_alpha + char_lower_alpha + char_num;
+
             const REGULAR_FORMAT = "bin"
             const ENCODED_FORMAT = "candy"
             const FORMATS = [REGULAR_FORMAT, ENCODED_FORMAT]
             let OUTPUT_FORMAT = REGULAR_FORMAT
             const ENABLE_OUTPUT_CONTROL = false;
+            const ACCEPTED_TAGS = [
+                "Fights",
+                "Lobbies and Shops",
+                "Interiors",
+                "Exteriors",
+                "Minigames",
+                "Happy",
+                "Gloomy",
+                "Calm",
+                "Spawning",
+                "Collection",
+            ]
+            const QUERY_STRING_IDENTIFIER = "is_qs=true"
 
             fetch("DRIVE_API_KEY", {cache: "no-store"})
                 .then(async (response) => {
@@ -466,6 +585,91 @@
                     }
                     api_key_check_ran = true;
                 })            
+
+            function populateTagSuggestions() {
+                const hook = document.getElementById("tag-list")
+                hook.innerHTML = ACCEPTED_TAGS.map(item => `
+                    <div class='advf-tag-container'>
+                        <input type='checkbox' class='advf-tag' id='advf-tag-${filterName(item)}' checked/>
+                        <label for='advf-tag-${filterName(item)}'>${item}</label>
+                    </div>
+                `).join("")
+            }
+            populateTagSuggestions();
+
+            const tc_sliders = document.getElementsByClassName("slider-range")
+            const tc_default = [[0, 300], [0, 60]]
+            const tc_els = ["advf-bgm-length", "advf-noloop-length"]
+            tc_els.forEach((el, index) => {
+                $( `#${el}` ).slider({
+                    range: true,
+                    min: tc_default[index][0],
+                    max: tc_default[index][1],
+                    values: tc_default[index],
+                    slide: function( event, ui ) {
+                        $( `#${el}` ).attr("value-min", ui.values[0])
+                        $( `#${el}` ).attr("value-max", ui.values[1])
+                        const handles = event.target.getElementsByClassName("ui-slider-handle")
+                        for (let i = 0; i < 2; i++) {
+                            const tc_min = parseInt(ui.values[i] / 60);
+                            const tc_sec = parseInt(ui.values[i] - (tc_min * 60));
+                            handles[i].innerHTML = `<span class='ui-slider-timecode'>${tc_min}:${tc_sec < 10 ? `0${tc_sec}` : tc_sec}</span>`
+                        }
+                    }
+                });
+                const hook = document.getElementById(el)
+                document.getElementById(el).setAttribute("value-min", tc_default[index][0].toString())
+                document.getElementById(el).setAttribute("value-max", tc_default[index][1].toString())
+                const tc_handles = hook.getElementsByClassName("ui-slider-handle")
+                for (let i = 0; i < 2; i++) {
+                    const tc_min = parseInt(tc_default[index][i] / 60);
+                    const tc_sec = parseInt(tc_default[index][i] - (tc_min * 60));
+                    tc_handles[i].innerHTML = `<span class='ui-slider-timecode'>${tc_min}:${tc_sec < 10 ? `0${tc_sec}` : tc_sec}</span>`
+                }
+            })
+
+            function filterAdvancedFilterValue(value) {
+                if (value == "") {
+                    return null
+                }
+                return value.replaceAll("&","").replace("=","")
+            }
+
+            function compileAdvancedFilters() {
+                let filtering_information = {
+                    "game": filterAdvancedFilterValue(document.getElementById("advf-game").value),
+                    "song": filterAdvancedFilterValue(document.getElementById("advf-song").value),
+                    "group": filterAdvancedFilterValue(document.getElementById("advf-group").value),
+                    "bgm-min": parseInt(document.getElementById("advf-bgm-length").getAttribute("value-min")),
+                    "bgm-max": parseInt(document.getElementById("advf-bgm-length").getAttribute("value-max")),
+                    "noloop-min": parseInt(document.getElementById("advf-noloop-length").getAttribute("value-min")),
+                    "noloop-max": parseInt(document.getElementById("advf-noloop-length").getAttribute("value-max")),
+                    "composers": filterAdvancedFilterValue(document.getElementById("advf-composer").value),
+                    "converters": filterAdvancedFilterValue(document.getElementById("advf-converter").value),
+                    "safe-only": document.getElementById("advf-safe").checked,
+                }
+                let all_tagged = true;
+                ACCEPTED_TAGS.forEach(tag => {
+                    if (!document.getElementById(`advf-tag-${filterName(tag)}`).checked) {
+                        console.log(tag)
+                        all_tagged = false;
+                    }
+                })
+                if (!all_tagged) {
+                    ACCEPTED_TAGS.forEach(tag => {
+                        filtering_information[`tag-${filterName(tag)}`] = document.getElementById(`advf-tag-${filterName(tag)}`).checked
+                    })
+                }
+                let filtering_array = [QUERY_STRING_IDENTIFIER]
+                Object.keys(filtering_information).forEach(key => {
+                    if (filtering_information[key] != null) {
+                        filtering_array.push(`${key}=${filtering_information[key]}`)
+                    }
+                })
+                document.getElementById("search-game").value = filtering_array.join("&");
+                closeFiltering();
+                filterGame();
+            }
 
             function last(array) {
                 return array[array.length - 1];
@@ -478,6 +682,9 @@
               }
 
             function getCellValue(reference, index) {
+                if (reference.c[index] == null) {
+                    return null
+                }
                 const val = reference.c[index].v.replaceAll("|","");
                 if ((val == null) || (val == undefined)) {
                     return null;
@@ -543,8 +750,6 @@
                 if ((time_ago != null) && (entry_index != null)) {
                     const time_name = getTimeframeName(time_ago);
                     if (Object.keys(recent_history).includes(time_name)) {
-                        console.log(recent_history[time_name][entry_index]);
-                        console.log(recent_history[time_name], entry_index);
                         Object.keys(new_data).forEach(key => {
                             recent_history[time_name][entry_index][key] = new_data[key]
                         })
@@ -560,6 +765,7 @@
                                 if (e.target.getAttribute("class").includes("popup_background")) {
                                     e.target.classList.add("hide")
                                     document.body.classList.remove("fixed-body")
+                                    document.getElementById("audio-event-content").innerHTML = "";
                                 }
                             }
                         })
@@ -574,9 +780,10 @@
                     for (let b = 0; b < backdrops.length; b++) {
                         if (backdrops[b].getAttribute("id") != "load-event") {
                             backdrops[b].classList.add("hide")
-                            document.body.classList.remove("fixed-body")
                         }
                     }
+                    document.body.classList.remove("fixed-body")
+                    document.getElementById("audio-event-content").innerHTML = "";
                 }
             }
 
@@ -596,8 +803,10 @@
                 `
             }
             
+            const NON_FL_CONVERTERS = ["Ballaam", "Bismuth", "AaronDobbe"]
+
             class MIDIInfo {
-                constructor (name, game, group, composer, converter, drive_id, timestamp, audio, index) {
+                constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, index) {
                     this.name = name;
                     this.game = game;
                     this.group = group;
@@ -607,6 +816,13 @@
                     this.timestamp = timestamp;
                     this.audio = audio;
                     this.index = index;
+                    this.midi_length = midi_length ? parseFloat(midi_length) : null;
+                    this.track_count = track_count
+                    this.tags = []
+                    if (tags != null) {
+                        this.tags = tags.split(", ")
+                    }
+                    this.notes = notes
                     this.days_since_submission = null;
                     this.is_new = false;
                     this.older_revisions = null;
@@ -618,6 +834,21 @@
                         this.is_new = this.days_since_submission < 7;
                     }
                     this.changelog_entry = pushToRecent(this.game, this.name, this.days_since_submission)
+                    this.checkSafety()
+                }
+
+                checkSafety() {
+                    let converter_data = this.converter;
+                    if (converter_data == null) {
+                        converter_data = this.composer;
+                    }
+                    const converter_list = converter_data.split(",").map(item => item.trim())
+                    this.is_safe = true;
+                    converter_list.forEach(item => {
+                        if (!NON_FL_CONVERTERS.includes(item)) {
+                            this.is_safe = false;
+                        }
+                    })
                 }
 
                 update_entry(replacement) {
@@ -639,9 +870,16 @@
                     this.converter = converter_list.join(", ");
                     this.drive_id = replacement.drive_id;
                     this.audio = replacement.audio ? replacement.audio : this.audio;
+                    this.midi_length = replacement.midi_length ? replacement.midi_length : this.midi_length;
+                    this.track_count = replacement.track_count ? replacement.track_count : this.track_count;
+                    if ((replacement.tags != null) && (replacement.tags.length > 0)) {
+                        this.tags = replacement.tags.slice();
+                    }
+                    this.notes = replacement.notes ? replacement.notes : this.notes;
                     this.timestamp = replacement.timestamp;
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
+                    this.checkSafety()
                 }
             }
             
@@ -682,7 +920,6 @@
                 d.setTime(d.getTime() + (exdays*24*60*60*1000));
                 let expires = "expires="+ d.toUTCString();
                 document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-                console.log(cname, cvalue, exdays)
             }
 
             async function getSpreadsheetData() {
@@ -723,6 +960,10 @@
                         new MIDIHeader(4, false), // Converter
                         new MIDIHeader(5, true), // Drive ID
                         new MIDIHeader(7, false), // Audio
+                        new MIDIHeader(8, false), // Duration
+                        new MIDIHeader(9, false), // Track Count
+                        new MIDIHeader(10, false), // Categories
+                        new MIDIHeader(11, false), // Notes
                     ]
                     let params = new Array(headers.length).fill(null);
                     let permit = true;
@@ -762,6 +1003,10 @@
                 document.getElementById("lazy-loader").innerHTML = Object.keys(icon_data).map(key => `
                     <img src='${icon_data[key]}' height="1px" width="1px" async loading=lazy />
                 `).join("")
+            }
+
+            function filterName(name) {
+                return name.split("").filter(item => char_alphanumeric.includes(item)).join("").toLowerCase();
             }
 
             const site_is_down = false;
@@ -824,14 +1069,9 @@
                     }, {}
                 );
                 songs_by_game[MISC_NAME] = other.slice();
-                const char_upper_alpha_idx = Array.from(Array(26)).map((e, i) => i + 65);
-                const char_lower_alpha_idx = Array.from(Array(26)).map((e, i) => i + 97);
-                const char_upper_alpha = char_upper_alpha_idx.map((x) => String.fromCharCode(x));
-                const char_lower_alpha = char_lower_alpha_idx.map((x) => String.fromCharCode(x));
-                const char_num = Array.from(Array(10).keys()).map(x => x.toString())
-                const char_alphanumeric = char_upper_alpha + char_lower_alpha + char_num;
+                
                 Object.keys(songs_by_game).forEach(game_pretty => {
-                    let game = game_pretty.split("").filter(item => char_alphanumeric.includes(item)).join("").toLowerCase();
+                    let game = filterName(game_pretty);
                     if (game != null) {
                         const song_list = songs_by_game[game_pretty].sort()
                         // <input type='checkbox' class='midi-checkbox' id='' onclick='updateMaster(\"${game}\")' game='${game}'/>
@@ -855,7 +1095,8 @@
                                         onclick='updateTickbox(this,\"${game}\")' 
                                         ticked=${parseSeed(state_index) ? 'true' : 'false'} 
                                         group='${group}'
-                                        game='${game}'>
+                                        game='${game}'
+                                        ${song.notes ? `title='${song.notes}'` : ''}>
                                         <div class='flexsplitter'>
                                             <div class='name_data'>
                                                 <strong>${displayed_song_name.replace('.bin','')}</strong>
@@ -931,7 +1172,6 @@
                 updateMaster();
                 updateProgress(prog++, total_prog, "Updated Master");
                 // Update click events
-                console.log(document.cookie)
                 setMinView(getCookie("min-view") == "minimal", false)
                 setTextView(getCookie("text-view") == "show", false)
                 document.getElementById("credits_hidden").checked = getCookie("credits") == "true";
@@ -1210,23 +1450,25 @@
                 document.getElementById("select-all-songs").innerText = text;
                 updateCount();
             }
-            function filterGame(text) {
-                const force_enable = text.replace(" ","").length == 0;
+            function filterGame() {
+                const checkboxes = document.getElementsByClassName("midi-checkbox-container");
+                for (let c = 0; c < checkboxes.length; c++) {
+                    if (adheresToFilterCheckbox(checkboxes[c].getElementsByClassName("midi-checkbox")[0])) {
+                        checkboxes[c].classList.remove("hide");
+                    } else {
+                        checkboxes[c].classList.add("hide");
+                    }
+                }
                 const handlers = document.getElementsByClassName("game-handler")
                 for (let h = 0; h < handlers.length; h++) {
-                    const game_name = handlers[h].getElementsByClassName("game-internal-name")[0].innerText.toLowerCase();
-                    if (force_enable || game_name.includes(text.toLowerCase())) {
+                    const h_checkboxes = handlers[h].getElementsByClassName("midi-checkbox-container");
+                    let has_any = false;
+                    for (let c = 0; c < h_checkboxes.length; c++) {
+                        has_any |= !h_checkboxes[c].classList.contains("hide");
+                    }
+                    if (has_any) {
                         handlers[h].classList.remove("hide");
                     } else {
-                        // Check for songs
-                        const contained_songs = handlers[h].getElementsByClassName("name_data");
-                        for (let c = 0; c < contained_songs.length; c++) {
-                            const song_name = contained_songs[c].getElementsByTagName("strong")[0].innerText.toLowerCase();
-                            if (force_enable || song_name.includes(text.toLowerCase())) {
-                                handlers[h].classList.remove("hide");
-                                return;
-                            }
-                        }
                         handlers[h].classList.add("hide");
                     }
                 }
@@ -1264,7 +1506,7 @@
                 if (count == 1) {
                     song_text = "song";
                 }
-                document.getElementById("song_selected_count").innerText = `${count} ${song_text} selected.`
+                document.getElementById("song_selected_count").innerText = `${count}/${midi_data_copy.length} ${song_text} selected.`
                 updateFullnessIndicators();
             }
 
@@ -1307,12 +1549,143 @@
                 }
             }
 
+            function isNumeric(str) {
+                if (typeof str == "number") return true // Failsafe
+                if (typeof str != "string") return false // we only process strings!  
+                return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+                        !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+            }
+
+            let query_keys = {}
+            function checkQueryKey(key) {
+                if (Object.keys(query_keys).includes(key)) {
+                    const key_value = query_keys[key]
+                    if (key_value == "true") {
+                        return true;
+                    } else if (key_value == "false") {
+                        return false;
+                    } else if (isNumeric(key_value)) {
+                        return parseFloat(key_value);
+                    }
+                    return key_value
+                }
+                return null;
+            }
+
+            function adheresToFilter(index) {
+                /*
+                    .name .game .group
+                    .composer .converter
+                    .drive_id .timestamp
+                    .audio .index .midi_length
+                    .track_count .tags .notes
+                    .days_since_submission .is_new
+                    .older_revisions .changelog_entry
+                */
+                const midi_info = midi_data_copy.find(item => item.index == index)
+                const filter_value = document.getElementById("search-game").value.toLowerCase();
+                const filtered_game = filterName(filter_value);
+                if (filter_value.includes(QUERY_STRING_IDENTIFIER)) {
+                    const array_keys = ["composers","converters"]
+                    const queries = filter_value.split("&")
+                    query_keys = {}
+                    queries.forEach(query => {
+                        if (query != QUERY_STRING_IDENTIFIER) {
+                            const q_k = query.split("=")[0]
+                            const q_v = query.split("=")[1]
+                            if (array_keys.includes(q_k)) {
+                                query_keys[q_k] = q_v.split(",").map(item => item.trim())
+                            } else {
+                                query_keys[q_k] = q_v
+                            }
+                        }
+                    })
+                    Object.keys(query_keys).forEach(key => {
+                        query_keys[key] = checkQueryKey(key); // Basic filtering
+                    })
+                    let valid_entry = true;
+                    Object.keys(query_keys).forEach(key => {
+                        if (!valid_entry) {
+                            return;
+                        }
+                        const key_value = query_keys[key];
+                        if (key == "game") {
+                            valid_entry &= midi_info.game.toLowerCase().includes(filterName(key_value));
+                        } else if (key == "song") {
+                            valid_entry &= midi_info.name.toLowerCase().includes(key_value);
+                        } else if (key == "composers") {
+                            const entry_composers = midi_info.composer.split(",").map(item => item.trim().toLowerCase())
+                            let has_valid_composer = false;
+                            entry_composers.forEach(composer => {
+                                key_value.forEach(suggested_composer => {
+                                    has_valid_composer |= composer.includes(suggested_composer)
+                                })
+                            })
+                            valid_entry &= has_valid_composer;
+                        } else if (key == "converters") {
+                            const entry_converters = midi_info.converter.split(",").map(item => item.trim().toLowerCase())
+                            let has_valid_converter = false;
+                            entry_converters.forEach(converter => {
+                                key_value.forEach(suggested_converter => {
+                                    has_valid_converter |= converter.includes(suggested_converter)
+                                })
+                            })
+                            valid_entry &= has_valid_converter;
+                        } else if (key == "group") {
+                            if (key_value.toLowerCase() != "any") {
+                                let referenced_group = key_value;
+                                if (key_value == "background music") {
+                                    referenced_group = "bgm"
+                                }
+                                valid_entry &= midi_info.group.replaceAll(" ","") == referenced_group.toLowerCase()
+                            }
+                        } else if (key == "bgm-min") {
+                            if (midi_info.group == "bgm") {
+                                valid_entry &= midi_info.midi_length >= key_value;
+                            }
+                        } else if (key == "bgm-max") {
+                            if (midi_info.group == "bgm") {
+                                valid_entry &= midi_info.midi_length <= key_value;
+                            }
+                        } else if (key == "noloop-min") {
+                            if (midi_info.group != "bgm") {
+                                valid_entry &= midi_info.midi_length >= key_value;
+                            }
+                        } else if (key == "noloop-max") {
+                            if (midi_info.group != "bgm") {
+                                valid_entry &= midi_info.midi_length <= key_value;
+                            }
+                        } else if (key.substring(0,4) == "tag-") {
+                            const tag = key.substring(4)
+                            valid_entry &= midi_info.tags.length == 0 || midi_info.tags.map(item => item.replaceAll(" ","").toLowerCase()).includes(tag)
+                        } else if (key == "safe-only") {
+                            if (key_value) {
+                                valid_entry &= midi_info.is_safe;
+                            }
+                        }
+                    })
+                    return valid_entry;
+                }
+                if (filter_value == "") {
+                    return true;
+                }
+                return midi_info.game.toLowerCase().includes(filtered_game) || midi_info.name.toLowerCase().includes(filter_value);
+            }
+
+            function adheresToFilterCheckbox(el) {
+                const name = el.getElementsByClassName("name_data")[0].getElementsByTagName("strong")[0].innerText;
+                const success = adheresToFilter(parseInt(el.getAttribute("song-id")));
+                return success;
+            }
+
             function selectAllSongs() {
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
                 let all_checked = true;
                 for (let c = 0; c < checkboxes.length; c++) {
-                    if (checkboxes[c].getAttribute("ticked") == "false") {
-                        all_checked = false;
+                    if (adheresToFilterCheckbox(checkboxes[c])) {
+                        if (checkboxes[c].getAttribute("ticked") == "false") {
+                            all_checked = false;
+                        }
                     }
                 }
                 let state = "true"
@@ -1320,7 +1693,9 @@
                     state = "false";
                 }
                 for (let c = 0; c < checkboxes.length; c++) {
-                    checkboxes[c].setAttribute("ticked",state);
+                    if (adheresToFilterCheckbox(checkboxes[c])) {
+                        checkboxes[c].setAttribute("ticked",state);
+                    }
                 }
                 updateMaster();
             }
@@ -1499,9 +1874,17 @@
             function openChangelog() {
                 document.getElementById("new-songs").classList.remove("hide")
             }
-
+            
             function closeChangelog() {
                 document.getElementById("new-songs").classList.add("hide")
+            }
+
+            function openFiltering() {
+                document.getElementById("advanced-filter").classList.remove("hide")
+            }
+            
+            function closeFiltering() {
+                document.getElementById("advanced-filter").classList.add("hide")
             }
 
             function getShareLink(force_download) {
@@ -1652,7 +2035,6 @@
             function handleSize() {
                 const force_limit = 980;
                 const width = document.documentElement.clientWidth;
-                console.log(width)
                 if (width <= force_limit) {
                     if ((previous_width == null) || (previous_width > force_limit)) {
                         setMinView(true, false);

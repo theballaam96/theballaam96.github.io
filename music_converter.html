@@ -15,13 +15,13 @@
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
         <script src="script/file-buffer.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/tone@latest/build/Tone.js"></script>
-		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8/build/tonejs-ui.js"></script>
-        <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script>
-        <script src="script/libfluidsynth-2-3-0.min.js"></script>
-        <script src="script/js-synthesizer.min.js"></script>
-        <script src="script/pako.js"></script>
-        <link as="script" href="script/js-synthesizer.worklet.min.js">
+        <script type="text/javascript" src="https://unpkg.com/tone@latest/build/Tone.js"></script> <!-- MIDI Stats -->
+		<script type="text/javascript" src="https://unpkg.com/@tonejs/ui@0.0.8/build/tonejs-ui.js"></script> <!-- MIDI Stats -->
+        <script type="text/javascript" src="https://unpkg.com/@tonejs/midi"></script> <!-- MIDI Stats -->
+        <script src="script/libfluidsynth-2-3-0.min.js"></script> <!-- MIDI Playing -->
+        <script src="script/js-synthesizer.min.js"></script> <!-- MIDI Playing -->
+        <script src="script/pako.js"></script> <!-- File Compression -->
+        <link as="script" href="script/js-synthesizer.worklet.min.js"> <!-- MIDI Playing -->
         <script src="script/n64miditool.js"></script>
     </head>
     <body>
@@ -195,6 +195,8 @@
                 })
             }
 
+            
+
             const VANILLA_BIN_LIMIT = 16512
             const RANDO_BIN_LIMIT = 32768
 
@@ -212,6 +214,8 @@
                 } <span class="reload noselect" id="recalculate-binary" title="Recalculate" onclick="updateBinarySize()">&#x21bb;</span>`
                 updateStatStyle()
             }
+
+            
 
             function updateStats(midi_json) {
                 second_floor_grade = 100
@@ -252,6 +256,7 @@
                     var data = fr.result;
                     setup_data = fr.result;
                     var array = new Uint8Array(data);
+                    //window.clampMidi(fr.result)
                     current_midi_file = array.slice()
                     let midi_reqs = document.getElementsByClassName("req-midi")
                     for (let m = 0; m < midi_reqs.length; m++) {
@@ -320,7 +325,7 @@
                 console.log("Loop Point:",loop_point)
                 console.log("Disable Repeaters:",no_repeaters)
                 console.log("Output File:",output_file)
-                output_bin_file = MidiToGEFormat(current_midi_file, [], loop, loop_point, no_repeaters)
+                output_bin_file = MidiToGEFormat(current_midi_file, [], loop, loop_point, no_repeaters, true)
                 data_len = output_bin_file.length
                 cap = 0x10
                 if ((data_len % cap) != 0) {
