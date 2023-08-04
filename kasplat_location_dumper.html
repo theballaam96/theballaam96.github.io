@@ -1,0 +1,99 @@
+<html>
+    <head>
+        <title>DK64 Randomizer Kasplat Location Dumper</title>
+        <link rel="stylesheet" href="style/nav.css">
+		<link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/home.css">
+        <link rel="stylesheet" href="style/midi-converter.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="" />
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <style>
+            .homebox {
+                padding: 10px;
+            }
+            #locations {
+                flex-wrap: wrap;
+                margin-top: 20px;
+            }
+            .level-item {
+                flex: 1;
+                min-width: 25%;
+            }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="flexsplitter">
+            <div class="homebox">
+                <div class="header master_header">
+                    <strong>Kasplat Location Dumper</strong>
+                </div>
+            </div>
+        </div>
+        <div class="flexsplitter">
+            <div class="homebox" style="color:white">
+                <div style="text-align:center">
+                    <input type="file" id="spoiler-json" class="hide" accept=".json" />
+                    <button type="button" class="btn btn-primary" onclick="setSpoilerLog()">Upload Spoiler Log</button>
+                </div>
+                <div id="locations" class="flexsplitter hide"></div>
+            </div>
+        </div>
+        <script>          
+            const JSON_ELEMENT = "spoiler-json"
+            const KASPLAT_KEY = "Shuffled Kasplats"
+            const LOCATION_ELEMENT = "locations"
+            const DELIMITER = "Kasplat: "
+
+            document.getElementById(JSON_ELEMENT).addEventListener("change", function() {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    const data = JSON.parse(fr.result);
+                    parseJson(data)
+                };
+                fr.readAsText(document.getElementById(JSON_ELEMENT).files[0]);
+            })
+
+            function parseJson(json) {
+                const hook = document.getElementById(LOCATION_ELEMENT)
+                hook.innerHTML = "Spoiler log is missing shuffled kasplat placement"
+                hook.classList.remove("hide")
+                if (Object.keys(json).includes(KASPLAT_KEY)) {
+                    const kasplats = Object.keys(json[KASPLAT_KEY])
+                    const kasplat_levels = {}
+                    kasplats.forEach(kasplat => {
+                        const level = kasplat.split(DELIMITER)[0].trim()
+                        if (!Object.keys(kasplat_levels).includes(level)) {
+                            kasplat_levels[level] = []
+                        }
+                        const location = kasplat.split(DELIMITER)[1].trim()
+                        kasplat_levels[level].push(location)
+                    })
+                    hook.innerHTML = Object.keys(kasplat_levels).map(item => `
+                        <div class='level-item'>
+                            <strong>${item}</strong>
+                            <ul>
+                                ${kasplat_levels[item].map(loc => `<li>${loc}</li>`).join("")}
+                            </ul>
+                        </div>
+                    `).join("")
+                }
+            }
+
+            function setSpoilerLog() {
+                document.getElementById(JSON_ELEMENT).click();
+            }
+        </script>
+    </body>
+</html>
