@@ -426,6 +426,7 @@
                             <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
                         </div>
                         <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
+                        <button style="flex:1" onclick="getYTPlaylist()">Get YouTube Playlist</button>
                         <button style="flex:1" onclick="openChangelog()">Song Changelog</button>
                         <button style="flex:1" onclick="submitSong()">Submit song</button>
                         <div style="text-align: center">
@@ -1247,6 +1248,7 @@
                     let song_index = null;
                     let drive_id = null;
                     let game = null;
+                    let preview = null;
                     const entry = midi_data_copy.find(item => item.index == id);
                     if (entry) {
                         song = entry.name;
@@ -1255,6 +1257,7 @@
                         song_index = id;
                         drive_id = entry.drive_id
                         game = entry.game;
+                        preview = entry.audio
                     }
                     if (song != null) {
                         return {
@@ -1263,7 +1266,8 @@
                             "folder": folder,
                             "download": download,
                             "index": song_index,
-                            "drive_id": drive_id
+                            "drive_id": drive_id,
+                            "preview": preview
                         }
                     }
                 }
@@ -1819,6 +1823,78 @@
                 document.getElementById("uploaded_pack").click();
             }
 
+            function shuffle(array) {
+                let currentIndex = array.length,  randomIndex;
+              
+                // While there remain elements to shuffle.
+                while (currentIndex > 0) {
+              
+                    // Pick a remaining element.
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex--;
+              
+                    // And swap it with the current element.
+                    [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+                }
+              
+                return array;
+            }
+            YT_EMBED_CAP = 199
+
+            function sendToURL(url) {
+                window.open(url, "_blank")
+            }
+
+            function getYTPlaylist() {
+                if ((getSongSelectedCount() < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
+                    document.getElementById("song_selected_count").classList.add("errored");
+                    setTimeout(() => {
+                        document.getElementById("song_selected_count").classList.remove("errored");
+                    }, 2000);
+                    return;
+                }
+                const checkboxes = document.getElementsByClassName("midi-checkbox");
+                folder_data = {...uploaded_pack_data}
+                let data_array = []
+                for (let c = 0; c < checkboxes.length; c++) {
+                    if (checkboxes[c].getAttribute("ticked") == "true") {
+                        if (checkboxes[c].getAttribute("group") == "bgm") {
+                            const data = idToSongInfo(checkboxes[c].getAttribute("song-id"));
+                            if (data != null) {
+                                data_array.push(data)
+                            }
+                        }
+                    }
+                }
+                data_array = data_array.filter(item => item.preview.includes("youtube") || item.preview.includes("youtu.be"))
+                data_array = data_array.map(item => item.preview)
+                shuffle(data_array)
+                if (data_array.length > YT_EMBED_CAP) {
+                    // Embeded playlists only can have a max of YT_EMBED_CAP videos
+                    data_array = data_array.filter((item, index) => index < YT_EMBED_CAP)
+                }
+                let yt_ids = []
+                data_array.forEach(item => {
+                    YT_LONG_SPLITTER = "youtube.com/watch?v="
+                    YT_SHORT_SPLITTER = "youtu.be/"
+                    if (item.includes(YT_LONG_SPLITTER)) {
+                        let id_seg = item.split(YT_LONG_SPLITTER)[1]
+                        if (id_seg.includes("&")) {
+                            id_seg = id_seg.split("&")[0]
+                        }
+                        yt_ids.push(id_seg)
+                    } else if (item.includes(YT_SHORT_SPLITTER)) {
+                        let id_seg = item.split(YT_SHORT_SPLITTER)[1]
+                        if (id_seg.includes("?")) {
+                            id_seg = id_seg.split("?")[0]
+                        }
+                        yt_ids.push(id_seg)
+                    }
+                })
+                const LINK_INIT = "http://www.youtube.com/embed/?playlist="
+                const full_link = `${LINK_INIT}${yt_ids.join(",")}`
+                sendToURL(full_link)
+            }
             function playSong(url, converter) {
                 const hook = document.getElementById("audio-event-content");
                 if (url.includes("cdn.discordapp.com")) {
@@ -1831,7 +1907,7 @@
                 } else if ((url.includes("youtube")) || (url.includes("youtu.be"))) {
                     const CONVERTER_NO_EXTERNAL = []; // Any users who make their videos non-distributable on external websites will just open a new tab to YT
                     if (CONVERTER_NO_EXTERNAL.includes(converter)) {
-                        window.open(url, "_blank")
+                        sendToURL(url)
                         return;
                     }
                     // Embedded YT Link
@@ -1860,7 +1936,7 @@
                     }
 
                 } else {
-                    window.open(url, "_blank")
+                    sendToURL(url)
                     return;
                 }
                 document.getElementById("audio-event").classList.remove("hide")
@@ -2028,7 +2104,7 @@
 
             function submitSong() {
                 const LINK = "https://script.google.com/macros/s/AKfycbwetNkcuX68j1hSMt0U2F_xmTHFe3hQp6my3cnHXwxICMJVt5NTyD8_aYcrMqEuSwuyfQ/exec"
-                window.open(LINK, "_blank");
+                sendToURL(LINK)
             }
 
             let previous_width = null;
