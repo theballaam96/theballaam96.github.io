@@ -390,6 +390,16 @@
                 min-width: 33%;
                 max-width: 33%;
             }
+            #font-size-selector {
+                width: 100%;
+            }
+            .song-tag {
+                padding: 2px;
+                font-size: 14px;
+            }
+            .song-tag-internal {
+                background-color: ;
+            }
             /*
             .icon-alignment {
                 display: inline-block;
@@ -419,15 +429,21 @@
                             <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
                             <button style="width:fit-content" onclick="openFiltering()">&#9881;</button>
                         </div>
-                        <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
+                        <button style="flex:1" id="select-all-songs" class="selector-button" onclick="selectAllSongs()">Select All Songs</button>
                         <div class="panel-sep-anti" id="button-panel" style="flex:2">
-                            <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
+                            <button style="flex:1" class="selector-button" onclick="uploadPack()">Upload Pack</button>
                             <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
-                            <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
+                            <button style="flex:1" class="selector-button" onclick="buildPack()" id="build-pack-button">Build Pack</button>
                         </div>
-                        <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
-                        <button style="flex:1" onclick="openChangelog()">Song Changelog</button>
-                        <button style="flex:1" onclick="submitSong()">Submit song</button>
+                        <button style="flex:1" class="selector-button" onclick="getShareLink(false)">Get Shareable Link</button>
+                        <button style="flex:1" class="selector-button" onclick="openChangelog()">Song Changelog</button>
+                        <button style="flex:1" class="selector-button" onclick="submitSong()">Submit song</button>
+                        <hr>
+                        <div>
+                            <label for="font-size-selector">Font Size:</label>
+                            <input type="range" id="font-size-selector" min="0" max="100" onclick="updateFontSize()" oninput="updateFontSize()" />
+                        </div>
+                        <hr>
                         <div style="text-align: center">
                             <label for="min-view">Minimal View</label>
                             <input id="min-view" type="checkbox"/>
@@ -633,6 +649,31 @@
                     return null
                 }
                 return value.replaceAll("&","").replace("=","")
+            }
+
+            function setClassFontSize(cls, ratio, base, units) {
+                const els = document.getElementsByClassName(cls);
+                for (let i = 0; i < els.length; i++) {
+                    els[i].style["font-size"] = `${ratio * base}${units}`
+                }
+            }
+
+            function getTanFromDegrees(degrees) {
+                return Math.tan((degrees * Math.PI) / 180);
+            }
+
+            function getRatio(value, magnitude) {
+                // Base it on a tangential curve
+                const diff = value - 50;
+                const max_angle_mag = 76;
+                const angle_factor = (diff / 50) * max_angle_mag;
+                return (getTanFromDegrees(angle_factor) * magnitude) + 1;
+            }
+
+            function updateFontSize() {
+                const value = document.getElementById("font-size-selector").value;
+                setClassFontSize("game-internal-name", getRatio(value, 1), 1, "vw");
+                setClassFontSize("selector-button", getRatio(value, 0.5), 18, "px");
             }
 
             function compileAdvancedFilters() {
@@ -1081,6 +1122,7 @@
                             let displayed_song_name = song.name;
                             let composer = song.composer ? song.composer : "";
                             let converter = song.converter ? song.converter : "";
+                            let tags = song.tags;
                             let audio = song.audio;
                             if (!Object.keys(local_html).includes(group)) {
                                 local_html[group] = "";
@@ -1103,6 +1145,9 @@
                                                 <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
                                                     ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
                                                     ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
+                                                </div>
+                                                <div class='flexsplitter'>
+                                                    ${tags.map(item => `<div class='song-tag'>${item}</div>`).join("")}
                                                 </div>
                                             </div>
                                             <img class="tick" src='./assets/tick.svg'>
