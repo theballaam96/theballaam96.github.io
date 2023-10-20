@@ -23,6 +23,8 @@
         <script src="script/pako.js"></script> <!-- File Compression -->
         <link as="script" href="script/js-synthesizer.worklet.min.js"> <!-- MIDI Playing -->
         <script src="script/n64miditool.js"></script>
+        <script type="text/javascript" src="script/bps.js" defer></script>
+        <script type="text/javascript" src="script/MarcFile.js" defer></script>
     </head>
     <body>
         <nav id="navigation"></nav>
@@ -43,8 +45,9 @@
             <div class="flexsplitter center-block">
                 <div class="homebox" style="color:white">
                     <div class="flexsplitter">
-                        <div class="tab selected" association="midi-to-bin">Midi to Bin</div>
-                        <div class="tab" association="midi-porting">Midi Porting</div>
+                        <div class="tab selected" association="midi-to-bin" editing="midi">Midi to Bin</div>
+                        <div class="tab" association="midi-porting" editing="midi">Midi Porting</div>
+                        <div class="tab" association="sf-correction" editing="soundfont">Fix Soundfont</div>
                     </div>
                     <br>
                     <div style="text-align:left">
@@ -60,17 +63,54 @@
                             their similarities to DK64 music-wise enabling music to sound very similar between games. However, this tool does have the
                             functionality to expand to any midi format from any game or general MIDI in general.
                         </div>
+                        <div id="exp-sf-correction" class="hide">
+                            <strong>Fix Soundfont</strong><br>
+                            Fixes the soundfont extracted with N64 Soundbank tool to sound better in editors like FL Studio.<br>
+                            Fixes by:
+                            <ul>
+                                <li><a href="https://www.youtube.com/@glitchglidertwo">GlitchGlider</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="flexsplitter">
                         <div id="left-separator" class="sep">
                             <!-- Left box -->
-                            <h3>Song Loading</h3>
-                            <div class="flexsplitter">
-                                <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
-                                <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
+                            <div class="req-edit-midi">
+                                <h3>Song Loading</h3>
+                                <div class="flexsplitter">
+                                    <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
+                                    <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
+                                </div>
+                            </div>
+                            <div class="req-edit-soundfont hide">
+                                <div class="flexsplitter">
+                                    <button class="sf-loaders" id="dls-loader" onclick="clickEl('dls-selector')" style="width:100%">Load Soundfont (DLS)</button>
+                                </div>
+                                <div id="sf-correction" class="hide">
+                                    <div id="soundfont-controls" class="hide">
+                                        <br />
+                                        <h3>Select output format</h3>
+                                        <div class="flexsplitter">
+                                            <div class="dls-radio-container">
+                                                <button class="sf-loaders dls-radio button-radio-selected" onclick="clickEl('sf-convert-dls'); handleButtonRadios(this, 'dls-radio')">DLS</button>
+                                            </div>
+                                            <div class="dls-radio-container">
+                                                <button class="sf-loaders dls-radio" onclick="clickEl('sf-convert-sf2'); handleButtonRadios(this, 'dls-radio')">SF2</button>
+                                            </div>
+                                        </div>
+                                        <input type="radio" id="sf-convert-dls" name="sf-convert" value="dls" class="dls-radio-internal hide" checked />
+                                        <input type="radio" id="sf-convert-sf2" name="sf-convert" value="sf2" class="dls-radio-internal hide"/>
+                                        <br />
+                                        <h3>Download Fixed Soundfont</h3>
+                                        <div class="flexsplitter">
+                                            <button class="sf-loaders" id="sf-downloader" onclick="downloadSoundfont()" style="width:100%">Download</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
                             <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
+                            <input type="file" class="hide" id="dls-selector" accept=".dls"/>
                             <input type="file" class="hide" id="rom-selector" accept=".z64"/>
                             <div class="req-midi">
                                 <div id="stats">
@@ -83,73 +123,75 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="sep req-midi hide">
-                            <div id="midi-to-bin">
-                                <!-- Right box -->
-                                <h3>Song Actions</h3>
-                                <div class="req-midi" class="hide">
-                                    <div id="player" class="hide">
-                                        <div style="text-align:left;font-weight:bold">Play Song</div>
-                                        <div style="font-style:italic;text-align:left">
-                                            <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                        <div class="req-edit-midi">
+                            <div class="sep req-midi hide">
+                                <div id="midi-to-bin">
+                                    <!-- Right box -->
+                                    <h3>Song Actions</h3>
+                                    <div class="req-midi" class="hide">
+                                        <div id="player" class="hide">
+                                            <div style="text-align:left;font-weight:bold">Play Song</div>
+                                            <div style="font-style:italic;text-align:left">
+                                                <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                                            </div>
+                                            <div class="flexsplitter">
+                                                <span id="play-button" onclick="playMusic()">&#9654;</span>
+                                                <input
+                                                    type="range" 
+                                                    min="0" 
+                                                    max="100" 
+                                                    id="player-navigator" 
+                                                    ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
+                                                    ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
+                                                    ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
+                                                    />
+                                                <span id="player-position-display"></span>
+                                            </div>
+                                        </div>
+                                        <div id="player-sep" class="hide">
+                                            <hr>
+                                            <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
                                         </div>
                                         <div class="flexsplitter">
-                                            <span id="play-button" onclick="playMusic()">&#9654;</span>
-                                            <input
-                                                type="range" 
-                                                min="0" 
-                                                max="100" 
-                                                id="player-navigator" 
-                                                ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
-                                                ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
-                                                ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
-                                                />
-                                            <span id="player-position-display"></span>
-                                        </div>
-                                    </div>
-                                    <div id="player-sep" class="hide">
-                                        <hr>
-                                        <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
-                                    </div>
-                                    <div class="flexsplitter">
-                                        <div class="sep" style="text-align:left">
-                                            <label>Loop:</label>
-                                            <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
-                                        </div>
-                                        <div id="loop-point-info" class="sep hide" style="flex:2">
-                                            <label for="loop-point">Loop Point (Ticks)</label>
-                                            <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
-                                        </div>
-                                    </div>
-                                    <div class="flexsplitter">
-                                        <div class="sep">
-                                            <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
-                                        </div>
-                                        <div class="sep">
-                                            <div class="req-no-preload">
-                                                <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
+                                            <div class="sep" style="text-align:left">
+                                                <label>Loop:</label>
+                                                <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
                                             </div>
-                                            <div class="req-preload hide">
-                                                <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
+                                            <div id="loop-point-info" class="sep hide" style="flex:2">
+                                                <label for="loop-point">Loop Point (Ticks)</label>
+                                                <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
                                             </div>
-                                            <div class="req-preload hide">
-                                                <div class="list-choice">
-                                                    <div class="list-choice-title">Select Song</div>
-                                                    <div class="list-choice-objects" id="song_list"></div>
+                                        </div>
+                                        <div class="flexsplitter">
+                                            <div class="sep">
+                                                <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
+                                            </div>
+                                            <div class="sep">
+                                                <div class="req-no-preload">
+                                                    <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
+                                                </div>
+                                                <div class="req-preload hide">
+                                                    <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
+                                                </div>
+                                                <div class="req-preload hide">
+                                                    <div class="list-choice">
+                                                        <div class="list-choice-title">Select Song</div>
+                                                        <div class="list-choice-objects" id="song_list"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div id="midi-porting" class="hide">
-                                <div class="list-choice">
-                                    <div class="list-choice-title">Select Template</div>
-                                    <div class="list-choice-objects" id="template_select"></div>
+                                <div id="midi-porting" class="hide">
+                                    <div class="list-choice">
+                                        <div class="list-choice-title">Select Template</div>
+                                        <div class="list-choice-objects" id="template_select"></div>
+                                    </div>
+                                    <button onclick="instrumentChange()">
+                                        Write new MIDI
+                                    </button>
                                 </div>
-                                <button onclick="instrumentChange()">
-                                    Write new MIDI
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -169,14 +211,122 @@
                     for (let u = 0; u < tabs.length; u++) {
                         tabs[u].classList.remove("selected")
                         assoc = tabs[u].getAttribute("association")
+                        console.log(assoc)
                         document.getElementById(assoc).classList.add("hide")
                         document.getElementById(`exp-${assoc}`).classList.add("hide")
+                        edit_type = tabs[u].getAttribute("editing")
+                        edits = document.getElementsByClassName(`req-edit-${edit_type}`)
+                        for (let c = 0; c < edits.length; c++) {
+                            edits[c].classList.add("hide")
+                        }
                     }
                     targ.classList.add("selected")
                     elm = targ.getAttribute("association")
                     document.getElementById(elm).classList.remove("hide")
                     document.getElementById(`exp-${elm}`).classList.remove("hide")
+                    edit_type = targ.getAttribute("editing")
+                    edits = document.getElementsByClassName(`req-edit-${edit_type}`)
+                    for (let c = 0; c < edits.length; c++) {
+                        edits[c].classList.remove("hide")
+                    }
                 })
+            }
+
+            function handleButtonRadios(evt, cls) {
+                radios = document.getElementsByClassName(cls);
+                for (let i = 0; i < radios.length; i++) {
+                    radios[i].classList.remove("button-radio-selected");
+                }
+                evt.classList.add("button-radio-selected");
+            }
+
+            let dls_base = null;
+            let dls_base_res = null;
+            document.getElementById("dls-selector").addEventListener("change", function() {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    console.log("Loading DLS")
+                    var data = fr.result;
+                    console.log(data)
+                    dls_base_res = data;
+                    dls_base = new MarcFile(new Uint8Array(data));
+                    console.log(dls_base)
+                };
+                fr.readAsArrayBuffer(document.getElementById("dls-selector").files[0]);
+            })
+            
+            // Download file
+        var downloadBlob, downloadURL;
+        downloadBlob = function(data, fileName, mimeType) {
+            var blob, url;
+            blob = new Blob([data], {
+                type: mimeType
+            });
+            url = window.URL.createObjectURL(blob);
+            downloadURL(url, fileName);
+            setTimeout(function() {
+                return window.URL.revokeObjectURL(url);
+            }, 1000);
+        };
+
+        downloadURL = function(data, fileName) {
+            var a;
+            a = document.createElement('a');
+            a.href = data;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.style = 'display: none';
+            a.click();
+            a.remove();
+        };
+
+        function buildSoundfont(dls, bps, extension) {
+            wwApply=new Worker("./script/worker_apply.js");
+            console.log("Genned Worker")
+            wwApply.postMessage(
+				{
+					romFileU8Array:dls._u8array,
+					patchFileU8Array:bps._u8array,
+					validateChecksums:false
+				},[
+					dls._u8array.buffer,
+					bps._u8array.buffer
+				]
+			);
+            console.log("Posted Message")
+            wwApply.onmessage = event => { // listen for events from the worker
+                console.log("Message received")
+                console.log(event.data)
+                var newFile=new MarcFile(event.data.patchedRomU8Array);
+                downloadBlob(newFile._u8array,`dk64-soundfont-fixed.${extension}`,"application/octet-stream")
+            };
+        }
+
+            async function downloadSoundfont() {
+                let output_format = null;
+                const radios = document.getElementsByClassName("dls-radio-internal");
+                for (let r = 0; r < radios.length; r++) {
+                    if (radios[r].checked) {
+                        output_format = radios[r].value;
+                    }
+                }
+                const BPS_HEAD = "v4";
+                if (output_format != null) {
+                    fetch(`./data/soundfont_correctors/${BPS_HEAD}-${output_format}.bps`)
+                    .then(res => res.blob())
+                    .then(data => data.arrayBuffer())
+                    .then(ab => {
+                        console.log(ab)
+                        u8 = new Uint8Array(ab);
+                        patch = new MarcFile(u8);
+                        console.log(patch)
+                        //setPatch(patch);
+                        //setBase(dls_base);
+                        //applyPatch(new MarcFile(dls_base_res), new MarcFile(u8), false)
+                        buildSoundfont(dls_base, new MarcFile(u8), output_format);
+                        document.getElementById("sf-downloader").setAttribute("disabled","disabled")
+                    })
+                }
             }
 
             function last(arr) {
@@ -194,8 +344,6 @@
                     document.getElementById(stat).innerHTML = `<strong>${head}</strong>: ${info}`
                 })
             }
-
-            
 
             const VANILLA_BIN_LIMIT = 16512
             const RANDO_BIN_LIMIT = 32768
@@ -291,11 +439,21 @@
                     sfBuffer = u8arrayToBuffer(array)
                     document.getElementById("player").classList.remove("hide")             
                     document.getElementById("player-sep").classList.remove("hide")
+                    document.getElementById("soundfont-controls").classList.remove("hide")
                     if (synth) {
                         synth.stopPlayer();
                     }
                 };
                 fr.readAsArrayBuffer(document.getElementById("soundfont-selector").files[0]);
+            })
+            document.getElementById("dls-selector").addEventListener("change", function(e) {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    var data = fr.result;
+                    var array = new Uint8Array(data);
+                    document.getElementById("soundfont-controls").classList.remove("hide")
+                };
+                fr.readAsArrayBuffer(document.getElementById("dls-selector").files[0]);
             })
             document.getElementById("rom-selector").addEventListener("change", function(e) {
                 var fr = new FileReader();

@@ -186,3 +186,18 @@ button:hover {
 .minor-warning {
     color: yellow;
 }
+.button-radio-selected {
+    border-color: darkgoldenrod;
+}
+.dls-radio-container {
+    padding: 5px;
+    width: 100%;
+}
+.dls-radio-container button {
+    width: 100%;
+}
+button:disabled, button[disabled] {
+    border: 1px solid #999999;
+    color: #666666;
+    pointer-events: none;
+}
