@@ -123,74 +123,76 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="req-edit-midi">
-                            <div class="sep req-midi hide">
-                                <div id="midi-to-bin">
-                                    <!-- Right box -->
-                                    <h3>Song Actions</h3>
-                                    <div class="req-midi" class="hide">
-                                        <div id="player" class="hide">
-                                            <div style="text-align:left;font-weight:bold">Play Song</div>
-                                            <div style="font-style:italic;text-align:left">
-                                                <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                        <div class="sep req-midi hide">
+                            <div class="req-edit-midi">
+                                <div class="req-midi hide">
+                                    <div id="midi-to-bin">
+                                        <!-- Right box -->
+                                        <h3>Song Actions</h3>
+                                        <div class="req-midi" class="hide">
+                                            <div id="player" class="hide">
+                                                <div style="text-align:left;font-weight:bold">Play Song</div>
+                                                <div style="font-style:italic;text-align:left">
+                                                    <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                                                </div>
+                                                <div class="flexsplitter">
+                                                    <span id="play-button" onclick="playMusic()">&#9654;</span>
+                                                    <input
+                                                        type="range" 
+                                                        min="0" 
+                                                        max="100" 
+                                                        id="player-navigator" 
+                                                        ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
+                                                        ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
+                                                        ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
+                                                        />
+                                                    <span id="player-position-display"></span>
+                                                </div>
+                                            </div>
+                                            <div id="player-sep" class="hide">
+                                                <hr>
+                                                <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
                                             </div>
                                             <div class="flexsplitter">
-                                                <span id="play-button" onclick="playMusic()">&#9654;</span>
-                                                <input
-                                                    type="range" 
-                                                    min="0" 
-                                                    max="100" 
-                                                    id="player-navigator" 
-                                                    ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
-                                                    ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
-                                                    ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
-                                                    />
-                                                <span id="player-position-display"></span>
-                                            </div>
-                                        </div>
-                                        <div id="player-sep" class="hide">
-                                            <hr>
-                                            <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
-                                        </div>
-                                        <div class="flexsplitter">
-                                            <div class="sep" style="text-align:left">
-                                                <label>Loop:</label>
-                                                <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
-                                            </div>
-                                            <div id="loop-point-info" class="sep hide" style="flex:2">
-                                                <label for="loop-point">Loop Point (Ticks)</label>
-                                                <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
-                                            </div>
-                                        </div>
-                                        <div class="flexsplitter">
-                                            <div class="sep">
-                                                <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
-                                            </div>
-                                            <div class="sep">
-                                                <div class="req-no-preload">
-                                                    <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
+                                                <div class="sep" style="text-align:left">
+                                                    <label>Loop:</label>
+                                                    <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
                                                 </div>
-                                                <div class="req-preload hide">
-                                                    <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
+                                                <div id="loop-point-info" class="sep hide" style="flex:2">
+                                                    <label for="loop-point">Loop Point (Ticks)</label>
+                                                    <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
                                                 </div>
-                                                <div class="req-preload hide">
-                                                    <div class="list-choice">
-                                                        <div class="list-choice-title">Select Song</div>
-                                                        <div class="list-choice-objects" id="song_list"></div>
+                                            </div>
+                                            <div class="flexsplitter">
+                                                <div class="sep">
+                                                    <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
+                                                </div>
+                                                <div class="sep">
+                                                    <div class="req-no-preload">
+                                                        <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
+                                                    </div>
+                                                    <div class="req-preload hide">
+                                                        <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
+                                                    </div>
+                                                    <div class="req-preload hide">
+                                                        <div class="list-choice">
+                                                            <div class="list-choice-title">Select Song</div>
+                                                            <div class="list-choice-objects" id="song_list"></div>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <div id="midi-porting" class="hide">
-                                    <div class="list-choice">
-                                        <div class="list-choice-title">Select Template</div>
-                                        <div class="list-choice-objects" id="template_select"></div>
+                                    <div id="midi-porting" class="hide">
+                                        <div class="list-choice">
+                                            <div class="list-choice-title">Select Template</div>
+                                            <div class="list-choice-objects" id="template_select"></div>
+                                        </div>
+                                        <button onclick="instrumentChange()">
+                                            Write new MIDI
+                                        </button>
                                     </div>
-                                    <button onclick="instrumentChange()">
-                                        Write new MIDI
-                                    </button>
                                 </div>
                             </div>
                         </div>
