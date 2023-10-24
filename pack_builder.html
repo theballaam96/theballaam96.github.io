@@ -1378,11 +1378,34 @@
                             if (!Object.keys(folder_data).includes(found_data.folder)) {
                                 folder_data[found_data.folder] = []
                             }
+                            let composer = "";
+                            let converter = "";
+                            for (let i = 0; i < midi_data_copy.length; i++) {
+                                if (midi_data_copy[i].name === found_data.song && midi_data_copy[i].game === found_data.game) {
+                                    composer = midi_data_copy[i].composer;
+                                    converter = midi_data_copy[i].converter;
+                                    group = midi_data_copy[i].group;
+                                    length = midi_data_copy[i].midi_length;
+                                    break;
+                                }
+                            }
                             folder_data[found_data.folder].push({
                                 "song": found_data.song,
                                 "game": found_data.game,
+                                "logo": (async () => {
+                                    if (folder_data[found_data.folder].some(file => file.game === found_data.game)) {
+                                        return folder_data[found_data.folder].find(file => file.game === found_data.game).logo;
+                                    } else {
+                                        const response = await fetch(icon_data[found_data.game]);
+                                        return await response.arrayBuffer();
+                                    }
+                                })(),
+                                "composer": composer,
+                                "converter": converter,
+                                "group": group,
+                                "length": length,
                                 "data": fileData
-                            })
+                            });
                         }
                     }
                 }
@@ -1391,7 +1414,18 @@
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data)
+                        f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
+                        f_zip.file(filterFilename(`${file.game}.png`), file.logo);
+                        // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
+                        f_zip.file(filterFilename(`${file.game} ${file.song}.json`), JSON.stringify({
+                            "song": file.song,
+                            "game": file.game,
+                            "group": file.group,
+                            "length": file.length,
+                            "logo": filterFilename(`${file.game}.png`),
+                            "composer": file.composer,
+                            "converter": file.converter
+                        }));
                     })
                 })
 
