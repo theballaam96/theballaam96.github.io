@@ -1410,22 +1410,25 @@
                     }
                 }
                 const zip = new JSZip();
+                const INCLUDE_EXTRA_DATA = false; // Figure out why DK64R is including this in the cosmetic pack
                 Object.keys(folder_data).forEach(folder => {
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
                         f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
-                        f_zip.file(filterFilename(`${file.game}.png`), file.logo);
-                        // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
-                        f_zip.file(filterFilename(`${file.game} ${file.song}.json`), JSON.stringify({
-                            "song": file.song,
-                            "game": file.game,
-                            "group": file.group,
-                            "length": file.length,
-                            "logo": filterFilename(`${file.game}.png`),
-                            "composer": file.composer,
-                            "converter": file.converter
-                        }));
+                        if (INCLUDE_EXTRA_DATA) {
+                            f_zip.file(filterFilename(`${file.game}.png`), file.logo);
+                            // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
+                            f_zip.file(filterFilename(`${file.game} ${file.song}.json`), JSON.stringify({
+                                "song": file.song,
+                                "game": file.game,
+                                "group": file.group,
+                                "length": file.length,
+                                "logo": filterFilename(`${file.game}.png`),
+                                "composer": file.composer,
+                                "converter": file.converter
+                            }));
+                        }
                     })
                 })
 
