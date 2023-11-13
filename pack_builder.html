@@ -1,7 +1,6 @@
 <html>
     <head>
         <title>DK64 Randomizer Cosmetic Pack Builder</title>
-        <link rel="stylesheet" href="style/nav.css">
 		<link rel="stylesheet" href="style/main.css">
         <link rel="stylesheet" href="style/home.css">
         <link rel="stylesheet" href="style/midi-converter.css">
@@ -15,11 +14,12 @@
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <style>
             #song_list .game-header {
                 background-color: rgba(0,0,0,0.8);
@@ -172,6 +172,7 @@
             }
             .name_meta_data {
                 padding-left: 5px;
+                flex: 2;
             }
             #song_selected_count {
                 transition: 0.5s ease-in-out;
@@ -254,38 +255,14 @@
                 margin-left: auto;
                 margin-right: auto;
             }
-            .audio_container {
-                margin-left: auto;
-                text-align: right;
-                width: calc(2.5em - 5px);
-                height: 50%;
+            .audio_positioner_container {
+                width: 100%;
+                position: relative;
             }
-            .audio_controller {
-                width: calc(2.5em - 5px);
-                height: calc(2.5em - 5px);
-                background-color: #15172b;
+            .audio_positioner {
+                right: 0;
+                bottom: 0;
                 position: absolute;
-                transform: translate(calc(7px - (2 * (5px + 1px))), calc(0px - 2.5em));
-                border-top: 1px solid white;
-                border-left: 1px solid white;
-                border-top-left-radius: 5px;
-                padding-left: 5px;
-                padding-top: 5px;
-            }
-            .audio_interaction {
-                border-radius: 5px;
-                border: 1px solid white;
-                height: -webkit-fill-available;
-                height: -moz-fill-available;
-                /*height: fill-available;*/
-                vertical-align: middle;
-                line-height: calc(2.5em - 5px - 2px);
-                text-align: center;
-                cursor: pointer;
-                transition: 0.5s ease-in-out;
-            }
-            .audio_interaction:hover {
-                background-color: rgba(255, 255, 255, 0.2);
             }
             .audio-close-container {
                 text-align: right;
@@ -391,6 +368,12 @@
                 min-width: 33%;
                 max-width: 33%;
             }
+            .bs-checkbox-right {
+                border: 2px solid white;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                padding: 5px;
+            }
             /*
             .icon-alignment {
                 display: inline-block;
@@ -398,51 +381,72 @@
                 vertical-align: middle;
             }
             */
+            body {
+                background-image: none;
+                background-color: rgba(0, 0, 0, 1);
+            }
+            .main_panel {
+                color: white;
+            }
+            .header_main, .header_sub {
+                text-align: center;
+                font-weight: 600;
+            }
+            .header_main {
+                font-size: 2rem;
+            }
+            .header_sub {
+                font-size: 1.75rem;
+            }
         </style>
     </head>
     <body>
-        <nav id="navigation"></nav>
-        <div class="v_spacer">
-
-		</div>
-        <div class="flexsplitter">
-            <div class="homebox">
-                <div class="header master_header">
-                    <strong>DK64 Randomizer Pack Builder</strong>
+        <div class="flexsplitter main_panel">
+            <div class="panel-sep">
+                <div class="sep sep-left">
+                    <div class="header_block">
+                        <div class="header_main">Donkey Kong 64</div>
+                        <div class="header_sub">Cosmetic Pack Builder</div>
+                    </div>
+                    <hr />
+                    <div class="flexsplitter">
+                        <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
+                        <button style="width:fit-content" class="btn btn-dark" onclick="openFiltering()">&#9881;</button>
+                    </div>
+                    <button style="flex:1" class="btn btn-dark" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
+                    <div class="panel-sep-anti" id="button-panel" style="flex:2">
+                        <button style="flex:1" class="btn btn-dark" onclick="uploadPack()">Upload Pack</button>
+                        <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
+                        <button style="flex:1" class="btn btn-dark" onclick="buildPack()" id="build-pack-button">Build Pack</button>
+                    </div>
+                    <button class="btn btn-dark" onclick="getShareLink(false)">Get Shareable Link</button>
+                    <button class="btn btn-dark" onclick="getYTPlaylist()">Get YouTube Playlist</button>
+                    <button class="btn btn-dark" onclick="openChangelog()">Song Changelog</button>
+                    <button class="btn btn-dark" onclick="submitSong()">Submit song</button>
+                    <form style="text-align: center">
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <input id="min-view" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                            </div>
+                            <label for="min-view" class="bs-checkbox-right">Minimal View</label>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <input id="text-view" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                            </div>
+                            <label for="text-view" class="bs-checkbox-right">Grid Text Shown</label>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-text">
+                                <input id="output-candy" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                            </div>
+                            <label for="output-candy" class="bs-checkbox-right" title="Output as compressed files used for DK64 Randomizer">Output as .candy files</label>
+                        </div>
+                    </form>
+                    <div id="song_selected_count">0/0 songs selected</div>
                 </div>
-            </div>
-        </div>
-        <div class="flexsplitter">
-            <div class="homebox" style="color:white">
-                <div class="panel-sep">
-                    <div class="sep sep-left">
-                        <div class="flexsplitter">
-                            <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
-                            <button style="width:fit-content" onclick="openFiltering()">&#9881;</button>
-                        </div>
-                        <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
-                        <div class="panel-sep-anti" id="button-panel" style="flex:2">
-                            <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
-                            <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
-                            <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
-                        </div>
-                        <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
-                        <button style="flex:1" onclick="getYTPlaylist()">Get YouTube Playlist</button>
-                        <button style="flex:1" onclick="openChangelog()">Song Changelog</button>
-                        <button style="flex:1" onclick="submitSong()">Submit song</button>
-                        <div style="text-align: center">
-                            <label for="min-view">Minimal View</label>
-                            <input id="min-view" type="checkbox"/>
-                            <label for="text-view">Grid Text Shown</label>
-                            <input id="text-view" type="checkbox"/>
-                            <label for="output-candy" title="Output as compressed files used for DK64 Randomizer">Output as .candy files</label>
-                            <input id="output-candy" type="checkbox"/>
-                        </div>
-                        <div id="song_selected_count">0/0 songs selected</div>
-                    </div>
-                    <div class="sep" style="flex:2">
-                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
-                    </div>
+                <div class="sep" style="flex:2">
+                    <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
                 </div>
             </div>
         </div>
@@ -465,7 +469,7 @@
         <div class="popup_background hide" id="audio-event">
             <div class="popup_prompt" style="width:fit-content">
                 <div class="audio-close-container">
-                    <div class="audio-close noselect" onclick="closeSong()">Close</div>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="closeSong()"></button>
                 </div>
                 <div id="audio-event-content">
                     <audio controls>
@@ -477,7 +481,7 @@
         <div class="popup_background hide" id="new-songs">
             <div class="popup_prompt">
                 <div class="audio-close-container">
-                    <div class="audio-close noselect" onclick="closeChangelog()">Close</div>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="closeChangelog()"></button>
                 </div>
                 <div class="popup_head">Song Changelog</div>
                 <div id="popup_recent"></div>
@@ -486,7 +490,7 @@
         <div class="popup_background hide" id="advanced-filter">
             <div class="popup_prompt">
                 <div class="audio-close-container">
-                    <div class="audio-close noselect" onclick="closeFiltering()">Close</div>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="closeFiltering()"></button>
                 </div>
                 <div class="popup_head">Advanced Filters</div>
                 <div id="advf-container">
@@ -523,11 +527,6 @@
                     <div class="advf-hint">Select all that you are happy with</div>
                     <div id="tag-list" class="flexsplitter"></div>
 
-                    <br />
-                    <label for="advf-safe">Only select safe songs</label>
-                    <input type="checkbox" id="advf-safe" />
-                    <div class="advf-hint">Applies various internal filters to minimize amount of songs which will break the music engine</div>
-
                     <button onclick="compileAdvancedFilters()">Apply</button>
                 </div>
             </div>
@@ -543,7 +542,6 @@
             </div>
         </div>
         <div id="lazy-loader"><img id=lazy-img-loader height="1px" width="1px"/></div>
-        <script src="script/nav.js"></script>
         <script>          
             const ZELDA_NAME = "The Legend of Zelda: "
             let midi_data_copy = null;
@@ -590,7 +588,7 @@
                 const hook = document.getElementById("tag-list")
                 hook.innerHTML = ACCEPTED_TAGS.map(item => `
                     <div class='advf-tag-container'>
-                        <input type='checkbox' class='advf-tag' id='advf-tag-${filterName(item)}' checked/>
+                        <input type='checkbox' class='advf-tag form-check-input' id='advf-tag-${filterName(item)}' data-toggle='toggle' checked/>
                         <label for='advf-tag-${filterName(item)}'>${item}</label>
                     </div>
                 `).join("")
@@ -646,7 +644,6 @@
                     "noloop-max": parseInt(document.getElementById("advf-noloop-length").getAttribute("value-max")),
                     "composers": filterAdvancedFilterValue(document.getElementById("advf-composer").value),
                     "converters": filterAdvancedFilterValue(document.getElementById("advf-converter").value),
-                    "safe-only": document.getElementById("advf-safe").checked,
                 }
                 let all_tagged = true;
                 ACCEPTED_TAGS.forEach(tag => {
@@ -802,8 +799,6 @@
                     `}`).join("")}
                 `
             }
-            
-            const NON_FL_CONVERTERS = ["Ballaam", "Bismuth", "AaronDobbe"]
 
             class MIDIInfo {
                 constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, index) {
@@ -834,21 +829,6 @@
                         this.is_new = this.days_since_submission < 7;
                     }
                     this.changelog_entry = pushToRecent(this.game, this.name, this.days_since_submission)
-                    this.checkSafety()
-                }
-
-                checkSafety() {
-                    let converter_data = this.converter;
-                    if (converter_data == null) {
-                        converter_data = this.composer;
-                    }
-                    const converter_list = converter_data.split(",").map(item => item.trim())
-                    this.is_safe = true;
-                    converter_list.forEach(item => {
-                        if (!NON_FL_CONVERTERS.includes(item)) {
-                            this.is_safe = false;
-                        }
-                    })
                 }
 
                 update_entry(replacement) {
@@ -879,7 +859,6 @@
                     this.timestamp = replacement.timestamp;
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
-                    this.checkSafety()
                 }
             }
             
@@ -1009,6 +988,15 @@
                 return name.split("").filter(item => char_alphanumeric.includes(item)).join("").toLowerCase();
             }
 
+            function getAudioButton(audio, converter) {
+                return `<button class="btn btn-primary btn-sm" onclick='playSong(\"${audio}\",\"${converter}\")'>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                        <path d="M10.804 8 5 4.633v6.734L10.804 8zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692z"/>
+                    </svg>
+                    Play
+                </button>`
+            }
+
             const site_is_down = false;
             const total_prog = 6;
             async function getMidiData() {
@@ -1100,22 +1088,32 @@
                                         <div class='flexsplitter'>
                                             <div class='name_data'>
                                                 <strong>${displayed_song_name.replace('.bin','')}</strong>
-                                                <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                    ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
-                                                    ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
-                                                </div>
                                             </div>
                                             <img class="tick" src='./assets/tick.svg'>
                                         </div>
-                                    </div>
-                                    ${
-                                        audio != null ?
-                                        `<div class='audio_container${isCreditHidden() ? ' hide' : ''}'>
-                                            <div class='audio_controller'>
-                                                <div class='audio_interaction' onclick='playSong(\"${audio}\",\"${converter}\")'>&#9654;</div>
+                                        <div class='flexsplitter'>
+                                            <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
+                                                ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
+                                                ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
                                             </div>
-                                        </div>` : ''
-                                    }
+                                            ${
+                                                audio != null ?
+                                                `<div class='audio_container ${isCreditHidden() ? ' hide' : ''}' style='opacity:0'>
+                                                    ${getAudioButton(audio, converter)}
+                                                </div>` : ''
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class='audio_positioner_container'>
+                                        <div class='audio_positioner'>
+                                            ${
+                                                audio != null ?
+                                                `<div class='audio_container ${isCreditHidden() ? ' hide' : ''}'>
+                                                    ${getAudioButton(audio, converter)}
+                                                </div>` : ''
+                                            }
+                                        </div>
+                                    </div>
                                 </div>`
                         })
                         let local_html_total = "";
@@ -1732,10 +1730,6 @@
                         } else if (key.substring(0,4) == "tag-") {
                             const tag = key.substring(4)
                             valid_entry &= midi_info.tags.length == 0 || midi_info.tags.map(item => item.replaceAll(" ","").toLowerCase()).includes(tag)
-                        } else if (key == "safe-only") {
-                            if (key_value) {
-                                valid_entry &= midi_info.is_safe;
-                            }
                         }
                     })
                     return valid_entry;
