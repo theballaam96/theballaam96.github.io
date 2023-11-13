@@ -15,6 +15,7 @@
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -434,6 +435,8 @@
                             <input id="min-view" type="checkbox"/>
                             <label for="text-view">Grid Text Shown</label>
                             <input id="text-view" type="checkbox"/>
+                            <label for="output-candy" title="Output as compressed files used for DK64 Randomizer">Output as .candy files</label>
+                            <input id="output-candy" type="checkbox"/>
                         </div>
                         <div id="song_selected_count">0/0 songs selected</div>
                     </div>
@@ -559,11 +562,7 @@
             const char_num = Array.from(Array(10).keys()).map(x => x.toString())
             const char_alphanumeric = char_upper_alpha + char_lower_alpha + char_num;
 
-            const REGULAR_FORMAT = "bin"
-            const ENCODED_FORMAT = "candy"
-            const FORMATS = [REGULAR_FORMAT, ENCODED_FORMAT]
-            let OUTPUT_FORMAT = REGULAR_FORMAT
-            const ENABLE_OUTPUT_CONTROL = false;
+            let output_as_encoded = false;
             const ACCEPTED_TAGS = [
                 "Fights",
                 "Lobbies and Shops",
@@ -1175,10 +1174,12 @@
                 // Update click events
                 setMinView(getCookie("min-view") == "minimal", false)
                 setTextView(getCookie("text-view") == "show", false)
+                setOutputMode(getCookie("output-candy" == "candy", false))
                 document.getElementById("credits_hidden").checked = getCookie("credits") == "true";
                 document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
                 document.getElementById("min-view").addEventListener("click", () => {handleMinView(true)});
                 document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
+                document.getElementById("output-candy").addEventListener("click", () => {handleOutputMode(true)});
 
 
                 if (willAutoDownload()) {
@@ -1249,6 +1250,7 @@
                     let drive_id = null;
                     let game = null;
                     let preview = null;
+                    let tags = [];
                     const entry = midi_data_copy.find(item => item.index == id);
                     if (entry) {
                         song = entry.name;
@@ -1257,7 +1259,8 @@
                         song_index = id;
                         drive_id = entry.drive_id
                         game = entry.game;
-                        preview = entry.audio
+                        preview = entry.audio,
+                        tags = entry.tags
                     }
                     if (song != null) {
                         return {
@@ -1267,7 +1270,8 @@
                             "download": download,
                             "index": song_index,
                             "drive_id": drive_id,
-                            "preview": preview
+                            "preview": preview,
+                            "tags": tags.slice()
                         }
                     }
                 }
@@ -1404,37 +1408,66 @@
                                 "converter": converter,
                                 "group": group,
                                 "length": length,
-                                "data": fileData
+                                "data": fileData,
+                                "tags": found_data.tags,
+                                "append_extension": true
                             });
                         }
                     }
                 }
                 const zip = new JSZip();
-                const INCLUDE_EXTRA_DATA = false; // Figure out why DK64R is including this in the cosmetic pack
+                const promises = [];
+                const png_zip = zip.folder("music_icons")
                 Object.keys(folder_data).forEach(folder => {
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
-                        if (INCLUDE_EXTRA_DATA) {
-                            f_zip.file(filterFilename(`${file.game}.png`), file.logo);
+                        if (output_as_encoded) {
+                            c_zip = new JSZip();
+                            logo_name = filterFilename(`${file.game}.png`)
+                            c_zip.file(filterFilename("song.bin"), file.data); // Song
+                            png_zip.file(logo_name, file.logo); // Game PNG in main zip
                             // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
-                            f_zip.file(filterFilename(`${file.game} ${file.song}.json`), JSON.stringify({
+                            c_zip.file(filterFilename("data.json"), JSON.stringify({
                                 "song": file.song,
                                 "game": file.game,
                                 "group": file.group,
                                 "length": file.length,
-                                "logo": filterFilename(`${file.game}.png`),
+                                "logo": logo_name,
                                 "composer": file.composer,
-                                "converter": file.converter
+                                "converter": file.converter,
+                                "tags": file.tags,
                             }));
+                            promises.push(
+                                c_zip.generateAsync({type:"blob"}).then((content) => {
+                                    if (file.append_extension) {
+                                        f_zip.file(filterFilename(`${file.game} ${file.song}.candy`), content);
+                                    } else {
+                                        f_zip.file(filterFilename(file.song), content);
+                                    }
+                                })
+                            );
+                        } else {
+                            if (file.append_extension) {
+                                f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
+                            } else {
+                                f_zip.file(filterFilename(file.song), file.data);
+                            }
                         }
                     })
                 })
-
-                zip.generateAsync({type:"blob"}).then(function(content) {
-                    saveAs(content, "pack.zip");
-                });
+                
+                if (output_as_encoded) {
+                    Promise.all(promises).then((data) => {
+                        zip.generateAsync({type:"blob"}).then(function(content) {
+                            saveAs(content, "pack.zip");
+                        });
+                    })
+                } else {
+                    zip.generateAsync({type:"blob"}).then(function(content) {
+                        saveAs(content, "pack.zip");
+                    });
+                }               
             }
 
             function selectMaster() {
@@ -1769,6 +1802,27 @@
                 return true;
             }
 
+            function checkSongArrayMatch(array_a, array_b, filename_a) {
+                const extension = last(filename_a.split("."));
+                if (PARSEABLE_EXTENSIONS.includes(extension)) { // Binary file
+                    if (filename_a == "bgm/Undertale Spider Dance.candy") {
+                        //console.log(array_a, array_b)
+                    }
+                    return checkArrayMatch(array_a, array_b);
+                }
+                // Unknown
+                return false
+            }
+
+            async function findAsync(arr, asyncCallback) {
+                const promises = arr.map(asyncCallback);
+                const results = await Promise.all(promises);
+                const index = results.findIndex(result => result);
+                return arr[index];
+            }
+
+            const PARSEABLE_EXTENSIONS = ["bin","candy"]
+
             async function handlePack(data) {
                 // Load all data
                 let site_data = {};
@@ -1793,6 +1847,7 @@
                         }
                     }
                 }
+                // Load uploaded zip file
                 const new_zip = new JSZip();
                 let site_song_data = {};
                 let compressed_data = {}
@@ -1804,19 +1859,50 @@
                         const file_group = file_path_array[file_path_array.length - 2];
                         compressed_data[filename_0] = {
                             "group": file_group,
-                            "data": Array.from(fileData)
+                            "data": Array.from(fileData),
+                            "blob": fileData
                         };
                     }
                 }
+
                 await waitFor(_ => loaded_count >= midi_data_copy.length);
 
                 // Parse data for matching arrays
+
                 let matching_songs = [];
-                Object.keys(compressed_data).forEach(song_a => {
+                let files_parsed = 0;
+                const files_pushed = Array(Object.keys(compressed_data).length).fill(null);
+                Object.keys(compressed_data).forEach((song_a, song_i) => {
+                    const extension = last(song_a.split("."));
+                    if (extension == "candy") {
+                        c_zip = new JSZip();
+                        c_zip.loadAsync(compressed_data[song_a].blob).then((czip_data) => {
+                            for (let [filename_0, file_0] of Object.entries(czip_data.files)) {
+                                if (filename_0 == "song.bin") {
+                                    czip_data.files[filename_0].async("Uint8Array").then((fileData) => {
+                                        files_pushed[song_i] = Array.from(fileData);
+                                        files_parsed += 1;
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        files_pushed[song_i] = compressed_data[song_a].data;
+                        files_parsed += 1;
+                    }
+                })
+
+                await waitFor(_ => files_parsed >= Object.keys(compressed_data).length)
+
+                Object.keys(compressed_data).forEach((song_a, song_i) => {
                     if (last(song_a.split("/")).toLowerCase() != "predule.bin") { // Temporarily installed to weed out the bad bin
-                        const found_song = Object.keys(site_data).find(item => {
-                            return checkArrayMatch(compressed_data[song_a].data, site_data[item].data)
-                        })
+                        const extension = last(song_a.split("."));
+                        let found_song = null;
+                        if (PARSEABLE_EXTENSIONS.includes(extension)) {
+                            found_song = Object.keys(site_data).find(item => {
+                                return checkSongArrayMatch(files_pushed[song_i], site_data[item].data, song_a);
+                            })
+                        }
                         if (found_song) {
                             const new_song = site_data[found_song].updated_version;
                             if (!matching_songs.includes(new_song)) {
@@ -1832,11 +1918,13 @@
                             }
                             uploaded_pack_data[item_group].push({
                                 "song": item_name,
-                                "data": new Blob([new Uint8Array(item_data)])
+                                "data": new Blob([new Uint8Array(item_data)]),
+                                "append_extension": false,
                             })
                         }
                     }
                 })
+
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
                 for (let c = 0; c < checkboxes.length; c++) {
                     checkboxes[c].setAttribute("ticked", "false");
@@ -2129,6 +2217,17 @@
                 }
             }
 
+            function handleOutputMode(update_cookie) {
+                output_as_encoded = document.getElementById("output-candy").checked;
+                setting = "bin"
+                if (output_as_encoded) {
+                    setting = "candy"
+                }
+                if (update_cookie) {
+                    setPackCookie("output-candy", setting);
+                }
+            }
+
             function setMinView(state, update_cookie) {
                 document.getElementById("min-view").checked = state;
                 handleMinView(update_cookie);
@@ -2137,6 +2236,11 @@
             function setTextView(state, update_cookie) {
                 document.getElementById("text-view").checked = state;
                 handleTextView(update_cookie);
+            }
+
+            function setOutputMode(state, update_cookie) {
+                document.getElementById("output-candy").checked = state;
+                handleOutputMode(update_cookie);
             }
 
             function submitSong() {
@@ -2162,17 +2266,6 @@
             window.onresize = handleSize;
             handleSize();
 
-            /*
-                Candy file format
-                HEADER - Size 0x28
-                    [0x00] u32 location_bitfield
-                    [0x04] u32 song_bitfield
-                    [0x08] u32 song_length (s)
-                    [0x0C] s8[0x28-0xC] 0xFF bytes
-                FILE
-
-            */
-
             function readFile(file, start, size) {
                 let value = 0;
                 for (let i = 0; i < size; i++) {
@@ -2191,20 +2284,6 @@
                         
                     }
                 }
-            }
-
-            function processFile(file, in_format, out_format) {
-                // Convert file to bin. File is blob
-                processing_file = new Array.from(new Uint8Array(file));
-                if (in_format == ENCODED_FORMAT) {
-                    processing_file = processing_file.slice(0x28);
-                }
-                // Convert file to candy.
-                if (out_format == ENCODED_FORMAT) {
-                    header = new Array(0x28).fill(0xFF);
-                    processing_file = header + processing_file;
-                }
-                return new Blob([new Uint8Array(processing_file)]);
             }
         </script>
     </body>
