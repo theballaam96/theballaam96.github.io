@@ -15,6 +15,7 @@
 		<meta name="description" content="" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -143,7 +144,8 @@
                 padding: 5px;
                 transition: 0.5s ease-in-out;
                 /*width: 100%;*/
-                min-height: calc(100% - 12px);
+                min-height: 100%;
+                position: relative;
             }
             .midi-checkbox:hover {
                 background-color: rgb(255, 255, 255, 0.15);
@@ -156,6 +158,7 @@
             }
             .midi-checkbox .name_data {
                 flex: 1;
+                font-weight: bold;
             }
             .tick {
                 height: 1em;
@@ -258,9 +261,10 @@
                 position: relative;
             }
             .audio_positioner {
-                right: 0;
-                bottom: 0;
+                bottom: 6px;
+                left: 6px;
                 position: absolute;
+                height: 20px;
             }
             .audio-close-container {
                 text-align: right;
@@ -398,6 +402,16 @@
             #load-event {
                 transition: 1.0s ease-in-out;
                 background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("assets/bckgrnd.png");
+            }
+            .midi-tag {
+                padding: 0px 2px;
+            }
+            .handle-overflow {
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+                -ms-text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
             }
         </style>
     </head>
@@ -1054,8 +1068,15 @@
                 </button>`
             }
 
+            function filterNote(note) {
+                bad_note_characters = ["'","\""]
+                bad_note_characters.forEach(char => {
+                    note = note.replaceAll(char, "")
+                })
+                return note
+            }
+
             const site_is_down = false;
-            const DISPLAY_NEW = true;
             const total_prog = 6;
             async function getMidiData() {
                 let prog = 0;
@@ -1144,36 +1165,45 @@
                                         game='${game}'
                                         ${song.notes ? `title='${song.notes}'` : ''}>
                                         <div class='flexsplitter'>
-                                            <div class='name_data'>
-                                                <strong>${displayed_song_name.replace('.bin','')}</strong>
-                                                ${
-                                                    DISPLAY_NEW & song.is_new ?
-                                                    "<span class='badge bg-primary'>New</span>"
-                                                    : ""
-                                                }
-                                            </div>
+                                            <div class='name_data handle-overflow' title='${displayed_song_name.replace('.bin','')}'>${displayed_song_name.replace('.bin','')}</div>
                                             <img class="tick" src='./assets/tick.svg'>
                                         </div>
-                                        <div class='flexsplitter'>
-                                            <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
-                                                ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
-                                            </div>
+                                        <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
+                                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#9834; ${composer}</div>` : ''}
+                                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow">&#127898; ${converter}</div>` : ''}
+                                        </div>
+                                        <div style='height: 24px'></div>
+                                        <div style='position:absolute;bottom:0;height:24px;'>
                                             ${
-                                                audio != null ?
-                                                `<div class='audio_container ${isCreditHidden() ? ' hide' : ''}' style='opacity:0'>
-                                                    ${getAudioButton(audio, converter)}
-                                                </div>` : ''
+                                                audio ?
+                                                `<span class='midi-tag' title='Listen to song' style='opacity:0' onclick='playSong(\"${audio}\",\"${converter}\")'><i class='fa-solid fa-play'></i></span>`
+                                                : ""
+                                            }
+                                            ${
+                                                song.is_new ?
+                                                "<span class='midi-tag' title='This is a new submission'><i class='fa-solid fa-exclamation'></i></span>"
+                                                : ""
+                                            }
+                                            ${
+                                                song.tags.length > 0 ?
+                                                `<span class='midi-tag' title='${song.tags.join(', ')}'><i class='fa-solid fa-tags'></i></span>`
+                                                : ""
+                                            }
+                                            ${
+                                                song.notes ?
+                                                song.notes.trim().length > 0 ?
+                                                `<span class='midi-tag' title='${filterNote(song.notes)}'><i class='fa-solid fa-note-sticky'></i></span>`
+                                                : ""
+                                                : ""
                                             }
                                         </div>
                                     </div>
                                     <div class='audio_positioner_container'>
                                         <div class='audio_positioner'>
                                             ${
-                                                audio != null ?
-                                                `<div class='audio_container ${isCreditHidden() ? ' hide' : ''}'>
-                                                    ${getAudioButton(audio, converter)}
-                                                </div>` : ''
+                                                audio ?
+                                                `<span class='midi-tag' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\")'><i class='fa-solid fa-headphones'></i></span>`
+                                                : ""
                                             }
                                         </div>
                                     </div>
@@ -1817,7 +1847,7 @@
             }
 
             function adheresToFilterCheckbox(el) {
-                const name = el.getElementsByClassName("name_data")[0].getElementsByTagName("strong")[0].innerText;
+                const name = el.getElementsByClassName("name_data")[0].innerText;
                 const success = adheresToFilter(parseInt(el.getAttribute("song-id")));
                 return success;
             }
