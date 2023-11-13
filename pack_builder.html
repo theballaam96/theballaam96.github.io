@@ -1055,6 +1055,7 @@
             }
 
             const site_is_down = false;
+            const DISPLAY_NEW = true;
             const total_prog = 6;
             async function getMidiData() {
                 let prog = 0;
@@ -1145,6 +1146,11 @@
                                         <div class='flexsplitter'>
                                             <div class='name_data'>
                                                 <strong>${displayed_song_name.replace('.bin','')}</strong>
+                                                ${
+                                                    DISPLAY_NEW & song.is_new ?
+                                                    "<span class='badge bg-primary'>New</span>"
+                                                    : ""
+                                                }
                                             </div>
                                             <img class="tick" src='./assets/tick.svg'>
                                         </div>
