@@ -132,8 +132,8 @@
             }
             .midi-checkbox-container {
                 flex: 1;
-                min-width: calc(33% - 10px - 2px - 10px);
-                max-width: calc(33% - 10px - 2px - 10px);
+                min-width: calc(50% - 10px - 2px - 10px);
+                max-width: calc(50% - 10px - 2px - 10px);
                 margin: 5px;
             }
             .midi-checkbox {
@@ -232,7 +232,7 @@
                     max-width: calc(100% - 10px - 2px - 10px);
                 }
             }
-            input[type=text], #advf-container select {
+            /*input[type=text], #advf-container select {
                 background-color: #303245;
                 border-radius: 5px;
                 border: 0;
@@ -243,9 +243,8 @@
                 padding: 7px 20px;
                 width: -webkit-fill-available;
                 width: -moz-fill-available;
-                /*width: fill-available;*/
                 margin: 5px;
-            }
+            }*/
             #search-game {
                 height: 100%;
             }
@@ -281,9 +280,6 @@
             }
             .load_bar {
                 height: 10px;
-            }
-            #loading_bar {
-                margin-top: 20px;
             }
             #loading_left{
                 background-color: #7c80a3;
@@ -325,12 +321,14 @@
             .panel-some {
                 background-color: white;
             }
+            /*
             #advf-container {
                 margin-top: 20px;
             }
             #advf-container input, #advf-container select {
                 margin-bottom: 10px;
             }
+            */
             .slider-range {
                 border-radius: 50px;
                 height: 8px;
@@ -341,11 +339,11 @@
                 margin-right: auto;
             }
             .slider-range .ui-slider-range {
-                background-color: cornflowerblue;
+                background-color: dodgerblue;
             }
             .slider-range .ui-slider-handle {
                 border-radius: 100px;
-                background-color: cornflowerblue;
+                background-color: dodgerblue;
                 top: calc(-0.3em - 1px);
             }
             .slider-range .ui-slider-timecode {
@@ -397,6 +395,10 @@
             .header_sub {
                 font-size: 1.75rem;
             }
+            #load-event {
+                transition: 1.0s ease-in-out;
+                background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("assets/bckgrnd.png");
+            }
         </style>
     </head>
     <body>
@@ -409,7 +411,7 @@
                     </div>
                     <hr />
                     <div class="flexsplitter">
-                        <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
+                        <input class="form-control" style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
                         <button style="width:fit-content" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#filterModal">&#9881;</button>
                     </div>
                     <button style="flex:1" class="btn btn-dark" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
@@ -492,40 +494,60 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <div id="advf-container">
-                                        <label for="advf-game">Game Name</label>
-                                        <input type="text" id="advf-game" placeholder="Game Name..." />
+                                    <form id="advf-container">
+                                        <div class="mb-3">
+                                            <label for="advf-game" class="form-label">Game Name</label>
+                                            <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
+                                        </div>
                                         
-                                        <label for="advf-song">Song Name</label>
-                                        <input type="text" id="advf-song" placeholder="Song Name..." />
+                                        <div class="mb-3">
+                                            <label for="advf-song" class="form-label">Song Name</label>
+                                            <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
+                                        </div>
                     
-                                        <label for="advf-group">Group</label>
-                                        <select id="advf-group">
-                                            <option selected>Any</option>
-                                            <option>Background Music</option>
-                                            <option>Events</option>
-                                            <option>Major Items</option>
-                                            <option>Minor Items</option>
-                                        </select>
+                                        <div class="mb-3">
+                                            <label for="advf-group" class="form-label">Group</label>
+                                            <select id="advf-group" class="form-select">
+                                                <option selected>Any</option>
+                                                <option>Background Music</option>
+                                                <option>Events</option>
+                                                <option>Major Items</option>
+                                                <option>Minor Items</option>
+                                            </select>
+                                        </div>
                     
-                                        <label for="advf-bgm-length">BGM Length</label>
-                                        <div class="slider-range" id="advf-bgm-length"></div>
+                                        <div class="mb-3">
+                                            <label for="advf-bgm-length" class="form-label">BGM Length</label>
+                                            <div class="slider-range" id="advf-bgm-length"></div>
+                                        </div>
                     
-                                        <label for="advf-noloop-length">Non-Looping Lengths</label>
-                                        <div class="slider-range" id="advf-noloop-length"></div>
+                                        <div class="mb-3">
+                                            <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
+                                            <div class="slider-range" id="advf-noloop-length"></div>
+                                        </div>
                     
-                                        <label for="advf-composer">Composers</label>
-                                        <div class="advf-hint">Split names with comma (Eg. Koji Kondo, Grant Kirkhope)</div>
-                                        <input type="text" id="advf-composer" placeholder="Composer Name..." />
+                                        <div class="mb-3">
+                                            <label for="advf-composer" class="form-label">Composers</label>
+                                            <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
+                                            <div id="composerHelpBock" class="form-text">
+                                                Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
+                                            </div>
+                                        </div>
                     
-                                        <label for="advf-converter">Converters</label>
-                                        <div class="advf-hint">Split names with comma (Eg. Ballaam, Adeleine64DS)</div>
-                                        <input type="text" id="advf-converter" placeholder="Converter Name..." />
+                                        <div class="mb-3">
+                                            <label for="advf-converter" class="form-label">Converters</label>
+                                            <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
+                                            <div id="converterHelpBock" class="form-text">
+                                                Split names with comma (Eg. Ballaam, Adeleine64DS)
+                                            </div>
+                                        </div>
                     
-                                        <label>Tags</label>
-                                        <div class="advf-hint">Select all that you are happy with</div>
-                                        <div id="tag-list" class="flexsplitter"></div>
-                                    </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Tags</label>
+                                            <div class="advf-hint">Select all that you are happy with</div>
+                                            <div id="tag-list" class="flexsplitter"></div>
+                                        </div>
+                                    </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
@@ -551,13 +573,12 @@
                 </div>
             </div>
         </div>
-        <div class="popup_background" id="load-event">
+        <div class="popup_background" id="load-event" style="opacity:1">
             <div class="popup_prompt">
                 <div class="popup_head">Loading Site Data</div>
-                <div id="loading_bar" class="flexsplitter load_bar">
-                    <div id="loading_left" class="load_bar" style="flex:0"></div>
-                    <div id="loading_right" class="load_bar" style="flex:100"></div>
-                </div>
+                <div class="progress" style="color:black" role="progressbar" id="loading_bar" aria-label="Loading Progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar bg-success" style="width: 0%; color: black">0%</div>
+                  </div>
                 <div id="loading_text"></div>
             </div>
         </div>
@@ -608,8 +629,8 @@
                 const hook = document.getElementById("tag-list")
                 hook.innerHTML = ACCEPTED_TAGS.map(item => `
                     <div class='advf-tag-container'>
-                        <input type='checkbox' class='advf-tag form-check-input' id='advf-tag-${filterName(item)}' data-toggle='toggle' checked/>
-                        <label for='advf-tag-${filterName(item)}'>${item}</label>
+                        <input type='checkbox' class='advf-tag form-check-input' value='' id='advf-tag-${filterName(item)}' data-toggle='toggle' checked/>
+                        <label for='advf-tag-${filterName(item)}' class=form-check-label>${item}</label>
                     </div>
                 `).join("")
             }
@@ -1224,7 +1245,7 @@
             if ((!site_is_down) || (window.location.origin.includes("localhost"))) {
                 getMidiData();
             } else {
-                updateProgress(0, 1, "Site is down for Maintainence. Please check back later")
+                updateProgress(1, 1, "Site is down for Maintainence. Please check back later", true)
             }
 
             function convertSongName(game, song) {
@@ -1368,12 +1389,26 @@
             let build_progress = 0;
             let build_limit = 0;
 
-            function updateProgress(progress, total, text="") {
-                document.getElementById("loading_left").style.flex = progress.toString()
-                document.getElementById("loading_right").style.flex = (total - progress).toString()
+            function updateProgress(progress, total, text="", error=false) {
+                const hook = document.getElementById("loading_bar")
+                const bar = hook.getElementsByTagName("div")[0]
+                const perc = Math.floor(100 * (progress / total));
+                hook.setAttribute("aria-valuenow", perc.toString()); 
+                bar.style.width = `${perc}%`
+                bar.innerText = `${perc}%`
+                bar.classList.remove("bg-info");
+                bar.classList.remove("bg-danger");
+                if (error) {
+                    bar.classList.add("bg-danger");
+                } else {
+                    bar.classList.add("bg-info");
+                }
                 document.getElementById("loading_text").innerText = text;
-                if (progress == total) {
-                    document.getElementById("load-event").classList.add("hide")
+                if ((progress == total) && (!error)) {
+                    document.getElementById("load-event").style.opacity = 0;
+                    setTimeout(() => {
+                        document.getElementById("load-event").classList.add("hide")
+                    }, 1000);
                 }
             }
 
