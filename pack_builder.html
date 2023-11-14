@@ -398,7 +398,12 @@
                 white-space: nowrap;
                 overflow: hidden;
             }
-            .midi-grd {
+            .content-center {
+                width: 75%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .midi-grid {
                 display: grid;
                 grid-template-columns: 33% 33% 33%;
             }
@@ -411,6 +416,12 @@
                 .midi-grid {
                     grid-template-columns: 100% 100%;
                 }
+                .content-center {
+                    width: 95%;
+                }
+            }
+            .breadcrumb-container {
+                padding: 10px;
             }
         </style>
     </head>
@@ -479,118 +490,127 @@
             </div>
         </form>
         <div id="song_selected_count" class="hide">0/0 songs selected</div>
-        <div class="flexsplitter main_panel">
-            <div class="panel-sep">
-                <!-- Add Song Modal -->
-                <div class="modal fade modal-lg" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
+        <div class="main_panel">
+            <!-- Add Song Modal -->
+            <div class="modal fade modal-lg" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="addSongModalLabel">Add songs to pack</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            Hide Credits:
+                            <input type="checkbox" id="credits_hidden"/>
+                        </div>
+                        <div id="popup_controls"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="addSongClose" onclick="hidePopup()">Close</button>
+                        <button type="button" class="btn btn-success" onclick="destroyPopup()">Apply changes</button>
+                        <button type="button" class="btn btn-primary" id="game-select-toggle" onclick="selectMaster()">Select All</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Song Changelog Modal -->
+            <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="addSongModalLabel">Add songs to pack</h1>
+                            <h1 class="modal-title fs-5" id="changelogModalLabel">Song Changelog</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div>
-                                Hide Credits:
-                                <input type="checkbox" id="credits_hidden"/>
-                            </div>
-                            <div id="popup_controls"></div>
+                            <div id="popup_recent"></div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="addSongClose" onclick="hidePopup()">Close</button>
-                            <button type="button" class="btn btn-success" onclick="destroyPopup()">Apply changes</button>
-                            <button type="button" class="btn btn-primary" id="game-select-toggle" onclick="selectMaster()">Select All</button>
-                        </div>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
-                <!-- Song Changelog Modal -->
-                <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="changelogModalLabel">Song Changelog</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div id="popup_recent"></div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
+            </div>
+            <!-- Advanced Filters Modal -->
+            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="advf-container">
+                                <div class="mb-3">
+                                    <label for="advf-game" class="form-label">Game Name</label>
+                                    <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="advf-song" class="form-label">Song Name</label>
+                                    <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-group" class="form-label">Group</label>
+                                    <select id="advf-group" class="form-select">
+                                        <option selected>Any</option>
+                                        <option>Background Music</option>
+                                        <option>Events</option>
+                                        <option>Major Items</option>
+                                        <option>Minor Items</option>
+                                    </select>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-bgm-length" class="form-label">BGM Length</label>
+                                    <div class="slider-range" id="advf-bgm-length"></div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
+                                    <div class="slider-range" id="advf-noloop-length"></div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-composer" class="form-label">Composers</label>
+                                    <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
+                                    <div id="composerHelpBock" class="form-text">
+                                        Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
+                                    </div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-converter" class="form-label">Converters</label>
+                                    <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
+                                    <div id="converterHelpBock" class="form-text">
+                                        Split names with comma (Eg. Ballaam, Adeleine64DS)
+                                    </div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label class="form-label">Tags</label>
+                                    <div class="advf-hint">Select all that you are happy with</div>
+                                    <div id="tag-list" class="flexsplitter"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
                         </div>
                     </div>
                 </div>
-                <!-- Advanced Filters Modal -->
-                <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="advf-container">
-                                    <div class="mb-3">
-                                        <label for="advf-game" class="form-label">Game Name</label>
-                                        <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label for="advf-song" class="form-label">Song Name</label>
-                                        <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
-                                    </div>
-                
-                                    <div class="mb-3">
-                                        <label for="advf-group" class="form-label">Group</label>
-                                        <select id="advf-group" class="form-select">
-                                            <option selected>Any</option>
-                                            <option>Background Music</option>
-                                            <option>Events</option>
-                                            <option>Major Items</option>
-                                            <option>Minor Items</option>
-                                        </select>
-                                    </div>
-                
-                                    <div class="mb-3">
-                                        <label for="advf-bgm-length" class="form-label">BGM Length</label>
-                                        <div class="slider-range" id="advf-bgm-length"></div>
-                                    </div>
-                
-                                    <div class="mb-3">
-                                        <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
-                                        <div class="slider-range" id="advf-noloop-length"></div>
-                                    </div>
-                
-                                    <div class="mb-3">
-                                        <label for="advf-composer" class="form-label">Composers</label>
-                                        <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
-                                        <div id="composerHelpBock" class="form-text">
-                                            Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
-                                        </div>
-                                    </div>
-                
-                                    <div class="mb-3">
-                                        <label for="advf-converter" class="form-label">Converters</label>
-                                        <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
-                                        <div id="converterHelpBock" class="form-text">
-                                            Split names with comma (Eg. Ballaam, Adeleine64DS)
-                                        </div>
-                                    </div>
-                
-                                    <div class="mb-3">
-                                        <label class="form-label">Tags</label>
-                                        <div class="advf-hint">Select all that you are happy with</div>
-                                        <div id="tag-list" class="flexsplitter"></div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-container">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="content-center">
                 <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
             </div>
         </div>
@@ -1237,7 +1257,7 @@
                             if (Object.keys(local_html).includes(group)) {
                                 local_html_total += `${first ? '' : '<br>'}
                                     <div class='fs-5'>${group_priority[group]}</div>
-                                    <div style='display:grid;grid-template-columns:33% 33% 33%;'>
+                                    <div class='midi-grid'>
                                         ${local_html[group]}
                                     </div>
                                 `
