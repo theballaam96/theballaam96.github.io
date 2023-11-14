@@ -79,14 +79,11 @@
             .panel-sep-anti {
                 display: block;
             }
-            .game-handler {
-                flex: 1;
-                min-width: 50%;
-                max-width: 50%;
+            #song_list {
+                grid-template-columns: 50% 50%;
             }
-            #song_list[render=grid] .game-handler {
-                min-width: calc(100% / 6);
-                max-width: calc(100% / 6);
+            #song_list[render=grid] {
+                grid-template-columns: 16% 16% 16% 16% 16% 16%;
             }
             .popup_background, .popup_background-fade {
                 background-color: rgba(0,0,0,0.5);
@@ -189,14 +186,11 @@
                 }
             }
             @media only screen and (max-width: 1200px) {
-                .game-handler {
-                    flex: 1;
-                    min-width: 100%;
-                    max-width: 100%;
+                #song_list {
+                    grid-template-columns: 100%;
                 }
-                #song_list[render=grid] .game-handler {
-                    min-width: calc(100% / 3);
-                    max-width: calc(100% / 3);
+                #song_list[render=grid] {
+                    grid-template-columns: 33% 33% 33%;
                 }
                 #song_list[render=grid] .game-header .game-internal-name {
                     font-size: 2vw;
@@ -369,7 +363,7 @@
             */
             body {
                 background-image: none;
-                background-color: rgba(0, 0, 0, 1);
+                background-color: rgba(15, 15, 15, 1);
             }
             html[data-bs-theme="dark"].main_panel {
                 color: white;
@@ -611,7 +605,7 @@
                 </nav>
             </div>
             <div class="content-center">
-                <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
+                <div id="song_list" style="display:grid" render="grid" gridtext="hide"></div>
             </div>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
