@@ -363,7 +363,7 @@
             */
             body {
                 background-image: none;
-                background-color: rgba(15, 15, 15, 1);
+                background-color: rgba(30, 30, 30, 1);
             }
             html[data-bs-theme="dark"].main_panel {
                 color: white;
@@ -416,6 +416,14 @@
             }
             .breadcrumb-container {
                 padding: 10px;
+                display: flex;
+            }
+            #popup_master_controls {
+                margin-left: auto;
+                flex: 1;
+            }
+            #song_list, #popup_global_container, #popup_master_controls {
+                transition: 0.5s ease-in-out;
             }
         </style>
     </head>
@@ -485,29 +493,6 @@
         </form>
         <div id="song_selected_count" class="hide">0/0 songs selected</div>
         <div class="main_panel">
-            <!-- Add Song Modal -->
-            <div class="modal fade modal-lg" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="addSongModalLabel">Add songs to pack</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div>
-                            Hide Credits:
-                            <input type="checkbox" id="credits_hidden"/>
-                        </div>
-                        <div id="popup_controls"></div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="addSongClose" onclick="hidePopup()">Close</button>
-                        <button type="button" class="btn btn-success" onclick="destroyPopup()">Apply changes</button>
-                        <button type="button" class="btn btn-primary" id="game-select-toggle" onclick="selectMaster()">Select All</button>
-                    </div>
-                    </div>
-                </div>
-            </div>
             <!-- Song Changelog Modal -->
             <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -597,15 +582,29 @@
             </div>
             <!-- Breadcrumb -->
             <div class="breadcrumb-container">
-                <nav aria-label="breadcrumb">
+                <nav aria-label="breadcrumb" style="flex:1">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page" onclick="hidePopup()">Home</li>
                         <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
                     </ol>
                 </nav>
+                <div class="flexsplitter" id="popup_master_controls" style="opacity:0" hidden>
+                    <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
+                    <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
+                    <button type="button" class="btn btn-outline-primary" id="game-select-toggle" onclick="selectMaster()">Select All</button>
+                </div>
             </div>
             <div class="content-center">
-                <div id="song_list" style="display:grid" render="grid" gridtext="hide"></div>
+                <div id="song_list" style="display:grid; opacity: 1" render="grid" gridtext="hide"></div>
+                <div id="popup_global_container" hidden style="opacity:0">
+                    <h1 id="popup_game_name">Add Songs to List</h1>
+                    <div>
+                        Hide Credits:
+                        <input type="checkbox" id="credits_hidden"/>
+                    </div>
+                    <div id="popup_controls"></div>
+                </div>
+                
             </div>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
@@ -1260,7 +1259,7 @@
                         })
                         const game_name = game_pretty;
                         html += `<div class='game-handler'>
-                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)' data-bs-toggle="modal" data-bs-target="#addSongModal">
+                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
                                 <div class='game-icon'>
                                     <span class='icon-alignment'></span>
                                     <img class='game-image ${
@@ -1398,12 +1397,65 @@
                 }
                 return null;
             }
+
+            TRANSITION_SPEED = 500
+            TRANSITION_BUFFER = 1
+
+            function changeGlobalSongListState(shown=true) {
+                const global_song_list = document.getElementById("song_list");
+                const was_shown = !global_song_list.hasAttribute("hidden");
+                const game_song_list = document.getElementById("popup_global_container");
+                const game_song_buttons = document.getElementById("popup_master_controls");
+                const main_breadcrumb = document.getElementById("home-breadcrumb");
+                const sub_breadcrumb = document.getElementById("sub-breadcrumb");
+                if (shown == was_shown) {
+                    return;
+                }
+                if (shown) {
+                    game_song_list.style.opacity = 0;
+                    game_song_buttons.style.opacity = 0;
+                    main_breadcrumb.classList.add("active");
+                    main_breadcrumb.setAttribute("aria-current","page");
+                    sub_breadcrumb.classList.remove("active");
+                    sub_breadcrumb.removeAttribute("aria-current");
+                    main_breadcrumb.innerHTML = "Home";
+                    sub_breadcrumb.classList.add("hide");
+                    setTimeout(() => {
+                        game_song_list.setAttribute("hidden","");
+                        game_song_buttons.setAttribute("hidden","");
+                        global_song_list.removeAttribute("hidden");
+                        setTimeout(() => {
+                            global_song_list.style.opacity = 1;
+                        }, TRANSITION_BUFFER);
+                    }, TRANSITION_SPEED);
+                } else {
+                    global_song_list.style.opacity = 0;
+                    main_breadcrumb.classList.remove("active");
+                    main_breadcrumb.removeAttribute("aria-current");
+                    sub_breadcrumb.classList.add("active");
+                    sub_breadcrumb.setAttribute("aria-current","page");
+                    main_breadcrumb.innerHTML = "<a href='#'>Home</a>";
+                    sub_breadcrumb.classList.remove("hide");
+                    setTimeout(() => {
+                        global_song_list.setAttribute("hidden","");
+                        game_song_list.removeAttribute("hidden");
+                        game_song_buttons.removeAttribute("hidden");
+                        setTimeout(() => {
+                            game_song_list.style.opacity = 1;
+                            game_song_buttons.style.opacity = 1;
+                        }, TRANSITION_BUFFER);
+                    }, TRANSITION_SPEED);
+                }
+            }
+
             function hidePopup() {
                 document.getElementById("addSongClose").click();
+                changeGlobalSongListState(true);
                 setTimeout(() => {
-                    document.getElementById("popup_controls").innerHTML = "";
+                    const game_song_list = document.getElementById("popup_controls")
+                    game_song_list.innerHTML = "";
                     updateCount()
-                }, 300)
+                }, 300 + TRANSITION_SPEED)
             }
 
             function destroyPopup() {
@@ -1430,7 +1482,9 @@
             function toggleGameVisibility(game_internal, el) {
                 const game_pretty = el.getElementsByClassName("game-internal-name")[0].innerText;
                 const song_el = document.getElementsByClassName("game-songs");
-                document.getElementById("addSongModalLabel").innerText = game_pretty;
+                document.getElementById("popup_game_name").innerText = game_pretty;
+                document.getElementById("sub-breadcrumb").innerText = game_pretty;
+                changeGlobalSongListState(false);
                 for (let s = 0; s < song_el.length; s++) {
                     if (song_el[s].getAttribute("game") == game_internal) {
                         document.getElementById("popup_controls").innerHTML = song_el[s].innerHTML;
@@ -1741,9 +1795,9 @@
             }
 
             function handleCredits(update_cookie) {
-                const credit_info = document.getElementById("addSongModal").getElementsByClassName("name_meta_data");
-                const audio_containers = document.getElementById("addSongModal").getElementsByClassName("audio_container");
-                const guitars = document.getElementById("addSongModal").getElementsByClassName("credit-guitar");
+                const credit_info = document.getElementById("popup_global_container").getElementsByClassName("name_meta_data");
+                const audio_containers = document.getElementById("popup_global_container").getElementsByClassName("audio_container");
+                const guitars = document.getElementById("popup_global_container").getElementsByClassName("credit-guitar");
                 const hide = document.getElementById("credits_hidden").checked;
                 for (let c = 0; c < credit_info.length; c++) {
                     if (hide) {
