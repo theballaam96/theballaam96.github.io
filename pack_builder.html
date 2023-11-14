@@ -415,163 +415,183 @@
         </style>
     </head>
     <body>
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">DK64 Cosmetic Pack Builder</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                File
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="buildPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="buildPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="selectAllSongs()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Misc
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#changelogModal"><i class="fa-solid fa-clipboard"></i> Song Changelog</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="submitSong()"><i class="fa-solid fa-music"></i> Submit Song</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="getShareLink(false)"><i class="fa-solid fa-link"></i> Get Shareable Link</a></li>
+                                <li><a class="dropdown-item" href="#" onclick="getYTPlaylist()"><i class="fa-brands fa-youtube"></i> Get YouTube Playlist</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="text" placeholder="Search Game or Song..." aria-label="Search Game or Song..." id="search-game" onkeyup="filterGame()">
+                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal" style="width:fit-content"><i class="fa-solid fa-gear"></i></button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
+        <!-- TODO: Adjust this -->
+        <form style="text-align: center" class="hide">
+            <div class="input-group mb-3">
+                <div class="input-group-text">
+                    <input id="min-view" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                </div>
+                <label for="min-view" class="bs-checkbox-right">Minimal View</label>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-text">
+                    <input id="text-view" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                </div>
+                <label for="text-view" class="bs-checkbox-right">Grid Text Shown</label>
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-text">
+                    <input id="output-candy" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                </div>
+                <label for="output-candy" class="bs-checkbox-right" title="Output as compressed files used for DK64 Randomizer">Output as .candy files</label>
+            </div>
+        </form>
+        <div id="song_selected_count" class="hide">0/0 songs selected</div>
         <div class="flexsplitter main_panel">
             <div class="panel-sep">
-                <div class="sep sep-left">
-                    <div class="header_block">
-                        <div class="header_main">Donkey Kong 64</div>
-                        <div class="header_sub">Cosmetic Pack Builder</div>
-                    </div>
-                    <hr />
-                    <div class="flexsplitter">
-                        <input class="form-control" style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
-                        <button style="width:fit-content" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#filterModal">&#9881;</button>
-                    </div>
-                    <button style="flex:1" class="btn btn-dark" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
-                    <div class="panel-sep-anti" id="button-panel" style="flex:2">
-                        <button style="flex:1" class="btn btn-dark" onclick="uploadPack()" title="Upload Pack"><i class="fa-solid fa-upload"></i>Upload Pack</button>
-                        <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
-                        <button style="flex:1" class="btn btn-dark" onclick="buildPack()" id="build-pack-button" title="Build Pack"><i class="fa-solid fa-hammer"></i>Build Pack</button>
-                    </div>
-                    <button class="btn btn-dark" onclick="getShareLink(false)">Get Shareable Link</button>
-                    <button class="btn btn-dark" onclick="getYTPlaylist()">Get YouTube Playlist</button>
-                    <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#changelogModal">Song Changelog</button>
-                    <button class="btn btn-dark" onclick="submitSong()">Submit song</button>
-                    <form style="text-align: center">
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <input id="min-view" type="checkbox" data-toggle="toggle" class="form-check-input"/>
-                            </div>
-                            <label for="min-view" class="bs-checkbox-right">Minimal View</label>
+                <!-- Add Song Modal -->
+                <div class="modal fade modal-lg" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="addSongModalLabel">Add songs to pack</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <input id="text-view" type="checkbox" data-toggle="toggle" class="form-check-input"/>
+                        <div class="modal-body">
+                            <div>
+                                Hide Credits:
+                                <input type="checkbox" id="credits_hidden"/>
                             </div>
-                            <label for="text-view" class="bs-checkbox-right">Grid Text Shown</label>
+                            <div id="popup_controls"></div>
                         </div>
-                        <div class="input-group mb-3">
-                            <div class="input-group-text">
-                                <input id="output-candy" type="checkbox" data-toggle="toggle" class="form-check-input"/>
-                            </div>
-                            <label for="output-candy" class="bs-checkbox-right" title="Output as compressed files used for DK64 Randomizer">Output as .candy files</label>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="addSongClose" onclick="hidePopup()">Close</button>
+                            <button type="button" class="btn btn-success" onclick="destroyPopup()">Apply changes</button>
+                            <button type="button" class="btn btn-primary" id="game-select-toggle" onclick="selectMaster()">Select All</button>
                         </div>
-                    </form>
-                    <div id="song_selected_count">0/0 songs selected</div>
-                    <!-- Add Song Modal -->
-                    <div class="modal fade modal-lg" id="addSongModal" tabindex="-1" aria-labelledby="addSongModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                          <div class="modal-content">
+                        </div>
+                    </div>
+                </div>
+                <!-- Song Changelog Modal -->
+                <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
                             <div class="modal-header">
-                              <h1 class="modal-title fs-5" id="addSongModalLabel">Add songs to pack</h1>
-                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h1 class="modal-title fs-5" id="changelogModalLabel">Song Changelog</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <div>
-                                    Hide Credits:
-                                    <input type="checkbox" id="credits_hidden"/>
-                                </div>
-                                <div id="popup_controls"></div>
+                                <div id="popup_recent"></div>
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="addSongClose" onclick="hidePopup()">Close</button>
-                              <button type="button" class="btn btn-success" onclick="destroyPopup()">Apply changes</button>
-                              <button type="button" class="btn btn-primary" id="game-select-toggle" onclick="selectMaster()">Select All</button>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                    <!-- Song Changelog Modal -->
-                    <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="changelogModalLabel">Song Changelog</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div id="popup_recent"></div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Advanced Filters Modal -->
-                    <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="advf-container">
-                                        <div class="mb-3">
-                                            <label for="advf-game" class="form-label">Game Name</label>
-                                            <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
-                                        </div>
-                                        
-                                        <div class="mb-3">
-                                            <label for="advf-song" class="form-label">Song Name</label>
-                                            <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
-                                        </div>
-                    
-                                        <div class="mb-3">
-                                            <label for="advf-group" class="form-label">Group</label>
-                                            <select id="advf-group" class="form-select">
-                                                <option selected>Any</option>
-                                                <option>Background Music</option>
-                                                <option>Events</option>
-                                                <option>Major Items</option>
-                                                <option>Minor Items</option>
-                                            </select>
-                                        </div>
-                    
-                                        <div class="mb-3">
-                                            <label for="advf-bgm-length" class="form-label">BGM Length</label>
-                                            <div class="slider-range" id="advf-bgm-length"></div>
-                                        </div>
-                    
-                                        <div class="mb-3">
-                                            <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
-                                            <div class="slider-range" id="advf-noloop-length"></div>
-                                        </div>
-                    
-                                        <div class="mb-3">
-                                            <label for="advf-composer" class="form-label">Composers</label>
-                                            <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
-                                            <div id="composerHelpBock" class="form-text">
-                                                Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
-                                            </div>
-                                        </div>
-                    
-                                        <div class="mb-3">
-                                            <label for="advf-converter" class="form-label">Converters</label>
-                                            <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
-                                            <div id="converterHelpBock" class="form-text">
-                                                Split names with comma (Eg. Ballaam, Adeleine64DS)
-                                            </div>
-                                        </div>
-                    
-                                        <div class="mb-3">
-                                            <label class="form-label">Tags</label>
-                                            <div class="advf-hint">Select all that you are happy with</div>
-                                            <div id="tag-list" class="flexsplitter"></div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
-                                </div>
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="sep" style="flex:2">
-                    <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
+                <!-- Advanced Filters Modal -->
+                <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="advf-container">
+                                    <div class="mb-3">
+                                        <label for="advf-game" class="form-label">Game Name</label>
+                                        <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="advf-song" class="form-label">Song Name</label>
+                                        <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="advf-group" class="form-label">Group</label>
+                                        <select id="advf-group" class="form-select">
+                                            <option selected>Any</option>
+                                            <option>Background Music</option>
+                                            <option>Events</option>
+                                            <option>Major Items</option>
+                                            <option>Minor Items</option>
+                                        </select>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="advf-bgm-length" class="form-label">BGM Length</label>
+                                        <div class="slider-range" id="advf-bgm-length"></div>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
+                                        <div class="slider-range" id="advf-noloop-length"></div>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="advf-composer" class="form-label">Composers</label>
+                                        <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
+                                        <div id="composerHelpBock" class="form-text">
+                                            Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
+                                        </div>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label for="advf-converter" class="form-label">Converters</label>
+                                        <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
+                                        <div id="converterHelpBock" class="form-text">
+                                            Split names with comma (Eg. Ballaam, Adeleine64DS)
+                                        </div>
+                                    </div>
+                
+                                    <div class="mb-3">
+                                        <label class="form-label">Tags</label>
+                                        <div class="advf-hint">Select all that you are happy with</div>
+                                        <div id="tag-list" class="flexsplitter"></div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
             </div>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
@@ -586,7 +606,7 @@
                 </div>
             </div>
         </div>
-        <div class="popup_background" id="load-event" style="opacity:1">
+        <div class="popup_background" id="load-event" style="opacity:1; z-index: 5000">
             <div class="popup_prompt">
                 <div class="popup_head">Loading Site Data</div>
                 <div class="progress" style="color:black" role="progressbar" id="loading_bar" aria-label="Loading Progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -1187,7 +1207,7 @@
                                                 : ""
                                             }
                                             ${
-                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
+                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? ' hide' : ''}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
                                                     data-bs-toggle='tooltip'>
                                                     <i class='fa-solid fa-guitar'></i>
                                                 </span>`
@@ -1617,9 +1637,15 @@
                         all_checked = false;
                     }
                 }
+                const fa_hook = document.getElementById("select-all-songs-fa");
+                fa_hook.classList.remove("fa-regular");
+                fa_hook.classList.remove("fa-solid");
                 text = "Select All Songs";
                 if (all_checked) {
                     text = "Deselect All Songs";
+                    fa_hook.classList.add("fa-regular");
+                } else {
+                    fa_hook.classList.add("fa-solid");
                 }
                 document.getElementById("select-all-songs").innerText = text;
                 updateCount();
