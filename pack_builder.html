@@ -425,6 +425,9 @@
             #song_list, #popup_global_container, #popup_master_controls {
                 transition: 0.5s ease-in-out;
             }
+            #audio-event-content {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
@@ -510,6 +513,24 @@
                     </div>
                 </div>
             </div>
+            <!-- Play Song Modal -->
+            <div class="modal modal-lg fade" data-bs-backdrop="static" data-bs-keyboard="false" id="playSongModal" tabindex="-1" aria-labelledby="playSongModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="playSongModalLabel">Playing Song</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeSong()" id="playSongModalClose"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="audio-event-content">
+                            <audio controls>
+                                <source src="" type="audio/mpeg">
+                            </audio>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             <!-- Advanced Filters Modal -->
             <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -612,11 +633,7 @@
                 <div class="audio-close-container">
                     <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="closeSong()"></button>
                 </div>
-                <div id="audio-event-content">
-                    <audio controls>
-                        <source src="" type="audio/mpeg">
-                    </audio>
-                </div>
+                
             </div>
         </div>
         <div class="popup_background" id="load-event" style="opacity:1; z-index: 5000">
@@ -839,37 +856,7 @@
                     }
                 }
             }
-            function handleElDeletion() {
-                const backdrops = document.getElementsByClassName("popup_background")
-                for (let b = 0; b < backdrops.length; b++) {
-                    if (backdrops[b].getAttribute("id") != "load-event") {
-                        backdrops[b].addEventListener("click", (e) => {
-                            if (e.target.getAttribute("class")) {
-                                if (e.target.getAttribute("class").includes("popup_background")) {
-                                    e.target.classList.add("hide")
-                                    document.body.classList.remove("fixed-body")
-                                    document.getElementById("audio-event-content").innerHTML = "";
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-            handleElDeletion()
-
-            document.onkeyup = (e) => {
-                if (e.key == "Escape") {
-                    const backdrops = document.getElementsByClassName("popup_background")
-                    for (let b = 0; b < backdrops.length; b++) {
-                        if (backdrops[b].getAttribute("id") != "load-event") {
-                            backdrops[b].classList.add("hide")
-                        }
-                    }
-                    document.body.classList.remove("fixed-body")
-                    document.getElementById("audio-event-content").innerHTML = "";
-                }
-            }
-
+            
             function toggleShowName(el) {
                 if (el.innerText == "Show") {
                     el.innerText = "Hide";
@@ -1188,7 +1175,7 @@
                                         game='${game}'
                                         ${song.notes ? `title='${song.notes}'` : ''}>
                                         <div class='flexsplitter'>
-                                            <div class='name_data handle-overflow' title='${displayed_song_name.replace('.bin','')}'>${displayed_song_name.replace('.bin','')}</div>
+                                            <div class='name_data handle-overflow' title='${filterNote(displayed_song_name.replace('.bin',''))}'>${displayed_song_name.replace('.bin','')}</div>
                                             <img class="tick" src='./assets/tick.svg'>
                                         </div>
                                         <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
@@ -1199,7 +1186,7 @@
                                         <div style='position:absolute;bottom:0;height:24px;'>
                                             ${
                                                 audio ?
-                                                `<span class='midi-tag' title='Listen to song' style='opacity:0' onclick='playSong(\"${audio}\",\"${converter}\")'><i class='fa-solid fa-play'></i></span>`
+                                                `<span class='midi-tag' title='Listen to song' style='opacity:0' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")'><i class='fa-solid fa-play'></i></span>`
                                                 : ""
                                             }
                                             ${
@@ -1231,7 +1218,7 @@
                                         <div class='audio_positioner'>
                                             ${
                                                 audio ?
-                                                `<span class='midi-tag' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\")'><i class='fa-solid fa-headphones'></i></span>`
+                                                `<span class='midi-tag' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")' data-bs-toggle="modal" data-bs-target="#playSongModal"><i class='fa-solid fa-headphones'></i></span>`
                                                 : ""
                                             }
                                         </div>
@@ -2218,8 +2205,9 @@
                 const full_link = `${LINK_INIT}${yt_ids.join(",")}`
                 sendToURL(full_link)
             }
-            function playSong(url, converter) {
+            function playSong(url, converter, song_name) {
                 const hook = document.getElementById("audio-event-content");
+                document.getElementById("playSongModalLabel").innerText = song_name;
                 if (url.includes("cdn.discordapp.com")) {
                     // Embedded audio
                     hook.innerHTML = `
@@ -2231,6 +2219,7 @@
                     const CONVERTER_NO_EXTERNAL = []; // Any users who make their videos non-distributable on external websites will just open a new tab to YT
                     if (CONVERTER_NO_EXTERNAL.includes(converter)) {
                         sendToURL(url)
+                        document.getElementById("playSongModalClose").click();
                         return;
                     }
                     // Embedded YT Link
@@ -2257,17 +2246,15 @@
                                 ></iframe>
                         `
                     }
-
                 } else {
-                    sendToURL(url)
+                    sendToURL(url);
+                    document.getElementById("playSongModalClose").click();
                     return;
                 }
-                document.getElementById("audio-event").classList.remove("hide")
             }
 
             function closeSong() {
                 document.getElementById("audio-event-content").innerHTML = ""
-                document.getElementById("audio-event").classList.add("hide")
             }
 
             function getShareLink(force_download) {
