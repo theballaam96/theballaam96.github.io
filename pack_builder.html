@@ -1207,7 +1207,7 @@
                                                 : ""
                                             }
                                             ${
-                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? ' hide' : ''}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
+                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
                                                     data-bs-toggle='tooltip'>
                                                     <i class='fa-solid fa-guitar'></i>
                                                 </span>`
@@ -1245,7 +1245,7 @@
                             }
                         })
                         const game_name = game_pretty;
-                        html += `<div class='game-handler'>
+                        html += `<div class='game-handler' title='${filterNote(game_name)}'>
                             <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
                                 <div class='game-icon'>
                                     <span class='icon-alignment'></span>
@@ -1802,9 +1802,9 @@
                 }
                 for (let g = 0; g < guitars.length; g++) {
                     if (hide) {
-                        guitars[g].classList.add("hide");
-                    } else {
                         guitars[g].classList.remove("hide");
+                    } else {
+                        guitars[g].classList.add("hide");
                     }
                 }
                 if (update_cookie) {
