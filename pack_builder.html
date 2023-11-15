@@ -473,10 +473,10 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="d-flex" role="search">
+                    <div class="d-flex">
                         <input class="form-control me-2" type="text" placeholder="Search Game or Song..." aria-label="Search Game or Song..." id="search-game" onkeyup="filterGame()">
                         <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal" style="width:fit-content"><i class="fa-solid fa-gear"></i></button>
-                    </form>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -1416,6 +1416,11 @@
             TRANSITION_SPEED = 500
             TRANSITION_BUFFER = 1
 
+            function scrollToTop() {
+                document.body.scrollTop = 0; // For Safari
+                document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            }
+
             function changeGlobalSongListState(shown=true) {
                 const global_song_list = document.getElementById("song_list");
                 const was_shown = !global_song_list.hasAttribute("hidden");
@@ -1445,6 +1450,7 @@
                             global_song_list.style.opacity = 1;
                             ss_count_el.style.opacity = 1;
                         }, TRANSITION_BUFFER);
+                        scrollToTop();
                     }, TRANSITION_SPEED);
                 } else {
                     global_song_list.style.opacity = 0;
@@ -1464,6 +1470,7 @@
                             game_song_list.style.opacity = 1;
                             game_song_buttons.style.opacity = 1;
                         }, TRANSITION_BUFFER);
+                        scrollToTop();
                     }, TRANSITION_SPEED);
                 }
             }
