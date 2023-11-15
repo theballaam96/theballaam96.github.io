@@ -30,14 +30,6 @@
                 transition: 0.5s ease-in-out;
                 margin: 5px;
             }
-            #song_list[render=grid] .game-header {
-                min-height: calc(64px + 10px + 30px);
-                max-height: calc(64px + 10px + 30px);
-            }
-            #song_list[render=grid][gridtext=show] .game-header {
-                min-height: calc(15vh + 15px);
-                max-height: calc(15vh + 15px);
-            }
             #song_list[render=grid][gridtext=hide] .game-icon {
                 margin-top: 15px;
             }
@@ -446,7 +438,7 @@
                 <a class="navbar-brand excluded_link" href="#" onclick="hidePopup()">
                     Pack Builder
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="width:fit-content;width:-moz-fit-content">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -1121,10 +1113,6 @@
 
             const site_is_down = false;
             const total_prog = 6;
-            const ENABLE_TEXT_VIEW_TOGGLE = false;
-            if (!ENABLE_TEXT_VIEW_TOGGLE) {
-                document.getElementById("text-view-container").setAttribute("hidden","");
-            }
             async function getMidiData() {
                 let prog = 0;
                 updateProgress(prog++, total_prog, "Initializing");
@@ -1317,16 +1305,11 @@
                 updateProgress(prog++, total_prog, "Updated Master");
                 // Update click events
                 setMinView(getCookie("min-view") == "minimal", false, true);
-                if (ENABLE_TEXT_VIEW_TOGGLE) {
-                    setTextView(getCookie("text-view") == "show", false)
-                }
+                setTextView(getCookie("text-view") == "show", false)
                 document.getElementById("credits_hidden").checked = getCookie("credits") == "true";
                 document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
                 document.getElementById("min-view").addEventListener("click", () => {handleMinView(true, true)});
-                if (ENABLE_TEXT_VIEW_TOGGLE) {
-                    document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
-                }
-
+                document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
 
                 if (willAutoDownload()) {
                     document.getElementById("build-pack-button").click();
@@ -2446,9 +2429,6 @@
             }
 
             function handleTextView(update_cookie) {
-                if (!ENABLE_TEXT_VIEW_TOGGLE) {
-                    return;
-                }
                 let setting = "hide";
                 if (document.getElementById("text-view").checked) {
                     setting = "show";
@@ -2472,9 +2452,6 @@
             }
 
             function setTextView(state, update_cookie) {
-                if (ENABLE_TEXT_VIEW_TOGGLE) {
-                    return;
-                }
                 document.getElementById("text-view").checked = state;
                 handleTextView(update_cookie);
             }
