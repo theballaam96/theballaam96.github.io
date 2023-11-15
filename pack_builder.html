@@ -122,6 +122,7 @@
             }
             .midi-checkbox-container {
                 margin: 5px;
+                position: relative;
             }
             .midi-checkbox {
                 border: 1px solid white;
@@ -134,22 +135,14 @@
                 position: relative;
             }
             .midi-checkbox:hover {
-                background-color: rgb(255, 255, 255, 0.15);
+                background-color: rgb(61, 255, 145, 0.15);
             }
             .midi-checkbox[ticked="true"] {
-                background-color: rgba(255,255,255,0.3);
-            }
-            .midi-checkbox[ticked="false"] .tick{
-                opacity: 0;
+                background-color: rgba(61, 255, 145, 0.3);
             }
             .midi-checkbox .name_data {
                 flex: 1;
                 font-weight: bold;
-            }
-            .tick {
-                height: 1em;
-                text-align: right;
-                transition: 0.5s ease-in-out;
             }
             .popup_buttons {
                 flex: 1;
@@ -232,13 +225,22 @@
                 position: relative;
             }
             .audio_positioner {
-                bottom: 6px;
-                left: 6px;
+                top:0;
+                right: 0;
                 position: absolute;
                 height: 20px;
             }
             .audio-close-container {
                 text-align: right;
+            }
+            .audio_positioner_internal {
+                padding: 2px;
+                margin-top: 2px;
+                margin-right: 5px;;
+                transition: 0.5s ease-in-out;
+            }
+            .audio_positioner_internal:hover {
+                color: rgba(13, 202, 240, 0.7);
             }
             .audio-close {
                 width: fit-content;
@@ -429,6 +431,16 @@
                 background: rgba(30, 30, 30, 1);
                 margin-top: 10px;
                 left: 12.5%;
+            }
+            .bottom-line {
+                padding-bottom: 2px;
+                border-bottom: 1px solid gray;
+            }
+            .midi-tray {
+                padding: 5px 0px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
             }
         </style>
     </head>
@@ -631,9 +643,9 @@
                 </nav>
                 <div id="song_selected_count" class="has-transition">0/0 songs selected</div>
                 <div class="flexsplitter has-transition" id="popup_master_controls" style="opacity:0" hidden>
-                    <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
-                    <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
                     <button type="button" class="btn btn-outline-info" id="game-select-toggle" onclick="selectMaster()">Select All</button>
+                    <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
+                    <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
                 </div>
             </div>
             <div class="content-center">
@@ -644,14 +656,14 @@
                         Hide Credits:
                         <input type="checkbox" id="credits_hidden"/>
                     </div>
-                    <div id="popup_controls"></div>
+                    <div id="popup_controls" style="padding-bottom: 100px"></div>
                 </div>
             </div>
         </div>
         <div class="flexsplitter fix-bottom has-transition content-center" id="sticky-controls" hidden>
-            <button type="button" class="btn btn-outline-danger" onclick="hidePopup()">Close</button>
-            <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
             <button type="button" class="btn btn-outline-info" id="game-select-toggle-bottom" onclick="selectMaster()">Select All</button>
+            <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
+            <button type="button" class="btn btn-outline-danger" onclick="hidePopup()">Close</button>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
             <div class="popup_prompt" style="width:fit-content">
@@ -1205,30 +1217,19 @@
                                         group='${group}'
                                         game='${game}'
                                         ${song.notes ? `title='${song.notes}'` : ''}>
-                                        <div class='flexsplitter'>
+                                        <div class='flexsplitter bottom-line'>
                                             <div class='name_data handle-overflow' title='${filterNote(displayed_song_name.replace('.bin',''))}'>${displayed_song_name.replace('.bin','')}</div>
-                                            <img class="tick" src='./assets/tick.svg'>
                                         </div>
-                                        <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#9834; ${composer}</div>` : ''}
-                                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow">&#127898; ${converter}</div>` : ''}
+                                        <div class='bottom-line name_meta_data${isCreditHidden() ? ' hide' : ''}'>
+                                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#119070; ${composer}</div>` : ''}
+                                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate"></i> ${converter}</div>` : ''}
                                         </div>
-                                        <div style='height: 24px'></div>
-                                        <div style='position:absolute;bottom:0;height:24px;'>
+                                        <div class='midi-tray'>
                                             ${
-                                                audio ?
-                                                `<span class='midi-tag' title='Listen to song' style='opacity:0' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")'><i class='fa-solid fa-play'></i></span>`
-                                                : ""
-                                            }
-                                            ${
-                                                song.is_new ?
-                                                "<span class='midi-tag' title='This is a new submission'><i class='fa-solid fa-exclamation'></i></span>"
-                                                : ""
-                                            }
-                                            ${
-                                                song.tags.length > 0 ?
-                                                `<span class='midi-tag' title='${song.tags.join(', ')}'><i class='fa-solid fa-tags'></i></span>`
-                                                : ""
+                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
+                                                    data-bs-toggle='tooltip'>
+                                                    <i class='fa-solid fa-guitar'></i>
+                                                </span>`
                                             }
                                             ${
                                                 song.notes ?
@@ -1238,15 +1239,23 @@
                                                 : ""
                                             }
                                             ${
-                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
-                                                    data-bs-toggle='tooltip'>
-                                                    <i class='fa-solid fa-guitar'></i>
+                                                song.tags.length > 0 ?
+                                                `<span class='midi-tag' title='${song.tags.join(', ')}'>
+                                                    <i class='fa-solid fa-tags'></i>
                                                 </span>`
+                                                : ""
+                                            }
+                                            ${
+                                                song.tags.map((item, index) => index < 10 ? `
+                                                    <span class='badge text-bg-secondary rounded-pill'>
+                                                        ${item}
+                                                    </span>
+                                                ` : "").join("")
                                             }
                                         </div>
                                     </div>
-                                    <div class='audio_positioner_container'>
-                                        <div class='audio_positioner'>
+                                    <div class='audio_positioner'>
+                                        <div class='audio_positioner_internal'>
                                             ${
                                                 audio ?
                                                 `<span class='midi-tag' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")' data-bs-toggle="modal" data-bs-target="#playSongModal"><i class='fa-solid fa-play'></i></span>`
