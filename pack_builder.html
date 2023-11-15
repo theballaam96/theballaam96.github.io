@@ -1970,7 +1970,9 @@
                             }
                         } else if (key.substring(0,4) == "tag-") {
                             const tag = key.substring(4)
-                            valid_entry &= midi_info.tags.length == 0 || midi_info.tags.map(item => item.replaceAll(" ","").toLowerCase()).includes(tag)
+                            if (key_value) {
+                                valid_entry &= midi_info.tags.length == 0 || midi_info.tags.map(item => item.replaceAll(" ","").toLowerCase()).includes(tag)
+                            }
                         }
                     })
                     return valid_entry;
