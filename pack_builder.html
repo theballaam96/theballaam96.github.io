@@ -1,7 +1,6 @@
-<html>
+<html data-bs-theme="dark" lang="en">
     <head>
         <title>DK64 Randomizer Cosmetic Pack Builder</title>
-        <link rel="stylesheet" href="style/nav.css">
 		<link rel="stylesheet" href="style/main.css">
         <link rel="stylesheet" href="style/home.css">
         <link rel="stylesheet" href="style/midi-converter.css">
@@ -15,6 +14,8 @@
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
@@ -78,14 +79,11 @@
             .panel-sep-anti {
                 display: block;
             }
-            .game-handler {
-                flex: 1;
-                min-width: 50%;
-                max-width: 50%;
+            #song_list {
+                grid-template-columns: 50% 50%;
             }
-            #song_list[render=grid] .game-handler {
-                min-width: calc(100% / 6);
-                max-width: calc(100% / 6);
+            #song_list[render=grid] {
+                grid-template-columns: 16% 16% 16% 16% 16% 16%;
             }
             .popup_background, .popup_background-fade {
                 background-color: rgba(0,0,0,0.5);
@@ -131,9 +129,6 @@
                 margin-top: 10px;
             }
             .midi-checkbox-container {
-                flex: 1;
-                min-width: calc(33% - 10px - 2px - 10px);
-                max-width: calc(33% - 10px - 2px - 10px);
                 margin: 5px;
             }
             .midi-checkbox {
@@ -143,7 +138,8 @@
                 padding: 5px;
                 transition: 0.5s ease-in-out;
                 /*width: 100%;*/
-                min-height: calc(100% - 12px);
+                min-height: 100%;
+                position: relative;
             }
             .midi-checkbox:hover {
                 background-color: rgb(255, 255, 255, 0.15);
@@ -156,6 +152,7 @@
             }
             .midi-checkbox .name_data {
                 flex: 1;
+                font-weight: bold;
             }
             .tick {
                 height: 1em;
@@ -171,6 +168,7 @@
             }
             .name_meta_data {
                 padding-left: 5px;
+                flex: 2;
             }
             #song_selected_count {
                 transition: 0.5s ease-in-out;
@@ -188,14 +186,11 @@
                 }
             }
             @media only screen and (max-width: 1200px) {
-                .game-handler {
-                    flex: 1;
-                    min-width: 100%;
-                    max-width: 100%;
+                #song_list {
+                    grid-template-columns: 100%;
                 }
-                #song_list[render=grid] .game-handler {
-                    min-width: calc(100% / 3);
-                    max-width: calc(100% / 3);
+                #song_list[render=grid] {
+                    grid-template-columns: 33% 33% 33%;
                 }
                 #song_list[render=grid] .game-header .game-internal-name {
                     font-size: 2vw;
@@ -219,19 +214,7 @@
                     border-right: none;
                 }
             }
-            @media only screen and (max-width: 750px) {
-                .midi-checkbox-container {
-                    min-width: calc(50% - 10px - 2px - 10px);
-                    max-width: calc(50% - 10px - 2px - 10px);
-                }
-            }
-            @media only screen and (max-width: 500px) {
-                .midi-checkbox-container {
-                    min-width: calc(100% - 10px - 2px - 10px);
-                    max-width: calc(100% - 10px - 2px - 10px);
-                }
-            }
-            input[type=text], #advf-container select {
+            /*input[type=text], #advf-container select {
                 background-color: #303245;
                 border-radius: 5px;
                 border: 0;
@@ -242,9 +225,8 @@
                 padding: 7px 20px;
                 width: -webkit-fill-available;
                 width: -moz-fill-available;
-                /*width: fill-available;*/
                 margin: 5px;
-            }
+            }*/
             #search-game {
                 height: 100%;
             }
@@ -253,38 +235,15 @@
                 margin-left: auto;
                 margin-right: auto;
             }
-            .audio_container {
-                margin-left: auto;
-                text-align: right;
-                width: calc(2.5em - 5px);
-                height: 50%;
+            .audio_positioner_container {
+                width: 100%;
+                position: relative;
             }
-            .audio_controller {
-                width: calc(2.5em - 5px);
-                height: calc(2.5em - 5px);
-                background-color: #15172b;
+            .audio_positioner {
+                bottom: 6px;
+                left: 6px;
                 position: absolute;
-                transform: translate(calc(7px - (2 * (5px + 1px))), calc(0px - 2.5em));
-                border-top: 1px solid white;
-                border-left: 1px solid white;
-                border-top-left-radius: 5px;
-                padding-left: 5px;
-                padding-top: 5px;
-            }
-            .audio_interaction {
-                border-radius: 5px;
-                border: 1px solid white;
-                height: -webkit-fill-available;
-                height: -moz-fill-available;
-                /*height: fill-available;*/
-                vertical-align: middle;
-                line-height: calc(2.5em - 5px - 2px);
-                text-align: center;
-                cursor: pointer;
-                transition: 0.5s ease-in-out;
-            }
-            .audio_interaction:hover {
-                background-color: rgba(255, 255, 255, 0.2);
+                height: 20px;
             }
             .audio-close-container {
                 text-align: right;
@@ -304,9 +263,6 @@
             }
             .load_bar {
                 height: 10px;
-            }
-            #loading_bar {
-                margin-top: 20px;
             }
             #loading_left{
                 background-color: #7c80a3;
@@ -348,12 +304,14 @@
             .panel-some {
                 background-color: white;
             }
+            /*
             #advf-container {
                 margin-top: 20px;
             }
             #advf-container input, #advf-container select {
                 margin-bottom: 10px;
             }
+            */
             .slider-range {
                 border-radius: 50px;
                 height: 8px;
@@ -364,11 +322,11 @@
                 margin-right: auto;
             }
             .slider-range .ui-slider-range {
-                background-color: cornflowerblue;
+                background-color: dodgerblue;
             }
             .slider-range .ui-slider-handle {
                 border-radius: 100px;
-                background-color: cornflowerblue;
+                background-color: dodgerblue;
                 top: calc(-0.3em - 1px);
             }
             .slider-range .ui-slider-timecode {
@@ -390,6 +348,12 @@
                 min-width: 33%;
                 max-width: 33%;
             }
+            .bs-checkbox-right {
+                border: 2px solid white;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                padding: 5px;
+            }
             /*
             .icon-alignment {
                 display: inline-block;
@@ -397,151 +361,314 @@
                 vertical-align: middle;
             }
             */
+            body {
+                background-image: none;
+                background-color: rgba(30, 30, 30, 1);
+            }
+            html[data-bs-theme="dark"].main_panel {
+                color: white;
+            }
+            .header_main, .header_sub {
+                text-align: center;
+                font-weight: 600;
+            }
+            .header_main {
+                font-size: 2rem;
+            }
+            .header_sub {
+                font-size: 1.75rem;
+            }
+            #load-event {
+                transition: 1.0s ease-in-out;
+                background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("assets/bckgrnd.png");
+            }
+            .midi-tag {
+                padding: 0px 2px;
+            }
+            .handle-overflow {
+                text-overflow: ellipsis;
+                -o-text-overflow: ellipsis;
+                -ms-text-overflow: ellipsis;
+                white-space: nowrap;
+                overflow: hidden;
+            }
+            .content-center {
+                width: 75%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .midi-grid {
+                display: grid;
+                grid-template-columns: 33% 33% 33%;
+            }
+            @media only screen and (max-width: 750px) {
+                .midi-grid {
+                    grid-template-columns: 50% 50%;
+                }
+            }
+            @media only screen and (max-width: 500px) {
+                .midi-grid {
+                    grid-template-columns: 100% 100%;
+                }
+                .content-center {
+                    width: 95%;
+                }
+            }
+            .breadcrumb-container {
+                padding: 10px;
+                display: flex;
+            }
+            #popup_master_controls {
+                margin-left: auto;
+                flex: 1;
+            }
+            #song_selected_count {
+                text-align: right;
+            }
+            .has-transition {
+                transition: 0.5s ease-in-out;
+            }
+            #audio-event-content {
+                text-align: center;
+            }
         </style>
     </head>
     <body>
-        <nav id="navigation"></nav>
-        <div class="v_spacer">
-
-		</div>
-        <div class="flexsplitter">
-            <div class="homebox">
-                <div class="header master_header">
-                    <strong>DK64 Randomizer Pack Builder</strong>
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand excluded_link" href="#" onclick="hidePopup()">
+                    Pack Builder
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                File
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildBinaryPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" onclick="selectAllSongs()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#accessibilityModal"><i class="fa-solid fa-universal-access"></i> Accessibility</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Misc
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#changelogModal"><i class="fa-solid fa-clipboard"></i> Song Changelog</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="submitSong()"><i class="fa-solid fa-music"></i> Submit Song</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="getShareLink(false)"><i class="fa-solid fa-link"></i> Get Shareable Link</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="getYTPlaylist()"><i class="fa-brands fa-youtube"></i> Get YouTube Playlist</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <form class="d-flex" role="search">
+                        <input class="form-control me-2" type="text" placeholder="Search Game or Song..." aria-label="Search Game or Song..." id="search-game" onkeyup="filterGame()">
+                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal" style="width:fit-content"><i class="fa-solid fa-gear"></i></button>
+                    </form>
                 </div>
             </div>
-        </div>
-        <div class="flexsplitter">
-            <div class="homebox" style="color:white">
-                <div class="panel-sep">
-                    <div class="sep sep-left">
-                        <div class="flexsplitter">
-                            <input style="flex:3; height:auto" type="text" placeholder="&#x1F50D; Search Game or Song..." id="search-game" onkeyup="filterGame()"/>
-                            <button style="width:fit-content" onclick="openFiltering()">&#9881;</button>
+        </nav>
+        <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
+        <div class="main_panel">
+            <!-- Song Changelog Modal -->
+            <div class="modal fade" id="changelogModal" tabindex="-1" aria-labelledby="changelogModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="changelogModalLabel">Song Changelog</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <button style="flex:1" id="select-all-songs" onclick="selectAllSongs()">Select All Songs</button>
-                        <div class="panel-sep-anti" id="button-panel" style="flex:2">
-                            <button style="flex:1" onclick="uploadPack()">Upload Pack</button>
-                            <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
-                            <button style="flex:1" onclick="buildPack()" id="build-pack-button">Build Pack</button>
+                        <div class="modal-body">
+                            <div id="popup_recent"></div>
                         </div>
-                        <button style="flex:1" onclick="getShareLink(false)">Get Shareable Link</button>
-                        <button style="flex:1" onclick="getYTPlaylist()">Get YouTube Playlist</button>
-                        <button style="flex:1" onclick="openChangelog()">Song Changelog</button>
-                        <button style="flex:1" onclick="submitSong()">Submit song</button>
-                        <div style="text-align: center">
-                            <label for="min-view">Minimal View</label>
-                            <input id="min-view" type="checkbox"/>
-                            <label for="text-view">Grid Text Shown</label>
-                            <input id="text-view" type="checkbox"/>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         </div>
-                        <div id="song_selected_count">0/0 songs selected</div>
                     </div>
-                    <div class="sep" style="flex:2">
-                        <div id="song_list" class="flexsplitter" style="flex-wrap:wrap" render="grid" gridtext="hide"></div>
+                </div>
+            </div>
+            <!-- Play Song Modal -->
+            <div class="modal modal-lg fade" data-bs-backdrop="static" data-bs-keyboard="false" id="playSongModal" tabindex="-1" aria-labelledby="playSongModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="playSongModalLabel">Playing Song</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="closeSong()" id="playSongModalClose"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="audio-event-content">
+                            <audio controls>
+                                <source src="" type="audio/mpeg">
+                            </audio>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+            <!-- Accessibility Modal -->
+            <div class="modal fade" id="accessibilityModal" tabindex="-1" aria-labelledby="accessibilityModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="accessibilityModalLabel">Accessibility Options</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            All options will be cached:
+                            <form style="text-align: center" class="mt-3">
+                                <div class="input-group">
+                                    <div>
+                                        <input type="checkbox" data-toggle="toggle" class="form-check-input" id="min-view" />
+                                        Minimal View
+                                    </div>
+                                </div>
+                                <div class="input-group" id="text-view-container">
+                                    <div>
+                                        <input type="checkbox" data-toggle="toggle" class="form-check-input" id="text-view" />
+                                        Grid Text Shown
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+              </div>
+            <!-- Advanced Filters Modal -->
+            <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="advf-container">
+                                <div class="mb-3">
+                                    <label for="advf-game" class="form-label">Game Name</label>
+                                    <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="advf-song" class="form-label">Song Name</label>
+                                    <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-group" class="form-label">Group</label>
+                                    <select id="advf-group" class="form-select">
+                                        <option selected>Any</option>
+                                        <option>Background Music</option>
+                                        <option>Events</option>
+                                        <option>Major Items</option>
+                                        <option>Minor Items</option>
+                                    </select>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-bgm-length" class="form-label">BGM Length</label>
+                                    <div class="slider-range" id="advf-bgm-length"></div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
+                                    <div class="slider-range" id="advf-noloop-length"></div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-composer" class="form-label">Composers</label>
+                                    <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
+                                    <div id="composerHelpBock" class="form-text">
+                                        Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
+                                    </div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label for="advf-converter" class="form-label">Converters</label>
+                                    <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
+                                    <div id="converterHelpBock" class="form-text">
+                                        Split names with comma (Eg. Ballaam, Adeleine64DS)
+                                    </div>
+                                </div>
+            
+                                <div class="mb-3">
+                                    <label class="form-label">Tags</label>
+                                    <div class="advf-hint">Select all that you are happy with</div>
+                                    <div id="tag-list" class="flexsplitter"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="popup_background hide" id="popup">
-            <div class="popup_prompt">
-                <div class="popup_head" id="prompt_head">Add songs to pack</div>
-                <div>
-                    Hide Credits:
-                    <input type="checkbox" id="credits_hidden"/>
-                </div>
-                <div id="popup_controls"></div>
-                <hr>
-                <div class="flexsplitter">
-                    <button class="popup_buttons" onclick="hidePopup()">Cancel</button>
-                    <button class="popup_buttons" onclick="destroyPopup()">Apply</button>
-                    <button class="popup_buttons" id="game-select-toggle" onclick="selectMaster()">Select All</button>
+            <!-- Toasts -->
+            <div id="toasts">
+                <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+            </div>
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-container">
+                <nav aria-label="breadcrumb" style="flex:1">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page" onclick="hidePopup()">Home</li>
+                        <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
+                    </ol>
+                </nav>
+                <div id="song_selected_count" class="has-transition">0/0 songs selected</div>
+                <div class="flexsplitter has-transition" id="popup_master_controls" style="opacity:0" hidden>
+                    <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
+                    <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
+                    <button type="button" class="btn btn-outline-info" id="game-select-toggle" onclick="selectMaster()">Select All</button>
                 </div>
             </div>
+            <div class="content-center">
+                <div id="song_list" class="has-transition" style="display:grid; opacity: 1" render="grid" defaultrender="grid" gridtext="hide"></div>
+                <div id="popup_global_container" class="has-transition" hidden style="opacity:0">
+                    <h1 id="popup_game_name">Add Songs to List</h1>
+                    <div>
+                        Hide Credits:
+                        <input type="checkbox" id="credits_hidden"/>
+                    </div>
+                    <div id="popup_controls"></div>
+                </div>
+                
+            </div>
         </div>
-        <div class="popup_background hide" id="audio-event">
+        <div class="popup_background hide" id="audio-event" style="z-index:2000">
             <div class="popup_prompt" style="width:fit-content">
                 <div class="audio-close-container">
-                    <div class="audio-close noselect" onclick="closeSong()">Close</div>
+                    <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="closeSong()"></button>
                 </div>
-                <div id="audio-event-content">
-                    <audio controls>
-                        <source src="" type="audio/mpeg">
-                    </audio>
-                </div>
+                
             </div>
         </div>
-        <div class="popup_background hide" id="new-songs">
-            <div class="popup_prompt">
-                <div class="audio-close-container">
-                    <div class="audio-close noselect" onclick="closeChangelog()">Close</div>
-                </div>
-                <div class="popup_head">Song Changelog</div>
-                <div id="popup_recent"></div>
-            </div>
-        </div>
-        <div class="popup_background hide" id="advanced-filter">
-            <div class="popup_prompt">
-                <div class="audio-close-container">
-                    <div class="audio-close noselect" onclick="closeFiltering()">Close</div>
-                </div>
-                <div class="popup_head">Advanced Filters</div>
-                <div id="advf-container">
-                    <label for="advf-game">Game Name</label>
-                    <input type="text" id="advf-game" placeholder="Game Name..." />
-                    
-                    <label for="advf-song">Song Name</label>
-                    <input type="text" id="advf-song" placeholder="Song Name..." />
-
-                    <label for="advf-group">Group</label>
-                    <select id="advf-group">
-                        <option selected>Any</option>
-                        <option>Background Music</option>
-                        <option>Events</option>
-                        <option>Major Items</option>
-                        <option>Minor Items</option>
-                    </select>
-
-                    <label for="advf-bgm-length">BGM Length</label>
-                    <div class="slider-range" id="advf-bgm-length"></div>
-
-                    <label for="advf-noloop-length">Non-Looping Lengths</label>
-                    <div class="slider-range" id="advf-noloop-length"></div>
-
-                    <label for="advf-composer">Composers</label>
-                    <div class="advf-hint">Split names with comma (Eg. Koji Kondo, Grant Kirkhope)</div>
-                    <input type="text" id="advf-composer" placeholder="Composer Name..." />
-
-                    <label for="advf-converter">Converters</label>
-                    <div class="advf-hint">Split names with comma (Eg. Ballaam, Adeleine64DS)</div>
-                    <input type="text" id="advf-converter" placeholder="Converter Name..." />
-
-                    <label>Tags</label>
-                    <div class="advf-hint">Select all that you are happy with</div>
-                    <div id="tag-list" class="flexsplitter"></div>
-
-                    <br />
-                    <label for="advf-safe">Only select safe songs</label>
-                    <input type="checkbox" id="advf-safe" />
-                    <div class="advf-hint">Applies various internal filters to minimize amount of songs which will break the music engine</div>
-
-                    <button onclick="compileAdvancedFilters()">Apply</button>
-                </div>
-            </div>
-        </div>
-        <div class="popup_background" id="load-event">
+        <div class="popup_background" id="load-event" style="opacity:1; z-index: 5000">
             <div class="popup_prompt">
                 <div class="popup_head">Loading Site Data</div>
-                <div id="loading_bar" class="flexsplitter load_bar">
-                    <div id="loading_left" class="load_bar" style="flex:0"></div>
-                    <div id="loading_right" class="load_bar" style="flex:100"></div>
-                </div>
+                <div class="progress" style="color:black" role="progressbar" id="loading_bar" aria-label="Loading Progress" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar bg-success" style="width: 0%; color: black">0%</div>
+                  </div>
                 <div id="loading_text"></div>
             </div>
         </div>
         <div id="lazy-loader"><img id=lazy-img-loader height="1px" width="1px"/></div>
-        <script src="script/nav.js"></script>
-        <script>          
+        <script>      
             const ZELDA_NAME = "The Legend of Zelda: "
             let midi_data_copy = null;
             let total_data_copy = null;
@@ -559,11 +686,7 @@
             const char_num = Array.from(Array(10).keys()).map(x => x.toString())
             const char_alphanumeric = char_upper_alpha + char_lower_alpha + char_num;
 
-            const REGULAR_FORMAT = "bin"
-            const ENCODED_FORMAT = "candy"
-            const FORMATS = [REGULAR_FORMAT, ENCODED_FORMAT]
-            let OUTPUT_FORMAT = REGULAR_FORMAT
-            const ENABLE_OUTPUT_CONTROL = false;
+            let output_as_encoded = false;
             const ACCEPTED_TAGS = [
                 "Fights",
                 "Lobbies and Shops",
@@ -591,8 +714,8 @@
                 const hook = document.getElementById("tag-list")
                 hook.innerHTML = ACCEPTED_TAGS.map(item => `
                     <div class='advf-tag-container'>
-                        <input type='checkbox' class='advf-tag' id='advf-tag-${filterName(item)}' checked/>
-                        <label for='advf-tag-${filterName(item)}'>${item}</label>
+                        <input type='checkbox' class='advf-tag form-check-input' value='' id='advf-tag-${filterName(item)}' data-toggle='toggle' checked/>
+                        <label for='advf-tag-${filterName(item)}' class=form-check-label>${item}</label>
                     </div>
                 `).join("")
             }
@@ -647,7 +770,6 @@
                     "noloop-max": parseInt(document.getElementById("advf-noloop-length").getAttribute("value-max")),
                     "composers": filterAdvancedFilterValue(document.getElementById("advf-composer").value),
                     "converters": filterAdvancedFilterValue(document.getElementById("advf-converter").value),
-                    "safe-only": document.getElementById("advf-safe").checked,
                 }
                 let all_tagged = true;
                 ACCEPTED_TAGS.forEach(tag => {
@@ -668,7 +790,6 @@
                     }
                 })
                 document.getElementById("search-game").value = filtering_array.join("&");
-                closeFiltering();
                 filterGame();
             }
 
@@ -757,34 +878,12 @@
                     }
                 }
             }
-            function handleElDeletion() {
-                const backdrops = document.getElementsByClassName("popup_background")
-                for (let b = 0; b < backdrops.length; b++) {
-                    if (backdrops[b].getAttribute("id") != "load-event") {
-                        backdrops[b].addEventListener("click", (e) => {
-                            if (e.target.getAttribute("class")) {
-                                if (e.target.getAttribute("class").includes("popup_background")) {
-                                    e.target.classList.add("hide")
-                                    document.body.classList.remove("fixed-body")
-                                    document.getElementById("audio-event-content").innerHTML = "";
-                                }
-                            }
-                        })
-                    }
-                }
-            }
-            handleElDeletion()
-
-            document.onkeyup = (e) => {
-                if (e.key == "Escape") {
-                    const backdrops = document.getElementsByClassName("popup_background")
-                    for (let b = 0; b < backdrops.length; b++) {
-                        if (backdrops[b].getAttribute("id") != "load-event") {
-                            backdrops[b].classList.add("hide")
-                        }
-                    }
-                    document.body.classList.remove("fixed-body")
-                    document.getElementById("audio-event-content").innerHTML = "";
+            
+            function toggleShowName(el) {
+                if (el.innerText == "Show") {
+                    el.innerText = "Hide";
+                } else {
+                    el.innerText = "Show";
                 }
             }
 
@@ -795,16 +894,23 @@
                 })
                 document.getElementById("popup_recent").innerHTML = `
                     ${timeframe_names.map(frame => `${!Object.keys(recent_history).includes(frame) ? "" : `
-                        <div class="popup_subtitle">${frame}</div>
-                        <ul>${recent_history[frame].map(song => `
-                            <li>${song.is_update ? "[UPDATE] " : ""}
-                            ${song.game}: ${song.song}</li>
-                        `).join("")}</ul>
+                        <div class="flexsplitter">
+                            <div class="popup_subtitle" style="flex:1">${frame}</div>
+                            <div style="flex:1; text-align:right">
+                                <button style="width:fit-content; width:-moz-fit-content" class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle='collapse' href='#collapse-${frame.replaceAll(" ","")}' role="button" aria-expanded="false" aria-controls="collapse-${frame.replaceAll(" ","")}" onclick="toggleShowName(this)">
+                                    Show
+                                </button>
+                            </div>
+                        </div>
+                        <div class="collapse multi-collapse" id="collapse-${frame.replaceAll(" ","")}">
+                            <ul>${recent_history[frame].map(song => `
+                                <li>${song.is_update ? "[UPDATE] " : ""}
+                                ${song.game}: ${song.song}</li>
+                            `).join("")}</ul>
+                        </div>
                     `}`).join("")}
                 `
             }
-            
-            const NON_FL_CONVERTERS = ["Ballaam", "Bismuth", "AaronDobbe"]
 
             class MIDIInfo {
                 constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, index) {
@@ -835,21 +941,6 @@
                         this.is_new = this.days_since_submission < 7;
                     }
                     this.changelog_entry = pushToRecent(this.game, this.name, this.days_since_submission)
-                    this.checkSafety()
-                }
-
-                checkSafety() {
-                    let converter_data = this.converter;
-                    if (converter_data == null) {
-                        converter_data = this.composer;
-                    }
-                    const converter_list = converter_data.split(",").map(item => item.trim())
-                    this.is_safe = true;
-                    converter_list.forEach(item => {
-                        if (!NON_FL_CONVERTERS.includes(item)) {
-                            this.is_safe = false;
-                        }
-                    })
                 }
 
                 update_entry(replacement) {
@@ -880,7 +971,6 @@
                     this.timestamp = replacement.timestamp;
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
-                    this.checkSafety()
                 }
             }
             
@@ -1010,8 +1100,20 @@
                 return name.split("").filter(item => char_alphanumeric.includes(item)).join("").toLowerCase();
             }
 
+            function filterNote(note) {
+                bad_note_characters = ["'","\""]
+                bad_note_characters.forEach(char => {
+                    note = note.replaceAll(char, "")
+                })
+                return note
+            }
+
             const site_is_down = false;
             const total_prog = 6;
+            const ENABLE_TEXT_VIEW_TOGGLE = false;
+            if (!ENABLE_TEXT_VIEW_TOGGLE) {
+                document.getElementById("text-view-container").setAttribute("hidden","");
+            }
             async function getMidiData() {
                 let prog = 0;
                 updateProgress(prog++, total_prog, "Initializing");
@@ -1099,24 +1201,54 @@
                                         game='${game}'
                                         ${song.notes ? `title='${song.notes}'` : ''}>
                                         <div class='flexsplitter'>
-                                            <div class='name_data'>
-                                                <strong>${displayed_song_name.replace('.bin','')}</strong>
-                                                <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                                    ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}'>&#9834; ${composer}</div>` : ''}
-                                                    ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'>&#127898; ${converter}</div>` : ''}
-                                                </div>
-                                            </div>
+                                            <div class='name_data handle-overflow' title='${filterNote(displayed_song_name.replace('.bin',''))}'>${displayed_song_name.replace('.bin','')}</div>
                                             <img class="tick" src='./assets/tick.svg'>
                                         </div>
+                                        <div class='name_meta_data${isCreditHidden() ? ' hide' : ''}'>
+                                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#9834; ${composer}</div>` : ''}
+                                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow">&#127898; ${converter}</div>` : ''}
+                                        </div>
+                                        <div style='height: 24px'></div>
+                                        <div style='position:absolute;bottom:0;height:24px;'>
+                                            ${
+                                                audio ?
+                                                `<span class='midi-tag' title='Listen to song' style='opacity:0' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")'><i class='fa-solid fa-play'></i></span>`
+                                                : ""
+                                            }
+                                            ${
+                                                song.is_new ?
+                                                "<span class='midi-tag' title='This is a new submission'><i class='fa-solid fa-exclamation'></i></span>"
+                                                : ""
+                                            }
+                                            ${
+                                                song.tags.length > 0 ?
+                                                `<span class='midi-tag' title='${song.tags.join(', ')}'><i class='fa-solid fa-tags'></i></span>`
+                                                : ""
+                                            }
+                                            ${
+                                                song.notes ?
+                                                song.notes.trim().length > 0 ?
+                                                `<span class='midi-tag' title='${filterNote(song.notes)}'><i class='fa-solid fa-note-sticky'></i></span>`
+                                                : ""
+                                                : ""
+                                            }
+                                            ${
+                                                `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
+                                                    data-bs-toggle='tooltip'>
+                                                    <i class='fa-solid fa-guitar'></i>
+                                                </span>`
+                                            }
+                                        </div>
                                     </div>
-                                    ${
-                                        audio != null ?
-                                        `<div class='audio_container${isCreditHidden() ? ' hide' : ''}'>
-                                            <div class='audio_controller'>
-                                                <div class='audio_interaction' onclick='playSong(\"${audio}\",\"${converter}\")'>&#9654;</div>
-                                            </div>
-                                        </div>` : ''
-                                    }
+                                    <div class='audio_positioner_container'>
+                                        <div class='audio_positioner'>
+                                            ${
+                                                audio ?
+                                                `<span class='midi-tag' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")' data-bs-toggle="modal" data-bs-target="#playSongModal"><i class='fa-solid fa-headphones'></i></span>`
+                                                : ""
+                                            }
+                                        </div>
+                                    </div>
                                 </div>`
                         })
                         let local_html_total = "";
@@ -1130,8 +1262,8 @@
                         Object.keys(group_priority).forEach(group => {
                             if (Object.keys(local_html).includes(group)) {
                                 local_html_total += `${first ? '' : '<br>'}
-                                    <div class='popup_subtitle'>${group_priority[group]}</div>
-                                    <div class='flexsplitter' style='flex-wrap:wrap'>
+                                    <div class='fs-5'>${group_priority[group]}</div>
+                                    <div class='midi-grid'>
                                         ${local_html[group]}
                                     </div>
                                 `
@@ -1139,7 +1271,7 @@
                             }
                         })
                         const game_name = game_pretty;
-                        html += `<div class='game-handler'>
+                        html += `<div class='game-handler' title='${filterNote(game_name)}'>
                             <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
                                 <div class='game-icon'>
                                     <span class='icon-alignment'></span>
@@ -1173,12 +1305,16 @@
                 updateMaster();
                 updateProgress(prog++, total_prog, "Updated Master");
                 // Update click events
-                setMinView(getCookie("min-view") == "minimal", false)
-                setTextView(getCookie("text-view") == "show", false)
+                setMinView(getCookie("min-view") == "minimal", false, true);
+                if (ENABLE_TEXT_VIEW_TOGGLE) {
+                    setTextView(getCookie("text-view") == "show", false)
+                }
                 document.getElementById("credits_hidden").checked = getCookie("credits") == "true";
                 document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
-                document.getElementById("min-view").addEventListener("click", () => {handleMinView(true)});
-                document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
+                document.getElementById("min-view").addEventListener("click", () => {handleMinView(true, true)});
+                if (ENABLE_TEXT_VIEW_TOGGLE) {
+                    document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
+                }
 
 
                 if (willAutoDownload()) {
@@ -1189,7 +1325,7 @@
             if ((!site_is_down) || (window.location.origin.includes("localhost"))) {
                 getMidiData();
             } else {
-                updateProgress(0, 1, "Site is down for Maintainence. Please check back later")
+                updateProgress(1, 1, "Site is down for Maintainence. Please check back later", true)
             }
 
             function convertSongName(game, song) {
@@ -1249,6 +1385,7 @@
                     let drive_id = null;
                     let game = null;
                     let preview = null;
+                    let tags = [];
                     const entry = midi_data_copy.find(item => item.index == id);
                     if (entry) {
                         song = entry.name;
@@ -1257,7 +1394,8 @@
                         song_index = id;
                         drive_id = entry.drive_id
                         game = entry.game;
-                        preview = entry.audio
+                        preview = entry.audio,
+                        tags = entry.tags
                     }
                     if (song != null) {
                         return {
@@ -1267,17 +1405,77 @@
                             "download": download,
                             "index": song_index,
                             "drive_id": drive_id,
-                            "preview": preview
+                            "preview": preview,
+                            "tags": tags.slice()
                         }
                     }
                 }
                 return null;
             }
+
+            TRANSITION_SPEED = 500
+            TRANSITION_BUFFER = 1
+
+            function changeGlobalSongListState(shown=true) {
+                const global_song_list = document.getElementById("song_list");
+                const was_shown = !global_song_list.hasAttribute("hidden");
+                const game_song_list = document.getElementById("popup_global_container");
+                const game_song_buttons = document.getElementById("popup_master_controls");
+                const ss_count_el = document.getElementById("song_selected_count");
+                const main_breadcrumb = document.getElementById("home-breadcrumb");
+                const sub_breadcrumb = document.getElementById("sub-breadcrumb");
+                if (shown == was_shown) {
+                    return;
+                }
+                if (shown) {
+                    game_song_list.style.opacity = 0;
+                    game_song_buttons.style.opacity = 0;
+                    main_breadcrumb.classList.add("active");
+                    main_breadcrumb.setAttribute("aria-current","page");
+                    sub_breadcrumb.classList.remove("active");
+                    sub_breadcrumb.removeAttribute("aria-current");
+                    main_breadcrumb.innerHTML = "Home";
+                    sub_breadcrumb.classList.add("hide");
+                    setTimeout(() => {
+                        game_song_list.setAttribute("hidden","");
+                        game_song_buttons.setAttribute("hidden","");
+                        global_song_list.removeAttribute("hidden");
+                        ss_count_el.removeAttribute("hidden");
+                        setTimeout(() => {
+                            global_song_list.style.opacity = 1;
+                            ss_count_el.style.opacity = 1;
+                        }, TRANSITION_BUFFER);
+                    }, TRANSITION_SPEED);
+                } else {
+                    global_song_list.style.opacity = 0;
+                    ss_count_el.style.opacity = 0;
+                    main_breadcrumb.classList.remove("active");
+                    main_breadcrumb.removeAttribute("aria-current");
+                    sub_breadcrumb.classList.add("active");
+                    sub_breadcrumb.setAttribute("aria-current","page");
+                    main_breadcrumb.innerHTML = "<a href='#' class='excluded_link'>Home</a>";
+                    sub_breadcrumb.classList.remove("hide");
+                    setTimeout(() => {
+                        global_song_list.setAttribute("hidden","");
+                        ss_count_el.setAttribute("hidden", "");
+                        game_song_list.removeAttribute("hidden");
+                        game_song_buttons.removeAttribute("hidden");
+                        setTimeout(() => {
+                            game_song_list.style.opacity = 1;
+                            game_song_buttons.style.opacity = 1;
+                        }, TRANSITION_BUFFER);
+                    }, TRANSITION_SPEED);
+                }
+            }
+
             function hidePopup() {
-                document.getElementById("popup").classList.add("hide");
-                document.getElementById("popup_controls").innerHTML = "";
-                updateCount()
-                document.body.classList.remove("fixed-body")
+                document.getElementById("addSongClose").click();
+                changeGlobalSongListState(true);
+                setTimeout(() => {
+                    const game_song_list = document.getElementById("popup_controls")
+                    game_song_list.innerHTML = "";
+                    updateCount()
+                }, 300 + TRANSITION_SPEED)
             }
 
             function destroyPopup() {
@@ -1303,10 +1501,10 @@
 
             function toggleGameVisibility(game_internal, el) {
                 const game_pretty = el.getElementsByClassName("game-internal-name")[0].innerText;
-                document.body.classList.add("fixed-body")
-                document.getElementById("popup").classList.remove("hide")
                 const song_el = document.getElementsByClassName("game-songs");
-                document.getElementById("prompt_head").innerText = game_pretty;
+                document.getElementById("popup_game_name").innerText = game_pretty;
+                document.getElementById("sub-breadcrumb").innerText = game_pretty;
+                changeGlobalSongListState(false);
                 for (let s = 0; s < song_el.length; s++) {
                     if (song_el[s].getAttribute("game") == game_internal) {
                         document.getElementById("popup_controls").innerHTML = song_el[s].innerHTML;
@@ -1331,12 +1529,26 @@
             let build_progress = 0;
             let build_limit = 0;
 
-            function updateProgress(progress, total, text="") {
-                document.getElementById("loading_left").style.flex = progress.toString()
-                document.getElementById("loading_right").style.flex = (total - progress).toString()
+            function updateProgress(progress, total, text="", error=false) {
+                const hook = document.getElementById("loading_bar")
+                const bar = hook.getElementsByTagName("div")[0]
+                const perc = Math.floor(100 * (progress / total));
+                hook.setAttribute("aria-valuenow", perc.toString()); 
+                bar.style.width = `${perc}%`
+                bar.innerText = `${perc}%`
+                bar.classList.remove("bg-info");
+                bar.classList.remove("bg-danger");
+                if (error) {
+                    bar.classList.add("bg-danger");
+                } else {
+                    bar.classList.add("bg-info");
+                }
                 document.getElementById("loading_text").innerText = text;
-                if (progress == total) {
-                    document.getElementById("load-event").classList.add("hide")
+                if ((progress == total) && (!error)) {
+                    document.getElementById("load-event").style.opacity = 0;
+                    setTimeout(() => {
+                        document.getElementById("load-event").classList.add("hide")
+                    }, 1000);
                 }
             }
 
@@ -1346,17 +1558,27 @@
                 return split_filename.filter(item => !bad_characters.includes(item)).join("")
             }
 
+            async function buildBinaryPack() {
+                output_as_encoded = false;
+                buildPack();
+            }
+            
+            async function buildCandyPack() {
+                output_as_encoded = true;
+                buildPack();
+            }
+
             async function buildPack() {
-                if ((getSongSelectedCount() < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
-                    document.getElementById("song_selected_count").classList.add("errored");
-                    setTimeout(() => {
-                        document.getElementById("song_selected_count").classList.remove("errored");
-                    }, 2000);
+                const ss_count = getSongSelectedCount();
+                if ((ss_count < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
+                    generateToast("Cannot generate pack, no songs selected", true);
                     return;
                 }
                 if (pack_zip_data == null) {
+                    generateToast("Something went wrong", true);
                     return;
                 }
+                generateToast(`Generating pack with ${ss_count} song${ss_count != 1 ? 's' : ''}`);
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
                 folder_data = {...uploaded_pack_data}
                 let data_array = []
@@ -1404,37 +1626,66 @@
                                 "converter": converter,
                                 "group": group,
                                 "length": length,
-                                "data": fileData
+                                "data": fileData,
+                                "tags": found_data.tags,
+                                "append_extension": true
                             });
                         }
                     }
                 }
                 const zip = new JSZip();
-                const INCLUDE_EXTRA_DATA = false; // Figure out why DK64R is including this in the cosmetic pack
+                const promises = [];
+                const png_zip = zip.folder("music_icons")
                 Object.keys(folder_data).forEach(folder => {
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
-                        if (INCLUDE_EXTRA_DATA) {
-                            f_zip.file(filterFilename(`${file.game}.png`), file.logo);
+                        if (output_as_encoded) {
+                            c_zip = new JSZip();
+                            logo_name = filterFilename(`${file.game}.png`)
+                            c_zip.file(filterFilename("song.bin"), file.data); // Song
+                            png_zip.file(logo_name, file.logo); // Game PNG in main zip
                             // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
-                            f_zip.file(filterFilename(`${file.game} ${file.song}.json`), JSON.stringify({
+                            c_zip.file(filterFilename("data.json"), JSON.stringify({
                                 "song": file.song,
                                 "game": file.game,
                                 "group": file.group,
                                 "length": file.length,
-                                "logo": filterFilename(`${file.game}.png`),
+                                "logo": logo_name,
                                 "composer": file.composer,
-                                "converter": file.converter
+                                "converter": file.converter,
+                                "tags": file.tags,
                             }));
+                            promises.push(
+                                c_zip.generateAsync({type:"blob"}).then((content) => {
+                                    if (file.append_extension) {
+                                        f_zip.file(filterFilename(`${file.game} ${file.song}.candy`), content);
+                                    } else {
+                                        f_zip.file(filterFilename(file.song), content);
+                                    }
+                                })
+                            );
+                        } else {
+                            if (file.append_extension) {
+                                f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
+                            } else {
+                                f_zip.file(filterFilename(file.song), file.data);
+                            }
                         }
                     })
                 })
-
-                zip.generateAsync({type:"blob"}).then(function(content) {
-                    saveAs(content, "pack.zip");
-                });
+                
+                if (output_as_encoded) {
+                    Promise.all(promises).then((data) => {
+                        zip.generateAsync({type:"blob"}).then(function(content) {
+                            saveAs(content, "pack.zip");
+                        });
+                    })
+                } else {
+                    zip.generateAsync({type:"blob"}).then(function(content) {
+                        saveAs(content, "pack.zip");
+                    });
+                }               
             }
 
             function selectMaster() {
@@ -1484,9 +1735,15 @@
                         all_checked = false;
                     }
                 }
+                const fa_hook = document.getElementById("select-all-songs-fa");
+                fa_hook.classList.remove("fa-regular");
+                fa_hook.classList.remove("fa-solid");
                 text = "Select All Songs";
                 if (all_checked) {
                     text = "Deselect All Songs";
+                    fa_hook.classList.add("fa-regular");
+                } else {
+                    fa_hook.classList.add("fa-solid");
                 }
                 document.getElementById("select-all-songs").innerText = text;
                 updateCount();
@@ -1568,8 +1825,9 @@
             }
 
             function handleCredits(update_cookie) {
-                const credit_info = document.getElementById("popup").getElementsByClassName("name_meta_data");
-                const audio_containers = document.getElementById("popup").getElementsByClassName("audio_container");
+                const credit_info = document.getElementById("popup_global_container").getElementsByClassName("name_meta_data");
+                const audio_containers = document.getElementById("popup_global_container").getElementsByClassName("audio_container");
+                const guitars = document.getElementById("popup_global_container").getElementsByClassName("credit-guitar");
                 const hide = document.getElementById("credits_hidden").checked;
                 for (let c = 0; c < credit_info.length; c++) {
                     if (hide) {
@@ -1583,6 +1841,13 @@
                         audio_containers[a].classList.add("hide");
                     } else {
                         audio_containers[a].classList.remove("hide");
+                    }
+                }
+                for (let g = 0; g < guitars.length; g++) {
+                    if (hide) {
+                        guitars[g].classList.remove("hide");
+                    } else {
+                        guitars[g].classList.add("hide");
                     }
                 }
                 if (update_cookie) {
@@ -1699,10 +1964,6 @@
                         } else if (key.substring(0,4) == "tag-") {
                             const tag = key.substring(4)
                             valid_entry &= midi_info.tags.length == 0 || midi_info.tags.map(item => item.replaceAll(" ","").toLowerCase()).includes(tag)
-                        } else if (key == "safe-only") {
-                            if (key_value) {
-                                valid_entry &= midi_info.is_safe;
-                            }
                         }
                     })
                     return valid_entry;
@@ -1714,7 +1975,7 @@
             }
 
             function adheresToFilterCheckbox(el) {
-                const name = el.getElementsByClassName("name_data")[0].getElementsByTagName("strong")[0].innerText;
+                const name = el.getElementsByClassName("name_data")[0].innerText;
                 const success = adheresToFilter(parseInt(el.getAttribute("song-id")));
                 return success;
             }
@@ -1769,6 +2030,27 @@
                 return true;
             }
 
+            function checkSongArrayMatch(array_a, array_b, filename_a) {
+                const extension = last(filename_a.split("."));
+                if (PARSEABLE_EXTENSIONS.includes(extension)) { // Binary file
+                    if (filename_a == "bgm/Undertale Spider Dance.candy") {
+                        //console.log(array_a, array_b)
+                    }
+                    return checkArrayMatch(array_a, array_b);
+                }
+                // Unknown
+                return false
+            }
+
+            async function findAsync(arr, asyncCallback) {
+                const promises = arr.map(asyncCallback);
+                const results = await Promise.all(promises);
+                const index = results.findIndex(result => result);
+                return arr[index];
+            }
+
+            const PARSEABLE_EXTENSIONS = ["bin","candy"]
+
             async function handlePack(data) {
                 // Load all data
                 let site_data = {};
@@ -1793,6 +2075,7 @@
                         }
                     }
                 }
+                // Load uploaded zip file
                 const new_zip = new JSZip();
                 let site_song_data = {};
                 let compressed_data = {}
@@ -1804,19 +2087,50 @@
                         const file_group = file_path_array[file_path_array.length - 2];
                         compressed_data[filename_0] = {
                             "group": file_group,
-                            "data": Array.from(fileData)
+                            "data": Array.from(fileData),
+                            "blob": fileData
                         };
                     }
                 }
+
                 await waitFor(_ => loaded_count >= midi_data_copy.length);
 
                 // Parse data for matching arrays
+
                 let matching_songs = [];
-                Object.keys(compressed_data).forEach(song_a => {
+                let files_parsed = 0;
+                const files_pushed = Array(Object.keys(compressed_data).length).fill(null);
+                Object.keys(compressed_data).forEach((song_a, song_i) => {
+                    const extension = last(song_a.split("."));
+                    if (extension == "candy") {
+                        c_zip = new JSZip();
+                        c_zip.loadAsync(compressed_data[song_a].blob).then((czip_data) => {
+                            for (let [filename_0, file_0] of Object.entries(czip_data.files)) {
+                                if (filename_0 == "song.bin") {
+                                    czip_data.files[filename_0].async("Uint8Array").then((fileData) => {
+                                        files_pushed[song_i] = Array.from(fileData);
+                                        files_parsed += 1;
+                                    });
+                                }
+                            }
+                        });
+                    } else {
+                        files_pushed[song_i] = compressed_data[song_a].data;
+                        files_parsed += 1;
+                    }
+                })
+
+                await waitFor(_ => files_parsed >= Object.keys(compressed_data).length)
+
+                Object.keys(compressed_data).forEach((song_a, song_i) => {
                     if (last(song_a.split("/")).toLowerCase() != "predule.bin") { // Temporarily installed to weed out the bad bin
-                        const found_song = Object.keys(site_data).find(item => {
-                            return checkArrayMatch(compressed_data[song_a].data, site_data[item].data)
-                        })
+                        const extension = last(song_a.split("."));
+                        let found_song = null;
+                        if (PARSEABLE_EXTENSIONS.includes(extension)) {
+                            found_song = Object.keys(site_data).find(item => {
+                                return checkSongArrayMatch(files_pushed[song_i], site_data[item].data, song_a);
+                            })
+                        }
                         if (found_song) {
                             const new_song = site_data[found_song].updated_version;
                             if (!matching_songs.includes(new_song)) {
@@ -1832,11 +2146,13 @@
                             }
                             uploaded_pack_data[item_group].push({
                                 "song": item_name,
-                                "data": new Blob([new Uint8Array(item_data)])
+                                "data": new Blob([new Uint8Array(item_data)]),
+                                "append_extension": false,
                             })
                         }
                     }
                 })
+
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
                 for (let c = 0; c < checkboxes.length; c++) {
                     checkboxes[c].setAttribute("ticked", "false");
@@ -1884,10 +2200,7 @@
 
             function getYTPlaylist() {
                 if ((getSongSelectedCount() < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
-                    document.getElementById("song_selected_count").classList.add("errored");
-                    setTimeout(() => {
-                        document.getElementById("song_selected_count").classList.remove("errored");
-                    }, 2000);
+                    generateToast("Cannot generate playlist, no songs selected", true);
                     return;
                 }
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
@@ -1932,8 +2245,9 @@
                 const full_link = `${LINK_INIT}${yt_ids.join(",")}`
                 sendToURL(full_link)
             }
-            function playSong(url, converter) {
+            function playSong(url, converter, song_name) {
                 const hook = document.getElementById("audio-event-content");
+                document.getElementById("playSongModalLabel").innerText = song_name;
                 if (url.includes("cdn.discordapp.com")) {
                     // Embedded audio
                     hook.innerHTML = `
@@ -1945,6 +2259,7 @@
                     const CONVERTER_NO_EXTERNAL = []; // Any users who make their videos non-distributable on external websites will just open a new tab to YT
                     if (CONVERTER_NO_EXTERNAL.includes(converter)) {
                         sendToURL(url)
+                        document.getElementById("playSongModalClose").click();
                         return;
                     }
                     // Embedded YT Link
@@ -1971,33 +2286,15 @@
                                 ></iframe>
                         `
                     }
-
                 } else {
-                    sendToURL(url)
+                    sendToURL(url);
+                    document.getElementById("playSongModalClose").click();
                     return;
                 }
-                document.getElementById("audio-event").classList.remove("hide")
             }
 
             function closeSong() {
                 document.getElementById("audio-event-content").innerHTML = ""
-                document.getElementById("audio-event").classList.add("hide")
-            }
-
-            function openChangelog() {
-                document.getElementById("new-songs").classList.remove("hide")
-            }
-            
-            function closeChangelog() {
-                document.getElementById("new-songs").classList.add("hide")
-            }
-
-            function openFiltering() {
-                document.getElementById("advanced-filter").classList.remove("hide")
-            }
-            
-            function closeFiltering() {
-                document.getElementById("advanced-filter").classList.add("hide")
             }
 
             function getShareLink(force_download) {
@@ -2107,7 +2404,7 @@
                 return (seed_arr[loc] & (1 << subposition)) != 0; // Extracted from seed
             }
 
-            function handleMinView(update_cookie) {
+            function handleMinView(update_cookie, update_checkbox) {
                 let setting = "grid";
                 if (document.getElementById("min-view").checked) {
                     setting = "minimal";
@@ -2116,9 +2413,13 @@
                 if (update_cookie) {
                     setPackCookie("min-view", setting);
                 }
+                document.getElementById("song_list").setAttribute("defaultrender", getCookie("min-view"));
             }
 
             function handleTextView(update_cookie) {
+                if (!ENABLE_TEXT_VIEW_TOGGLE) {
+                    return;
+                }
                 let setting = "hide";
                 if (document.getElementById("text-view").checked) {
                     setting = "show";
@@ -2129,12 +2430,22 @@
                 }
             }
 
-            function setMinView(state, update_cookie) {
-                document.getElementById("min-view").checked = state;
-                handleMinView(update_cookie);
+            function setMinView(state, update_cookie, update_checkbox) {
+                if (update_checkbox) {
+                    document.getElementById("min-view").checked = state;
+                }
+                handleMinView(update_cookie, update_checkbox);
+            }
+
+            function setMinViewToDefault() {
+                const hook = document.getElementById("song_list");
+                hook.setAttribute("render", hook.getAttribute("defaultrender"));
             }
 
             function setTextView(state, update_cookie) {
+                if (ENABLE_TEXT_VIEW_TOGGLE) {
+                    return;
+                }
                 document.getElementById("text-view").checked = state;
                 handleTextView(update_cookie);
             }
@@ -2146,32 +2457,22 @@
 
             let previous_width = null;
             function handleSize() {
-                const force_limit = 980;
+                return;
+                const force_limit = 700;
                 const width = document.documentElement.clientWidth;
                 if (width <= force_limit) {
                     if ((previous_width == null) || (previous_width > force_limit)) {
-                        setMinView(true, false);
+                        setMinView(true, false, false);
                     }
                 } else {
                     if ((previous_width == null) || (previous_width <= force_limit)) {
-                        setMinView(false, false);
+                        setMinViewToDefault();
                     }
                 }
                 previous_width = width;
             }
             window.onresize = handleSize;
             handleSize();
-
-            /*
-                Candy file format
-                HEADER - Size 0x28
-                    [0x00] u32 location_bitfield
-                    [0x04] u32 song_bitfield
-                    [0x08] u32 song_length (s)
-                    [0x0C] s8[0x28-0xC] 0xFF bytes
-                FILE
-
-            */
 
             function readFile(file, start, size) {
                 let value = 0;
@@ -2192,19 +2493,29 @@
                     }
                 }
             }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script>
+            // TOAST GENERATOR
+            const toastTrigger = document.getElementById('liveToastBtn')
+            const toastContainer = document.getElementById("toasts")
 
-            function processFile(file, in_format, out_format) {
-                // Convert file to bin. File is blob
-                processing_file = new Array.from(new Uint8Array(file));
-                if (in_format == ENCODED_FORMAT) {
-                    processing_file = processing_file.slice(0x28);
-                }
-                // Convert file to candy.
-                if (out_format == ENCODED_FORMAT) {
-                    header = new Array(0x28).fill(0xFF);
-                    processing_file = header + processing_file;
-                }
-                return new Blob([new Uint8Array(processing_file)]);
+            let toast_counter = 0;
+
+            function generateToast(message, error=false) {
+                toastContainer.getElementsByClassName("toast-container")[0].innerHTML += `
+                <div id="liveToast${toast_counter}" class="toast align-items-center ${error ? 'text-bg-danger' : 'text-bg-primary'} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>                    
+                </div>`
+                const toastEl = document.getElementById(`liveToast${toast_counter}`)
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl)
+                toastBootstrap.show()
+                toast_counter += 1;
             }
         </script>
     </body>
