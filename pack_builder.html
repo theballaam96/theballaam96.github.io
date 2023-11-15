@@ -432,10 +432,11 @@
                 text-align: center;
             }
             .fix-bottom {
-                position: sticky;
+                position: fixed;
                 bottom: 0;
                 background: rgba(30, 30, 30, 1);
                 margin-top: 10px;
+                left: 12.5%;
             }
         </style>
     </head>
@@ -652,14 +653,13 @@
                         <input type="checkbox" id="credits_hidden"/>
                     </div>
                     <div id="popup_controls"></div>
-                    <div class="flexsplitter fix-bottom">
-                        <button type="button" class="btn btn-outline-danger" onclick="hidePopup()">Close</button>
-                        <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
-                        <button type="button" class="btn btn-outline-info" id="game-select-toggle-bottom" onclick="selectMaster()">Select All</button>
-                    </div>
                 </div>
-                
             </div>
+        </div>
+        <div class="flexsplitter fix-bottom has-transition content-center" id="sticky-controls" hidden>
+            <button type="button" class="btn btn-outline-danger" onclick="hidePopup()">Close</button>
+            <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
+            <button type="button" class="btn btn-outline-info" id="game-select-toggle-bottom" onclick="selectMaster()">Select All</button>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
             <div class="popup_prompt" style="width:fit-content">
@@ -1439,6 +1439,7 @@
                 const was_shown = !global_song_list.hasAttribute("hidden");
                 const game_song_list = document.getElementById("popup_global_container");
                 const game_song_buttons = document.getElementById("popup_master_controls");
+                const sticky_controls = document.getElementById("sticky-controls");
                 const ss_count_el = document.getElementById("song_selected_count");
                 const main_breadcrumb = document.getElementById("home-breadcrumb");
                 const sub_breadcrumb = document.getElementById("sub-breadcrumb");
@@ -1448,6 +1449,7 @@
                 if (shown) {
                     game_song_list.style.opacity = 0;
                     game_song_buttons.style.opacity = 0;
+                    sticky_controls.style.opacity = 0;
                     main_breadcrumb.classList.add("active");
                     main_breadcrumb.setAttribute("aria-current","page");
                     sub_breadcrumb.classList.remove("active");
@@ -1457,6 +1459,7 @@
                     setTimeout(() => {
                         game_song_list.setAttribute("hidden","");
                         game_song_buttons.setAttribute("hidden","");
+                        sticky_controls.setAttribute("hidden","");
                         global_song_list.removeAttribute("hidden");
                         ss_count_el.removeAttribute("hidden");
                         setTimeout(() => {
@@ -1480,9 +1483,11 @@
                         ss_count_el.setAttribute("hidden", "");
                         game_song_list.removeAttribute("hidden");
                         game_song_buttons.removeAttribute("hidden");
+                        sticky_controls.removeAttribute("hidden");
                         setTimeout(() => {
                             game_song_list.style.opacity = 1;
                             game_song_buttons.style.opacity = 1;
+                            sticky_controls.style.opacity = 1;
                         }, TRANSITION_BUFFER);
                         scrollTo();
                     }, TRANSITION_SPEED);
