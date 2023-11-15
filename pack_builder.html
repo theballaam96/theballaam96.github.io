@@ -810,7 +810,10 @@
                 if (reference.c[index] == null) {
                     return null
                 }
-                const val = reference.c[index].v.replaceAll("|","");
+                let val = reference.c[index].v;
+                if (val.substring(0, 1) == "|") {
+                    val = val.substring(1);
+                }
                 if ((val == null) || (val == undefined)) {
                     return null;
                 }
@@ -933,6 +936,9 @@
                         this.tags = tags.split(", ")
                     }
                     this.notes = notes
+                    if (notes) {
+                        this.notes = notes.split("|")[0];
+                    }
                     this.days_since_submission = null;
                     this.is_new = false;
                     this.older_revisions = null;
