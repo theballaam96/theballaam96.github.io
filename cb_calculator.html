@@ -490,7 +490,7 @@
                         Required Moves
                     </div>
                     <ul class='list-group'>
-                        ${list.map(perm => `<li class='list-group-item'>${perm.map(item => item.name).join(", ")}</li>`).join("")}
+                        ${list.map(perm => `<li class='list-group-item'>${perm.map(item => `<span class='badge text-bg-info'>${item.name}</span>`).join(" ")}</li>`).join("")}
                     </ul>
                 </div>`
             }
@@ -555,8 +555,10 @@
                                 }
                             }
                         })
+                        added = perm.slice();
+                        added.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
                         if (include) {
-                            filtered_permutations.push(perm);
+                            filtered_permutations.push(added);
                         }
                     })
                     //console.log(filtered_permutations)
