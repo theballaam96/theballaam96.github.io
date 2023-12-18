@@ -22,11 +22,11 @@
                 <div class="card-body">
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">Medal Requirement</span>
-                        <input type="number" id="cb-req-medal" class="form-control recalculate" placeholder="Medal Requirement" aria-label="Medal Requirement" default="40" aria-describedby="basic-addon1"/>
+                        <input type="number" id="cb-req-medal" class="form-control recalculate" placeholder="Medal Requirement" aria-label="Medal Requirement" value="40" aria-describedby="basic-addon1"/>
                     </div>
                     <div class="input-group mb-3">
                         <select class="form-select recalculate" aria-label="Select Level" id="medal-level">
-                            <option selected value="default">Level</option>
+                            <option selected value="default" disabled="disabled">Level</option>
                             <option value="Japes">Japes</option>
                             <option value="Aztec">Aztec</option>
                             <option value="Factory">Factory</option>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="input-group mb-3">
                         <select class="form-select recalculate" aria-label="Select Kong" id="medal-kong">
-                            <option selected value="default">Kong</option>
+                            <option selected value="default" disabled="disabled">Kong</option>
                             <option value="DK">DK</option>
                             <option value="Diddy">Diddy</option>
                             <option value="Lanky">Lanky</option>
@@ -212,7 +212,7 @@
                         new Requirement(20, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar, Moves.Slam, Moves.Strong].concat([item]))),
                         new Requirement(15, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
                         new Requirement(7, [[Moves.Guitar, Moves.Vines]]),
-                        new Requirement(10, [[Moves.Strong]]),
+                        new Requirement(10, [[Moves.Strong, Moves.Coconut]]),
                     ],
                     "Diddy": [
                         new Requirement(5, [[Moves.Moveless]]),
