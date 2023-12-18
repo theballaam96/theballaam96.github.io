@@ -1,0 +1,593 @@
+<html data-bs-theme="dark">
+    <head>
+        <title>DK64 Randomizer Colored Banana Calculator</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <style>
+            .container {
+                width: 70%;
+            }
+            .container-header {
+                padding: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="container-header">
+                <h1>DK64 Randomizer Medal Move Requirement Calculator</h1>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-addon1">Medal Requirement</span>
+                        <input type="number" id="cb-req-medal" class="form-control recalculate" placeholder="Medal Requirement" aria-label="Medal Requirement" default="40" aria-describedby="basic-addon1"/>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-select recalculate" aria-label="Select Level" id="medal-level">
+                            <option selected value="default">Level</option>
+                            <option value="Japes">Japes</option>
+                            <option value="Aztec">Aztec</option>
+                            <option value="Factory">Factory</option>
+                            <option value="Galleon">Galleon</option>
+                            <option value="Fungi">Fungi</option>
+                            <option value="Caves">Caves</option>
+                            <option value="Castle">Castle</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-select recalculate" aria-label="Select Kong" id="medal-kong">
+                            <option selected value="default">Kong</option>
+                            <option value="DK">DK</option>
+                            <option value="Diddy">Diddy</option>
+                            <option value="Lanky">Lanky</option>
+                            <option value="Tiny">Tiny</option>
+                            <option value="Chunky">Chunky</option>
+                        </select>
+                    </div>
+                    
+                </div>
+            </div>
+            
+
+            <div id="permutations"></div>
+        </div>
+        
+
+        <script>
+            getMedalRequirement = () => {
+                let interpretted_value = document.getElementById("cb-req-medal").value;
+                if (interpretted_value == "") {
+                    interpretted_value = "0";
+                }
+                return parseInt(interpretted_value);
+            }
+
+            class Level {
+                static Japes = new Level("Japes");
+                static Aztec = new Level("Aztec");
+                static Factory = new Level("Factory");
+                static Galleon = new Level("Galleon");
+                static Fungi = new Level("Fungi");
+                static Caves = new Level("Caves");
+                static Castle = new Level("Castle");
+
+                constructor (name) {
+                    this.name = name;
+                }
+            }
+
+            class Kong {
+                static DK = new Kong("DK");
+                static Diddy = new Kong("Diddy");
+                static Lanky = new Kong("Lanky");
+                static Tiny = new Kong("Tiny");
+                static Chunky = new Kong("Chunky");
+
+                constructor (name) {
+                    this.name = name;
+                }
+            }
+
+            class Moves {
+                static Moveless = new Moves("nothing", false);
+                static Slam = new Moves("Level Slam");
+                // Kongs
+                static Diddy = new Moves("Diddy");
+                static Enguarde = new Moves("Enguarde");
+                // Special Moves
+                static Strong = new Moves("Strong Kong");
+                static Blast = new Moves("Baboon Blast");
+                static Rocket = new Moves("Rocketbarrel Boost");
+                static Spring = new Moves("Simian Spring");
+                static Charge = new Moves("Chimpy Charge");
+                static Orangstand = new Moves("Orangstand");
+                static Balloon = new Moves("Baboon Balloon");
+                static Sprint = new Moves("Sprint");
+                static Mini = new Moves("Mini Monkey");
+                static Twirl = new Moves("Ponytail Twirl");
+                static Monkeyport = new Moves("Monkeyport");
+                static Hunky = new Moves("Hunky Chunky");
+                static Punch = new Moves("Primate Punch");
+                static Gone = new Moves("Gorilla Gone");
+                // Training
+                static Diving = new Moves("Diving");
+                static Vines = new Moves("Vines");
+                static Barrels = new Moves("Barrels");
+                // Guns
+                static Coconut = new Moves("Coconut");
+                static Peanut = new Moves("Peanut");
+                static Grape = new Moves("Grape");
+                static Feather = new Moves("Feather");
+                static Pineapple = new Moves("Pineapple");
+                // Instruments
+                static Bongos = new Moves("Bongos");
+                static Guitar = new Moves("Guitar");
+                static Trombone = new Moves("Trombone");
+                static Sax = new Moves("Sax");
+                static Triangle = new Moves("Triangle");
+                // Misc Events
+                static Night = new Moves("Fungi Night");
+                static W3Bonus = new Moves("Caves Warp 3 Bonus");
+
+                constructor (name, requires_moves=true) {
+                    this.name = name;
+                    this.requires_moves = requires_moves
+                }
+            }
+
+            class Requirement {
+                constructor (amount, requirements) {
+                    this.amount = amount;
+                    this.requirements = requirements;
+                }
+
+                can_acquire(move_list) {
+                    let acquire = false;
+                    this.requirements.forEach(group => {
+                        let local_acquire = true;
+                        group.forEach(move => {
+                            if (!move_list.includes(move)) {
+                                local_acquire = false;
+                            }
+                        })
+                        if (local_acquire) {
+                            acquire = true;
+                        }
+                    })
+                    return acquire;
+                }
+            }
+
+            const llama_temple_guns = [Moves.Coconut, Moves.Grape, Moves.Feather];
+            const llama_lava_moves = [Moves.Twirl, Moves.Slam];
+            const mush_top_access = [Moves.Rocket, Moves.Orangstand]
+
+            const requirement_data = {
+                "Japes": {
+                    "DK": [
+                        new Requirement(40, [[Moves.Moveless]]),
+                        new Requirement(40, [[Moves.Coconut]]),
+                        new Requirement(10, [[Moves.Vines]]),
+                        new Requirement(10, [[Moves.Vines, Moves.Blast]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(35, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Diving]]),
+                        new Requirement(30, [[Moves.Peanut]]),
+                        new Requirement(20, [[Moves.Peanut, Moves.Slam]]),
+                        new Requirement(5, [[Moves.Coconut]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(22, [[Moves.Moveless]]),
+                        new Requirement(20, [[Moves.Grape]]),
+                        new Requirement(10, [[Moves.Coconut]]),
+                        new Requirement(8, [[Moves.Orangstand]]),
+                        new Requirement(5, [[Moves.Diving]]),
+                        new Requirement(20, [[Moves.Orangstand, Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Orangstand, Moves.Peanut, Moves.Grape]]),
+                        new Requirement(5, [[Moves.Peanut, Moves.Grape]]),
+                    ],
+                    "Tiny": [
+                        new Requirement(10, [[Moves.Moveless]]),
+                        new Requirement(12, [[Moves.Coconut]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.Feather]]),
+                        new Requirement(15, [[Moves.Feather]]),
+                        new Requirement(48, [[Moves.Feather, Moves.Mini]]),
+                        new Requirement(5, [[Moves.Peanut, Moves.Feather]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(30, [[Moves.Moveless]]),
+                        new Requirement(30, [[Moves.Coconut, Moves.Pineapple]]),
+                        new Requirement(5, [[Moves.Coconut, Moves.Barrels]]),
+                        new Requirement(20, [[Moves.Feather, Moves.Hunky]]),
+                        new Requirement(15, [[Moves.Barrels]]),
+                    ]
+                },
+                "Aztec": {
+                    "DK": [
+                        new Requirement(18, [[Moves.Moveless]]),
+                        new Requirement(30, [[Moves.Coconut, Moves.Vines, Moves.Guitar]]),
+                        new Requirement(20, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar, Moves.Slam, Moves.Strong].concat([item]))),
+                        new Requirement(15, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
+                        new Requirement(7, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(10, [[Moves.Strong]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(5, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Peanut]]),
+                        new Requirement(18, [[Moves.Peanut, Moves.Slam]]),
+                        new Requirement(7, [[Moves.Peanut, Moves.Diving]]),
+                        new Requirement(30, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Coconut, Moves.Slam, Moves.Strong, Moves.Peanut]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(5, [[Moves.Moveless]]),
+                        new Requirement(35, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(35, [[Moves.Guitar, Moves.Vines, Moves.Grape]]),
+                        new Requirement(14, [[Moves.Grape, Moves.Diving]]),
+                        new Requirement(11, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
+                    ],
+                    "Tiny": [
+                        new Requirement(50, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(5, [[Moves.Feather, Moves.Mini, Moves.Diving]]),
+                        new Requirement(20, [[Moves.Feather, Moves.Diving]]),
+                        new Requirement(3, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
+                        new Requirement(2, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar, Moves.Mini].concat([item]))),
+                        new Requirement(10, llama_temple_guns.map(item => 
+                            llama_lava_moves.map(item2 => [Moves.Guitar, Moves.Vines, Moves.Mini].concat([item2]).concat([item]))
+                        ).flat(1)),
+                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Feather]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(5, [[Moves.Moveless]]),
+                        new Requirement(59, [[Moves.Pineapple]]),
+                        new Requirement(16, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(20, [[Moves.Guitar, Moves.Vines, Moves.Pineapple]]),
+                    ],
+                },
+                "Factory": {
+                    "DK": [
+                        new Requirement(20, [[Moves.Moveless]]),
+                        new Requirement(20, [[Moves.Blast]]),
+                        new Requirement(15, [[Moves.Strong]]),
+                        new Requirement(45, [[Moves.Coconut]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(50, [[Moves.Moveless]]),
+                        new Requirement(20, [[Moves.Spring]]),
+                        new Requirement(30, [[Moves.Guitar, Moves.Peanut]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(47, [[Moves.Moveless]]),
+                        new Requirement(23, [[Moves.Orangstand]]),
+                        new Requirement(20, [[Moves.Grape]]),
+                        new Requirement(10, [[Moves.Trombone, Moves.Grape]]),
+                    ],
+                    "Tiny": [
+                        new Requirement(60, [[Moves.Moveless]]),
+                        new Requirement(5, [[Moves.Twirl]]),
+                        new Requirement(5, [[Moves.Mini]]),
+                        new Requirement(30, [[Moves.Feather]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(45, [[Moves.Moveless]]),
+                        new Requirement(15, [[Moves.Punch]]),
+                        new Requirement(20, [[Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle]]),
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple]]),
+                    ],
+                },
+                "Galleon": {
+                    "DK": [
+                        new Requirement(10, [[Moves.Coconut, Moves.Diving]]),
+                        new Requirement(15, [[Moves.Coconut, Moves.Diving, Moves.Blast]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Enguarde]]),
+                        new Requirement(10, [[Moves.Coconut]]),
+                        new Requirement(15, [[Moves.Diving]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Bongos]]),
+                        new Requirement(30, [[Moves.Coconut, Moves.Diving, Moves.Slam]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(10, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Rocket, Moves.Peanut]]),
+                        new Requirement(36, [[Moves.Diving]]),
+                        new Requirement(14, [[Moves.Diving, Moves.Guitar]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Guitar, Moves.Enguarde]]),
+                        new Requirement(10, [[Moves.Peanut]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(10, [[Moves.Moveless]]),
+                        new Requirement(26, [[Moves.Coconut, Moves.Diving]]),
+                        new Requirement(5, [[Moves.Diving]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Slam]]),
+                        new Requirement(10, [[Moves.Grape]]),
+                        new Requirement(15, [[Moves.Diving, Moves.Trombone]]),
+                        new Requirement(4, [[Moves.Coconut, Moves.Diving, Moves.Balloon]]),
+                        new Requirement(20, [[Moves.Punch, Moves.Grape]]),
+                    ],
+                    "Tiny": [
+                        new Requirement(9, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Diving]]),
+                        new Requirement(8, [[Moves.Vines]]),
+                        new Requirement(5, [[Moves.Coconut, Moves.Diving]]),
+                        new Requirement(20, [[Moves.Coconut, Moves.Feather]]),
+                        new Requirement(15, [[Moves.Coconut, Moves.Diving, Moves.Pineapple]]),
+                        new Requirement(18, [[Moves.Sax, Moves.Diving]]),
+                        new Requirement(5, [[Moves.Diving, Moves.Enguarde]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Enguarde, Moves.Feather]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(12, [[Moves.Moveless]]),
+                        new Requirement(3, [[Moves.Vines]]),
+                        new Requirement(35, [[Moves.Coconut, Moves.Diving]]),
+                        new Requirement(5, [[Moves.Coconut, Moves.Diving, Moves.Punch]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Pineapple]]),
+                        new Requirement(20, [[Moves.Pineapple]]),
+                        new Requirement(15, [[Moves.Diving]]),
+                    ],
+                },
+                "Fungi": {
+                    "DK": [
+                        new Requirement(40, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.Slam]]),
+                        new Requirement(5, [[Moves.Night]]),
+                        new Requirement(10, [[Moves.Night, Moves.Strong]]),
+                        new Requirement(10, [[Moves.Blast]]),
+                        new Requirement(15, [[Moves.Coconut, Moves.Peanut, Moves.Grape, Moves.Feather, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Coconut]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(45, [[Moves.Moveless]]),
+                        new Requirement(15, [[Moves.Grape]]),
+                        new Requirement(5, [[Moves.Grape, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Peanut, Moves.Slam]]),
+                        new Requirement(5, [[Moves.Spring]]),
+                        new Requirement(10, [[Moves.Night, Moves.Spring, Moves.Guitar]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(32, [[Moves.Moveless]]),
+                        new Requirement(38, [[Moves.Grape]]),
+                        new Requirement(20, mush_top_access.map(item => [Moves.Slam].concat([item]))),
+                        new Requirement(10, [[Moves.Night]]),
+                        ],
+                    "Tiny": [
+                        new Requirement(10, [[Moves.Moveless]]),
+                        new Requirement(5, [[Moves.Punch]]),
+                        new Requirement(10, [[Moves.Mini]]),
+                        new Requirement(5, [[Moves.Mini, Moves.Night]]),
+                        new Requirement(17, [[Moves.Diving]]),
+                        new Requirement(24, [[Moves.Feather]]),
+                        new Requirement(16, [[Moves.Feather, Moves.Pineapple]]),
+                        new Requirement(8, [[Moves.Grape]]),
+                        new Requirement(5, [[Moves.Grape, Moves.Mini, Moves.Sax]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(51, [[Moves.Moveless]]),
+                        new Requirement(5, [[Moves.Punch]]),
+                        new Requirement(14, [[Moves.Feather, Moves.Pineapple]]),
+                        new Requirement(5, [[Moves.Vines]]),
+                        new Requirement(5, [[Moves.Slam]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Pineapple]]),
+                        new Requirement(10, [Moves.Vines, Moves.Rocket].map(item => [Moves.Pineapple].concat([item]))),
+                    ],
+                },
+                "Caves": {
+                    "DK": [
+                        new Requirement(25, [[Moves.Moveless]]),
+                        new Requirement(3, [[Moves.Punch]]),
+                        new Requirement(20, [[Moves.Punch, Moves.Coconut]]),
+                        new Requirement(20, [[Moves.Blast]]),
+                        new Requirement(15, [[Moves.Bongos]]),
+                        new Requirement(10, [[Moves.Bongos, Moves.Coconut]]),
+                        new Requirement(7, [[Moves.Bongos, Moves.Strong]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(5, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Mini]]),
+                        new Requirement(30, [[Moves.Rocket]]),
+                        new Requirement(20, [[Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Guitar, Moves.Peanut]]),
+                        new Requirement(15, [[Moves.Guitar, Moves.Spring, Moves.Rocket]]),
+                        new Requirement(5, [[Moves.Guitar]]),
+                        new Requirement(5, [[Moves.Guitar, Moves.Rocket]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(15, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Grape]]),
+                        new Requirement(5, [[Moves.Slam, Moves.Balloon]]),
+                        new Requirement(20, [[Moves.Rocket]]),
+                        new Requirement(15, [[Moves.Balloon]]),
+                        new Requirement(10, [[Moves.Grape]]),
+                        new Requirement(5, [[Moves.Rocket], [Moves.Balloon]]),
+                        new Requirement(5, [Moves.Balloon, Moves.Rocket].map(item => [Moves.Trombone].concat([item]))),
+                        new Requirement(1, [[Moves.Trombone]]),
+                        new Requirement(4, [[Moves.Trombone, Moves.Balloon]]),
+                        new Requirement(10, [[Moves.Trombone, Moves.Grape]]),
+                    ],
+                    "Tiny": [
+                        new Requirement(15, [[Moves.Moveless]]),
+                        new Requirement(15, [[Moves.Sax]]),
+                        new Requirement(20, [[Moves.Sax, Moves.Feather]]),
+                        new Requirement(10, [[Moves.Feather]]),
+                        new Requirement(10, [[Moves.Feather, Moves.Mini]]),
+                        new Requirement(5, [[Moves.Mini, Moves.Monkeyport]]),
+                        new Requirement(5, [[Moves.Mini]]),
+                        new Requirement(20, [[Moves.Barrels, Moves.Punch, Moves.Hunky, Moves.Monkeyport]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(18, [[Moves.Moveless]]),
+                        new Requirement(5, [[Moves.Barrels]]),
+                        new Requirement(17, [[Moves.Punch]]),
+                        new Requirement(10, [[Moves.Punch, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Punch, Moves.Barrels, Moves.Hunky]]),
+                        new Requirement(20, [[Moves.Triangle, Moves.Gone]]),
+                        new Requirement(10, [[Moves.Triangle, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Mini, Moves.Pineapple, Moves.W3Bonus]]),
+                    ],
+                },
+                "Castle": {
+                    "DK": [
+                        new Requirement(50, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Slam]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Strong]]),
+                        new Requirement(15, [[Moves.Blast, Moves.Coconut]]),
+                        new Requirement(15, [[Moves.Coconut]]),
+                    ],
+                    "Diddy": [
+                        new Requirement(25, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Rocket]]),
+                        new Requirement(15, [[Moves.Slam, Moves.Rocket]]),
+                        new Requirement(20, [[Moves.Slam, Moves.Peanut]]),
+                        new Requirement(20, [[Moves.Punch]]),
+                        new Requirement(10, [[Moves.Charge, Moves.Peanut]]),
+                    ],
+                    "Lanky": [
+                        new Requirement(30, [[Moves.Moveless]]),
+                        new Requirement(30, [[Moves.Slam]]),
+                        new Requirement(20, [[Moves.Slam, Moves.Grape]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Grape, Moves.Trombone, Moves.Balloon]]),
+                        new Requirement(10, [[Moves.Grape, Moves.Sprint]]),
+                    ],
+                    "Tiny": [
+                        new Requirement(50, [[Moves.Moveless]]),
+                        new Requirement(5, [[Moves.Mini]]),
+                        new Requirement(5, [[Moves.Diddy, Moves.Slam]]),
+                        new Requirement(15, [[Moves.Diddy, Moves.Slam, Moves.Monkeyport]]),
+                        new Requirement(10, [[Moves.Diddy, Moves.Slam, Moves.Monkeyport, Moves.Feather]]),
+                        new Requirement(15, [[Moves.Feather]]),
+                    ],
+                    "Chunky": [
+                        new Requirement(30, [[Moves.Moveless]]),
+                        new Requirement(40, [[Moves.Punch, Moves.Pineapple]]),
+                        new Requirement(5, [[Moves.Slam, Moves.Barrels, Moves.Punch]]),
+                        new Requirement(5, [[Moves.Blast]]),
+                        new Requirement(10, [[Moves.Blast, Moves.Punch, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Pineapple]]),
+                    ],
+                },
+            }
+
+            verifyRequirements = () => {
+                Object.keys(requirement_data).forEach(level => {
+                    Object.keys(requirement_data[level]).forEach(kong => {
+                        sum = requirement_data[level][kong].map(item => item.amount).reduce((partialSum, a) => partialSum + a, 0);
+                        if (sum != 100) {
+                            console.log(`Total Error with ${level} ${kong}. Sum = ${sum}`)
+                        }
+                    })
+                })
+            }
+            verifyRequirements()
+
+            movesToHTML = (list) => {
+                return `
+                <div class="card">
+                    <div class="card-header">
+                        Required Moves
+                    </div>
+                    <ul class='list-group'>
+                        ${list.map(perm => `<li class='list-group-item'>${perm.map(item => item.name).join(", ")}</li>`).join("")}
+                    </ul>
+                </div>`
+            }
+
+            getRequiredMoves = () => {
+                const threshold = getMedalRequirement();
+                const level = document.getElementById("medal-level").value;
+                const kong = document.getElementById("medal-kong").value;
+                if (level == "default") {
+                    return;
+                }
+                if (kong == "default") {
+                    return;
+                }
+                if (threshold == 0) {
+                    return;
+                }
+                const list = requirement_data[level][kong];
+                let updated_threshold = threshold;
+                let all_moves = [];
+                list.forEach(item => {
+                    item.requirements.forEach(group => {
+                        group.forEach(move_set => {
+                            if (move_set.requires_moves) {
+                                if (!all_moves.includes(move_set)) {
+                                    all_moves.push(move_set);
+                                }
+                            } else {
+                                updated_threshold -= item.amount;
+                            }
+                        })
+                    })
+                })
+                const dump_hook = document.getElementById("permutations")
+                dump_hook.innerHTML = ""
+                if (updated_threshold > 0) {
+                    let beat_permutations = [];
+                    const perms = Math.pow(2, all_moves.length);
+                    for (let i = 0; i < perms; i++) {
+                        const local_moves = all_moves.filter((move, index) => (i & Math.pow(2, index)) != 0);
+                        // console.log(local_moves)
+                        local_total = updated_threshold;
+                        list.forEach(item => {
+                            if (item.can_acquire(local_moves)) {
+                                local_total -= item.amount;
+                            }
+                        })
+                        if (local_total <= 0) {
+                            beat_permutations.push(local_moves)
+                        }
+                    }
+                    beat_permutations.sort((a, b) => (a.length > b.length) ? 1 : ((b.length > a.length) ? -1 : 0));
+                    // console.log(beat_permutations)
+                    let filtered_permutations = []
+                    let checker = (arr, target) => target.every(v => arr.includes(v));
+                    beat_permutations.forEach((perm, index_a) => {
+                        let include = true;
+                        beat_permutations.forEach((previous_perm, index_b) => {
+                            if (index_b < index_a) {
+                                if (checker(perm, previous_perm)) {
+                                    include = false;
+                                }
+                            }
+                        })
+                        if (include) {
+                            filtered_permutations.push(perm);
+                        }
+                    })
+                    //console.log(filtered_permutations)
+                    filtered_permutations.forEach(perm => {
+                        console.log(perm.map(item => item.name))
+                    })
+                    dump_hook.innerHTML = movesToHTML(filtered_permutations)
+                    return
+                }
+                dump_hook.innerHTML = movesToHTML([[Moves.Moveless]])
+                
+            }
+
+            const recalculators = document.getElementsByClassName("recalculate");
+            for (let r = 0; r < recalculators.length; r++) {
+                let event_type = "change";
+                if (recalculators[r].tagName == "input") {
+                    if (recalculators[r].getAttribute("type") == "number") {
+                        event_type = "keyup";
+                        recalculators[r].addEventListener("mouseup", (e) => {
+                            getRequiredMoves();
+                        });
+                    }
+                }
+                recalculators[r].addEventListener(event_type, (e) => {
+                    getRequiredMoves();
+                });
+            }
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    </body>
+</html>
