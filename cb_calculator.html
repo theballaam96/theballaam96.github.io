@@ -180,10 +180,10 @@
                         new Requirement(5, [[Moves.Coconut]]),
                     ],
                     "Lanky": [
-                        new Requirement(22, [[Moves.Moveless]]),
+                        new Requirement(19, [[Moves.Moveless]]),
                         new Requirement(20, [[Moves.Grape]]),
                         new Requirement(10, [[Moves.Coconut]]),
-                        new Requirement(8, [[Moves.Orangstand]]),
+                        new Requirement(11, [[Moves.Orangstand]]),
                         new Requirement(5, [[Moves.Diving]]),
                         new Requirement(20, [[Moves.Orangstand, Moves.Peanut]]),
                         new Requirement(10, [[Moves.Orangstand, Moves.Peanut, Moves.Grape]]),
@@ -353,7 +353,7 @@
                     "Lanky": [
                         new Requirement(32, [[Moves.Moveless]]),
                         new Requirement(38, [[Moves.Grape]]),
-                        new Requirement(20, mush_top_access.map(item => [Moves.Slam].concat([item]))),
+                        new Requirement(20, [[Moves.Slam, Moves.Orangstand]]),
                         new Requirement(10, [[Moves.Night]]),
                         ],
                     "Tiny": [
@@ -389,7 +389,7 @@
                     ],
                     "Diddy": [
                         new Requirement(5, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.Mini]]),
+                        new Requirement(10, [[Moves.Mini, Moves.Twirl, Moves.Rocket]]),
                         new Requirement(30, [[Moves.Rocket]]),
                         new Requirement(20, [[Moves.Peanut]]),
                         new Requirement(10, [[Moves.Guitar, Moves.Peanut]]),
@@ -421,7 +421,8 @@
                     "Chunky": [
                         new Requirement(18, [[Moves.Moveless]]),
                         new Requirement(5, [[Moves.Barrels]]),
-                        new Requirement(17, [[Moves.Punch]]),
+                        new Requirement(11, [[Moves.Punch]]),
+                        new Requirement(6, [[Moves.Punch, Moves.Barrels]]),
                         new Requirement(10, [[Moves.Punch, Moves.Pineapple]]),
                         new Requirement(10, [[Moves.Punch, Moves.Barrels, Moves.Hunky]]),
                         new Requirement(20, [[Moves.Triangle, Moves.Gone]]),
