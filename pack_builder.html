@@ -930,6 +930,8 @@
                 `
             }
 
+            const DELISTED_TAG = "Delisted"
+
             class MIDIInfo {
                 constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, index) {
                     this.name = name;
@@ -944,8 +946,11 @@
                     this.midi_length = midi_length ? parseFloat(midi_length) : null;
                     this.track_count = track_count
                     this.tags = []
+                    this.delisted = false
                     if (tags != null) {
                         this.tags = tags.split(", ")
+                        this.delisted = this.tags.includes(DELISTED_TAG)
+                        this.tags = this.tags.filter(item => item != DELISTED_TAG)
                     }
                     this.notes = notes
                     if (notes) {
@@ -961,7 +966,9 @@
                         this.days_since_submission = Math.floor(diff_dt / (1000 * 60 * 60 * 24));
                         this.is_new = this.days_since_submission < 7;
                     }
-                    this.changelog_entry = pushToRecent(this.game, this.name, this.days_since_submission)
+                    if (!this.delisted) {
+                        this.changelog_entry = pushToRecent(this.game, this.name, this.days_since_submission)
+                    }
                 }
 
                 update_entry(replacement) {
@@ -1088,17 +1095,19 @@
                     })
                     if (permit) {
                         const new_data = new MIDIInfo(...params, counter)
-                        const game_song_combo = `${new_data.game}|${new_data.name}`
-                        total_data_copy.push(clone(new_data))
-                        if (!used_game_song_combos.includes(game_song_combo)) {
-                            // Completely new song
-                            midi_data_copy.push(new_data)
-                            used_game_song_combos.push(game_song_combo)
-                        } else {
-                            // Used song, update existing entry
-                            const existing_entry = midi_data_copy.find(item => ((item.game == new_data.game) && (item.name == new_data.name)));
-                            if (existing_entry) {
-                                existing_entry.update_entry(new_data)
+                        if (!new_data.delisted) {
+                            const game_song_combo = `${new_data.game}|${new_data.name}`
+                            total_data_copy.push(clone(new_data))
+                            if (!used_game_song_combos.includes(game_song_combo)) {
+                                // Completely new song
+                                midi_data_copy.push(new_data)
+                                used_game_song_combos.push(game_song_combo)
+                            } else {
+                                // Used song, update existing entry
+                                const existing_entry = midi_data_copy.find(item => ((item.game == new_data.game) && (item.name == new_data.name)));
+                                if (existing_entry) {
+                                    existing_entry.update_entry(new_data)
+                                }
                             }
                         }
                         counter++
