@@ -2176,7 +2176,7 @@
                             // Song isn't on site. TODO: Handle persisting these songs
                             const item_name = last(song_a.split("/"));
                             const item_group = compressed_data[song_a].group;
-                            const item_data = compressed_data[song_a].data;
+                            const item_data = files_pushed[song_i];
                             if (!Object.keys(uploaded_pack_data).includes(item_group)) {
                                 uploaded_pack_data[item_group] = []
                             }
