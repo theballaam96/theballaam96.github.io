@@ -20,6 +20,7 @@
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+
         <style>
             #song_list .game-header {
                 background-color: rgba(0,0,0,0.8);
@@ -931,6 +932,7 @@
             }
 
             const DELISTED_TAG = "Delisted"
+            const GITHUB_AUDIO = "github.com/theballaam96/candys-shop/raw/main/previews"
 
             class MIDIInfo {
                 constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, index) {
@@ -1143,15 +1145,13 @@
             async function getMidiData() {
                 let prog = 0;
                 updateProgress(prog++, total_prog, "Initializing");
-                await waitFor(_ => api_key_check_ran);
-                updateProgress(prog++, total_prog, "Loaded API Key");
                 await getSpreadsheetData()
                 if (getCookie("min-view") != "minimal") {
                     lazyLoadImages();
                 }
                 updateProgress(prog++, total_prog, "Grabbed midi data");
                 const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
-                const pack_sheet_id = "1917417042"
+                const pack_sheet_id = "1943464809"
 				const pack_res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${pack_sheet_id}`, {cache: "no-store"})
 				const pack_res_text = await pack_res.text()
                 const pack_json = JSON.parse(pack_res_text.substr(47).slice(0, -2))
@@ -1166,10 +1166,21 @@
                     throw new Error("No pack.zip ID loaded. This is likely due to a song upload occurring.")
                     return;
                 }
-                const zip_url = getDriveDownload(zip_id);
-                const zip_res = await fetch(zip_url);
+                const zip_url = "https://raw.githubusercontent.com/theballaam96/candys-shop/main/binaries.zip"
+                const zip_res = await fetch(zip_url, {
+                    cache: "no-store"
+                });
                 pack_zip_data = await zip_res.blob();
                 updateProgress(prog++, total_prog, "Grabbing Pack.zip");
+                const zip_raw = new JSZip();
+                const zip_full = new JSZip();
+                pack_zip_jszip = await zip_raw.loadAsync(pack_zip_data);
+                for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
+                    if (!file_0.dir) {
+                        console.log(filename_0)
+                    }
+                }
+                updateProgress(prog++, total_prog, "Adjusting Pack.zip");
                 const hook = document.getElementById("song_list")
                 let html = ""
                 let songs_by_game = {}
@@ -2284,7 +2295,7 @@
             function playSong(url, converter, song_name) {
                 const hook = document.getElementById("audio-event-content");
                 document.getElementById("playSongModalLabel").innerText = song_name;
-                if (url.includes("cdn.discordapp.com")) {
+                if ((url.includes("cdn.discordapp.com")) || (url.includes(GITHUB_AUDIO))) {
                     // Embedded audio
                     hook.innerHTML = `
                         <audio controls autoplay>
