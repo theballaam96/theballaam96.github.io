@@ -314,7 +314,7 @@
                         output_format = radios[r].value;
                     }
                 }
-                const BPS_HEAD = "v5";
+                const BPS_HEAD = "v6";
                 if (output_format != null) {
                     fetch(`./data/soundfont_correctors/${BPS_HEAD}-${output_format}.bps`)
                     .then(res => res.blob())
