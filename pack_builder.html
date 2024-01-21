@@ -28,7 +28,7 @@
                 border-radius: 5px;
                 padding: 5px;
                 cursor: pointer;
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
                 margin: 5px;
             }
             #song_list[render=grid][gridtext=hide] .game-icon {
@@ -53,7 +53,7 @@
                 font-size: 1vw;
                 padding: 5px;
                 height: calc(15vh - 64px - 10px - 10px);
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
                 opacity: 100%;
             }
             #song_list[render=grid][gridtext=hide] .game-header .game-internal-name {
@@ -89,7 +89,7 @@
             .popup_background-fade {
                 background-color: rgba(0, 0, 0, 1);
                 opacity: 100;
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
             }
             .popup_prompt {
                 background-color: #15172b;
@@ -130,7 +130,7 @@
                 border-radius: 5px;
                 cursor: pointer;
                 padding: 5px;
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
                 /*width: 100%;*/
                 min-height: 100%;
                 position: relative;
@@ -157,7 +157,7 @@
                 flex: 2;
             }
             #song_selected_count {
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
                 width: fit-content;
             }
             .errored {
@@ -238,7 +238,7 @@
                 padding: 2px;
                 margin-top: 2px;
                 margin-right: 5px;;
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
             }
             /*.audio_positioner_internal:hover {
                 color: rgba(13, 202, 240, 0.7);
@@ -247,7 +247,7 @@
                 width: fit-content;
                 margin-left: auto;
                 padding: 5px;
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
                 border-radius: 5px;
             }
             .audio-close:hover {
@@ -421,7 +421,7 @@
                 text-align: right;
             }
             .has-transition {
-                transition: 0.5s ease-in-out;
+                transition: 0.1s ease-in-out;
             }
             #audio-event-content {
                 text-align: center;
@@ -480,7 +480,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#changelogModal"><i class="fa-solid fa-clipboard"></i> Song Changelog</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="submitSong()"><i class="fa-solid fa-music"></i> Submit Song</a></li>
-                                <li><a class="dropdown-item excluded_link" href="#" onclick="getShareLink(false)"><i class="fa-solid fa-link"></i> Get Shareable Link</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="getShareLink(true, false, false, 0, false)"><i class="fa-solid fa-link"></i> Get Shareable Link</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="getYTPlaylist()"><i class="fa-brands fa-youtube"></i> Get YouTube Playlist</a></li>
                             </ul>
                         </li>
@@ -690,8 +690,6 @@
             let total_data_copy = null;
             let current_game = null;
             let uploaded_pack_data = {};
-            let api_key = "AIzaSyA9CnqJmq2lf-jC_WwcXyXfyoqa6Bs7HC0"
-            let api_key_check_ran = false;
             const BASE_NO_ICON_IMG = "https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/512x512/question.png"
             const MISC_NAME = "Other"
             
@@ -715,16 +713,7 @@
                 "Spawning",
                 "Collection",
             ]
-            const QUERY_STRING_IDENTIFIER = "is_qs=true"
-
-            fetch("DRIVE_API_KEY", {cache: "no-store"})
-                .then(async (response) => {
-                    if (response.ok) {
-                        const new_key = await response.text()
-                        api_key = new_key;
-                    }
-                    api_key_check_ran = true;
-                })            
+            const QUERY_STRING_IDENTIFIER = "is_qs=true"       
 
             function populateTagSuggestions() {
                 const hook = document.getElementById("tag-list")
@@ -837,9 +826,11 @@
             }
 
             class MIDIHeader {
-                constructor (construction_index, mandatory) {
-                    this.construction_index = construction_index
+                constructor (name, mandatory, excluded_values=[null], push_item=true) {
+                    this.name = name
                     this.mandatory = mandatory
+                    this.excluded_values = excluded_values
+                    this.push_item = push_item
                 }
             }
 
@@ -950,14 +941,11 @@
                     this.tags = []
                     this.delisted = false
                     if (tags != null) {
-                        this.tags = tags.split(", ")
+                        this.tags = tags
                         this.delisted = this.tags.includes(DELISTED_TAG)
                         this.tags = this.tags.filter(item => item != DELISTED_TAG)
                     }
                     this.notes = notes
-                    if (notes) {
-                        this.notes = notes.split("|")[0];
-                    }
                     this.days_since_submission = null;
                     this.is_new = false;
                     this.older_revisions = null;
@@ -1018,7 +1006,7 @@
                 );
               }
 
-            let icon_data = {}
+            let icon_json = {}
             
             function getCookie(cname) {
                 let name = cname + "=";
@@ -1049,51 +1037,51 @@
                 const tab_name = "Song Uploads"
                 const iconId = "1845127615"
                 // Get generic data
-                const res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${sheetId}`)
+                const res = await fetch('https://raw.githubusercontent.com/theballaam96/candys-shop/main/mapping.json')
                 const text = await res.text()
-                json = JSON.parse(text.substr(47).slice(0, -2))
+                json = JSON.parse(text)
                 // Get icon data
-                const icon_res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${iconId}`)
+                const icon_res = await fetch('https://raw.githubusercontent.com/theballaam96/candys-shop/main/images.json')
                 const icon_text = await icon_res.text()
-                icon_json = JSON.parse(icon_text.substr(47).slice(0, -2))
-                icon_json.table.rows.forEach((row, index) => {
-                    if (index > 0) {
-                        if (row.c[1].v != null) {
-                            icon_data[row.c[0].v] = row.c[1].v
-                            //document.getElementById("lazy-img-loader").setAttribute("src",row.c[1].v)
-                            //document.getElementById("lazy-loader").innerHTML += `<img src='${row.c[1].v}' height="1px" width="1px" async />`
-                        }
-                    }
-                })
+                icon_json = JSON.parse(icon_text)
 
                 let counter = 0;
                 midi_data_copy = [];
                 total_data_copy = [];
                 let used_game_song_combos = [];
-                for (let i = 1; i < json.table.rows.length; i++) {
-                    const ref = json.table.rows[i];
+                json.forEach(json_item => {
                     const headers = [
-                        new MIDIHeader(6, false), // Timestamp
-                        new MIDIHeader(1, true), // Game
-                        new MIDIHeader(0, true), // Name
-                        new MIDIHeader(2, true), // Folder/Group
-                        new MIDIHeader(3, false), // Composer
-                        new MIDIHeader(4, false), // Converter
-                        new MIDIHeader(5, true), // Drive ID
-                        new MIDIHeader(7, false), // Audio
-                        new MIDIHeader(8, false), // Duration
-                        new MIDIHeader(9, false), // Track Count
-                        new MIDIHeader(10, false), // Categories
-                        new MIDIHeader(11, false), // Notes
+                        // Has to remain in this order
+                        new MIDIHeader("Song", true), // Name
+                        new MIDIHeader("Game", true), // Game
+                        new MIDIHeader("Group", true), // Folder/Group
+                        new MIDIHeader("Composers", false), // Composer
+                        new MIDIHeader("Converters", false), // Converter
+                        new MIDIHeader("Binary", true), // Binary
+                        new MIDIHeader("Date", false), // Timestamp
+                        new MIDIHeader("Audio", false), // Audio
+                        new MIDIHeader("Duration", false), // Duration
+                        new MIDIHeader("Tracks", false), // Track Count
+                        new MIDIHeader("Categories", false), // Categories
+                        new MIDIHeader("Additional Notes", false), // Notes
+                        new MIDIHeader("Verified", true, [null, false], false), // Song is Verified
                     ]
-                    let params = new Array(headers.length).fill(null);
                     let permit = true;
-                    headers.forEach((header, index) => {
-                        const value = getCellValue(ref, index);
-                        if ((value == null) && (header.mandatory)) {
+                    const arr_length = headers.filter(i => i.push_item).length;
+                    let params = new Array(arr_length).fill(null);
+                    let index = 0;
+                    headers.forEach(header => {
+                        if (header.push_item) {
+                            params[index] = Object.keys(json_item).includes(header.name) ? json_item[header.name] : null;
+                            index += 1;
+                        }
+                        if (!Object.keys(json_item).includes(header.name)) {
+                            if (header.mandatory) {
+                                permit = false;
+                            }
+                        } else if (header.excluded_values.includes(json_item[header.name])) {
                             permit = false;
                         }
-                        params[header.construction_index] = value;
                     })
                     if (permit) {
                         const new_data = new MIDIInfo(...params, counter)
@@ -1114,7 +1102,7 @@
                         }
                         counter++
                     }
-                }
+                })
                 updateRecent()
             }
 
@@ -1123,8 +1111,8 @@
             }
 
             function lazyLoadImages() {
-                document.getElementById("lazy-loader").innerHTML = Object.keys(icon_data).map(key => `
-                    <img src='${icon_data[key]}' height="1px" width="1px" async loading=lazy />
+                document.getElementById("lazy-loader").innerHTML = Object.keys(icon_json).map(key => `
+                    <img src='${icon_json[key]}' height="1px" width="1px" async loading=lazy />
                 `).join("")
             }
 
@@ -1172,14 +1160,7 @@
                 });
                 pack_zip_data = await zip_res.blob();
                 updateProgress(prog++, total_prog, "Grabbing Pack.zip");
-                const zip_raw = new JSZip();
-                const zip_full = new JSZip();
-                pack_zip_jszip = await zip_raw.loadAsync(pack_zip_data);
-                for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
-                    if (!file_0.dir) {
-                        console.log(filename_0)
-                    }
-                }
+
                 updateProgress(prog++, total_prog, "Adjusting Pack.zip");
                 const hook = document.getElementById("song_list")
                 let html = ""
@@ -1278,7 +1259,7 @@
                                         <div class='audio_positioner_internal'>
                                             ${
                                                 audio ?
-                                                `<span class='midi-tag' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\")' data-bs-toggle="modal" data-bs-target="#playSongModal"><i class='fa-solid fa-play'></i></span>`
+                                                `<span class='midi-tag audio-clicker' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\", ${song.index})' data-bs-toggle="modal" data-bs-target="#playSongModal" conversion_id="${song.index}"><i class='fa-solid fa-play'></i></span>`
                                                 : ""
                                             }
                                         </div>
@@ -1310,14 +1291,14 @@
                                 <div class='game-icon'>
                                     <span class='icon-alignment'></span>
                                     <img class='game-image ${
-                                        Object.keys(icon_data).includes(game_name) ? 
+                                        Object.keys(icon_json).includes(game_name) ? 
                                         "" : "no-icon"
                                     }' src='${
-                                        Object.keys(icon_data).includes(game_name) ?
-                                        icon_data[game_name] :
+                                        Object.keys(icon_json).includes(game_name) ?
+                                        icon_json[game_name] :
                                         BASE_NO_ICON_IMG
                                     }' loading=lazy />
-                                    ${Object.keys(icon_data).includes(game_name) ?
+                                    ${Object.keys(icon_json).includes(game_name) ?
                                         "" :
                                         `<div class='game-image-replacement'>${game_name}</div>`
                                     }
@@ -1349,6 +1330,7 @@
                 if (willAutoDownload()) {
                     document.getElementById("build-pack-button").click();
                 }
+                autoPlaySong();
             }
             
             if ((!site_is_down) || (window.location.origin.includes("localhost"))) {
@@ -1359,10 +1341,6 @@
 
             function convertSongName(game, song) {
                 return `${game}|${song.replaceAll(" ", "_").replaceAll(".bin","")}`
-            }
-
-            function getDriveDownload(drive_id) {
-                return `https://www.googleapis.com/drive/v3/files/${drive_id}?alt=media&key=${api_key}`
             }
 
             const group_internal_to_name = {
@@ -1419,7 +1397,7 @@
                     if (entry) {
                         song = entry.name;
                         folder = entry.group;
-                        download = getDriveDownload(entry.drive_id);
+                        download = entry.drive_id;
                         song_index = id;
                         drive_id = entry.drive_id
                         game = entry.game;
@@ -1442,8 +1420,8 @@
                 return null;
             }
 
-            TRANSITION_SPEED = 500
-            TRANSITION_BUFFER = 1
+            const TRANSITION_SPEED = 150
+            const TRANSITION_BUFFER = 1
 
             function scrollTo(value = 0) {
                 document.body.scrollTop = value; // For Safari
@@ -1592,7 +1570,7 @@
                     document.getElementById("load-event").style.opacity = 0;
                     setTimeout(() => {
                         document.getElementById("load-event").classList.add("hide")
-                    }, 1000);
+                    }, TRANSITION_SPEED * 2);
                 }
             }
 
@@ -1636,9 +1614,10 @@
                 }
                 const zip_full = new JSZip();
                 pack_zip_jszip = await zip_full.loadAsync(pack_zip_data);
+                console.log(data_array)
                 for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
                     if (!file_0.dir) {
-                        const found_data = data_array.find(item => item.drive_id == filename_0.replace(".bin",""));
+                        const found_data = data_array.find(item => item.drive_id == filename_0);
                         if (found_data) {
                             const fileData = await pack_zip_jszip.files[filename_0].async("blob");
                             if (!Object.keys(folder_data).includes(found_data.folder)) {
@@ -1662,7 +1641,7 @@
                                     if (folder_data[found_data.folder].some(file => file.game === found_data.game)) {
                                         return folder_data[found_data.folder].find(file => file.game === found_data.game).logo;
                                     } else {
-                                        const response = await fetch(icon_data[found_data.game]);
+                                        const response = await fetch(icon_json[found_data.game]);
                                         return await response.arrayBuffer();
                                     }
                                 })(),
@@ -2292,8 +2271,9 @@
                 const full_link = `${LINK_INIT}${yt_ids.join(",")}`
                 sendToURL(full_link)
             }
-            function playSong(url, converter, song_name) {
+            function playSong(url, converter, song_name, index=null) {
                 const hook = document.getElementById("audio-event-content");
+                getShareLink(false, true, false, index, false);
                 document.getElementById("playSongModalLabel").innerText = song_name;
                 if ((url.includes("cdn.discordapp.com")) || (url.includes(GITHUB_AUDIO))) {
                     // Embedded audio
@@ -2344,27 +2324,43 @@
                 document.getElementById("audio-event-content").innerHTML = ""
             }
 
-            function getShareLink(force_download) {
+            function getShareLink(include_settings=false, include_song=false, include_download=false, song_id=0, force_download=false) {
                 if (force_download == undefined) {
                     force_download = false;
                 }
-                const seed = convertSelectionsToString();
-                const stateObj = {s: seed};
+                if (include_download == undefined) {
+                    include_download = false;
+                }
+                if (include_song == undefined) {
+                    include_song = false;
+                }
+                if (include_settings == undefined) {
+                    include_settings = false;
+                }
                 let url = new URL(window.location.href);
-                url.searchParams.set("s",seed.toString());
-                url.searchParams.set("download", force_download.toString())
+                let stateObj = {}
+                if (include_settings) {
+                    const seed = convertSelectionsToString();
+                    stateObj["s"] = seed;
+                    url.searchParams.set("s",seed.toString());
+                }
+                if (include_download) {
+                    url.searchParams.set("download", force_download.toString())
+                    stateObj["download"] = force_download.toString()
+                }
+                if (include_song) {
+                    url.searchParams.set("conversion_id", song_id.toString())
+                    stateObj["conversion_id", song_id.toString()]
+                }
                 window.history.replaceState(stateObj, "", url.toString());
             }
             const B64_chars = [
                 "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q",
                 "R","S","T","U","V","W","X","Y","Z",
-                "a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q",
-                "r","s","t","u","v","w","x","y","z",
-                "$","?","_",".","!","*","'","@",";",",",
-                "~",":"
+                "a","b","c","d","e","f"
             ];
             const nums = ["0","1","2","3","4","5","6","7","8","9"];
-            const BIT_SIZE_PER_CHAR = 6;
+            const BIT_SIZE_PER_CHAR = 5;
 
             function convertSelectionsToString() {
                 let activated = [];
@@ -2433,6 +2429,30 @@
                 const urlParams = new URLSearchParams(queryString);
                 const will_download = urlParams.get("download") == "true";
                 return will_download;
+            }
+
+            function autoPlaySong() {
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const urlOutput = urlParams.get("conversion_id")
+                if (urlOutput == null) {
+                    return;
+                }
+                let song_id = null;
+                if (!isNaN(urlOutput)) {
+                    song_id = Number(urlOutput);
+                }
+                const audio_clickers = document.getElementsByClassName("audio-clicker")
+                for (let a = 0; a < audio_clickers.length; a++) {
+                    const targ_id = audio_clickers[a].getAttribute("conversion_id");
+                    if (!isNaN(targ_id)) {
+                        if (Number(targ_id) == song_id) {
+                            audio_clickers[a].click();
+                            return;
+                        }
+                    }
+                }
+
             }
 
             function parseSeed(index) {
