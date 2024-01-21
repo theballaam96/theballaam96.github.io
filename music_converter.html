@@ -1,4 +1,4 @@
-<html>
+<html data-bs-theme="dark" lang="en">
     <head>
         <title>N64 Midi Tool (DK64 Edition)</title>
         <link rel="stylesheet" href="style/nav.css">
@@ -23,105 +23,158 @@
         <script src="script/pako.js"></script> <!-- File Compression -->
         <link as="script" href="script/js-synthesizer.worklet.min.js"> <!-- MIDI Playing -->
         <script src="script/n64miditool.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <!-- BPS Handling -->
         <script type="text/javascript" src="script/bps.js" defer></script>
         <script type="text/javascript" src="script/MarcFile.js" defer></script>
+
+        <style>
+            body {
+                background-image: none;
+                background-color: rgba(30, 30, 30, 1);
+            }
+            .main_panel {
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 20px;
+            }
+        </style>
     </head>
     <body>
-        <nav id="navigation"></nav>
-		<nav id="navigation"></nav>
-        <div class="v_spacer">
-
-		</div>
-        <div class="flexsplitter center-container">
-            <div class="flexsplitter center-block">
-                <div class="homebox">
-                    <div class="header master_header">
-                        <strong>Donkey Kong 64 Midi Converter</strong>
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand excluded_link" href="#" onclick="hidePopup()">
+                    Music Converter
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="width:fit-content;width:-moz-fit-content">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#"><i class="fa-solid fa-file"></i> MIDI to Bin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#portingModal"><i class="fa-solid fa-arrows-left-right-to-line"></i> Midi Porting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#soundfontModal"><i class="fa-solid fa-headphones"></i> Fix Soundfont</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Inputs -->
+        <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
+        <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
+        <input type="file" class="hide" id="dls-selector" accept=".dls"/>
+        <input type="file" class="hide" id="rom-selector" accept=".z64"/>
+        <!-- Song to Binary -->
+        <div class="main_panel">
+            <p>
+                Converts a MIDI File into a binary format that can be read and played by Donkey Kong 64 in-game.
+            </p>
+            <p>
+                The binary file can either be extracted as a standalone file for usage in <span style="font-style:italic">Randomizer</span> or <span style="font-style:italic">Cranky's Lab</span>
+                , or imported straight into a ROM.
+            </p>
+            <button class="btn btn-outline-info" style="width:fit-content" onclick="clickEl('file-selector')">
+                <i class="fa-solid fa-file-arrow-up"></i> Upload MIDI
+            </button>
+            <button class="btn btn-outline-warning" style="width:fit-content" onclick="clickEl('soundfont-selector')">
+                <i class="fa-solid fa-file-arrow-up"></i> Load Soundfont
+            </button>
+            <div id="stats">
+                <div id="stat-name"></div>
+                <div id="stat-duration"></div>
+                <div id="stat-durationticks"></div>
+                <div id="stat-durationmeasures"></div>
+                <div id="stat-ppq"></div>
+                <div id="stat-size"></div>
+            </div>
+        </div>
+        <!-- Soundfont Modal -->
+        <div class="modal fade" id="soundfontModal" tabindex="-1" aria-labelledby="soundfontModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="soundfontModalLabel">Fix Soundfont</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Fixes the soundfont extracted with N64 Soundbank tool to sound better in editors like FL Studio.<br>
+                        Fixes by:
+                        <ul>
+                            <li><a href="https://www.youtube.com/@glitchglidertwo">GlitchGlider</a></li>
+                        </ul>
+                        <div class="flexsplitter">
+                            <button class="sf-loaders" id="dls-loader" onclick="clickEl('dls-selector')" style="width:100%">Load Soundfont (DLS)</button>
+                        </div>
+                        <div id="sf-correction" class="hide">
+                            <div id="soundfont-controls" class="hide">
+                                <br />
+                                <h3>Select output format</h3>
+                                <div class="flexsplitter">
+                                    <div class="dls-radio-container">
+                                        <button class="sf-loaders dls-radio button-radio-selected" onclick="clickEl('sf-convert-dls'); handleButtonRadios(this, 'dls-radio')">DLS</button>
+                                    </div>
+                                    <div class="dls-radio-container">
+                                        <button class="sf-loaders dls-radio" onclick="clickEl('sf-convert-sf2'); handleButtonRadios(this, 'dls-radio')">SF2</button>
+                                    </div>
+                                </div>
+                                <input type="radio" id="sf-convert-dls" name="sf-convert" value="dls" class="dls-radio-internal hide" checked />
+                                <input type="radio" id="sf-convert-sf2" name="sf-convert" value="sf2" class="dls-radio-internal hide"/>
+                                <br />
+                                <h3>Download Fixed Soundfont</h3>
+                                <div class="flexsplitter">
+                                    <button class="sf-loaders" id="sf-downloader" onclick="downloadSoundfont()" style="width:100%">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Porting Modal -->
+        <div class="modal fade" id="portingModal" tabindex="-1" aria-labelledby="portingModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="portingModalLabel">MIDI Porting</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Converts a MIDI File from one game into the Donkey Kong 64 soundfont. Currently only supports the N64 Banjo titles due to 
+                        their similarities to DK64 music-wise enabling music to sound very similar between games. However, this tool does have the
+                        functionality to expand to any midi format from any game or general MIDI in general.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="flexsplitter center-container">
             <div class="flexsplitter center-block">
                 <div class="homebox" style="color:white">
                     <div class="flexsplitter">
-                        <div class="tab selected" association="midi-to-bin" editing="midi">Midi to Bin</div>
-                        <div class="tab" association="midi-porting" editing="midi">Midi Porting</div>
-                        <div class="tab" association="sf-correction" editing="soundfont">Fix Soundfont</div>
-                    </div>
-                    <br>
-                    <div style="text-align:left">
-                        <div id="exp-midi-to-bin">
-                            <strong>Midi to Binary</strong><br>
-                            Converts a MIDI File into a binary format that can be read and played by Donkey Kong 64 in-game.<br>
-                            The binary file can either be extracted as a standalone file for usage in <span style="font-style:italic">Randomizer</span> or <span style="font-style:italic">Cranky's Lab</span>
-                            , or imported straight into a ROM.
-                        </div>
-                        <div id="exp-midi-porting" class="hide">
-                            <strong>Midi Porting</strong><br>
-                            Converts a MIDI File from one game into the Donkey Kong 64 soundfont. Currently only supports the N64 Banjo titles due to 
-                            their similarities to DK64 music-wise enabling music to sound very similar between games. However, this tool does have the
-                            functionality to expand to any midi format from any game or general MIDI in general.
-                        </div>
-                        <div id="exp-sf-correction" class="hide">
-                            <strong>Fix Soundfont</strong><br>
-                            Fixes the soundfont extracted with N64 Soundbank tool to sound better in editors like FL Studio.<br>
-                            Fixes by:
-                            <ul>
-                                <li><a href="https://www.youtube.com/@glitchglidertwo">GlitchGlider</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="flexsplitter">
                         <div id="left-separator" class="sep">
                             <!-- Left box -->
-                            <div class="req-edit-midi">
-                                <h3>Song Loading</h3>
-                                <div class="flexsplitter">
-                                    <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
-                                    <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
-                                </div>
-                            </div>
-                            <div class="req-edit-soundfont hide">
-                                <div class="flexsplitter">
-                                    <button class="sf-loaders" id="dls-loader" onclick="clickEl('dls-selector')" style="width:100%">Load Soundfont (DLS)</button>
-                                </div>
-                                <div id="sf-correction" class="hide">
-                                    <div id="soundfont-controls" class="hide">
-                                        <br />
-                                        <h3>Select output format</h3>
-                                        <div class="flexsplitter">
-                                            <div class="dls-radio-container">
-                                                <button class="sf-loaders dls-radio button-radio-selected" onclick="clickEl('sf-convert-dls'); handleButtonRadios(this, 'dls-radio')">DLS</button>
-                                            </div>
-                                            <div class="dls-radio-container">
-                                                <button class="sf-loaders dls-radio" onclick="clickEl('sf-convert-sf2'); handleButtonRadios(this, 'dls-radio')">SF2</button>
-                                            </div>
-                                        </div>
-                                        <input type="radio" id="sf-convert-dls" name="sf-convert" value="dls" class="dls-radio-internal hide" checked />
-                                        <input type="radio" id="sf-convert-sf2" name="sf-convert" value="sf2" class="dls-radio-internal hide"/>
-                                        <br />
-                                        <h3>Download Fixed Soundfont</h3>
-                                        <div class="flexsplitter">
-                                            <button class="sf-loaders" id="sf-downloader" onclick="downloadSoundfont()" style="width:100%">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
-                            <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
-                            <input type="file" class="hide" id="dls-selector" accept=".dls"/>
-                            <input type="file" class="hide" id="rom-selector" accept=".z64"/>
+                            
                             <div class="req-edit-midi">
                                 <div class="req-midi">
-                                    <div id="stats">
-                                        <div id="stat-name"></div>
-                                        <div id="stat-duration"></div>
-                                        <div id="stat-durationticks"></div>
-                                        <div id="stat-durationmeasures"></div>
-                                        <div id="stat-ppq"></div>
-                                        <div id="stat-size"></div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -202,7 +255,6 @@
                 </div>
             </div>
         </div>
-        <script src="script/nav.js"></script>
         <script src="script/sfplayer.js"></script>
         <script>
             function clickEl(id) {
@@ -779,5 +831,6 @@
             }
             loadTemplates();
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>
