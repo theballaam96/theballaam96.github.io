@@ -65,7 +65,7 @@
             let link = "";
             let race_data = [];
             let interval_id = null;
-            const check_frequency = 60;
+            const check_frequency = 10;
 
             function updateSite(data) {
                 const hook = document.getElementById("user_space");
@@ -123,18 +123,23 @@
                         })
                         updateSite(race_data)
                     })
-                return race_is_running;
+                //const current_dt = new Date();
+                //console.log(`Race State (${current_dt.toString()}): ${race_is_running ? "Running" : "Ended"}`)
+                return !race_is_running;
             }
 
-            function startAnalysis() {
+            async function startAnalysis() {
                 link = document.getElementById("racetime_link").value;
                 race_data = [];
                 if (interval_id != null) {
                     clearInterval(interval_id);
                 }
                 getRaceTimeInfo();
-                interval_id = setInterval(() => {
-                    if (getRaceTimeInfo()) {
+                interval_id = setInterval(async () => {
+                    //console.log("Continuing")
+                    const will_exit = await getRaceTimeInfo();
+                    if (will_exit) {
+                        console.log("Exiting");
                         clearInterval(interval_id);
                     }
                 }, check_frequency * 1000);
