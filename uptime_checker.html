@@ -88,9 +88,11 @@
 
             async function getRaceTimeInfo() {
                 const data_link = `${link}/data`
-                fetch(data_link, {cache: "no-store"})
+                let race_is_running = false;
+                await fetch(data_link, {cache: "no-store"})
                     .then(resp => resp.json())
                     .then(json => {
+                        race_is_running = json.status.value == "in_progress";
                         json.entrants.forEach(entrant => {
                             if (entrant.status.value == "in_progress") {
                                 const is_live = entrant.stream_live;
@@ -121,6 +123,7 @@
                         })
                         updateSite(race_data)
                     })
+                return race_is_running;
             }
 
             function startAnalysis() {
