@@ -461,7 +461,7 @@
                                 File
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack (Categorized)</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="buildBinaryPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
@@ -779,7 +779,6 @@
                 let all_tagged = true;
                 ACCEPTED_TAGS.forEach(tag => {
                     if (!document.getElementById(`advf-tag-${filterName(tag)}`).checked) {
-                        console.log(tag)
                         all_tagged = false;
                     }
                 })
@@ -941,9 +940,12 @@
                     this.tags = []
                     this.delisted = false
                     if (tags != null) {
-                        this.tags = tags
+                        this.tags = tags;
+                        if (typeof tags == "string") {
+                            this.tags = tags.split(",").map(item => item.trim());
+                        }
                         this.delisted = this.tags.includes(DELISTED_TAG)
-                        this.tags = this.tags.filter(item => item != DELISTED_TAG)
+                        this.tags = this.tags.filter(item => item != DELISTED_TAG);
                     }
                     this.notes = notes
                     this.days_since_submission = null;
@@ -1084,6 +1086,7 @@
                         }
                     })
                     if (permit) {
+                        params[5] = params[5].replace(".bin","")
                         const new_data = new MIDIInfo(...params, counter)
                         if (!new_data.delisted) {
                             const game_song_combo = `${new_data.game}|${new_data.name}`
