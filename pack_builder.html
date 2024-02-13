@@ -1086,7 +1086,6 @@
                         }
                     })
                     if (permit) {
-                        //params[5] = params[5].replace(".bin","")
                         const new_data = new MIDIInfo(...params, counter)
                         if (!new_data.delisted) {
                             const game_song_combo = `${new_data.game}|${new_data.name}`
@@ -2090,12 +2089,12 @@
                 pack_zip_jszip = await zip_full.loadAsync(pack_zip_data);
                 for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
                     if (!file_0.dir) {
-                        const filename_id = filename_0.replace(".bin","")
+                        const filename_id = filename_0
                         const song = total_data_copy.find(item => item.drive_id == filename_id)
                         loaded_count++;
                         if (song) {
                             const fileData = await pack_zip_jszip.files[filename_0].async("Uint8Array");
-                            site_data[`${song.drive_id}.bin`] = {
+                            site_data[`${filename_id.replace(".bin","")}.bin`] = {
                                 "group": song.group,
                                 "data": Array.from(fileData),
                                 "selected_version": song.drive_id,
@@ -2104,6 +2103,7 @@
                         }
                     }
                 }
+                // console.log(site_data)
                 // Load uploaded zip file
                 const new_zip = new JSZip();
                 let site_song_data = {};
@@ -2126,10 +2126,13 @@
 
                 // Parse data for matching arrays
 
+                // console.log(compressed_data)
+
                 let matching_songs = [];
                 let files_parsed = 0;
                 const files_pushed = Array(Object.keys(compressed_data).length).fill(null);
                 Object.keys(compressed_data).forEach((song_a, song_i) => {
+                    // console.log(song_a)
                     const extension = last(song_a.split("."));
                     if (extension == "candy") {
                         c_zip = new JSZip();
@@ -2166,6 +2169,7 @@
                                 matching_songs.push(new_song)
                             }
                         } else {
+                            // console.log(song_a)
                             // Song isn't on site. TODO: Handle persisting these songs
                             const item_name = last(song_a.split("/"));
                             const item_group = compressed_data[song_a].group;
@@ -2182,12 +2186,14 @@
                     }
                 })
 
+                // console.log(matching_songs)
+
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
                 for (let c = 0; c < checkboxes.length; c++) {
                     checkboxes[c].setAttribute("ticked", "false");
                 }
                 matching_songs.forEach(m_drive_id => {
-                    const entry = midi_data_copy.find(item => item.drive_id == m_drive_id.replace(".bin",""))
+                    const entry = midi_data_copy.find(item => item.drive_id == m_drive_id)
                     if (entry) {
                         const game = entry.game;
                         const id = entry.index;
