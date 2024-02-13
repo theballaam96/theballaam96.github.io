@@ -461,7 +461,7 @@
                                 File
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack (2.1 only)</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="buildBinaryPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
@@ -584,10 +584,10 @@
                                     <label for="advf-group" class="form-label">Group</label>
                                     <select id="advf-group" class="form-select">
                                         <option selected>Any</option>
-                                        <option>Background Music</option>
-                                        <option>Events</option>
-                                        <option>Major Items</option>
-                                        <option>Minor Items</option>
+                                        <option value="bgm">Background Music</option>
+                                        <option value="events">Events</option>
+                                        <option value="majoritems">Major Items</option>
+                                        <option value="minoritems">Minor Items</option>
                                     </select>
                                 </div>
             
@@ -2166,7 +2166,7 @@
                             // Song isn't on site. TODO: Handle persisting these songs
                             const item_name = last(song_a.split("/"));
                             const item_group = compressed_data[song_a].group;
-                            const item_data = compressed_data[song_a].data;
+                            const item_data = files_pushed[song_i];
                             if (!Object.keys(uploaded_pack_data).includes(item_group)) {
                                 uploaded_pack_data[item_group] = []
                             }
