@@ -1086,7 +1086,7 @@
                         }
                     })
                     if (permit) {
-                        params[5] = params[5].replace(".bin","")
+                        //params[5] = params[5].replace(".bin","")
                         const new_data = new MIDIInfo(...params, counter)
                         if (!new_data.delisted) {
                             const game_song_combo = `${new_data.game}|${new_data.name}`
