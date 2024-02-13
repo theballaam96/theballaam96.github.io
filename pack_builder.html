@@ -1166,7 +1166,7 @@
                     throw new Error("No pack.zip ID loaded. This is likely due to a song upload occurring.")
                     return;
                 }
-                const zip_url = getDriveDownload(zip_id);
+                const zip_url = "https://raw.githubusercontent.com/theballaam96/candys-shop/main/gdrive%20dump.zip";
                 const zip_res = await fetch(zip_url);
                 pack_zip_data = await zip_res.blob();
                 updateProgress(prog++, total_prog, "Grabbing Pack.zip");
