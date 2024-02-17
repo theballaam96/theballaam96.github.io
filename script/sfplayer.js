@@ -147,53 +147,88 @@ function destroyVolumeChart() {
 	displayed_chart = null;
 }
 
-function displayVolumeChart() {
-	destroyVolumeChart();
-	const ctx = document.getElementById('volumeChart');
+function getTimeFromSeconds(secs) {
+	const mins = parseInt(secs / 60);
+	const new_secs = secs - (60 * mins);
+	return `${mins}:${new_secs < 10 ? "0" : ""}${new_secs}`
+}
 
-	displayed_chart = new Chart(ctx, {
-		type: 'line',
-		data: {
-			labels: [...Array(volume_graph_data.length).keys()],
-			datasets: [
-				{
-					label: "Red Limit",
-					data: [...Array(volume_graph_data.length).fill(RED_LIMIT)],
-					borderColor: 'rgb(220, 53, 69)',
-					pointStyle: false,
-					pointHitRadius: 0,
-					pointHoverRadius: 0,
-					borderWidth: 1,
-				},
-				{
-					label: "Yellow Limit",
-					data: [...Array(volume_graph_data.length).fill(YELLOW_LIMIT)],
-					borderColor: 'rgb(255, 193, 7)',
-					pointStyle: false,
-					pointHitRadius: 0,
-					pointHoverRadius: 0,
-					borderWidth: 1,
-				},
-				{
-					label: 'Song Volume',
-					data: volume_graph_data,
-					borderColor: "rgb(75, 192, 192)",
-					tension: 0.1,
-					pointStyle: false,
-					pointHitRadius: 0,
-					pointHoverRadius: 0,
-					borderWidth: 1,
+function getChartLabels(length) {
+	raw_values = [...Array(length).keys()]
+	return raw_values;
+	//return raw_values.map(item => getTimeFromSeconds(parseInt(item / 20)));
+}
+
+function displayVolumeChart() {
+	if (!displayed_chart) {
+		// Render new chart
+		const ctx = document.getElementById('volumeChart');
+	
+		displayed_chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: getChartLabels(volume_graph_data.length),
+				datasets: [
+					{
+						label: "Red Limit",
+						data: [...Array(volume_graph_data.length).fill(RED_LIMIT)],
+						borderColor: 'rgb(220, 53, 69)',
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					},
+					{
+						label: "Yellow Limit",
+						data: [...Array(volume_graph_data.length).fill(YELLOW_LIMIT)],
+						borderColor: 'rgb(255, 193, 7)',
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					},
+					{
+						label: "Average Volume",
+						data: [...Array(volume_graph_data.length).fill(avg_volume)],
+						borderColor: 'rgb(255, 255, 255)',
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					},
+					{
+						label: 'Song Volume',
+						data: volume_graph_data,
+						borderColor: "rgb(75, 192, 192)",
+						tension: 0.1,
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					}
+				]
+			},
+			options: {
+				hover: {
+					mode: 'nearest',
+					intersect: false,
+					animationDuration: 0
 				}
-			]
-		},
-		options: {
-			hover: {
-				mode: 'nearest',
-				intersect: false,
-				animationDuration: 0
 			}
+		});
+	} else {
+		// Update existing chart
+		displayed_chart.data.datasets[0].data = [...Array(volume_graph_data.length).fill(RED_LIMIT)];
+		displayed_chart.data.datasets[1].data = [...Array(volume_graph_data.length).fill(YELLOW_LIMIT)];
+		displayed_chart.data.datasets[2].data = [...Array(volume_graph_data.length).fill(avg_volume)];
+		displayed_chart.data.datasets[3].data = volume_graph_data;
+		displayed_chart.data.labels = getChartLabels(volume_graph_data.length),
+		displayed_chart.options.animations["y"] = {
+			duration: 0
 		}
-	});
+		//displayed_chart.options.animation.duration = 0;
+		displayed_chart.update();
+	}
 }
 
 let chart_update_interval_function = null;
@@ -314,6 +349,7 @@ function setPlayingStatus(status) {
 	if (status == "Playing") {
 		console.log("Attempt to reset")
 		volume_graph_data = [];
+		destroyVolumeChart();
 	}
 	playingStatus = status;
 }
@@ -438,6 +474,8 @@ function navigatorClick(pressing) {
 	} else {
 		navigatorMove(true);
 		synth.seekPlayer(nav_location)
+		resetVolumeStats();
+		volume_graph_data = [];
 	}
 }
 
