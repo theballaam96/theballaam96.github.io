@@ -16,7 +16,7 @@ const EVENT_LIMIT = 0x30000
 const POINTER_TABLE_OFFSET = 0x101C50
 let instrument_change_addresses = [];
 
-class Event {
+class N64MIDIEvent {
     constructor() {
         this.contents = null
         this.type = 0
