@@ -297,9 +297,9 @@
                     <p>
                         You will need to make a pull request with the following information copied in:
                     </p>
-                    <pre style="background-color:#222; color: white; border-radius: 5px; padding:20px">
-                        <code id="pr-data"></code>
-                    </pre>
+                    <div style="background-color:#222; color: white; border-radius: 5px; padding:20px">
+                        <code id="pr-data" style="color: white"></code>
+                    </div>
                     <p>
                         To create the pull request:
                     </p>
@@ -833,7 +833,13 @@
                 if (total_categories.length > 0) {
                     song_upload_data["Tags"] = total_categories.join(", ");
                 }
-                document.getElementById("pr-data").innerHTML = `\n<span class="line">IS SONG - DO NOT DELETE THIS LINE</span>\n${Object.keys(song_upload_data).map(item => `<span class="line">${item}: ${song_upload_data[item]}</span>`).join("\n")}`;
+                html = "";
+                html_lines = ["IS SONG - DO NOT DELETE THIS LINE"]
+                Object.keys(song_upload_data).forEach(item => {
+                    html_lines.push(`${item}: ${song_upload_data[item]}`)
+                })
+                html = html_lines.map(item => `<span class="line">${item}</span>`).join("<br />")
+                document.getElementById("pr-data").innerHTML = html;
                 changeStage(1);
             }
 
@@ -856,6 +862,7 @@
             function changeStage(diff) {
                 stage += diff;
                 updateStage(stage);
+                window.scrollTo({top: 0, behavior: "instant"});
             }
 
             updateStage(stage);
