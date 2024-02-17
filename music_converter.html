@@ -28,6 +28,8 @@
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
         <!-- FA -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <!-- ChartJS -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <!-- BPS Handling -->
         <script type="text/javascript" src="script/bps.js" defer></script>
         <script type="text/javascript" src="script/MarcFile.js" defer></script>
@@ -219,8 +221,14 @@
                     <div class="d-flex">
                         <h3 style="flex:9">Play Song</h3>
                         <div>
-                            <label for="volume_strobing">Disable volume bar recolors</label>
-                            <input type="checkbox" id="volume_strobing "/>
+                            <div>
+                                <label for="volume_strobing">Disable volume bar recolors</label>
+                                <input type="checkbox" id="volume_strobing"/>
+                            </div>
+                            <div>
+                                <label for="volume_chart">Display Volume Chart</label>
+                                <input type="checkbox" id="volume_chart" onclick="handleChartDisplay(this)"/>
+                            </div>
                         </div>
                     </div>
                     <div style="font-style:italic;text-align:left">
@@ -232,6 +240,10 @@
                         </div>
                         <div id="volume_demo">&nbsp;</div>
                     </div>
+                    <div id="volumeChartContainer" hidden>
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+
                     <div class="d-flex">
                         <span id="play-button" onclick="playMusic()"><i class="fa-solid fa-play"></i></span>
                         <input

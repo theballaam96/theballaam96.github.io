@@ -114,20 +114,104 @@ async function initializeSynthesizer(useDefaultSFont) {
 }
 setPlayingStatus("Stopped")
 
+let volume_graph_data = [];
+let logging_counter = 0;
+
 function resetVolumeStats() {
 	max_volume = 0;
 	avg_volume = 0;
 	volume_points = 0;
+	logging_counter = 0;
 }
 
+const YELLOW_LIMIT = 120;
+const RED_LIMIT = 130;
+
 function getVolumeSeverity(volume) {
-	if (volume > 130) {
+	if (volume > RED_LIMIT) {
 		return 2;
 	}
-	if (volume > 120) {
+	if (volume > YELLOW_LIMIT) {
 		return 1;
 	}
 	return 0;
+}
+
+let displayed_chart = null;
+
+function destroyVolumeChart() {
+	if (!displayed_chart) {
+		return;
+	}
+	displayed_chart.destroy();
+	displayed_chart = null;
+}
+
+function displayVolumeChart() {
+	destroyVolumeChart();
+	const ctx = document.getElementById('volumeChart');
+
+	displayed_chart = new Chart(ctx, {
+		type: 'line',
+		data: {
+			labels: [...Array(volume_graph_data.length).keys()],
+			datasets: [
+				{
+					label: "Red Limit",
+					data: [...Array(volume_graph_data.length).fill(RED_LIMIT)],
+					borderColor: 'rgb(220, 53, 69)',
+					pointStyle: false,
+					pointHitRadius: 0,
+					pointHoverRadius: 0,
+					borderWidth: 1,
+				},
+				{
+					label: "Yellow Limit",
+					data: [...Array(volume_graph_data.length).fill(YELLOW_LIMIT)],
+					borderColor: 'rgb(255, 193, 7)',
+					pointStyle: false,
+					pointHitRadius: 0,
+					pointHoverRadius: 0,
+					borderWidth: 1,
+				},
+				{
+					label: 'Song Volume',
+					data: volume_graph_data,
+					borderColor: "rgb(75, 192, 192)",
+					tension: 0.1,
+					pointStyle: false,
+					pointHitRadius: 0,
+					pointHoverRadius: 0,
+					borderWidth: 1,
+				}
+			]
+		},
+		options: {
+			hover: {
+				mode: 'nearest',
+				intersect: false,
+				animationDuration: 0
+			}
+		}
+	});
+}
+
+let chart_update_interval_function = null;
+
+function handleChartDisplay(e) {
+	const chart_container_hook = document.getElementById("volumeChartContainer")
+	if (e.checked) {
+		chart_container_hook.removeAttribute("hidden");
+		displayVolumeChart();
+		chart_update_interval_function = setInterval(() => {
+			displayVolumeChart();
+		}, 1000);
+	} else {
+		chart_container_hook.setAttribute("hidden", "hidden");
+		clearInterval(chart_update_interval_function);
+		chart_update_interval_function = null;
+	}
+	console.log(e.checked);
 }
 
 function collateVolumeData() {
@@ -137,6 +221,11 @@ function collateVolumeData() {
 	}
 	volume_points += 1;
 	const synth_volume = getVolume();
+	logging_counter += 1;
+	if (logging_counter >= 5) {
+		volume_graph_data.push(synth_volume)
+		logging_counter = 0;
+	} 
 	const volume_hook = document.getElementById("volume_demo");
 	avg_volume = ((avg_volume * (volume_points - 1)) + synth_volume) / volume_points;
 	if (synth_volume > max_volume) {
@@ -149,7 +238,7 @@ function collateVolumeData() {
 	const colors = ["#194A04", "#f0f000", "#f00000"]
 	current_max_badge = getVolumeSeverity(max_volume);
 	current_avg_badge = getVolumeSeverity(avg_volume);
-	if (document.getElementById("volume_strobing ").checked) {
+	if (document.getElementById("volume_strobing").checked) {
 		current_base_color = 0;
 	} else {
 		current_base_color = getVolumeSeverity(synth_volume);
@@ -222,6 +311,10 @@ function setPlayingStatus(status) {
         }
     })
     console.log(`Status: ${status}`)
+	if (status == "Playing") {
+		console.log("Attempt to reset")
+		volume_graph_data = [];
+	}
 	playingStatus = status;
 }
 
