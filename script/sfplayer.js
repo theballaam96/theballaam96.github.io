@@ -114,20 +114,139 @@ async function initializeSynthesizer(useDefaultSFont) {
 }
 setPlayingStatus("Stopped")
 
+let volume_graph_data = [];
+let logging_counter = 0;
+
 function resetVolumeStats() {
 	max_volume = 0;
 	avg_volume = 0;
 	volume_points = 0;
+	logging_counter = 0;
 }
 
+const YELLOW_LIMIT = 120;
+const RED_LIMIT = 130;
+
 function getVolumeSeverity(volume) {
-	if (volume > 130) {
+	if (volume > RED_LIMIT) {
 		return 2;
 	}
-	if (volume > 120) {
+	if (volume > YELLOW_LIMIT) {
 		return 1;
 	}
 	return 0;
+}
+
+let displayed_chart = null;
+
+function destroyVolumeChart() {
+	if (!displayed_chart) {
+		return;
+	}
+	displayed_chart.destroy();
+	displayed_chart = null;
+}
+
+function getTimeFromSeconds(secs) {
+	const mins = parseInt(secs / 60);
+	const new_secs = secs - (60 * mins);
+	return `${mins}:${new_secs < 10 ? "0" : ""}${new_secs}`
+}
+
+function getChartLabels(length) {
+	raw_values = [...Array(length).keys()]
+	return raw_values;
+	//return raw_values.map(item => getTimeFromSeconds(parseInt(item / 20)));
+}
+
+function displayVolumeChart() {
+	if (!displayed_chart) {
+		// Render new chart
+		const ctx = document.getElementById('volumeChart');
+	
+		displayed_chart = new Chart(ctx, {
+			type: 'line',
+			data: {
+				labels: getChartLabels(volume_graph_data.length),
+				datasets: [
+					{
+						label: "Red Limit",
+						data: [...Array(volume_graph_data.length).fill(RED_LIMIT)],
+						borderColor: 'rgb(220, 53, 69)',
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					},
+					{
+						label: "Yellow Limit",
+						data: [...Array(volume_graph_data.length).fill(YELLOW_LIMIT)],
+						borderColor: 'rgb(255, 193, 7)',
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					},
+					{
+						label: "Average Volume",
+						data: [...Array(volume_graph_data.length).fill(avg_volume)],
+						borderColor: 'rgb(255, 255, 255)',
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					},
+					{
+						label: 'Song Volume',
+						data: volume_graph_data,
+						borderColor: "rgb(75, 192, 192)",
+						tension: 0.1,
+						pointStyle: false,
+						pointHitRadius: 0,
+						pointHoverRadius: 0,
+						borderWidth: 1,
+					}
+				]
+			},
+			options: {
+				hover: {
+					mode: 'nearest',
+					intersect: false,
+					animationDuration: 0
+				}
+			}
+		});
+	} else {
+		// Update existing chart
+		displayed_chart.data.datasets[0].data = [...Array(volume_graph_data.length).fill(RED_LIMIT)];
+		displayed_chart.data.datasets[1].data = [...Array(volume_graph_data.length).fill(YELLOW_LIMIT)];
+		displayed_chart.data.datasets[2].data = [...Array(volume_graph_data.length).fill(avg_volume)];
+		displayed_chart.data.datasets[3].data = volume_graph_data;
+		displayed_chart.data.labels = getChartLabels(volume_graph_data.length),
+		displayed_chart.options.animations["y"] = {
+			duration: 0
+		}
+		//displayed_chart.options.animation.duration = 0;
+		displayed_chart.update();
+	}
+}
+
+let chart_update_interval_function = null;
+
+function handleChartDisplay(e) {
+	const chart_container_hook = document.getElementById("volumeChartContainer")
+	if (e.checked) {
+		chart_container_hook.removeAttribute("hidden");
+		displayVolumeChart();
+		chart_update_interval_function = setInterval(() => {
+			displayVolumeChart();
+		}, 1000);
+	} else {
+		chart_container_hook.setAttribute("hidden", "hidden");
+		clearInterval(chart_update_interval_function);
+		chart_update_interval_function = null;
+	}
+	console.log(e.checked);
 }
 
 function collateVolumeData() {
@@ -137,6 +256,11 @@ function collateVolumeData() {
 	}
 	volume_points += 1;
 	const synth_volume = getVolume();
+	logging_counter += 1;
+	if (logging_counter >= 5) {
+		volume_graph_data.push(synth_volume)
+		logging_counter = 0;
+	} 
 	const volume_hook = document.getElementById("volume_demo");
 	avg_volume = ((avg_volume * (volume_points - 1)) + synth_volume) / volume_points;
 	if (synth_volume > max_volume) {
@@ -149,7 +273,7 @@ function collateVolumeData() {
 	const colors = ["#194A04", "#f0f000", "#f00000"]
 	current_max_badge = getVolumeSeverity(max_volume);
 	current_avg_badge = getVolumeSeverity(avg_volume);
-	if (document.getElementById("volume_strobing ").checked) {
+	if (document.getElementById("volume_strobing").checked) {
 		current_base_color = 0;
 	} else {
 		current_base_color = getVolumeSeverity(synth_volume);
@@ -222,6 +346,11 @@ function setPlayingStatus(status) {
         }
     })
     console.log(`Status: ${status}`)
+	if (status == "Playing") {
+		console.log("Attempt to reset")
+		volume_graph_data = [];
+		destroyVolumeChart();
+	}
 	playingStatus = status;
 }
 
@@ -345,6 +474,8 @@ function navigatorClick(pressing) {
 	} else {
 		navigatorMove(true);
 		synth.seekPlayer(nav_location)
+		resetVolumeStats();
+		volume_graph_data = [];
 	}
 }
 
