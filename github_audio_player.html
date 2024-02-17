@@ -46,19 +46,38 @@
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="gh-link-head">GitHub Link</span>
                         <input type="text" class="form-control" id="github_url" placeholder="Link" aria-label="Link" aria-describedby="gh-link-head" />
-                        <button class="btn btn-success" onclick="load_song()">Load</button>
+                        <button class="btn btn-success" onclick="load_song(true)">Load</button>
                     </div>
                 </div>
                 <div id="audio_container" hidden></div>
             </div>
         </div>
         <script>
-            function load_song() {
+            function load_song(autoplay) {
                 const hook = document.getElementById("audio_container");
                 const url = document.getElementById("github_url").value;
-                hook.innerHTML = `<audio controls autoplay src="${url}"></audio>`
+                hook.innerHTML = `<audio controls${autoplay ? ' autoplay' : ''} src="${url}"></audio>`
                 hook.removeAttribute("hidden");
             }
+
+            function loadURLParam() { 
+                const queryString = window.location.search;
+                const urlParams = new URLSearchParams(queryString);
+                const parameters = ["owner", "repo", "uuid", "file"]
+                for (let i = 0; i < parameters.length; i++) {
+                    if (!urlParams.has(parameters[i])) {
+                        return;
+                    }
+                }
+                const owner = urlParams.get("owner");
+                const repo = urlParams.get("repo");
+                const uuid = urlParams.get("uuid");
+                const file = urlParams.get("file");
+                const url = `https://github.com/${owner}/${repo}/raw/${uuid}/${file}`;
+                document.getElementById("github_url").value = url;
+                load_song(false);
+            }
+            loadURLParam();
         </script>
     </body>
 </html>
