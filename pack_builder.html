@@ -13,6 +13,12 @@
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
+        <!-- Discord -->
+        <meta content="DK64 Pack Builder" property="og:title" />
+        <meta content="Music Pack creator for Donkey Kong 64, serving as hub for video game songs which have been transposed to the DK64 soundfont." property="og:description" />
+        <meta content="DK64 Utils" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/head.png" property="og:image" />
+        <!-- Scripts and Styles -->
         <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -461,7 +467,7 @@
                                 File
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack (2.1 only)</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack (Categorized)</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="buildBinaryPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
@@ -584,10 +590,10 @@
                                     <label for="advf-group" class="form-label">Group</label>
                                     <select id="advf-group" class="form-select">
                                         <option selected>Any</option>
-                                        <option>Background Music</option>
-                                        <option>Events</option>
-                                        <option>Major Items</option>
-                                        <option>Minor Items</option>
+                                        <option value="bgm">Background Music</option>
+                                        <option value="events">Events</option>
+                                        <option value="majoritems">Major Items</option>
+                                        <option value="minoritems">Minor Items</option>
                                     </select>
                                 </div>
             
@@ -779,7 +785,6 @@
                 let all_tagged = true;
                 ACCEPTED_TAGS.forEach(tag => {
                     if (!document.getElementById(`advf-tag-${filterName(tag)}`).checked) {
-                        console.log(tag)
                         all_tagged = false;
                     }
                 })
@@ -941,9 +946,12 @@
                     this.tags = []
                     this.delisted = false
                     if (tags != null) {
-                        this.tags = tags
+                        this.tags = tags;
+                        if (typeof tags == "string") {
+                            this.tags = tags.split(",").map(item => item.trim());
+                        }
                         this.delisted = this.tags.includes(DELISTED_TAG)
-                        this.tags = this.tags.filter(item => item != DELISTED_TAG)
+                        this.tags = this.tags.filter(item => item != DELISTED_TAG);
                     }
                     this.notes = notes
                     this.days_since_submission = null;
@@ -2087,12 +2095,12 @@
                 pack_zip_jszip = await zip_full.loadAsync(pack_zip_data);
                 for (let [filename_0, file_0] of Object.entries(pack_zip_jszip.files)) {
                     if (!file_0.dir) {
-                        const filename_id = filename_0.replace(".bin","")
+                        const filename_id = filename_0
                         const song = total_data_copy.find(item => item.drive_id == filename_id)
                         loaded_count++;
                         if (song) {
                             const fileData = await pack_zip_jszip.files[filename_0].async("Uint8Array");
-                            site_data[`${song.drive_id}.bin`] = {
+                            site_data[`${filename_id.replace(".bin","")}.bin`] = {
                                 "group": song.group,
                                 "data": Array.from(fileData),
                                 "selected_version": song.drive_id,
@@ -2101,6 +2109,7 @@
                         }
                     }
                 }
+                // console.log(site_data)
                 // Load uploaded zip file
                 const new_zip = new JSZip();
                 let site_song_data = {};
@@ -2123,10 +2132,13 @@
 
                 // Parse data for matching arrays
 
+                // console.log(compressed_data)
+
                 let matching_songs = [];
                 let files_parsed = 0;
                 const files_pushed = Array(Object.keys(compressed_data).length).fill(null);
                 Object.keys(compressed_data).forEach((song_a, song_i) => {
+                    // console.log(song_a)
                     const extension = last(song_a.split("."));
                     if (extension == "candy") {
                         c_zip = new JSZip();
@@ -2163,10 +2175,11 @@
                                 matching_songs.push(new_song)
                             }
                         } else {
+                            // console.log(song_a)
                             // Song isn't on site. TODO: Handle persisting these songs
                             const item_name = last(song_a.split("/"));
                             const item_group = compressed_data[song_a].group;
-                            const item_data = compressed_data[song_a].data;
+                            const item_data = files_pushed[song_i];
                             if (!Object.keys(uploaded_pack_data).includes(item_group)) {
                                 uploaded_pack_data[item_group] = []
                             }
@@ -2179,12 +2192,14 @@
                     }
                 })
 
+                // console.log(matching_songs)
+
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
                 for (let c = 0; c < checkboxes.length; c++) {
                     checkboxes[c].setAttribute("ticked", "false");
                 }
                 matching_songs.forEach(m_drive_id => {
-                    const entry = midi_data_copy.find(item => item.drive_id == m_drive_id.replace(".bin",""))
+                    const entry = midi_data_copy.find(item => item.drive_id == m_drive_id)
                     if (entry) {
                         const game = entry.game;
                         const id = entry.index;

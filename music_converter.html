@@ -366,7 +366,7 @@
                         output_format = radios[r].value;
                     }
                 }
-                const BPS_HEAD = "v5";
+                const BPS_HEAD = "v6";
                 if (output_format != null) {
                     fetch(`./data/soundfont_correctors/${BPS_HEAD}-${output_format}.bps`)
                     .then(res => res.blob())
@@ -526,12 +526,14 @@
                 fr.readAsArrayBuffer(document.getElementById("rom-selector").files[0]);
             })
 
+            let GLOBAL_NO_REPEATERS_SETTING = true;
+
             function toBinary(write_binary) {
                 input_file_name = document.getElementById("file-selector").value
                 loop_data = getLoopStatus()
                 loop = loop_data["loop"]
                 loop_point = loop_data["point"]
-                no_repeaters = true
+                no_repeaters = GLOBAL_NO_REPEATERS_SETTING
                 output_segments = input_file_name.split(".")[0].split("\\")
                 output_file = output_segments[output_segments.length - 1] + ".bin"
 

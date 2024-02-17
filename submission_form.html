@@ -1,0 +1,914 @@
+<html data-bs-theme="dark">
+    <head>
+        <title>DK64 Music Submission Form</title>
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="stylesheet" href="style/music-sub-form.css">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="" />
+        <!-- Discord -->
+        <meta content="DK64 Music Submission Form" property="og:title" />
+        <meta content="Submission form for songs to appear on the pack builder." property="og:description" />
+        <meta content="DK64 Utils" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/head.png" property="og:image" />
+        <!-- Scripts and Styles -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/css/bootstrap-select.min.css" integrity="sha512-mR/b5Y7FRsKqrYZou7uysnOdCIJib/7r5QeJMFvLNHNhtye3xJp1TdJVPLtetkukFn227nKpXD9OjUc09lx97Q==" crossorigin="anonymous"
+  referrerpolicy="no-referrer" />
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <style>
+            .head-text {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <!-- <a class="navbar-brand excluded_link" href="#">
+                    Submission Form
+                </a> -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="width:fit-content;width:-moz-fit-content">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <!-- <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                File
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack (Categorized)</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildBinaryPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
+                            </ul>
+                        </li> -->
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#rulesModal"><i class="fa-solid fa-list-check"></i> Submission Guidelines</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Submission Rules Modal -->
+        <div class="modal fade" id="rulesModal" tabindex="-1" aria-labelledby="rulesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div>
+                            <h1 class="modal-title fs-5" id="rulesModalLabel">Submission Rules</h1>
+                            <div style="font-style: italic; font-size: 0.8rem;">LAST UPDATED: 14-FEB-2024</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        The following rules are being enforced regarding what we accept regarding music submissions in an effort to reduce legal risk and ensure quality is being kept up.
+                        <hr />
+                        <h4>Accepted Categories</h4>
+                        Only certain categories of songs will be accepted to the pack builder:
+                        <ul>
+                            <li>Video Game Music</li>
+                            <li>Custom Music composed entirely by the converter. In submitting your song, you agree to the song being featured in the <span class="italics">#music-files</span> channel and the pack builder website</li>
+                            <li>Music which has been given express permission from the composer to be used in streams and to be featured in the <span class="italics">#music-files</span> channel and the pack builder website</li>
+                            <li>Music that is within the <a href="https://en.wikipedia.org/wiki/Public_domain">public domain</a> as it's copyright has expired. If your song falls under this category, please ensure that your song is based on the original work that is in the public domain and <a href="https://www.youtube.com/watch?v=1Jwo5qc78QU&t=3m40s">not any performances that are not in the public domain</a>.</li>
+                        </ul>
+                        Examples of important exceptions to these accepted categories:
+                        <ul>
+                            <li>Licensed songs in a video game will not be accepted. Examples of this include:</li>
+                            <ul>
+                                <li>The numerous licensed songs featured in Guitar Hero (and related series)</li>
+                                <li>Songs in games based around a popular artist (eg. Michael Jackson's Moonwalker)</li>
+                            </ul>
+                            <li>Any public domain works that are heavily associated with Disney, including Steamboat Willie.</li>
+                            <ul>
+                                <li>Whilst they are in the public domain, Disney have been known to implement very crafty techniques to keep many works that are in the public domain in their ownership. As such, we're avoiding that stuff with a ten-foot-bargepole.</li>
+                            </ul>
+                        </ul>
+                        <hr />
+                        <h4>Quality Standards</h4>
+                        <p>
+                            A focus on quality needs to be maintained during the creation of your conversion. Submissions which
+                            do not adhere to a good standard of quality <strong>will be rejected</strong> and we will let you know that your submission
+                            needs to be improved in order to be verified.
+                        </p>
+                        <p>If you are unsure, here's some helpful tips to help get your song verified first try:</p>
+                        <ul>
+                            <li>
+                                <strong>Range</strong>: Make sure all notes that are being played are within the soundfont's range. Any out-of-range notes will
+                                sound corrupted when being played in-game.
+                            </li>
+                            <li>
+                                <strong>Loudness</strong>: Make sure your song isn't too loud. Generally, a good benchmark for your audio is under -10 on the <a href="https://youlean.co/youlean-loudness-meter/">Loudness Meter</a>
+                            </li>
+                            <li>
+                                <strong>No Jumpscares</strong>: Make sure your song flows. Players don't want to be jumpscared by a sudden burst of loud audio midway through your song.
+                            </li>
+                            <li>
+                                <strong>Pitch</strong>: Be careful with the high-pitched notes. Some instruments really don't sound too good with high-pitched notes and can become quite irritating on the ears if prolonged and/or loud.
+                            </li>
+                            <li>
+                                <strong>Song Choice</strong>: Be discerning with your song choices. Not everything will sound good when you try to convert it to the DK64 Soundfont, and that's okay. Not all started projects have to be finished.
+                            </li>
+                            <li>
+                                <strong>Time</strong>: To misquote Shigeru Miyamoto: <br />
+                                <em style="padding-left: 10px">
+                                    "A well-thought conversion eventually sounds good, a rushed conversion will always sound bad."
+                                </em>
+                                <br />
+                                Ensure that you are 100% happy with the end product and cannot think of anything you would like to improve before submission.
+                            </li>
+                        </ul>
+                        <hr />
+                        If you have any questions about a song you're wanting to convert which you're unsure of where it would lie within these rules, ask in <span class="italics">#music-discussion</span>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- GitHub Preparations -->
+        <div style="padding: 10px;" class="stage-responsive" stage="1">
+            <div class="card text-bg-light">
+                <img src="./assets/github_procedures/sign_up.png" class="card-img-top" alt="Github Sign Up Image">
+                <div class="card-body">
+                    <h3>GitHub Preparations</h3>
+                    <p>
+                        <strong>This step only needs to be performed one time.</strong><br />
+                        The submission process is now handled through GitHub. This provides a bunch of useful tools for the verifiers
+                        and helps with individual responses to submissions.
+                    </p>
+                    <ol>
+                        <li class="mb-5">
+                            First you will need to create a GitHub account:<button class="btn btn-success button-max" onclick="sendTo('https://github.com/signup?user_email=&source=form-home-signup')">Create a GitHub Account</button>
+                        </li>
+                        <li>
+                            Then create a fork of the <em>Candy's Shop</em> Repository:
+                            <button class="btn btn-success button-max" onclick="sendTo('https://github.com/theballaam96/candys-shop/fork')">Fork Repository</button>
+                            <em>(If you already have and your fork is out of date, click "Sync Fork" on your forked repository page <code>https://github.com/&lt;username&gt;/candys-shop</code>)</em>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="card text-bg-light">
+                <div style="display:flex">
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-outline-secondary button-max" disabled>
+                            Previous
+                        </button>
+                    </div>
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="changeStage(1)">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Create your branch -->
+        <div style="padding: 10px;" class="stage-responsive" stage="2">
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <h3>Making a branch</h3>
+                    <p>
+                        Next, you will be making a branch for your song
+                    </p>
+                    <ol>
+                        <li>
+                            Navigate to your fork at <code>https://github.com/&lt;username&gt;/candys-shop</code>.
+                        </li>
+                        <li>
+                            Ensure the branch on the top-left of the screen is <code>main</code>. If it is not, click the button, and it will produce a dropdown of branches. Select <code>main</code> from that list.
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/branch_selector.png" />
+                    </div>
+                    <ol start="3">
+                        <li>
+                            Ensure your main branch is synced. To do so, click the <code>Sync Fork</code> button. This will produce a popup. If there's an option which says <code>Update branch</code>, click it.
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/sync_fork.png" />
+                    </div>
+                    <ol start="4">
+                        <li>
+                            Click the button named <code>main</code> that was referenced in step 2. It will produce a popup with a search field, type in the name of your song. It will produce a button which will say <code>Create branch {name} from main</code>. Click it.
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/create_branch.png" />
+                    </div>
+                </div>
+            </div>
+            <div class="card text-bg-light">
+                <div style="display:flex">
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="changeStage(-1)">
+                            Previous
+                        </button>
+                    </div>
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="changeStage(1)">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- File Upload Hints -->
+        <div style="padding: 10px;" class="stage-responsive" stage="3" hidden>
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <h3>Upload your files</h3>
+                    <p>
+                        Once you have made or synced your fork, you will now need to upload your files to GitHub. These include:
+                    </p>
+                    <ul class="mb-5">
+                        <li>
+                            <strong>Binary File</strong><code>*</code>: The binary file containing your song converted by the online midi converter, with your loop.
+                        </li>
+                        <li>
+                            <strong>Preview File</strong>: A <code>.mp3</code> file which contains a playback of your song played in-game. It's strongly advised to ensure that your preview file contains nothing other than your song, and that you use a tool such as <a href="https://www.audacityteam.org/">Audacity</a> to remove anything that's not your song.<br />Your preview should also contain your song looping once. This isn't necessary to have if you prefer to attach a YouTube Video instead.
+                        </li>
+                        <li>
+                            <strong>MIDI File</strong><code>*</code>: The MIDI used to make your song, which will be used for us to provide feedback, and to ascertain critical information about your submission.
+                        </li>
+                    </ul>
+                    <p>
+                        To add these files, perform the following steps:
+                    </p>
+                    <ol>
+                        <li>
+                            Visit your fork at: <code>https://github.com/&lt;username&gt;/candys-shop</code>
+                        </li>
+                        <li>
+                            Click <code>Add File</code> and then <code>Upload Files</code>
+                            <br />
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/upload_files.png" />
+                    </div>
+                    <ol start="3">
+                        <li>
+                            Upload your files in question. They don't have to be sorted into the necessary folders in the <code>binaries</code> and <code>previews</code> folders. GitHub will automatically do this once your submission is approved.
+                        </li>
+                    </ol>
+                    <img src="./assets/github_procedures/upload_files_done.png" />
+                    <ol start="4">
+                        <li>
+                            Click "Commit directly to the <code>{name}</code> branch.", and then click "Commit changes".
+                        </li>
+                    </ol>
+                    <img src="./assets/github_procedures/upload_files_commit.png" />
+                </div>
+            </div>
+            <div class="card text-bg-light">
+                <div style="display:flex">
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="changeStage(-1)">
+                            Previous
+                        </button>
+                    </div>
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="changeStage(1)">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Make your Pull Request -->
+        <div style="padding: 10px;" class="stage-responsive" stage="5" hidden>
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <h3>Make your pull request</h3>
+                    <p>
+                        You will need to make a pull request with the following information copied in:
+                    </p>
+                    <pre style="background-color:#222; color: white; border-radius: 5px; padding:20px">
+                        <code id="pr-data"></code>
+                    </pre>
+                    <p>
+                        To create the pull request:
+                    </p>
+                    <ol>
+                        <li>
+                            Visit your fork at: <code>https://github.com/&lt;username&gt;/candys-shop</code>
+                        </li>
+                        <li>
+                            Click <code>Pull Requests</code>, then <code>New Pull Request</code>
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/new_pr.png" />
+                    </div>
+                    <ol start="3">
+                        <li>
+                            It will then produce a series of dropdowns. On the right-hand-most dropdown, select your branch that you created.
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/branch_compare.png" />
+                    </div>
+                    <ol start="4">
+                        <li>
+                            Click <code>Create Pull Request</code>
+                        </li>
+                        <li>
+                            Copy in the above snippet of data to the text of your pull request. Then click <code>Create pull request</code>.
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/pr_create.png" />
+                    </div>
+                    <ol start="6">
+                        <li>
+                            Upon creating your pull request, you will get a comment from the bot which will tell you various bits of information about your request. This information is mostly important to verifiers, but check what it has said just in case you've made an error with your submission and need to edit your PR comment. The music verification team will proceed to examine your submission and may respond to you with feedback and changes that are deemed necessary in order for the song to be approved. It is heavily advised you keep an eye on your submissions to see whether there's any feedback you need to respond to.
+                        </li>
+                    </ol>
+                    <div style="text-align:center">
+                        <img src="./assets/github_procedures/bot_comment.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main Form -->
+        <div style="padding: 10px;" class="stage-responsive" stage="4" hidden>
+            <div class="card text-bg-light">
+                <div class="card-body">
+                    <h3>Fill in submission details</h3>
+                    Now fill in the various information tied to your submission. This will generate the piece of text you will attach to your submission.
+                </div>
+            </div>
+            <form>
+                <div class="card text-bg-light hide" hidden>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="is_update">Has your song already been uploaded to the #music-files channel?</label>
+                                <input type="checkbox" id="is_update" class="form-control" onclick="handleUpdateClick()" />
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" style="display:none" id="update_reason_head">
+                                <label for="update_reason">Please state the reason why your version of the song is better</label>
+                                <input type="text" id="update_reason" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group" id="game-container">
+                            <label for="game_name" class="required">Game Name</label>
+                            <div class="hint">If it is a song of your own composition, just list as "Other"</div>
+                            <input type="text" id="game_name" class="form-control" autocomplete="off" data-lpignore="true" data-form-type="other" required/>
+                        </div> 
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="song_name" class="required">Song Name</label>
+                            <input type="text" id="song_name" class="form-control" autocomplete="off" data-lpignore="true" data-form-type="other" required/>
+                        </div> 
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="composer_list" class="required">Composer(s)</label>
+                            <div class="hint">If you're unsure, google is your friend.</div>
+                            <div style="display:flex">
+                                <input type="text" id="composer_list" class="form-control" />
+                                <input type="button" id="composer_add" class="btn btn-primary" value="Add" onclick="addComposer()" required/>
+                            </div>
+                            <div class="selected_items" id="composer_items"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="converter_list" class="required">Converter(s)</label>
+                            <div style="display:flex">
+                                <input type="text" id="converter_list" class="form-control" />
+                                <input type="button" id="converter_add" class="btn btn-primary" value="Add" onclick="addConverter()" required/>
+                            </div>
+                            <div class="selected_items" id="converter_items"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="classification" class="required">Song Type</label>
+                            <div class="hint">
+                                General outline of what each category means:
+                                <ul>
+                                <li><strong>BGM: </strong>Will play in the background in levels when walking around. Try to make your song loop if possible.</li>
+                                <li><strong>Event: </strong>The song will play sometimes when triggering an event but isn't expected to be played many times within short succession. For example: Unlocking a boss or playing bongos</li>
+                                <li><strong>Major Item: </strong>The song will play whenever a major item (Golden Bananas, Keys etc) is spawned or collected.</li>
+                                <li><strong>Minor Item: </strong>The song will play whenever a minor item (Melon Slices, Small Coins etc) is spawned or collected. Expect themes to be heard within quick succession.</li>
+                                </ul>
+                            </div>
+                            <select id="classification" class="form-control">
+                                <option value="bgm">Background Music (BGM)</option>
+                                <option value="events">Event</option>
+                                <option value="majoritems">Major Item</option>
+                                <option value="minoritems">Minor Item</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="categorization" id="loc_category_labelled" class="required">Location Categories</label>
+                            <div class="hint">
+                                Select all which apply. If you are uploading background music, select between one and three:
+                                <ul id="category-hints"></ul>
+                            </div>
+                            <select id="categorization" class="form-control selectpicker" multiple="multiple"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="mood-categorization">Mood Categories</label>
+                            <div class="hint">
+                                Select all which apply:
+                                <ul id="mood-category-hints"></ul>
+                            </div>
+                            <select id="mood-categorization" class="form-control selectpicker" multiple="multiple"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="preview_link">YouTube Preview Link</label>
+                            <div class="hint">
+                                Has to be the DK64 version of the song, don't post a link to a YouTube of the original song from the original game. Use this if you are not uploading a <code>.mp3</code> as a preview.
+                                <br />
+                                <strong>Do not post anything else here aside from a YouTube link. It'll just delay the verification process</strong>
+                            </div>
+                            <input type="text" id="preview_link" class="form-control "/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="update-info" class="required">Update Status</label>
+                            <div class="hint">
+                                The pack builder and the post will handle all submissions with the exact same game and song name as an update
+                                to prior versions of that song. As such, only the most recent will be listed on the pack builder. However,
+                                to address the desire for variants to be acceptable, use this dropdown as a way to select whether your
+                                song is an update or a new variant. This will append the necessary information to the submission to inform 
+                                the necessary parties of how to handle your submission.
+                                <br>
+                                If you need any additional information, please ask in the #music-discussion channel in the discord.
+                            </div>
+                            <select id="update-info" class="form-control">
+                                <option>Not an update</option>
+                            </select>
+                            <p class="hide" id="variation_count_total">-1</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="submission-update-notes">Update Notes</label>
+                            <div class="hint">
+                                Provide any notes regarding why your song is an update here. This will be viewable on the discord.
+                            </div>
+                            <textarea id="submission-update-notes" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row card text-bg-light">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="submission-notes">Additional Notes</label>
+                            <div class="hint">
+                                Provide any additional notes for your submission which you wish to add. This will be viewable on the pack builder website.
+                            </div>
+                            <textarea id="submission-notes" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="no-background-card" id="submission-feedback" style="color:red"></div>
+            </form>
+            <div class="card text-bg-light">
+                <div style="display:flex">
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="changeStage(-1)">
+                            Previous
+                        </button>
+                    </div>
+                    <div style="flex: 1; padding: 5px;">
+                        <button class="btn btn-primary button-max" onclick="parseSong()" id="complete-form">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <script src="./script/autocomplete.js"></script>
+        <script>
+            let github_json = null;
+            let games = null;
+            let composers = null;
+            let converters = null;
+            let games_ready = false;
+            let composers_ready = false;
+            let converters_ready = false;
+
+            async function getTotalData() {
+                
+
+                const res = await fetch('https://raw.githubusercontent.com/theballaam96/candys-shop/main/mapping.json')
+                const text = await res.text()
+                github_json = JSON.parse(text)
+
+
+                games = [];
+                composers = [];
+                converters = [];
+                games_ready = false;
+                composers_ready = false;
+                converters_ready = false;
+                github_json.forEach(item => {
+                    if (!games.includes(item.Game)) {
+                        games.push(item.Game);
+                    }
+                    const local_composers = item.Composers.split(",").map(k => k.trim());
+                    const local_converters = item.Converters.split(",").map(k => k.trim());
+                    local_composers.forEach(c => {
+                        if (!composers.includes(c)) {
+                            composers.push(c);
+                        }
+                    })
+                    local_converters.forEach(c => {
+                        if (!converters.includes(c)) {
+                            converters.push(c);
+                        }
+                    })
+                })
+                games_ready = true;
+                composers_ready = true;
+                converters_ready = true;
+            }
+
+            function getVariationCountInternal(game, song) {
+                if (github_json == null) {
+                    return 0;
+                }
+                
+                let var_count = 0;
+                github_json.forEach(item => {
+                    if (item.Game == game) {
+                        const song_arr = item.Song.split(" (Variant ");
+                        if (song_arr[0] == song) {
+                            if (var_count == 0) {
+                                var_count = 1;
+                            }
+                            if (song_arr.length > 1) {
+                                const letter = song_arr[1].split(")")[0];
+                                const index = letter.charCodeAt(0) - 63;
+                                if (index > var_count) {
+                                    var_count = index;
+                                }
+                            }
+                        }
+                    }
+                })
+                return var_count;
+            }
+
+            function getVariationCount() {
+                const dropdown_targ = document.getElementById("update-info");
+                const button_targ = document.getElementById("complete-form");
+                dropdown_targ.setAttribute("disabled","disabled");
+                button_targ.setAttribute("disabled","disabled");
+                dropdown_targ.innerHTML = "<option>Awaiting finish call to database</option>";
+                document.getElementById("variation_count_total").innerText = -1;
+                const variant_count = getVariationCountInternal(document.getElementById("game_name").value, document.getElementById("song_name").value)
+                let new_list = ["Not an update"]
+                if (variant_count > 0) {
+                    new_list = ["Fixes an error"]
+                    if (variant_count > 1) {
+                        for (let i = 0; i < variant_count-1; i++) {
+                        new_list.push(`Fixes an error (Variant ${String.fromCharCode(65 + i)})`)
+                        }
+                    }
+                    new_list.push("New Variant")
+                }
+                dropdown_targ.removeAttribute("disabled");
+                button_targ.removeAttribute("disabled");
+                dropdown_targ.innerHTML = new_list.map(item => `<option>${item}</option>`).join("")
+                document.getElementById("variation_count_total").innerText = variant_count;
+            }
+
+            
+
+            function getComposers() {
+                if (!composers_ready) {
+                    return [];
+                }
+                composers.sort();
+                return composers;
+            }
+
+            function getGames() {
+                if (!games_ready) {
+                    return [];
+                }
+                games.sort();
+                return games;
+            }
+
+            function getConverters() {
+                if (!converters_ready) {
+                    return [];
+                }
+                converters.sort();
+                return converters;
+            }
+
+            async function prepForm() {
+                await getTotalData();
+                $("#game_name").typeahead({source: getGames()});
+                $("#composer_list").typeahead({source: getComposers()});
+                $("#converter_list").typeahead({source: getConverters()});
+            }
+
+            prepForm();
+            
+            function getSelectValues(select) {
+                var result = [];
+                var options = select && select.options;
+                var opt;
+        
+                for (var i=0, iLen=options.length; i<iLen; i++) {
+                    opt = options[i];
+        
+                    if (opt.selected) {
+                        result.push(opt.value || opt.text);
+                    }
+                }
+                return result;
+            }
+
+            function uuidv4() {
+                return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+                  (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+                );
+            }
+
+            let composers_list_added = [];
+            let converters_list_added = [];
+        
+            function destroyListItem(uuid) {
+                const hook = document.getElementById(uuid);
+                const subgroup = hook.getAttribute("subgroup");
+                const name = hook.getElementsByClassName("list_item_name")[0].innerText;
+                if (subgroup == "composer") {
+                    composers_list_added = composers_list_added.filter(item => item != name);
+                } else if (subgroup == "converter") {
+                    converters_list_added = converters_list_added.filter(item => item != name);
+                }
+                hook.outerHTML = "";
+            }
+        
+            function updateVisualList(id, list, subgroup) {
+                const hook = document.getElementById(id);
+                const uuid = uuidv4();
+                hook.innerHTML = list.map(item => `
+                  <div class="list_item" id="${uuid}" onclick="destroyListItem('${uuid}')" subgroup="${subgroup}">
+                    <span class="list_item_name">${item}</span>
+                    <span class="list_item_close">x</span>
+                  </div>
+                `).join("")
+            }
+        
+            function addData(id, list, list_id, subgroup) {
+                const added_item = document.getElementById(id).value.trim();
+                if (added_item != "") {
+                    if (!list.includes(added_item)) {
+                        list.push(added_item)
+                    }
+                    updateVisualList(list_id, list, subgroup)
+                    document.getElementById(id).value = "";
+                }
+            }
+        
+            function addComposer() {
+                addData("composer_list", composers_list_added, "composer_items", "composer")
+            }
+        
+            function addConverter() {
+                addData("converter_list", converters_list_added, "converter_items", "converter")
+            }
+
+            class SongParser {
+                constructor (el_name, obj_key, feedback, input_type="text", mandatory=true) {
+                  this.el_name = el_name;
+                  this.mandatory = mandatory;
+                  this.feedback = feedback;
+                  this.obj_key = obj_key;
+                  this.input_type = input_type;
+                }
+        
+                getValue() {
+                    const hook = document.getElementById(this.el_name);
+                    if (["text", "select", "file"].includes(this.input_type)) {
+                        // Use .value;
+                        let value = hook.value;
+                        if (value == "") {
+                        return null;
+                        }
+                        return value;
+                    } else if (["multiselect"].includes(this.input_type)) {
+                        // Use getSelectValues method
+                        let raw_list = getSelectValues(hook);
+                        if (this.el_name == "categorization") {
+                            if (raw_list.length > 3) {
+                                return null;
+                            }
+                        }
+                        let value = raw_list.join(", ");
+                        if (value == "") {
+                            return null;
+                        }
+                        return value;
+                    } else if (this.input_type == "multitext") {
+                        let value = "";
+                        if (this.el_name == "composer") {
+                            value = composers_list_added.join(", ");
+                        } else if (this.el_name == "converter") {
+                            value = converters_list_added.join(", ");
+                        }
+                        if (value == "") {
+                            return null;
+                        }
+                        return value;
+                    }
+                }
+            }
+        
+            let song_upload_data = {}
+            const song_parser_data = [
+                new SongParser("game_name", "Game", "No Game Name Supplied"),
+                new SongParser("song_name", "Song", "No Song Name Supplied"),
+                new SongParser("composer", "Composers", "No Composers Supplied", "multitext"),
+                new SongParser("converter", "Converters", "No Converters Supplied", "multitext"),
+                new SongParser("classification", "Category", "No Category Supplied", "select"),
+                new SongParser("categorization", null, "Amount of Location Categories must be between 1 and 3 (inclusive)", "multiselect"),
+                new SongParser("mood-categorization", null, "", "multiselect", false),
+                new SongParser("preview_link", "Audio", "", "text", false),
+                new SongParser("update-info", null, "No Update Information Supplied", "select"),
+                new SongParser("submission-update-notes", "Update Notes", "", "text", false),
+                new SongParser("submission-notes", "Additional Notes", "", "text", false),
+            ]
+        
+            function checkSubmissionValidity() {
+                const bypass_cat_restriction = song_parser_data.find(k => k.el_name == "classification").getValue() != "bgm";
+                for (let i = 0; i < song_parser_data.length; i++) {
+                    entry = song_parser_data[i];
+                    let bypass = false;
+                    if (entry.el_name == "categorization") {
+                        bypass = bypass_cat_restriction;
+                    }
+                    if ((entry.mandatory) && (!bypass)) {
+                        if (entry.getValue() == null) {
+                            return entry.feedback;
+                        }
+                    }
+                }
+                return null;
+            }
+        
+            function parseSong() {
+                addComposer();
+                addConverter();
+                song_upload_data = {}
+                document.getElementById("submission-feedback").innerText = "";
+                let validity = checkSubmissionValidity();
+                if (validity != null) {
+                    document.getElementById("submission-feedback").innerText = `ERROR: ${validity}`;
+                    return;
+                }
+                let total_categories = [];
+                song_parser_data.forEach(entry => {
+                    if (entry.obj_key != null) {
+                        if (entry.getValue() != null) {
+                            song_upload_data[entry.obj_key] = entry.getValue();
+                        }
+                    } else {
+                        if (entry.getValue() != null) {
+                            if (["categorization", "mood-categorization"].includes(entry.el_name)) {
+                                const hook = document.getElementById(entry.el_name);
+                                let raw_list = getSelectValues(hook);
+                                total_categories = total_categories.concat(raw_list)
+                            }
+                        }
+                    }
+                })
+                if (total_categories.length > 0) {
+                    song_upload_data["Tags"] = total_categories.join(", ");
+                }
+                document.getElementById("pr-data").innerHTML = `\n<span class="line">IS SONG - DO NOT DELETE THIS LINE</span>\n${Object.keys(song_upload_data).map(item => `<span class="line">${item}: ${song_upload_data[item]}</span>`).join("\n")}`;
+                changeStage(1);
+            }
+
+            let stage = 1;
+            
+            function updateStage(value) {
+                const sr = document.getElementsByClassName("stage-responsive");
+                for (let s = 0; s < sr.length; s++) {
+                    let local_stage = sr[s].getAttribute("stage");
+                    sr[s].setAttribute("hidden", "hidden");
+                    if (!isNaN(local_stage)) {
+                        local_stage = Number(local_stage);
+                        if (local_stage == value) {
+                            sr[s].removeAttribute("hidden");
+                        }
+                    }
+                }
+            }
+
+            function changeStage(diff) {
+                stage += diff;
+                updateStage(stage);
+            }
+
+            updateStage(stage);
+            
+
+
+            class Category {
+                constructor(name, hint="", location=true) {
+                    this.name = name
+                    this.hint = hint
+                    this.location = location
+                }
+            }
+            const categories = [
+                new Category("Fights", "Song would fit well for a boss fight",),
+                new Category("Lobbies and Shops", "The first few seconds of a song can be heard over and over again"),
+                new Category("Interiors", "Song would fit well in tunnels and temples"),
+                new Category("Exteriors", "Song would fit well in exterior locations"),
+                new Category("Minigames", "Song would fit well in an energetic time-intensive minigame"),
+                new Category("Happy", "Song is cheerful and perhaps bouncy in nature", false),
+                new Category("Gloomy", "Song is a bit more mellowed out", false),
+                new Category("Calm", "Song is calm and could be listened to for hours on end", false),
+                new Category("Spawning", "Song would fit a scenario of a jingle for an item being spawned"),
+                new Category("Collection", "Song would fit a scenario of a jingle for an item being collected"),
+            ]
+            document.getElementById("categorization").innerHTML = categories.filter(item => item.location).map(item => `<option value="${item,name}">${item.name}</option>`).join("")
+            document.getElementById("category-hints").innerHTML = categories.filter(item => item.location).map(item => `<li><strong>${item.name}</strong>: ${item.hint}</li>`).join("")
+            document.getElementById("mood-categorization").innerHTML = categories.filter(item => !item.location).map(item => `<option value="${item,name}">${item.name}</option>`).join("")
+            document.getElementById("mood-category-hints").innerHTML = categories.filter(item => !item.location).map(item => `<li><strong>${item.name}</strong>: ${item.hint}</li>`).join("")
+        
+            $(document).ready(function() {
+                $('#categorization').selectpicker();
+                $('#mood-categorization').selectpicker();
+
+                const ms = document.getElementsByClassName("dropdown-toggle");
+                for (let m = 0; m < ms.length; m++) {
+                    ms[m].classList.remove("btn-light");
+                    ms[m].classList.add("btn-dark")
+                }
+            });
+            document.getElementById("game_name").addEventListener("focusout", getVariationCount);
+            document.getElementById("song_name").addEventListener("focusout", getVariationCount);
+        
+            document.getElementById("classification").addEventListener("change", (e) => {
+                const req_hook = document.getElementById("loc_category_labelled");
+                if (e.target.value == "bgm") {
+                    req_hook.classList.add("required");
+                } else {
+                    req_hook.classList.remove("required");
+                }
+            })
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.14.0-beta2/js/bootstrap-select.min.js" integrity="sha512-FHZVRMUW9FsXobt+ONiix6Z0tIkxvQfxtCSirkKc5Sb4TKHmqq1dZa8DphF0XqKb3ldLu/wgMa8mT6uXiLlRlw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    </body>
+</html>

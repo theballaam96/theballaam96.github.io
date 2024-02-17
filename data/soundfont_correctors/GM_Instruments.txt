@@ -1,0 +1,129 @@
+((none)
+N/A
+[ Marimba  C0-F7
+[ Rototom  C0-C7
+[ Taiko Drum  C0-F#6
+( Pan Flute  C0-C7
+Wood Scraper  D3-C4, D4
+Shakers  F#5, G#5
+[ Woodblock  C0-G#5
+Bongos  D5, E5, F5
+Drum Kit  C0-C3, G#3, A#3, C4, D4, C5, B6, C7
+Donkey Kong Vox  C5, D5, E5
+[ Log Drum  C0-F6
+Misc Animal SFX  C3-D5
+Cricket SFX  D#3-A#3
+( Saxophone  F0-A5
+( Clarinet  F0-F6
+(* Trombone  F0-F5
+( Trumpet  F0-G7
+( Sustain Strings  C2-G8
+( Shehnai  F0-G7
+( Muted Trumpet  C1-D#7
+( Fretless Bass  C2-B4
+[ Xylophone  C0-D#6
+[ Harp  F0-C7
+[ Music Box  F0-E8
+[ Gong  F1-F#6
+( Glockenspiel  F0-C6
+(* Theremin  F0-F6
+[ Water Glug SFX  F0-D8
+[* Timpani  C0-C7
+( Tuba  F0-C5
+( French Horn  F0-C7
+( Bassoon  F0-G6
+( Piccolo  F0-C9
+Snare & Snare Roll  C0-C3, C#3
+( E-Bass  C1-F5
+Water Drop SFX  C3-G3, G#3-C#4
+Triangle  C5, D5
+( Whistle  C2-C8
+( Clavinet  F0-F6
+( Choir (Ah)  F0-C7
+*Wind SFX  C3-F#3
+[ Timbale  C4-C6
+[ Harsh Handpan  C0-F7
+( Electric Guitar  C0-A6
+[ Whispery Chant Vox  C0-A6
+[ Pizzicato Strings  C0-F8
+Snake Rattle  C5, C#5-G#9
+[ Vibraslap  C0-F#6
+Toy Wind-up & Noise SFX  D#5, F5
+[ Trumpet Fall  C0-C7
+( Synth Bass  C0-C6
+( Brass Section  F1-F7
+( Rock Organ  F0-C7
+[ Tonky Piano  C0-E7
+( Drawbar Organ  F0-C#6
+[ Muted Bass/Banjo  C0-F5
+[ Fingersnap  C0-C#6
+[ Pizzicato Bass Strings  C0-C6
+Bat SFX  D4-F5
+( Muted Trumpet (Vibrato)  F0-D#7
+( Clarinet (Vibrato)  C0-F6
+[ Rambi Scream SFX  C0-G6
+[ Maniacal Laugh Vox  C0-G6
+[ Staccato Strings  C2-C8
+( Air Horn  C0-D#7
+Computer SFX  C5-B5
+Production Room SFX  F#5-A5
+( White Noise  F0-G5
+( Tubular Bells  C0-E7
+( Seagull Loop SFX  E0-E5
+( Tremolo Pad  F0-A5
+( Crowd Noise SFX  F0-C7
+Bird & Bee SFX  C3-G5
+Banana Fairy Vox  C5, D5
+*Owl & Wolf SFX  C3-F#4
+(* Electric Guitar (Extended Pitch Bend)  F0-A6
+[ Oh Banana Vox  F1-A#6
+( Hip Hop Drum Loop  C0-C6
+DK Rapper Vox  C3-B9
+DJ Vox & SFX  C0-A#5
+Guitar Riffs  C5-G#5
+Electric Guitar Riffs  C5-F#5
+( Tremolo High Strings  F0-F#7
+( Contrabassoon  C0-F5
+( Harpsichord  F0-F6
+[ Creepy Laughter Vox  C1-F6
+[ Steel Drums  F0-C7
+[ Clanking Chain SFX  F1-C7
+( Low Rumble SFX  F2-G#7
+[ DK Radio Loop  C0-G7
+Yawns & Moans Vox  C4-G10
+[ Monkey SFX  C0-F#7
+Concert Bass Drum  C5
+Happy Laughters Vox  C2-G10
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
+N/A
