@@ -93,7 +93,7 @@ async function initializeSynthesizer(useDefaultSFont) {
 
 	// Load SoundFont data to the synthesizer
 	sfontId = await synth.loadSFont(sfontBin);
-		
+
 	return synth;
 }
 setPlayingStatus("Stopped")
@@ -106,7 +106,7 @@ function setPlayingStatus(status) {
             "class_set": "playbtn-play",
             "text": "Stop",
             "svg": "pause",
-			"html": "&#9632;",
+			"html": "<i class=\"fa-solid fa-stop\"></i>",
         },
         {
             "target_status": "Preparing",
@@ -120,7 +120,7 @@ function setPlayingStatus(status) {
             "class_set": "playbtn-stop",
             "text": "Play",
             "svg": "play",
-			"html": "&#9654;",
+			"html": "<i class=\"fa-solid fa-play\"></i>",
         },
     ]
     class_data.forEach(item => {

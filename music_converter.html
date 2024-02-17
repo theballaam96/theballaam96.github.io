@@ -26,6 +26,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
         <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <!-- FA -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <!-- BPS Handling -->
         <script type="text/javascript" src="script/bps.js" defer></script>
         <script type="text/javascript" src="script/MarcFile.js" defer></script>
@@ -46,6 +48,12 @@
                 margin-right: auto;
                 padding: 20px;
             }
+            .hide {
+                display: none!important;
+            }
+            .loop-height {
+                height: 100%;
+            }
         </style>
     </head>
     <body>
@@ -60,13 +68,20 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link excluded_link" href="#"><i class="fa-solid fa-file"></i> MIDI to Bin</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#portingModal"><i class="fa-solid fa-arrows-left-right-to-line"></i> Midi Porting</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#soundfontModal"><i class="fa-solid fa-headphones"></i> Fix Soundfont</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Resources
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="goTo('https://docs.google.com/spreadsheets/d/1ngZfHXbsOqFBTTCknMX0WEhyJ_xTcGP_a-1zPPY2AP0/edit#gid=48901832')"><i class="fa-solid fa-font"></i> Soundfont Data Table</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="goTo('https://pastebin.com/bSNHLsV3')"><i class="fa-solid fa-list"></i> OST List</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="goTo('https://youlean.co/file-loudness-meter/')"><i class="fa-solid fa-volume-high"></i> Loudness Tester</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </div>
@@ -87,19 +102,17 @@
                 The binary file can either be extracted as a standalone file for usage in <span style="font-style:italic">Randomizer</span> or <span style="font-style:italic">Cranky's Lab</span>
                 , or imported straight into a ROM.
             </p>
-            <button class="btn btn-outline-info" style="width:fit-content" onclick="clickEl('file-selector')">
-                <i class="fa-solid fa-file-arrow-up"></i> Upload MIDI
-            </button>
-            <button class="btn btn-outline-warning" style="width:fit-content" onclick="clickEl('soundfont-selector')">
-                <i class="fa-solid fa-file-arrow-up"></i> Load Soundfont
-            </button>
-            <div id="stats">
-                <div id="stat-name"></div>
-                <div id="stat-duration"></div>
-                <div id="stat-durationticks"></div>
-                <div id="stat-durationmeasures"></div>
-                <div id="stat-ppq"></div>
-                <div id="stat-size"></div>
+            <div class="d-flex">
+                <div class="px-3" style="flex:1">
+                    <button class="btn btn-outline-info" style="width:100%" onclick="clickEl('file-selector')">
+                        <i class="fa-solid fa-file-arrow-up"></i> Upload MIDI
+                    </button>
+                </div>
+                <div class="px-3" style="flex:1">
+                    <button class="btn btn-outline-warning" style="width:100%" onclick="clickEl('soundfont-selector')">
+                        <i class="fa-solid fa-file-arrow-up"></i> Load Soundfont
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Soundfont Modal -->
@@ -185,87 +198,71 @@
                 </div>
             </div>
         </div>
-
-
-        <div class="d-flex center-container">
-            <div class="d-flex center-block">
-                <div class="homebox" style="color:white">
+        <div class="d-flex req-midi hide" style="width: 90%; margin-left: auto; margin-right: auto" hidden>
+            <div class="card m-3" style="flex:1">
+                <div id="stats" class="p-3">
+                    <h3>Midi Statistics</h3>
+                    <div id="stat-name"></div>
+                    <div id="stat-duration"></div>
+                    <div id="stat-durationticks"></div>
+                    <div id="stat-durationmeasures"></div>
+                    <div id="stat-ppq"></div>
+                    <div id="stat-size"></div>
+                </div>
+            </div>
+            <div style="flex: 1" class="m-3">
+                <div id="player" class="card p-3 mb-3" hidden>
+                    <h3>Play Song</h3>
+                    <div style="font-style:italic;text-align:left">
+                        <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                    </div>
                     <div class="d-flex">
-                        <div id="left-separator" class="sep">
-                            <!-- Left box -->
-                            
-                            <div class="req-edit-midi">
-                                <div class="req-midi">
-                                    
-                                </div>
-                            </div>
+                        <span id="play-button" onclick="playMusic()"><i class="fa-solid fa-play"></i></span>
+                        <input
+                            type="range" 
+                            min="0" 
+                            max="100" 
+                            id="player-navigator" 
+                            ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
+                            ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
+                            ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
+                            />
+                        <span id="player-position-display"></span>
+                    </div>
+                </div>
+                <div class="card loop-height p-3" id="loop-controls">
+                    <h3>Loop Controls</h3>
+                    <div class="d-flex">
+                        <div class="sep" style="text-align:left">
+                            <label>Loop:</label>
+                            <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
                         </div>
-                        <div class="sep req-midi hide">
-                            <div class="req-edit-midi">
-                                <div class="req-midi hide">
-                                    <div id="midi-to-bin">
-                                        <!-- Right box -->
-                                        <h3>Song Actions</h3>
-                                        <div class="req-midi" class="hide">
-                                            <div id="player" class="hide">
-                                                <div style="text-align:left;font-weight:bold">Play Song</div>
-                                                <div style="font-style:italic;text-align:left">
-                                                    <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
-                                                </div>
-                                                <div class="d-flex">
-                                                    <span id="play-button" onclick="playMusic()">&#9654;</span>
-                                                    <input
-                                                        type="range" 
-                                                        min="0" 
-                                                        max="100" 
-                                                        id="player-navigator" 
-                                                        ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
-                                                        ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
-                                                        ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
-                                                        />
-                                                    <span id="player-position-display"></span>
-                                                </div>
-                                            </div>
-                                            <div id="player-sep" class="hide">
-                                                <hr>
-                                                <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
-                                            </div>
-                                            <div class="d-flex">
-                                                <div class="sep" style="text-align:left">
-                                                    <label>Loop:</label>
-                                                    <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
-                                                </div>
-                                                <div id="loop-point-info" class="sep hide" style="flex:2">
-                                                    <label for="loop-point">Loop Point (Ticks)</label>
-                                                    <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex">
-                                                <div class="sep">
-                                                    <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
-                                                </div>
-                                                <div class="sep">
-                                                    <div class="req-no-preload">
-                                                        <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
-                                                    </div>
-                                                    <div class="req-preload hide">
-                                                        <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
-                                                    </div>
-                                                    <div class="req-preload hide">
-                                                        <div class="list-choice">
-                                                            <div class="list-choice-title">Select Song</div>
-                                                            <div class="list-choice-objects" id="song_list"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="midi-porting" class="hide">
-                                        
-                                    </div>
-                                </div>
-                            </div>
+                        <div id="loop-point-info" class="sep hide" style="flex:2">
+                            <label for="loop-point">Loop Point (Ticks)</label>
+                            <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="req-midi" style="width:90%; margin-left:auto; margin-right: auto" hidden>
+            <div class="d-flex">
+                <div class="sep">
+                    <div class="p-3">
+                        <button onclick="toBinary(true)" class="song-action-button btn btn-success">Convert to binary</button>
+                    </div>
+                </div>
+                <div class="sep">
+                    <div class="req-no-preload p-3">
+                        <button onclick="preloadROMWrite()" class="song-action-button btn btn-primary">Preload ROM Write</button>
+                    </div>
+                    <div class="req-preload d-flex hide" hidden>
+                        <div class="p-3">
+                            <button onclick="writeToROM()" class="song-action-button btn btn-success">Write to ROM</button>
+                        </div>
+                        <div class="px-3">
+                            <label for="song_list"><strong>Select Song:</strong></label>
+                            <select class="form-select" id="song_list"></select>
                         </div>
                     </div>
                 </div>
@@ -410,6 +407,10 @@
                 return arr[arr.length - 1]
             }
 
+            function goTo(url) {
+                window.open(url, "_blank");
+            }
+
             function updateStatStyle() {
                 stats = ["stat-name","stat-duration","stat-durationticks","stat-durationmeasures","stat-ppq"]
                 stats.forEach(stat => {
@@ -486,9 +487,9 @@
                     current_midi_file = array.slice()
                     let midi_reqs = document.getElementsByClassName("req-midi")
                     for (let m = 0; m < midi_reqs.length; m++) {
+                        midi_reqs[m].removeAttribute("hidden")
                         midi_reqs[m].classList.remove("hide")
                     }
-                    document.getElementById("left-separator").classList.add("sep-left")
                     console.log(current_midi_file)
                     // Midi Stat stuff
                     const midi = new Midi(data);
@@ -530,9 +531,11 @@
                     var array = new Uint8Array(data);
                     sfURL = URL.createObjectURL(e.target.files[0])
                     sfBuffer = u8arrayToBuffer(array)
-                    document.getElementById("player").classList.remove("hide")             
-                    document.getElementById("player-sep").classList.remove("hide")
-                    document.getElementById("soundfont-controls").classList.remove("hide")
+                    document.getElementById("player").removeAttribute("hidden")           
+                    //document.getElementById("player-sep").removeAttribute("hidden")    
+                    document.getElementById("soundfont-controls").removeAttribute("hidden")
+                    console.log("Removing")
+                    document.getElementById("loop-controls").classList.remove("loop-height")    
                     if (synth) {
                         synth.stopPlayer();
                     }
@@ -544,7 +547,7 @@
                 fr.onload = function() {
                     var data = fr.result;
                     var array = new Uint8Array(data);
-                    document.getElementById("soundfont-controls").classList.remove("hide")
+                    document.getElementById("soundfont-controls").removeAttribute("hidden")
                 };
                 fr.readAsArrayBuffer(document.getElementById("dls-selector").files[0]);
             })
@@ -608,8 +611,10 @@
                 const anti_preloaders = document.getElementsByClassName("req-no-preload")
                 for (let p = 0; p < preloaders.length; p++) {
                     if (show) {
+                        preloaders[p].removeAttribute("hidden")
                         preloaders[p].classList.remove("hide")
                     } else {
+                        preloaders[p].setAttribute("hidden", "hidden")
                         preloaders[p].classList.add("hide")
                     }
                 }
@@ -633,13 +638,8 @@
             }
 
             function writeToROM() {
-                let slot_childen = document.getElementById("song_list").getElementsByTagName("input")
-                let slot = null;
-                for (let s = 0; s < slot_childen.length; s++) {
-                    if (slot_childen[s].checked) {
-                        slot = Number(slot_childen[s].getAttribute("song-id"))
-                    }
-                }
+                let slot = document.getElementById("song_list").value;
+                console.log(slot);
                 if (slot != null) {
                     const new_rom = writeToROMInternal(rom_file.slice(), slot, compressed_midi.slice());
                     writeToFile(new_rom, "song-altered-dk64.z64");
@@ -828,7 +828,14 @@
                 const hook = document.getElementById("song_list");
                 html = "";
                 let permit_total = false;
+                let song_to_index_mapping = {};
                 SONG_ITEMS.forEach((song, index) => {
+                    song_to_index_mapping[song] = index;
+                })
+                song_names = SONG_ITEMS.slice();
+                song_names.sort();
+                song_names.forEach(song => {
+                    index = song_to_index_mapping[song];
                     permit = max_size == -1;
                     if (max_size >= 0) {
                         if (sizes != null) {
@@ -837,10 +844,7 @@
                     }
                     if (permit) {
                         permit_total = true;
-                        html += `<label>
-                            <input type=\"radio\" name=\"Select Song\" song-id=\"${index}\">
-                            <span>${song}</span>
-                            </label>`
+                        html += `<option type=\"radio\" name=\"Select Song\" value=\"${index}\">${song}</option>`
                     }
                 })
                 hook.innerHTML = html;
