@@ -864,7 +864,7 @@
                     }
                     if (permit) {
                         permit_total = true;
-                        html += `<option type=\"radio\" name=\"Select Song\" value=\"${index}\">${song}</option>`
+                        html += `<option type=\"radio\" name=\"Select Song\" value=\"${index}\"${index == 1 ? ' selected' : ''}>${song}</option>`
                     }
                 })
                 hook.innerHTML = html;
