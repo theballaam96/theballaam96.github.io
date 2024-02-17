@@ -54,6 +54,10 @@
             .loop-height {
                 height: 100%;
             }
+            #volume_demo {
+                background-color: green;
+                height: 5px;
+            }
         </style>
     </head>
     <body>
@@ -212,9 +216,21 @@
             </div>
             <div style="flex: 1" class="m-3">
                 <div id="player" class="card p-3 mb-3" hidden>
-                    <h3>Play Song</h3>
+                    <div class="d-flex">
+                        <h3 style="flex:9">Play Song</h3>
+                        <div>
+                            <label for="volume_strobing">Disable volume bar recolors</label>
+                            <input type="checkbox" id="volume_strobing "/>
+                        </div>
+                    </div>
                     <div style="font-style:italic;text-align:left">
                         <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                    </div>
+                    <div>
+                        <div class="mb-2">
+                            Volume <span id="max_volume_demo" class="badge text-bg-success">Max: 0</span> <span id="avg_volume_demo" class="badge text-bg-success">Avg: 0</span>
+                        </div>
+                        <div id="volume_demo">&nbsp;</div>
                     </div>
                     <div class="d-flex">
                         <span id="play-button" onclick="playMusic()"><i class="fa-solid fa-play"></i></span>
