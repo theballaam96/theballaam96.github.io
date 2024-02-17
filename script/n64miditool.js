@@ -16,7 +16,7 @@ const EVENT_LIMIT = 0x30000
 const POINTER_TABLE_OFFSET = 0x101C50
 let instrument_change_addresses = [];
 
-class Event {
+class N64MIDIEvent {
     constructor() {
         this.contents = null
         this.type = 0
@@ -279,7 +279,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     for (let x = 0; x < TRACK_LIMIT_BIG; x++) {
         track_events.push([])
         for (let y = 0; y < EVENT_LIMIT; y++) {
-            track_events[x].push(new Event())
+            track_events[x].push(new N64MIDIEvent())
         }
     }
     data = in_file.slice()
@@ -1300,13 +1300,7 @@ function writeToROMInternal(rom_array, slot, compressed_midi) {
 
 async function readMidiPorting(data) {
     let midi_f = new BufferFile(data)
-    let selected_template = null;
-    const settings = document.getElementById("template_select").getElementsByTagName("input")
-    for (let s = 0; s < settings.length; s++) {
-        if (settings[s].checked) {
-            selected_template = settings[s].getAttribute("template-file")
-        }
-    }
+    let selected_template = document.getElementById("template_select").value;
     if (selected_template) {
         await fetch(`./data/midi_conversions/${selected_template}`)
             .then(response => response.json())
@@ -1325,7 +1319,7 @@ async function readMidiPorting(data) {
                     }
                 })
                 if (midi_f.data.length > 0) {
-                    const name = last(document.getElementById("file-selector").value.split("\\"));
+                    const name = last(document.getElementById("porting-midi-selector").value.split("\\"));
                     writeToFile(midi_f.data, `CONVERTED_${name}`)
                 }
             });

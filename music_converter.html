@@ -1,9 +1,6 @@
-<html>
+<html data-bs-theme="dark" lang="en">
     <head>
-        <title>N64 Midi Tool (DK64 Edition)</title>
-        <link rel="stylesheet" href="style/nav.css">
-		<link rel="stylesheet" href="style/main.css">
-        <link rel="stylesheet" href="style/home.css">
+        <title>DK64 Music Converter</title>
         <link rel="stylesheet" href="style/midi-converter.css">
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -23,186 +20,270 @@
         <script src="script/pako.js"></script> <!-- File Compression -->
         <link as="script" href="script/js-synthesizer.worklet.min.js"> <!-- MIDI Playing -->
         <script src="script/n64miditool.js"></script>
+        <!-- Bootstrap -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <!-- FA -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <!-- BPS Handling -->
         <script type="text/javascript" src="script/bps.js" defer></script>
         <script type="text/javascript" src="script/MarcFile.js" defer></script>
+        <!-- Discord -->
+        <meta content="DK64 Music Converter" property="og:title" />
+        <meta content="MIDI Converter, intended for usage with Donkey Kong 64. Will convert MIDI files to binary files which can be used in-game." property="og:description" />
+        <meta content="DK64 Utils" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/head.png" property="og:image" />
+
+        <style>
+            body {
+                background-image: none;
+                background-color: rgba(30, 30, 30, 1);
+            }
+            .main_panel {
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 20px;
+            }
+            .hide {
+                display: none!important;
+            }
+            .loop-height {
+                height: 100%;
+            }
+            #volume_demo {
+                background-color: green;
+                height: 5px;
+            }
+        </style>
     </head>
     <body>
-        <nav id="navigation"></nav>
-		<nav id="navigation"></nav>
-        <div class="v_spacer">
-
-		</div>
-        <div class="flexsplitter center-container">
-            <div class="flexsplitter center-block">
-                <div class="homebox">
-                    <div class="header master_header">
-                        <strong>Donkey Kong 64 Midi Converter</strong>
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand excluded_link" href="#">
+                    Music Converter
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="width:fit-content;width:-moz-fit-content">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#portingModal"><i class="fa-solid fa-arrows-left-right-to-line"></i> Midi Porting</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#soundfontModal"><i class="fa-solid fa-headphones"></i> Fix Soundfont</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Resources
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="goTo('https://docs.google.com/spreadsheets/d/1ngZfHXbsOqFBTTCknMX0WEhyJ_xTcGP_a-1zPPY2AP0/edit#gid=48901832')"><i class="fa-solid fa-font"></i> Soundfont Data Table</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="goTo('https://pastebin.com/bSNHLsV3')"><i class="fa-solid fa-list"></i> OST List</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="goTo('https://youlean.co/file-loudness-meter/')"><i class="fa-solid fa-volume-high"></i> Loudness Tester</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Inputs -->
+        <input type="file" class="hide" id="porting-midi-selector" accept=".midi, .mid"/>
+        <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
+        <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
+        <input type="file" class="hide" id="dls-selector" accept=".dls"/>
+        <input type="file" class="hide" id="rom-selector" accept=".z64"/>
+        <!-- Song to Binary -->
+        <div class="main_panel">
+            <p>
+                Converts a MIDI File into a binary format that can be read and played by Donkey Kong 64 in-game.
+            </p>
+            <p>
+                The binary file can either be extracted as a standalone file for usage in <span style="font-style:italic">Randomizer</span> or <span style="font-style:italic">Cranky's Lab</span>
+                , or imported straight into a ROM.
+            </p>
+            <div class="d-flex">
+                <div class="px-3" style="flex:1">
+                    <button class="btn btn-outline-info" style="width:100%" onclick="clickEl('file-selector')">
+                        <i class="fa-solid fa-file-arrow-up"></i> Upload MIDI
+                    </button>
+                </div>
+                <div class="px-3" style="flex:1">
+                    <button class="btn btn-outline-warning" style="width:100%" onclick="clickEl('soundfont-selector')">
+                        <i class="fa-solid fa-file-arrow-up"></i> Load Soundfont
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Soundfont Modal -->
+        <div class="modal fade" id="soundfontModal" tabindex="-1" aria-labelledby="soundfontModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="soundfontModalLabel">Fix Soundfont</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Fixes the soundfont extracted with N64 Soundbank tool to sound better in editors like FL Studio.<br>
+                        Fixes by:
+                        <ul>
+                            <li><a href="https://www.youtube.com/@glitchglidertwo">GlitchGlider</a></li>
+                        </ul>
+                        <div class="d-flex">
+                            <button class="sf-loaders btn btn-primary" id="dls-loader" onclick="clickEl('dls-selector')" style="width:100%">Load Soundfont (DLS)</button>
+                        </div>
+                        <div id="sf-correction" hidden>
+                            <div id="soundfont-controls">
+                                <br />
+                                <h5>Select output format</h5>
+                                <div class="d-flex">
+                                    <div class="dls-radio-container">
+                                        <button class="sf-loaders dls-radio btn btn-primary" onclick="clickEl('sf-convert-dls'); handleButtonRadios(this, 'dls-radio')">DLS</button>
+                                    </div>
+                                    <div class="dls-radio-container">
+                                        <button class="sf-loaders dls-radio btn btn-secondary" onclick="clickEl('sf-convert-sf2'); handleButtonRadios(this, 'dls-radio')">SF2</button>
+                                    </div>
+                                </div>
+                                <input type="radio" id="sf-convert-dls" name="sf-convert" value="dls" class="dls-radio-internal hide" checked />
+                                <input type="radio" id="sf-convert-sf2" name="sf-convert" value="sf2" class="dls-radio-internal hide"/>
+                                <br />
+                                <h5>Download Fixed Soundfont</h5>
+                                <div class="d-flex">
+                                    <button class="sf-loaders btn btn-success" id="sf-downloader" onclick="downloadSoundfont()" style="width:100%">Download</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="flexsplitter center-container">
-            <div class="flexsplitter center-block">
-                <div class="homebox" style="color:white">
-                    <div class="flexsplitter">
-                        <div class="tab selected" association="midi-to-bin" editing="midi">Midi to Bin</div>
-                        <div class="tab" association="midi-porting" editing="midi">Midi Porting</div>
-                        <div class="tab" association="sf-correction" editing="soundfont">Fix Soundfont</div>
+        <!-- Porting Modal -->
+        <div class="modal fade" id="portingModal" tabindex="-1" aria-labelledby="portingModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="portingModalLabel">MIDI Porting</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <br>
-                    <div style="text-align:left">
-                        <div id="exp-midi-to-bin">
-                            <strong>Midi to Binary</strong><br>
-                            Converts a MIDI File into a binary format that can be read and played by Donkey Kong 64 in-game.<br>
-                            The binary file can either be extracted as a standalone file for usage in <span style="font-style:italic">Randomizer</span> or <span style="font-style:italic">Cranky's Lab</span>
-                            , or imported straight into a ROM.
-                        </div>
-                        <div id="exp-midi-porting" class="hide">
-                            <strong>Midi Porting</strong><br>
+                    <div class="modal-body">
+                        <p>
                             Converts a MIDI File from one game into the Donkey Kong 64 soundfont. Currently only supports the N64 Banjo titles due to 
                             their similarities to DK64 music-wise enabling music to sound very similar between games. However, this tool does have the
                             functionality to expand to any midi format from any game or general MIDI in general.
+                        </p>
+                        <div class="p-3 text-center">
+                            <button class="btn btn-primary" onclick="clickEl('porting-midi-selector')">
+                                Load MIDI
+                            </button>
                         </div>
-                        <div id="exp-sf-correction" class="hide">
-                            <strong>Fix Soundfont</strong><br>
-                            Fixes the soundfont extracted with N64 Soundbank tool to sound better in editors like FL Studio.<br>
-                            Fixes by:
-                            <ul>
-                                <li><a href="https://www.youtube.com/@glitchglidertwo">GlitchGlider</a></li>
-                            </ul>
+                        <div id="midi-port-controls" hidden>
+                            <p>
+                                <strong>Loaded MIDI: </strong><span id="porting-file-name"></span> 
+                            </p>
+                            <label for="template_select"><strong>Select Template:</strong></label>
+                            <select id="template_select" class="form-select"></select>
+                            <div class="p-3 text-center">
+                                <button class="btn btn-success" onclick="instrumentChange()">
+                                    Write new MIDI
+                                </button>
+                            </div>
                         </div>
                     </div>
-                    <div class="flexsplitter">
-                        <div id="left-separator" class="sep">
-                            <!-- Left box -->
-                            <div class="req-edit-midi">
-                                <h3>Song Loading</h3>
-                                <div class="flexsplitter">
-                                    <button class="midi-loaders" onclick="clickEl('file-selector')">Load MIDI</button>
-                                    <button class="midi-loaders req-midi hide" onclick="clickEl('soundfont-selector')">Load Soundfont</button>
-                                </div>
-                            </div>
-                            <div class="req-edit-soundfont hide">
-                                <div class="flexsplitter">
-                                    <button class="sf-loaders" id="dls-loader" onclick="clickEl('dls-selector')" style="width:100%">Load Soundfont (DLS)</button>
-                                </div>
-                                <div id="sf-correction" class="hide">
-                                    <div id="soundfont-controls" class="hide">
-                                        <br />
-                                        <h3>Select output format</h3>
-                                        <div class="flexsplitter">
-                                            <div class="dls-radio-container">
-                                                <button class="sf-loaders dls-radio button-radio-selected" onclick="clickEl('sf-convert-dls'); handleButtonRadios(this, 'dls-radio')">DLS</button>
-                                            </div>
-                                            <div class="dls-radio-container">
-                                                <button class="sf-loaders dls-radio" onclick="clickEl('sf-convert-sf2'); handleButtonRadios(this, 'dls-radio')">SF2</button>
-                                            </div>
-                                        </div>
-                                        <input type="radio" id="sf-convert-dls" name="sf-convert" value="dls" class="dls-radio-internal hide" checked />
-                                        <input type="radio" id="sf-convert-sf2" name="sf-convert" value="sf2" class="dls-radio-internal hide"/>
-                                        <br />
-                                        <h3>Download Fixed Soundfont</h3>
-                                        <div class="flexsplitter">
-                                            <button class="sf-loaders" id="sf-downloader" onclick="downloadSoundfont()" style="width:100%">Download</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
-                            <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
-                            <input type="file" class="hide" id="dls-selector" accept=".dls"/>
-                            <input type="file" class="hide" id="rom-selector" accept=".z64"/>
-                            <div class="req-edit-midi">
-                                <div class="req-midi">
-                                    <div id="stats">
-                                        <div id="stat-name"></div>
-                                        <div id="stat-duration"></div>
-                                        <div id="stat-durationticks"></div>
-                                        <div id="stat-durationmeasures"></div>
-                                        <div id="stat-ppq"></div>
-                                        <div id="stat-size"></div>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex req-midi hide" style="width: 90%; margin-left: auto; margin-right: auto" hidden>
+            <div class="card m-3" style="flex:1">
+                <div id="stats" class="p-3">
+                    <h3>Midi Statistics</h3>
+                    <div id="stat-name"></div>
+                    <div id="stat-duration"></div>
+                    <div id="stat-durationticks"></div>
+                    <div id="stat-durationmeasures"></div>
+                    <div id="stat-ppq"></div>
+                    <div id="stat-size"></div>
+                </div>
+            </div>
+            <div style="flex: 1" class="m-3">
+                <div id="player" class="card p-3 mb-3" hidden>
+                    <div class="d-flex">
+                        <h3 style="flex:9">Play Song</h3>
+                        <div>
+                            <label for="volume_strobing">Disable volume bar recolors</label>
+                            <input type="checkbox" id="volume_strobing "/>
                         </div>
-                        <div class="sep req-midi hide">
-                            <div class="req-edit-midi">
-                                <div class="req-midi hide">
-                                    <div id="midi-to-bin">
-                                        <!-- Right box -->
-                                        <h3>Song Actions</h3>
-                                        <div class="req-midi" class="hide">
-                                            <div id="player" class="hide">
-                                                <div style="text-align:left;font-weight:bold">Play Song</div>
-                                                <div style="font-style:italic;text-align:left">
-                                                    <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
-                                                </div>
-                                                <div class="flexsplitter">
-                                                    <span id="play-button" onclick="playMusic()">&#9654;</span>
-                                                    <input
-                                                        type="range" 
-                                                        min="0" 
-                                                        max="100" 
-                                                        id="player-navigator" 
-                                                        ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
-                                                        ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
-                                                        ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
-                                                        />
-                                                    <span id="player-position-display"></span>
-                                                </div>
-                                            </div>
-                                            <div id="player-sep" class="hide">
-                                                <hr>
-                                                <div style="text-align:left;font-weight:bold">Binary Generation Settings</div>
-                                            </div>
-                                            <div class="flexsplitter">
-                                                <div class="sep" style="text-align:left">
-                                                    <label>Loop:</label>
-                                                    <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
-                                                </div>
-                                                <div id="loop-point-info" class="sep hide" style="flex:2">
-                                                    <label for="loop-point">Loop Point (Ticks)</label>
-                                                    <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
-                                                </div>
-                                            </div>
-                                            <div class="flexsplitter">
-                                                <div class="sep">
-                                                    <button onclick="toBinary(true)" class="song-action-button">Convert to binary</button>
-                                                </div>
-                                                <div class="sep">
-                                                    <div class="req-no-preload">
-                                                        <button onclick="preloadROMWrite()" class="song-action-button">Preload ROM Write</button>
-                                                    </div>
-                                                    <div class="req-preload hide">
-                                                        <button onclick="writeToROM()" class="song-action-button">Write to ROM</button>
-                                                    </div>
-                                                    <div class="req-preload hide">
-                                                        <div class="list-choice">
-                                                            <div class="list-choice-title">Select Song</div>
-                                                            <div class="list-choice-objects" id="song_list"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div id="midi-porting" class="hide">
-                                        <div class="list-choice">
-                                            <div class="list-choice-title">Select Template</div>
-                                            <div class="list-choice-objects" id="template_select"></div>
-                                        </div>
-                                        <button onclick="instrumentChange()">
-                                            Write new MIDI
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
+                    </div>
+                    <div style="font-style:italic;text-align:left">
+                        <strong>NOTE:</strong> This won't sound *exactly* like how it will in game. This is just a rough approximation
+                    </div>
+                    <div>
+                        <div class="mb-2">
+                            Volume <span id="max_volume_demo" class="badge text-bg-success">Max: 0</span> <span id="avg_volume_demo" class="badge text-bg-success">Avg: 0</span>
+                        </div>
+                        <div id="volume_demo">&nbsp;</div>
+                    </div>
+                    <div class="d-flex">
+                        <span id="play-button" onclick="playMusic()"><i class="fa-solid fa-play"></i></span>
+                        <input
+                            type="range" 
+                            min="0" 
+                            max="100" 
+                            id="player-navigator" 
+                            ontouchstart="navigatorClick(true)" onmousedown="navigatorClick(true)"
+                            ontouchend="navigatorClick(false)" onmouseup="navigatorClick(false)"
+                            ontouchmove="navigatorMove(false)" onmousemove="navigatorMove(false)"
+                            />
+                        <span id="player-position-display"></span>
+                    </div>
+                </div>
+                <div class="card loop-height p-3" id="loop-controls">
+                    <h3>Loop Controls</h3>
+                    <div class="d-flex">
+                        <div class="sep" style="text-align:left">
+                            <label>Loop:</label>
+                            <input id="loop-check" type="checkbox" onclick="toggleLoop()" />
+                        </div>
+                        <div id="loop-point-info" class="sep hide" style="flex:2">
+                            <label for="loop-point">Loop Point (Ticks)</label>
+                            <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <script src="script/nav.js"></script>
+        <div class="req-midi" style="width:90%; margin-left:auto; margin-right: auto" hidden>
+            <div class="d-flex">
+                <div class="sep">
+                    <div class="p-3">
+                        <button onclick="toBinary(true)" class="song-action-button btn btn-success">Convert to binary</button>
+                    </div>
+                </div>
+                <div class="sep">
+                    <div class="req-no-preload p-3">
+                        <button onclick="preloadROMWrite()" class="song-action-button btn btn-primary">Preload ROM Write</button>
+                    </div>
+                    <div class="req-preload d-flex hide" hidden>
+                        <div class="p-3">
+                            <button onclick="writeToROM()" class="song-action-button btn btn-success">Write to ROM</button>
+                        </div>
+                        <div class="px-3">
+                            <label for="song_list"><strong>Select Song:</strong></label>
+                            <select class="form-select" id="song_list"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script src="script/sfplayer.js"></script>
         <script>
             function clickEl(id) {
@@ -236,12 +317,18 @@
                 })
             }
 
+            function loadPortingMidi() {
+                document.getElementById("midi-port-controls").removeAttribute("hidden");
+            }
+
             function handleButtonRadios(evt, cls) {
                 radios = document.getElementsByClassName(cls);
                 for (let i = 0; i < radios.length; i++) {
-                    radios[i].classList.remove("button-radio-selected");
+                    radios[i].classList.remove("btn-primary");
+                    radios[i].classList.add("btn-secondary");
                 }
-                evt.classList.add("button-radio-selected");
+                evt.classList.remove("btn-secondary")
+                evt.classList.add("btn-primary");
             }
 
             let dls_base = null;
@@ -251,10 +338,9 @@
                 fr.onload = function() {
                     console.log("Loading DLS")
                     var data = fr.result;
-                    console.log(data)
                     dls_base_res = data;
                     dls_base = new MarcFile(new Uint8Array(data));
-                    console.log(dls_base)
+                    document.getElementById("sf-correction").removeAttribute("hidden");
                 };
                 fr.readAsArrayBuffer(document.getElementById("dls-selector").files[0]);
             })
@@ -337,6 +423,10 @@
                 return arr[arr.length - 1]
             }
 
+            function goTo(url) {
+                window.open(url, "_blank");
+            }
+
             function updateStatStyle() {
                 stats = ["stat-name","stat-duration","stat-durationticks","stat-durationmeasures","stat-ppq"]
                 stats.forEach(stat => {
@@ -353,7 +443,7 @@
             const RANDO_BIN_LIMIT = 32768
 
             function updateBinarySize() {
-                toBinary(false)
+                toBinary(false, current_midi_file, "file-selector")
                 const data = new Uint8Array(output_bin_file.slice());
                 document.getElementById("stat-size").innerHTML = `<strong>Binary Size</strong>: ${data.length} ${
                     data.length > VANILLA_BIN_LIMIT ?
@@ -395,6 +485,7 @@
             }
 
             let current_midi_file = []
+            let current_porting_midi_file = [];
             let compressed_midi = []
             let output_bin_file = []
             let rom_file = []
@@ -412,9 +503,9 @@
                     current_midi_file = array.slice()
                     let midi_reqs = document.getElementsByClassName("req-midi")
                     for (let m = 0; m < midi_reqs.length; m++) {
+                        midi_reqs[m].removeAttribute("hidden")
                         midi_reqs[m].classList.remove("hide")
                     }
-                    document.getElementById("left-separator").classList.add("sep-left")
                     console.log(current_midi_file)
                     // Midi Stat stuff
                     const midi = new Midi(data);
@@ -434,6 +525,21 @@
                 };
                 fr.readAsArrayBuffer(document.getElementById("file-selector").files[0]);
             })
+            document.getElementById("porting-midi-selector").addEventListener("change", function(e) {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    var data = fr.result;
+                    var array = new Uint8Array(data);
+                    loadPortingMidi();
+                    //window.clampMidi(fr.result)
+                    current_porting_midi_file = array.slice()
+                    console.log(current_porting_midi_file)
+                    const raw_file_name = document.getElementById("porting-midi-selector").value;
+                    const raw_file_split = raw_file_name.split("\\")
+                    document.getElementById("porting-file-name").innerText = raw_file_split[raw_file_split.length - 1];
+                };
+                fr.readAsArrayBuffer(document.getElementById("porting-midi-selector").files[0]);
+            })
             document.getElementById("soundfont-selector").addEventListener("change", function(e) {
                 var fr = new FileReader();
                 fr.onload = function() {
@@ -441,9 +547,11 @@
                     var array = new Uint8Array(data);
                     sfURL = URL.createObjectURL(e.target.files[0])
                     sfBuffer = u8arrayToBuffer(array)
-                    document.getElementById("player").classList.remove("hide")             
-                    document.getElementById("player-sep").classList.remove("hide")
-                    document.getElementById("soundfont-controls").classList.remove("hide")
+                    document.getElementById("player").removeAttribute("hidden")           
+                    //document.getElementById("player-sep").removeAttribute("hidden")    
+                    document.getElementById("soundfont-controls").removeAttribute("hidden")
+                    console.log("Removing")
+                    document.getElementById("loop-controls").classList.remove("loop-height")    
                     if (synth) {
                         synth.stopPlayer();
                     }
@@ -455,7 +563,7 @@
                 fr.onload = function() {
                     var data = fr.result;
                     var array = new Uint8Array(data);
-                    document.getElementById("soundfont-controls").classList.remove("hide")
+                    document.getElementById("soundfont-controls").removeAttribute("hidden")
                 };
                 fr.readAsArrayBuffer(document.getElementById("dls-selector").files[0]);
             })
@@ -476,8 +584,9 @@
 
             let GLOBAL_NO_REPEATERS_SETTING = true;
 
-            function toBinary(write_binary) {
-                input_file_name = document.getElementById("file-selector").value
+            function toBinary(write_binary, file_bytes, element) {
+                console.log(element)
+                input_file_name = document.getElementById(element).value
                 loop_data = getLoopStatus()
                 loop = loop_data["loop"]
                 loop_point = loop_data["point"]
@@ -489,7 +598,7 @@
                 console.log("Loop Point:",loop_point)
                 console.log("Disable Repeaters:",no_repeaters)
                 console.log("Output File:",output_file)
-                output_bin_file = MidiToGEFormat(current_midi_file, [], loop, loop_point, no_repeaters, true)
+                output_bin_file = MidiToGEFormat(file_bytes, [], loop, loop_point, no_repeaters, true)
                 data_len = output_bin_file.length
                 cap = 0x10
                 if ((data_len % cap) != 0) {
@@ -518,8 +627,10 @@
                 const anti_preloaders = document.getElementsByClassName("req-no-preload")
                 for (let p = 0; p < preloaders.length; p++) {
                     if (show) {
+                        preloaders[p].removeAttribute("hidden")
                         preloaders[p].classList.remove("hide")
                     } else {
+                        preloaders[p].setAttribute("hidden", "hidden")
                         preloaders[p].classList.add("hide")
                     }
                 }
@@ -536,20 +647,15 @@
             }
             
             function preloadROMWrite() {
-                toBinary(false)
+                toBinary(false, current_midi_file, "file-selector")
                 const data = new Uint8Array(output_bin_file.slice());
                 compressed_midi = Array.from(pako.gzip(data, {"level": 9}));
                 clickEl("rom-selector");
             }
 
             function writeToROM() {
-                let slot_childen = document.getElementById("song_list").getElementsByTagName("input")
-                let slot = null;
-                for (let s = 0; s < slot_childen.length; s++) {
-                    if (slot_childen[s].checked) {
-                        slot = Number(slot_childen[s].getAttribute("song-id"))
-                    }
-                }
+                let slot = document.getElementById("song_list").value;
+                console.log(slot);
                 if (slot != null) {
                     const new_rom = writeToROMInternal(rom_file.slice(), slot, compressed_midi.slice());
                     writeToFile(new_rom, "song-altered-dk64.z64");
@@ -738,7 +844,14 @@
                 const hook = document.getElementById("song_list");
                 html = "";
                 let permit_total = false;
+                let song_to_index_mapping = {};
                 SONG_ITEMS.forEach((song, index) => {
+                    song_to_index_mapping[song] = index;
+                })
+                song_names = SONG_ITEMS.slice();
+                song_names.sort();
+                song_names.forEach(song => {
+                    index = song_to_index_mapping[song];
                     permit = max_size == -1;
                     if (max_size >= 0) {
                         if (sizes != null) {
@@ -747,10 +860,7 @@
                     }
                     if (permit) {
                         permit_total = true;
-                        html += `<label>
-                            <input type=\"radio\" name=\"Select Song\" song-id=\"${index}\">
-                            <span>${song}</span>
-                            </label>`
+                        html += `<option type=\"radio\" name=\"Select Song\" value=\"${index}\">${song}</option>`
                     }
                 })
                 hook.innerHTML = html;
@@ -759,8 +869,8 @@
             loadSongList(-1);
 
             function instrumentChange() {
-                toBinary(false);
-                readMidiPorting(current_midi_file.slice());
+                toBinary(false, current_porting_midi_file, "porting-midi-selector");
+                readMidiPorting(current_porting_midi_file.slice());
             }
 
             const TEMPLATE_DATA = [
@@ -770,16 +880,11 @@
 
             function loadTemplates() {
                 const hook = document.getElementById("template_select");
-                html = "";
-                TEMPLATE_DATA.forEach(template => {
-                    html += `<label>
-                        <input type=\"radio\" name=\"Select Song\" template-file=\"${template['file']}.json\">
-                        <span>${template['name']}</span>
-                        </label>`
-                })
+                html = TEMPLATE_DATA.map(template => `<option type=\"radio\" name=\"Select Song\" value=\"${template['file']}.json\">${template['name']}</option>`).join("");
                 hook.innerHTML = html;
             }
             loadTemplates();
         </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
 </html>

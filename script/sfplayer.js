@@ -1,5 +1,6 @@
 /** @type {AudioContext | undefined} */
 let ac;
+let analyzerNode;
 
 let sfontBin;
 let musicBin;
@@ -65,6 +66,10 @@ function loadMusic() {
 			);
 }
 
+let max_volume = 0;
+let avg_volume = 0;
+let volume_points = 0;
+
 async function initializeSynthesizer(useDefaultSFont) {
 	// Load Soundfont binary asynchronously
 	const promiseSFont = loadSFont(useDefaultSFont);
@@ -85,7 +90,12 @@ async function initializeSynthesizer(useDefaultSFont) {
 		synth = new JSSynth.AudioWorkletNodeSynthesizer();
 		synth.init(ac.sampleRate);
 		const node = synth.createAudioNode(ac);
-		node.connect(ac.destination);
+
+		// Create and connect an analyzer node
+		analyzerNode = ac.createAnalyser();
+		analyzerNode.fftSize = 256;
+		node.connect(analyzerNode);
+		analyzerNode.connect(ac.destination);
 	}
 
 	// Load binaries
@@ -93,10 +103,83 @@ async function initializeSynthesizer(useDefaultSFont) {
 
 	// Load SoundFont data to the synthesizer
 	sfontId = await synth.loadSFont(sfontBin);
-		
+
+	resetVolumeStats();
+	setInterval(() => {
+		// Accumulate Volume Data
+		collateVolumeData();
+	}, 10);
+
 	return synth;
 }
 setPlayingStatus("Stopped")
+
+function resetVolumeStats() {
+	max_volume = 0;
+	avg_volume = 0;
+	volume_points = 0;
+}
+
+function getVolumeSeverity(volume) {
+	if (volume > 130) {
+		return 2;
+	}
+	if (volume > 120) {
+		return 1;
+	}
+	return 0;
+}
+
+function collateVolumeData() {
+	if (playingStatus != "Playing") {
+		resetVolumeStats();
+		return;
+	}
+	volume_points += 1;
+	const synth_volume = getVolume();
+	const volume_hook = document.getElementById("volume_demo");
+	avg_volume = ((avg_volume * (volume_points - 1)) + synth_volume) / volume_points;
+	if (synth_volume > max_volume) {
+		max_volume = synth_volume;
+	}
+	const experienced_width = parseInt(3 * synth_volume);
+	volume_hook.style["min-width"] = `${experienced_width}px`
+	volume_hook.style["max-width"] = `${experienced_width}px`
+	const badges = ["success", "warning", "danger"]
+	const colors = ["#194A04", "#f0f000", "#f00000"]
+	current_max_badge = getVolumeSeverity(max_volume);
+	current_avg_badge = getVolumeSeverity(avg_volume);
+	if (document.getElementById("volume_strobing ").checked) {
+		current_base_color = 0;
+	} else {
+		current_base_color = getVolumeSeverity(synth_volume);
+	}
+	volume_hook.style["background-color"] = colors[current_base_color];
+	const max_volume_hook = document.getElementById("max_volume_demo");
+	const avg_volume_hook = document.getElementById("avg_volume_demo");
+	badges.forEach(badge => {
+		max_volume_hook.classList.remove(`text-bg-${badge}`);
+		avg_volume_hook.classList.remove(`text-bg-${badge}`);
+	})
+	max_volume_hook.classList.add(`text-bg-${badges[current_max_badge]}`)
+	avg_volume_hook.classList.add(`text-bg-${badges[current_avg_badge]}`)
+	max_volume_hook.innerText = `Max: ${parseInt(max_volume * 10) / 10}`;
+	avg_volume_hook.innerText = `Avg: ${parseInt(avg_volume * 10) / 10}`;
+}
+
+function getVolume() {
+	if (!analyzerNode) {
+		return 0;
+	}
+	const data = new Uint8Array(analyzerNode.frequencyBinCount);
+	analyzerNode.getByteFrequencyData(data);
+	let sum = 0;
+	for (let i = 0; i < data.length; i++) {
+		sum += data[i];
+	}
+	const average = sum / data.length;
+	return average;
+}
 
 function setPlayingStatus(status) {
     const hook = document.getElementById("play-button")
@@ -106,7 +189,7 @@ function setPlayingStatus(status) {
             "class_set": "playbtn-play",
             "text": "Stop",
             "svg": "pause",
-			"html": "&#9632;",
+			"html": "<i class=\"fa-solid fa-stop\"></i>",
         },
         {
             "target_status": "Preparing",
@@ -120,7 +203,7 @@ function setPlayingStatus(status) {
             "class_set": "playbtn-stop",
             "text": "Play",
             "svg": "play",
-			"html": "&#9654;",
+			"html": "<i class=\"fa-solid fa-play\"></i>",
         },
     ]
     class_data.forEach(item => {
