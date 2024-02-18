@@ -485,7 +485,8 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#changelogModal"><i class="fa-solid fa-clipboard"></i> Song Changelog</a></li>
-                                <li><a class="dropdown-item excluded_link" href="#" onclick="submitSong()"><i class="fa-solid fa-music"></i> Submit Song</a></li>
+                                <li><a class="dropdown-item excluded_link" href="https://theballaam96.github.io/submission_form" rel="noreferrer noopener" target="_blank"><i class="fa-solid fa-music"></i> Submit Song</a></li>
+                                <li><a class="dropdown-item excluded_link" href="https://theballaam96.github.io/music_converter" rel="noreferrer noopener" target="_blank"><i class="fa-solid fa-arrows-rotate"></i> Convert Song</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="getShareLink(true, false, false, 0, false)"><i class="fa-solid fa-link"></i> Get Shareable Link</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="getYTPlaylist()"><i class="fa-brands fa-youtube"></i> Get YouTube Playlist</a></li>
                             </ul>
@@ -2533,11 +2534,6 @@
             function setTextView(state, update_cookie) {
                 document.getElementById("text-view").checked = state;
                 handleTextView(update_cookie);
-            }
-
-            function submitSong() {
-                const LINK = "https://script.google.com/macros/s/AKfycbwetNkcuX68j1hSMt0U2F_xmTHFe3hQp6my3cnHXwxICMJVt5NTyD8_aYcrMqEuSwuyfQ/exec"
-                sendToURL(LINK)
             }
 
             let previous_width = null;
