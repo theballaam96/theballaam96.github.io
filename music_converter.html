@@ -202,13 +202,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Adjusts all volume events by a factor, to ease rebalancing the audio from a MIDI file
+                        <p>
+                            Adjusts all volume events by a factor, to ease rebalancing the audio from a MIDI file.
+                            <br /><br />
+                            <strong>NOTE: </strong>MIDI file volume events cannot exceed a volume of 127. Exceeding this (denoted by "Max Ratio without compromising balance") will mean that your balance between track volumes may be disturbed.
+                        </p>
                         <div class="d-flex">
                             <button class="btn btn-primary" onclick="clickEl('rebalancing-midi-selector')" style="width:100%">Load MIDI</button>
                         </div>
                         <div id="midi-rebalance-controls" hidden>
                             <p>
-                                <strong>Loaded MIDI: </strong><span id="rebalancing-file-name"></span> 
+                                <div>
+                                    <strong>Loaded MIDI: </strong><span id="rebalancing-file-name"></span> 
+                                </div>
+                                <div id="rebalancing-boost-container">
+                                    <strong>Max Ratio without compromising balance: </strong><span id="rebalancing-boost"></span>
+                                </div>
                             </p>
                             <div class="d-flex">
                                 <div>
@@ -634,6 +643,16 @@
                     //window.clampMidi(fr.result)
                     current_rebalancing_midi_file = array.slice()
                     console.log(current_rebalancing_midi_file)
+                    toBinary(false, current_rebalancing_midi_file, "rebalancing-midi-selector");
+                    const max_boost = getMaximumVolumeBoost(current_rebalancing_midi_file.slice());
+                    const max_boost_hook = document.getElementById("rebalancing-boost");
+                    document.getElementById("rebalancing-boost-container").removeAttribute("hidden");
+                    max_boost_hook.innerText = "";
+                    if (max_boost != null) {
+                        max_boost_hook.innerText = `${parseInt(100 * max_boost)}%`;
+                    } else {
+                        document.getElementById("rebalancing-boost-container").setAttribute("hidden", "hidden");
+                    }
                     const raw_file_name = document.getElementById("rebalancing-midi-selector").value;
                     const raw_file_split = raw_file_name.split("\\")
                     document.getElementById("rebalancing-file-name").innerText = raw_file_split[raw_file_split.length - 1];

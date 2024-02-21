@@ -1332,11 +1332,27 @@ async function readMidiPorting(data) {
     }
 }
 
+function getMaximumVolumeBoost(data) {
+    let max_volume = -1;
+    let midi_f = new BufferFile(data);
+    volume_change_addresses.forEach(addr => {
+        midi_f.seek(addr)
+        const volume = midi_f.readNum(1);
+        if (volume > max_volume) {
+            max_volume = volume;
+        }
+    })
+    if (max_volume == 0) {
+        return null;
+    }
+    return 127 / max_volume;
+}
+
 function adjustMIDIVolume(data, ratio) {
     let midi_f = new BufferFile(data);
     volume_change_addresses.forEach(addr => {
         midi_f.seek(addr)
-        const old_volume = midi_f.readNum(1) + 1;
+        const old_volume = midi_f.readNum(1);
         let new_value = parseInt(old_volume * ratio);
         if (new_value < 0) {
             new_value = 0;
