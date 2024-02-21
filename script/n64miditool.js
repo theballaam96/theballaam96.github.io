@@ -15,6 +15,7 @@ const TRACK_LIMIT_SMALL = 16
 const EVENT_LIMIT = 0x30000
 const POINTER_TABLE_OFFSET = 0x101C50
 let instrument_change_addresses = [];
+let volume_change_addresses = [];
 
 class N64MIDIEvent {
     constructor() {
@@ -276,6 +277,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     track_events = []
     track_event_count = Array(TRACK_LIMIT_BIG).fill(0)
     instrument_change_addresses = []
+    volume_change_addresses = []
     for (let x = 0; x < TRACK_LIMIT_BIG; x++) {
         track_events.push([])
         for (let y = 0; y < EVENT_LIMIT; y++) {
@@ -478,6 +480,10 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
                 repeatPattern = rmb.altPattern
                 alt_offset = rmb.altOffset
                 alt_length = rmb.altLength
+                if (controller_type == 7) {
+                    // Volume Change
+                    volume_change_addresses.push(position - 1)
+                }
                 controller_value = rmb.returnByte
                 if (!status_bit) {
                     previous_event_value = eventVal
@@ -1323,5 +1329,26 @@ async function readMidiPorting(data) {
                     writeToFile(midi_f.data, `CONVERTED_${name}`)
                 }
             });
+    }
+}
+
+function adjustMIDIVolume(data, ratio) {
+    let midi_f = new BufferFile(data);
+    volume_change_addresses.forEach(addr => {
+        midi_f.seek(addr)
+        const old_volume = midi_f.readNum(1) + 1;
+        let new_value = parseInt(old_volume * ratio);
+        if (new_value < 0) {
+            new_value = 0;
+        } else if (new_value > 127) {
+            new_value = 127;
+        }
+        midi_f.seek(addr)
+        console.log(old_volume - 1, "->", new_value);
+        midi_f.writeNum(new_value, 1);
+    })
+    if (midi_f.data.length > 0) {
+        const name = last(document.getElementById("rebalancing-midi-selector").value.split("\\"));
+        writeToFile(midi_f.data, `REBALANCED_${name}`)
     }
 }

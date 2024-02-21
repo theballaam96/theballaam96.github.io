@@ -60,6 +60,29 @@
                 background-color: green;
                 height: 5px;
             }
+            .bubble {
+                background: #0d6efd;
+                color: white;
+                padding: 4px 12px;
+                position: absolute;
+                border-radius: 4px;
+                left: 50%;
+                transform: translateX(-50%);
+                top: 2rem;
+            }
+            .bubble::after {
+                content: "";
+                position: absolute;
+                width: 2px;
+                height: 2px;
+                background: #0d6efd;
+                top: -1px;
+                left: 50%;
+            }
+            .range-wrap {
+                position: relative;
+                margin: 0 auto 3rem;
+            }
         </style>
     </head>
     <body>
@@ -79,6 +102,9 @@
                         <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#soundfontModal"><i class="fa-solid fa-headphones"></i> Fix Soundfont</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#rebalanceModal"><i class="fa-solid fa-headphones"></i> Rebalance MIDI</a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Resources
@@ -95,6 +121,7 @@
         </nav>
         <!-- Inputs -->
         <input type="file" class="hide" id="porting-midi-selector" accept=".midi, .mid"/>
+        <input type="file" class="hide" id="rebalancing-midi-selector" accept=".midi, .mid"/>
         <input type="file" class="hide" id="file-selector" accept=".midi, .mid"/>
         <input type="file" class="hide" id="soundfont-selector" accept=".sf2"/>
         <input type="file" class="hide" id="dls-selector" accept=".dls"/>
@@ -157,6 +184,48 @@
                                 <div class="d-flex">
                                     <button class="sf-loaders btn btn-success" id="sf-downloader" onclick="downloadSoundfont()" style="width:100%">Download</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Rebalance Modal -->
+        <div class="modal fade" id="rebalanceModal" tabindex="-1" aria-labelledby="rebalanceModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="rebalanceModalLabel">Fix Soundfont</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Adjusts all volume events by a factor, to ease rebalancing the audio from a MIDI file
+                        <div class="d-flex">
+                            <button class="btn btn-primary" onclick="clickEl('rebalancing-midi-selector')" style="width:100%">Load MIDI</button>
+                        </div>
+                        <div id="midi-rebalance-controls" hidden>
+                            <p>
+                                <strong>Loaded MIDI: </strong><span id="rebalancing-file-name"></span> 
+                            </p>
+                            <div class="d-flex">
+                                <div>
+                                    0%
+                                </div>
+                                <div style="flex:9" class="range-wrap">
+                                    <input type="range" class="form-range" id="rebalancing_ratio" min="0" max="200" style="width:100%"/>
+                                    <output class="bubble" id="rebalancing_bubble">100%</output>
+                                </div>
+                                <div>
+                                    200%
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <button class="btn btn-success" style="width:100%" onclick="rebalanceMidiWrapper()">
+                                    Apply Rebalance
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -502,6 +571,7 @@
 
             let current_midi_file = []
             let current_porting_midi_file = [];
+            let current_rebalancing_midi_file = [];
             let compressed_midi = []
             let output_bin_file = []
             let rom_file = []
@@ -556,6 +626,21 @@
                 };
                 fr.readAsArrayBuffer(document.getElementById("porting-midi-selector").files[0]);
             })
+            document.getElementById("rebalancing-midi-selector").addEventListener("change", function(e) {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    var data = fr.result;
+                    var array = new Uint8Array(data);
+                    //window.clampMidi(fr.result)
+                    current_rebalancing_midi_file = array.slice()
+                    console.log(current_rebalancing_midi_file)
+                    const raw_file_name = document.getElementById("rebalancing-midi-selector").value;
+                    const raw_file_split = raw_file_name.split("\\")
+                    document.getElementById("rebalancing-file-name").innerText = raw_file_split[raw_file_split.length - 1];
+                    document.getElementById("midi-rebalance-controls").removeAttribute("hidden");
+                };
+                fr.readAsArrayBuffer(document.getElementById("rebalancing-midi-selector").files[0]);
+            })
             document.getElementById("soundfont-selector").addEventListener("change", function(e) {
                 var fr = new FileReader();
                 fr.onload = function() {
@@ -597,6 +682,19 @@
                 };
                 fr.readAsArrayBuffer(document.getElementById("rom-selector").files[0]);
             })
+            function setBubble(range, bubble) {
+                const val = range.value;
+                const min = range.min ? range.min : 0;
+                const max = range.max ? range.max : 100;
+                const newVal = Number(((val - min) * 100) / (max - min));
+                bubble.innerHTML = `${val}%`;
+              
+                // Sorta magic numbers based on size of the native UI thumb
+                bubble.style.left = `calc(${newVal}% + (${8 - newVal * 0.15}px))`;
+            }
+            document.getElementById("rebalancing_ratio").addEventListener("input", (e) => {
+                setBubble(document.getElementById("rebalancing_ratio"), document.getElementById("rebalancing_bubble"))
+            }) 
 
             let GLOBAL_NO_REPEATERS_SETTING = true;
 
@@ -887,6 +985,17 @@
             function instrumentChange() {
                 toBinary(false, current_porting_midi_file, "porting-midi-selector");
                 readMidiPorting(current_porting_midi_file.slice());
+            }
+
+            function rebalanceMidi(ratio) {
+                toBinary(false, current_rebalancing_midi_file, "rebalancing-midi-selector");
+                adjustMIDIVolume(current_rebalancing_midi_file.slice(), ratio)
+            }
+
+            function rebalanceMidiWrapper() {
+                const rebalance_ratio_hook = document.getElementById("rebalancing_ratio");
+                const ratio = rebalance_ratio_hook.value / 100;
+                rebalanceMidi(ratio);
             }
 
             const TEMPLATE_DATA = [
