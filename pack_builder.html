@@ -1679,7 +1679,7 @@
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        if (output_as_encoded) {
+                        if ((output_as_encoded) && (file.append_extension)) {
                             c_zip = new JSZip();
                             logo_name = filterFilename(`${file.game}.png`)
                             c_zip.file(filterFilename("song.bin"), file.data); // Song
