@@ -446,6 +446,7 @@
                         height = image.bitmap.height;
                         descale = Math.min(64 / width, 64 / height);
                         image.resize(width * descale, height * descale);
+                        image.flip(true, false);
                         // Regrab data
                         width = image.bitmap.width;
                         height = image.bitmap.height;
