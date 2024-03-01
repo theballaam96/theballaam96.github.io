@@ -1,0 +1,477 @@
+<html data-bs-theme="dark" lang="en">
+    <head>
+        <title>DK64 Randomizer Cosmetic Pack Builder</title>
+		<link rel="stylesheet" href="style/main.css">
+        <link rel="stylesheet" href="style/home.css">
+        <link rel="stylesheet" href="style/midi-converter.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="manifest" href="/site.webmanifest">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+		<meta name="msapplication-TileColor" content="#da532c">
+		<meta name="theme-color" content="#ffffff">
+		<meta name="description" content="" />
+        <!-- Discord -->
+        <meta content="DK64 Pack Builder" property="og:title" />
+        <meta content="Music Pack creator for Donkey Kong 64, serving as hub for video game songs which have been transposed to the DK64 soundfont." property="og:description" />
+        <meta content="DK64 Utils" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/head.png" property="og:image" />
+        <!-- Scripts and Styles -->
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jimp@0.3.5/browser/lib/jimp.min.js"></script>
+
+        <style>
+            body {
+                background-image: none;
+                background-color: rgba(30, 30, 30, 1);
+            }
+            .main_panel {
+                width: 90%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #viewport {
+                border: 1px solid white;
+                background-color: greenyellow;
+            }
+            .color-item {
+                width: 32px;
+                height: 32px;
+                border: 1px solid white;
+                transition: 0.5s ease-in-out;
+            }
+            .color-item:hover {
+                border-color: darkgreen;
+            }
+            .color-item.selected {
+                border-color: lawngreen;
+            }
+            .fill-item {
+                position: relative;
+            }
+            .fill-item i {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            .transparent-background {
+                background: -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), -webkit-linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), white;
+                background: -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), -moz-linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), white;
+                background: linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), linear-gradient(45deg, rgba(0, 0, 0, 0.0980392) 25%, transparent 25%, transparent 75%, rgba(0, 0, 0, 0.0980392) 75%, rgba(0, 0, 0, 0.0980392) 0), white;
+                background-repeat: repeat, repeat;
+                background-position: 0px 0, 5px 5px;
+                -webkit-transform-origin: 0 0 0;
+                transform-origin: 0 0 0;
+                -webkit-background-origin: padding-box, padding-box;
+                background-origin: padding-box, padding-box;
+                -webkit-background-clip: border-box, border-box;
+                background-clip: border-box, border-box;
+                -webkit-background-size: 10px 10px, 10px 10px;
+                background-size: 10px 10px, 10px 10px;
+                -webkit-box-shadow: none;
+                box-shadow: none;
+                text-shadow: none;
+                -webkit-transition: none;
+                -moz-transition: none;
+                -o-transition: none;
+                transition: none;
+                -webkit-transform: scaleX(1) scaleY(1) scaleZ(1);
+                transform: scaleX(1) scaleY(1) scaleZ(1);
+              }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand excluded_link" href="#">
+                    Spin Image Editor
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" style="width:fit-content;width:-moz-fit-content">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                File
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Pack</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
+                            </ul>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" onclick="selectAllSongs()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#accessibilityModal"><i class="fa-solid fa-universal-access"></i> Accessibility</a>
+                        </li> -->
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <input type="file" class="hide" accept=".zip" id="uploaded_pack" />
+        <input type="file" accept=".png" id="uploaded_image" hidden />
+        <div class="main_panel">
+            <!-- Toasts -->
+            <div id="toasts">
+                <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+            </div>
+            <!-- Breadcrumb -->
+            <div class="breadcrumb-container">
+                <nav aria-label="breadcrumb" style="flex:1">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page" onclick="hidePopup()">Home</li>
+                        <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="content-center">
+                <div class="d-flex">
+                    <div>
+                        <div id="color-panel" class="d-flex m-2"></div>
+                        <div>
+                            <canvas id="viewport" width="0" height="0"></canvas>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <canvas id="demo_viewport" width="599" height="441"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // Add Colors
+            const color_panel_hook = document.getElementById("color-panel");
+            const upload_image_hook = document.getElementById("uploaded_image");
+            let processing_image = false;
+            function addColor(intensity, alpha) {
+                if (intensity < 0) {
+                    intensity = 0;
+                }
+                const color_hex = `#${intensity.toString(16)}${intensity.toString(16)}${intensity.toString(16)}`
+                const item_html = `<div 
+                    class="color-item m-2${alpha == 0 ? " transparent-background" : ""}${intensity == 0 ? " selected" : ""}"
+                    ${alpha == 0 ? "" : ` style="background-color:${color_hex}"`}
+                    onclick="setColor(${intensity}, ${alpha}, this)"
+                ></div>`
+                color_panel_hook.innerHTML += item_html;
+            }
+
+            function addFill() {
+                const item_html = `<div 
+                    class="color-item m-2 fill-item"
+                    onclick="fillColor()">
+                    <i class="fa-solid fa-fill fa-lg"></i>
+                </div>`
+                color_panel_hook.innerHTML += item_html;
+            }
+
+            function uploadImage() {
+                upload_image_hook.click();
+            }
+
+            function addUpload() {
+                const item_html = `<div 
+                    class="color-item m-2 fill-item"
+                    onclick="uploadImage()">
+                    <i class="fa-solid fa-upload fa-lg"></i>
+                </div>`
+                color_panel_hook.innerHTML += item_html;
+            }
+            
+            const PIXEL_INTENSITIES = [0, 36, 73, 109, 146, 182, 219, 255];
+            for (let i = 0; i < 8; i++) {
+                addColor(PIXEL_INTENSITIES[i], 255);
+            }
+            //addColor(0, 0);
+            addFill();
+            addUpload();
+
+            // Create Canvas Handler
+            const canvas = document.getElementById("viewport");
+            const demo_canvas = document.getElementById("demo_viewport");
+            const image_dim = 64;
+            const upscale_rate = 10;
+            const canvas_dim = image_dim * upscale_rate;
+            canvas.setAttribute("width", canvas_dim)
+            canvas.setAttribute("height", canvas_dim)
+            var context = canvas.getContext("2d");
+            var demo_context = demo_canvas.getContext("2d");
+            let mouseX = null;
+            let mouseY = null;
+
+            class IAPixel {
+                constructor (intensity, alpha) {
+                    this.intensity = intensity;
+                    this.alpha = alpha;
+                }
+            }
+            
+            let applyData = new IAPixel(0, 255);
+            
+            function setColor(intensity, alpha, e) {
+                applyData.intensity = intensity;
+                applyData.alpha = alpha;
+                const items = document.getElementsByClassName("color-item");
+                for (let i = 0; i < items.length; i++) {
+                    items[i].classList.remove("selected");
+                }
+                e.classList.add("selected");
+            }
+            
+            // Define the image dimensions
+            var width = canvas_dim;
+            var height = canvas_dim;
+        
+            // Create an ImageData object
+            const demo_width = 599;
+            const demo_height = 441;
+            var imagedata = context.createImageData(canvas_dim, canvas_dim);
+            var demoimagedata = demo_context.createImageData(demo_width, demo_height);
+        
+            
+
+            let image_pixels = [];
+            for (let y = 0; y < image_dim; y++) {
+                for (let x = 0; x < image_dim; x++) {
+                    image_pixels.push(new IAPixel(255, 255));
+                }
+            }
+
+            // Create the image
+            function createImage() {
+                // Loop over all of the pixels
+                const mouseSlot = getMouseSlot();
+
+                for (var y=0; y<canvas_dim; y++) {
+                    const truncated_y = parseInt(y / upscale_rate);
+                    for (var x=0; x<canvas_dim; x++) {
+                        const truncated_x = parseInt(x / upscale_rate);
+                        const slot = (truncated_y * image_dim) + truncated_x;
+                        
+                        // Get the pixel index
+                        var pixelindex = (y * canvas_dim + x) * 4;
+                        
+                        let brightness = image_pixels[slot].intensity;
+                        let alpha = image_pixels[slot].alpha;
+                        if (slot == mouseSlot) {
+                            brightness = applyData.intensity;
+                            alpha = applyData.alpha;
+                        }
+        
+                        // Set the pixel data
+                        imagedata.data[pixelindex] = brightness;     // Red
+                        imagedata.data[pixelindex+1] = brightness; // Green
+                        imagedata.data[pixelindex+2] = brightness;  // Blue
+                        imagedata.data[pixelindex+3] = alpha;   // Alpha
+                    }
+                }
+            }
+
+            class DemoPixel {
+                constructor (red, green, blue) {
+                    this.red = red;
+                    this.green = green
+                    this.blue = blue;
+                }
+            }
+
+            let demo_pixels = [];
+            
+            Jimp.read("./assets/banner.png")
+                .then((image) => {
+                    for (let y = 0; y < demo_height; y++) {
+                        for (let x = 0; x < demo_width; x++) {
+                            const data = Jimp.intToRGBA(image.getPixelColor(x, y))
+                            demo_pixels.push(new DemoPixel(data.r, data.g, data.b))
+                        }
+                    }
+                })
+            
+            function createDemoImage() {
+                for (var y=0; y<demo_height; y++) {
+                    for (var x=0; x<demo_width; x++) {
+                        const slot = (y * demo_width) + x;
+                        
+                        // Get the pixel index
+                        var pixelindex = slot * 4;
+                        
+                        let red, green, blue = 0;
+                        if (demo_pixels.length == demo_height * demo_width) {
+                            red = demo_pixels[slot].red;
+                            green = demo_pixels[slot].green;
+                            blue = demo_pixels[slot].blue;
+                        }
+        
+                        // Set the pixel data
+                        demoimagedata.data[pixelindex] = red;     // Red
+                        demoimagedata.data[pixelindex+1] = green; // Green
+                        demoimagedata.data[pixelindex+2] = blue;  // Blue
+                        demoimagedata.data[pixelindex+3] = 255;   // Alpha
+                    }
+                }
+            }
+
+            function getMouseSlot() {
+                const bounding_rect = canvas.getBoundingClientRect();
+                const x = parseInt(mouseX - bounding_rect.x);
+                const y = parseInt(mouseY - bounding_rect.y);
+                const truncated_x = parseInt(x / upscale_rate);
+                const truncated_y = parseInt(y / upscale_rate);
+                if ((truncated_x < 0) || (truncated_x >= image_dim)) {
+                    return null;
+                }
+                if ((truncated_y < 0) || (truncated_y >= image_dim)) {
+                    return null;
+                }
+                return (truncated_y * image_dim) + truncated_x;
+            }
+            
+            function drawPixel() {
+                const slot = getMouseSlot();
+                if (slot == null) {
+                    return;
+                }
+                image_pixels[slot].intensity = applyData.intensity;
+                image_pixels[slot].alpha = applyData.alpha;
+            }
+
+            function fillColor() {
+                image_pixels.forEach(px => {
+                    px.intensity = applyData.intensity;
+                    px.alpha = applyData.alpha;
+                })
+            }
+            
+            let clickEvent = null;
+            const click_interval_speed = 10;
+
+            canvas.addEventListener("mousedown", (e) => {
+                console.log("click");
+                if (clickEvent == null) {
+                    clickEvent = setInterval(() => {
+                        drawPixel();
+                    }, click_interval_speed);
+                }
+            });
+            document.body.addEventListener("mouseup", (e) => {
+                console.log("release");
+                if (clickEvent != null) {
+                    clearInterval(clickEvent);
+                }
+                clickEvent = null;
+            });
+            document.body.addEventListener("mousemove", (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            })
+        
+            // Main loop
+            function main(tframe) {
+                // Request animation frames
+                window.requestAnimationFrame(main);
+        
+                // Create the image
+                createImage();
+                createDemoImage();
+        
+                // Draw the image data to the canvas
+                context.putImageData(imagedata, 0, 0);
+                demo_context.putImageData(demoimagedata, 0, 0);
+            }
+        
+            // Call the main loop
+            main(0);
+
+            // Handle Uploaded Image
+            upload_image_hook.addEventListener("change", (e) => {
+                var fr = new FileReader();
+                fr.onload = function(k) {
+                    const dataURL = k.target.result;
+                    processing_image = true;
+                    Jimp.read(dataURL, (err, image) => {
+                        if (err) {
+                            console.error(err);
+                            return;
+                        }
+                        // Scale Image Down
+                        width = image.bitmap.width;
+                        height = image.bitmap.height;
+                        descale = Math.min(64 / width, 64 / height);
+                        image.resize(width * descale, height * descale);
+                        // Regrab data
+                        width = image.bitmap.width;
+                        height = image.bitmap.height;
+                        x_offset = parseInt((64 - width) / 2);
+                        y_offset = parseInt((64 - height) / 2);
+                        // Wipe canvas
+                        image_pixels.forEach(px => {
+                            px.intensity = 0;
+                            px.alpha = 255;
+                        })
+                        // Parse Image
+                        for (let y = 0; y < height; y++) {
+                            for (let x = 0; x < width; x++) {
+                                const data = Jimp.intToRGBA(image.getPixelColor(x, y))
+                                const alpha = data.a;
+                                let closest_intensity = 0;
+                                let closest_range = 9999999;
+                                PIXEL_INTENSITIES.forEach(val => {
+                                    const range = Math.abs(val - alpha);
+                                    if (range < closest_range) {
+                                        closest_intensity = val;
+                                        closest_range = range;
+                                    }
+                                })
+                                const written_x = x + x_offset;
+                                const written_y = y + y_offset;
+                                const written_slot = (written_y * image_dim) + written_x;
+                                image_pixels[written_slot].intensity = closest_intensity;
+                                image_pixels[written_slot].alpha = 255;
+                            }
+                        }
+                        console.log(image);
+                    })
+                };
+                fr.readAsDataURL(upload_image_hook.files[0]);
+            })
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script>
+            // TOAST GENERATOR
+            const toastTrigger = document.getElementById('liveToastBtn')
+            const toastContainer = document.getElementById("toasts")
+
+            let toast_counter = 0;
+
+            function generateToast(message, error=false) {
+                toastContainer.getElementsByClassName("toast-container")[0].innerHTML += `
+                <div id="liveToast${toast_counter}" class="toast align-items-center ${error ? 'text-bg-danger' : 'text-bg-primary'} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>                    
+                </div>`
+                const toastEl = document.getElementById(`liveToast${toast_counter}`)
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl)
+                toastBootstrap.show()
+                toast_counter += 1;
+            }
+        </script>
+    </body>
+</html>
