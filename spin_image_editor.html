@@ -33,8 +33,8 @@
                 background-image: none;
                 background-color: rgba(30, 30, 30, 1);
             }
-            .main_panel {
-                width: 90%;
+            .content-center {
+                width: fit-content;
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -105,7 +105,7 @@
                                 File
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item excluded_link" href="#" onclick="buildPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Pack</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="downloadPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Pack</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
                             </ul>
@@ -127,26 +127,27 @@
             <div id="toasts">
                 <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
             </div>
-            <!-- Breadcrumb -->
-            <div class="breadcrumb-container">
-                <nav aria-label="breadcrumb" style="flex:1">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page" onclick="hidePopup()">Home</li>
-                        <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
-                    </ol>
-                </nav>
-            </div>
             <div class="content-center">
                 <div class="d-flex">
-                    <div>
-                        <div id="color-panel" class="d-flex m-2"></div>
-                        <div>
-                            <canvas id="viewport" width="0" height="0"></canvas>
+                    <div id="color-panel" class="d-flex flex-column m-2 pt-3"></div>
+                    <div class="py-3">
+                        <div class="p-2">
+                            <label for="canvas_scale">Canvas Scale: </label>
+                            1
+                            <input type="range" min="1" max="20" value="7" id="canvas_scale" />
+                            20
                         </div>
+                        <canvas id="viewport" width="0" height="0"></canvas>
                     </div>
-                    <div>
-                        <div>
-                            <canvas id="demo_viewport" width="599" height="441"></canvas>
+                    <div class="d-flex flex-column mt-5 mx-3 p-3 border border-light rounded">
+                        <div class="mb-3">
+                            <label for="imageName">File Name</label>
+                            <input type="text" class="form-control" id="imageName" placeholder="name.png" />
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn btn-primary" type="button" style="width:100%" onclick="pushToPack()">
+                                Add to Pack
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -156,6 +157,8 @@
             // Add Colors
             const color_panel_hook = document.getElementById("color-panel");
             const upload_image_hook = document.getElementById("uploaded_image");
+            const upload_pack_hook = document.getElementById("uploaded_pack");
+            const scale_hook = document.getElementById("canvas_scale");
             let processing_image = false;
             function addColor(intensity, alpha) {
                 if (intensity < 0) {
@@ -183,6 +186,10 @@
                 upload_image_hook.click();
             }
 
+            function uploadPack() {
+                upload_pack_hook.click();
+            }
+
             function addUpload() {
                 const item_html = `<div 
                     class="color-item m-2 fill-item"
@@ -202,14 +209,12 @@
 
             // Create Canvas Handler
             const canvas = document.getElementById("viewport");
-            const demo_canvas = document.getElementById("demo_viewport");
             const image_dim = 64;
-            const upscale_rate = 10;
-            const canvas_dim = image_dim * upscale_rate;
+            let upscale_rate = 7;
+            let canvas_dim = image_dim * upscale_rate;
             canvas.setAttribute("width", canvas_dim)
             canvas.setAttribute("height", canvas_dim)
             var context = canvas.getContext("2d");
-            var demo_context = demo_canvas.getContext("2d");
             let mouseX = null;
             let mouseY = null;
 
@@ -237,12 +242,7 @@
             var height = canvas_dim;
         
             // Create an ImageData object
-            const demo_width = 599;
-            const demo_height = 441;
             var imagedata = context.createImageData(canvas_dim, canvas_dim);
-            var demoimagedata = demo_context.createImageData(demo_width, demo_height);
-        
-            
 
             let image_pixels = [];
             for (let y = 0; y < image_dim; y++) {
@@ -289,42 +289,6 @@
                 }
             }
 
-            let demo_pixels = [];
-            
-            Jimp.read("./assets/banner.png")
-                .then((image) => {
-                    for (let y = 0; y < demo_height; y++) {
-                        for (let x = 0; x < demo_width; x++) {
-                            const data = Jimp.intToRGBA(image.getPixelColor(x, y))
-                            demo_pixels.push(new DemoPixel(data.r, data.g, data.b))
-                        }
-                    }
-                })
-            
-            function createDemoImage() {
-                for (var y=0; y<demo_height; y++) {
-                    for (var x=0; x<demo_width; x++) {
-                        const slot = (y * demo_width) + x;
-                        
-                        // Get the pixel index
-                        var pixelindex = slot * 4;
-                        
-                        let red, green, blue = 0;
-                        if (demo_pixels.length == demo_height * demo_width) {
-                            red = demo_pixels[slot].red;
-                            green = demo_pixels[slot].green;
-                            blue = demo_pixels[slot].blue;
-                        }
-        
-                        // Set the pixel data
-                        demoimagedata.data[pixelindex] = red;     // Red
-                        demoimagedata.data[pixelindex+1] = green; // Green
-                        demoimagedata.data[pixelindex+2] = blue;  // Blue
-                        demoimagedata.data[pixelindex+3] = 255;   // Alpha
-                    }
-                }
-            }
-
             function getMouseSlot() {
                 const bounding_rect = canvas.getBoundingClientRect();
                 const x = parseInt(mouseX - bounding_rect.x);
@@ -357,6 +321,7 @@
             }
             
             let clickEvent = null;
+            let rangeEvent = null;
             const click_interval_speed = 10;
 
             canvas.addEventListener("mousedown", (e) => {
@@ -372,12 +337,83 @@
                 if (clickEvent != null) {
                     clearInterval(clickEvent);
                 }
+                if (rangeEvent != null) {
+                    clearInterval(rangeEvent);
+                }
                 clickEvent = null;
+                rangeEvent = null;
             });
             document.body.addEventListener("mousemove", (e) => {
                 mouseX = e.clientX;
                 mouseY = e.clientY;
             })
+
+            scale_hook.addEventListener("mousedown", (e) => {
+                if (rangeEvent == null) {
+                    rangeEvent = setInterval(() => {
+                        upscale_rate = e.target.value;
+                        canvas_dim = image_dim * upscale_rate;
+                        canvas.setAttribute("width", canvas_dim);
+                        canvas.setAttribute("height", canvas_dim);
+                        imagedata = context.createImageData(canvas_dim, canvas_dim);
+                    }, click_interval_speed * 10);
+                }
+            })
+
+            
+            let zip_output = new JSZip();
+            async function handlePack(data) {
+                await zip_output.loadAsync(data);
+            }
+
+            upload_pack_hook.addEventListener("change", (e) => {
+                var fr = new FileReader();
+                fr.onload = function() {
+                    handlePack(fr.result);
+                };
+                fr.readAsArrayBuffer(upload_pack_hook.files[0]);
+                
+            });
+
+            function downloadPack() {
+                zip_output.generateAsync({type:"blob"}).then(function(content) {
+                    saveAs(content, "pack.zip");
+                });
+            }
+
+            function pushToPack() {
+                const image = new Jimp(64, 64, async (err, image) => {
+                    if (err) throw err;
+                  
+                    // Set the pixel values of the image
+                    image.scan(0, 0, image.bitmap.width, image.bitmap.height, function (x, y, idx) {
+                      const ia = image_pixels[y * width + x];
+                      this.bitmap.data[idx + 0] = 255 - ia.intensity; // Red channel
+                      this.bitmap.data[idx + 1] = 255 - ia.intensity; // Green channel
+                      this.bitmap.data[idx + 2] = 255 - ia.intensity; // Blue channel
+                      this.bitmap.data[idx + 3] = ia.alpha; // Alpha channel
+                    });
+
+                    // Add folders if necessary
+                    texture_folder = "textures/";
+                    transition_folder = "transitions/";
+                    if (!zip_output.file(texture_folder)) {
+                        zip_output.folder(texture_folder);
+                    }
+                    if (!zip_output.folder(texture_folder).folder(transition_folder)) {
+                        zip_output.folder(texture_folder).folder(transition_folder);
+                    }
+                  
+                    const imageBuffer = await image.getBufferAsync(Jimp.MIME_PNG);
+                    const name = document.getElementById("imageName").value;
+                    zip_output.folder(texture_folder).folder(transition_folder).file(`${name}.png`, imageBuffer);
+                    image_pixels.forEach(px => {
+                        px.intensity = 255;
+                        px.alpha = 255;
+                    })
+                    document.getElementById("imageName").value = "";
+                });
+            }
         
             // Main loop
             function main(tframe) {
@@ -386,11 +422,9 @@
         
                 // Create the image
                 createImage();
-                createDemoImage();
         
                 // Draw the image data to the canvas
                 context.putImageData(imagedata, 0, 0);
-                demo_context.putImageData(demoimagedata, 0, 0);
             }
         
             // Call the main loop
@@ -443,7 +477,8 @@
                                 image_pixels[written_slot].alpha = 255;
                             }
                         }
-                        console.log(image);
+                        document.getElementById("imageName").value = upload_image_hook.files[0].name.split(".")[0];
+                        processing_image = false;
                     })
                 };
                 fr.readAsDataURL(upload_image_hook.files[0]);
