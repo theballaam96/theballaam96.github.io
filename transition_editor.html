@@ -466,7 +466,9 @@
             }
         
             // Call the main loop
-            main(0);
+            setInterval(() => {
+                main(0);
+            }, 100);
 
             // Handle Uploaded Image
             upload_image_hook.addEventListener("change", (e) => {
