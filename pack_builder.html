@@ -1258,6 +1258,10 @@
                                                 : ""
                                             }
                                             ${
+                                                song.tags.includes(unsafe_song_tag) ? 
+                                                "<span class='badge text-bg-danger rounded-pill' title='This song has been tied to copyright claim issues which may result in demonetization.'>Stream Unsafe</span>" : ""
+                                            }
+                                            ${
                                                 song.tags.filter(t => t != unsafe_song_tag).map((item, index) => index < 10 ? `
                                                     <span class='badge text-bg-light rounded-pill'>
                                                         ${item}
