@@ -469,6 +469,7 @@
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="buildCandyPack()" id="build-pack-button"><i class="fa-solid fa-download"></i> Download Candy Pack (Categorized)</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="buildBinaryPack()"><i class="fa-solid fa-download"></i> Download Binary Pack</a></li>
+                                <li><a class="dropdown-item d-flex"><input type="checkbox" id="unsafe-song-toggle" class="form-check" /><label for="unsafe-song-toggle" class="ps-2">Include Unsafe Tracks</label></a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="uploadPack()"><i class="fa-solid fa-upload"></i> Upload Pack</a></li>
                             </ul>
@@ -1685,38 +1686,45 @@
                     const files  = folder_data[folder];
                     const f_zip = zip.folder(folder)
                     files.forEach(file => {
-                        if ((output_as_encoded) && (file.append_extension)) {
-                            c_zip = new JSZip();
-                            logo_name = filterFilename(`${file.game}.png`)
-                            c_zip.file(filterFilename("song.bin"), file.data); // Song
-                            if (DUMP_IMAGES) {
-                                png_zip.file(logo_name, file.logo); // Game PNG in main zip
-                            }
-                            // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
-                            c_zip.file(filterFilename("data.json"), JSON.stringify({
-                                "song": file.song,
-                                "game": file.game,
-                                "group": file.group,
-                                "length": file.length,
-                                "logo": logo_name,
-                                "composer": file.composer,
-                                "converter": file.converter,
-                                "tags": file.tags,
-                            }));
-                            promises.push(
-                                c_zip.generateAsync({type:"blob"}).then((content) => {
-                                    if (file.append_extension) {
-                                        f_zip.file(filterFilename(`${file.game} ${file.song}.candy`), content);
-                                    } else {
-                                        f_zip.file(filterFilename(file.song), content);
-                                    }
-                                })
-                            );
-                        } else {
-                            if (file.append_extension) {
-                                f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
+                        let allow = true;
+                        const unsafe_allowed = document.getElementById("unsafe-song-toggle").checked;
+                        if (file.tags.includes(unsafe_song_tag) && (!unsafe_allowed)) {
+                            allow = false;
+                        }
+                        if (allow) {
+                            if ((output_as_encoded) && (file.append_extension)) {
+                                c_zip = new JSZip();
+                                logo_name = filterFilename(`${file.game}.png`)
+                                c_zip.file(filterFilename("song.bin"), file.data); // Song
+                                if (DUMP_IMAGES) {
+                                    png_zip.file(logo_name, file.logo); // Game PNG in main zip
+                                }
+                                // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
+                                c_zip.file(filterFilename("data.json"), JSON.stringify({
+                                    "song": file.song,
+                                    "game": file.game,
+                                    "group": file.group,
+                                    "length": file.length,
+                                    "logo": logo_name,
+                                    "composer": file.composer,
+                                    "converter": file.converter,
+                                    "tags": file.tags,
+                                }));
+                                promises.push(
+                                    c_zip.generateAsync({type:"blob"}).then((content) => {
+                                        if (file.append_extension) {
+                                            f_zip.file(filterFilename(`${file.game} ${file.song}.candy`), content);
+                                        } else {
+                                            f_zip.file(filterFilename(file.song), content);
+                                        }
+                                    })
+                                );
                             } else {
-                                f_zip.file(filterFilename(file.song), file.data);
+                                if (file.append_extension) {
+                                    f_zip.file(filterFilename(`${file.game} ${file.song}.bin`), file.data);
+                                } else {
+                                    f_zip.file(filterFilename(file.song), file.data);
+                                }
                             }
                         }
                     })
