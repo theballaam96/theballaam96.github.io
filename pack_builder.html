@@ -1137,6 +1137,8 @@
                 return note
             }
 
+            const unsafe_song_tag = "stream-unsafe"
+
             const site_is_down = false;
             const total_prog = 6;
             async function getMidiData() {
@@ -1249,8 +1251,8 @@
                                                 : ""
                                             }
                                             ${
-                                                song.tags.length > 0 ?
-                                                `<span class='midi-tag' title='${song.tags.join(', ')}'>
+                                                song.tags.filter(t => t != unsafe_song_tag).length > 0 ?
+                                                `<span class='midi-tag' title='${song.tags.filter(t => t != unsafe_song_tag).join(', ')}'>
                                                     <i class='fa-solid fa-tags'></i>
                                                 </span>`
                                                 : ""
