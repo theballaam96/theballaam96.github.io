@@ -630,6 +630,15 @@
                                     <div class="advf-hint">Select all that you are happy with</div>
                                     <div id="tag-list" class="flexsplitter"></div>
                                 </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Show stream-safe songs only</label>
+                                    <br />
+                                    <div class="d-flex">
+                                        <input type='checkbox' class='form-check-input' value='' id='advf-safe' data-toggle='toggle' />
+                                        <label for='advf-safe' class="form-check-label ps-2">Only shows songs which are safe for stream highlights and YouTube VODs</label>
+                                    </div>
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -735,7 +744,7 @@
             populateTagSuggestions();
 
             const tc_sliders = document.getElementsByClassName("slider-range")
-            const tc_default = [[0, 300], [0, 60]]
+            const tc_default = [[0, 600], [0, 60]]
             const tc_els = ["advf-bgm-length", "advf-noloop-length"]
             tc_els.forEach((el, index) => {
                 $( `#${el}` ).slider({
@@ -783,6 +792,7 @@
                     "noloop-max": parseInt(document.getElementById("advf-noloop-length").getAttribute("value-max")),
                     "composers": filterAdvancedFilterValue(document.getElementById("advf-composer").value),
                     "converters": filterAdvancedFilterValue(document.getElementById("advf-converter").value),
+                    "safe": document.getElementById("advf-safe").checked,
                 }
                 let all_tagged = true;
                 ACCEPTED_TAGS.forEach(tag => {
@@ -1229,6 +1239,7 @@
                                         ticked=${parseSeed(state_index) ? 'true' : 'false'} 
                                         group='${group}'
                                         game='${game}'
+                                        safe='${!song.tags.includes(unsafe_song_tag)}'
                                         ${song.notes ? `title='${song.notes}'` : ''}>
                                         <div class='flexsplitter bottom-line'>
                                             <div class='name_data handle-overflow' title='${filterNote(displayed_song_name.replace('.bin',''))}'>${displayed_song_name.replace('.bin','')}</div>
@@ -1943,6 +1954,7 @@
                     .track_count .tags .notes
                     .days_since_submission .is_new
                     .older_revisions .changelog_entry
+                    .safe
                 */
                 const midi_info = midi_data_copy.find(item => item.index == index)
                 const filter_value = document.getElementById("search-game").value.toLowerCase();
@@ -2021,6 +2033,10 @@
                             const tag = key.substring(4)
                             if (key_value) {
                                 valid_entry &= midi_info.tags.length == 0 || midi_info.tags.map(item => item.replaceAll(" ","").toLowerCase()).includes(tag)
+                            }
+                        } else if (key == "safe") {
+                            if (key_value) {
+                                valid_entry &= (!midi_info.tags.includes(unsafe_song_tag));
                             }
                         }
                     })
