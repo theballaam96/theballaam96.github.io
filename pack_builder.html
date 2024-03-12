@@ -1699,8 +1699,10 @@
                     files.forEach(file => {
                         let allow = true;
                         const unsafe_allowed = document.getElementById("unsafe-song-toggle").checked;
-                        if (file.tags.includes(unsafe_song_tag) && (!unsafe_allowed)) {
-                            allow = false;
+                        if (file.tags) {
+                            if (file.tags.includes(unsafe_song_tag) && (!unsafe_allowed)) {
+                                allow = false;
+                            }
                         }
                         if (allow) {
                             if ((output_as_encoded) && (file.append_extension)) {
