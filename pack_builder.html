@@ -1132,7 +1132,7 @@
 
             function lazyLoadImages() {
                 document.getElementById("lazy-loader").innerHTML = Object.keys(icon_json).map(key => `
-                    <img src='${icon_json[key]}' height="1px" width="1px" async loading=lazy />
+                    <img src='${icon_json[key]['icon']}' height="1px" width="1px" async loading=lazy />
                 `).join("")
             }
 
@@ -1150,7 +1150,7 @@
 
             const unsafe_song_tag = "stream-unsafe"
 
-            const site_is_down = false;
+            const site_is_down = true;
             const total_prog = 6;
             async function getMidiData() {
                 let prog = 0;
