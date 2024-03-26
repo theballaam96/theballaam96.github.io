@@ -943,8 +943,9 @@
             const GITHUB_AUDIO = "github.com/theballaam96/candys-shop/raw/main/previews"
 
             class MIDIInfo {
-                constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, index) {
+                constructor (name, game, group, composer, converter, drive_id, timestamp, audio, midi_length, track_count, tags, notes, short_name, index) {
                     this.name = name;
+                    this.short_name = short_name;
                     this.game = game;
                     this.group = group;
                     this.composer = composer;
@@ -1009,6 +1010,7 @@
                     this.timestamp = replacement.timestamp;
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
+                    this.short_name = replacement.short_name;
                 }
             }
             
@@ -1104,7 +1106,8 @@
                         }
                     })
                     if (permit) {
-                        const new_data = new MIDIInfo(...params, counter)
+                        const short_name = Object.keys(json_item).includes("songshort") ? json_item["songshort"] : json_item["Song"];
+                        const new_data = new MIDIInfo(...params, short_name, counter)
                         if (!new_data.delisted) {
                             const game_song_combo = `${new_data.game}|${new_data.name}`
                             total_data_copy.push(clone(new_data))
@@ -1132,7 +1135,7 @@
 
             function lazyLoadImages() {
                 document.getElementById("lazy-loader").innerHTML = Object.keys(icon_json).map(key => `
-                    <img src='${icon_json[key]['icon']}' height="1px" width="1px" async loading=lazy />
+                    <img src='${icon_json[key].icon}' height="1px" width="1px" async loading=lazy />
                 `).join("")
             }
 
@@ -1150,7 +1153,7 @@
 
             const unsafe_song_tag = "stream-unsafe"
 
-            const site_is_down = true;
+            const site_is_down = false;
             const total_prog = 6;
             async function getMidiData() {
                 let prog = 0;
@@ -1160,22 +1163,6 @@
                     lazyLoadImages();
                 }
                 updateProgress(prog++, total_prog, "Grabbed midi data");
-                const spreadsheetId = "13WWHcGiYJQD_rUqfGL17Lp0zn7MveU5xf7Fy-CNghzo"
-                const pack_sheet_id = "1943464809"
-				const pack_res = await fetch(`https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json&tq&gid=${pack_sheet_id}`, {cache: "no-store"})
-				const pack_res_text = await pack_res.text()
-                const pack_json = JSON.parse(pack_res_text.substr(47).slice(0, -2))
-                const zip_id = pack_json.table.rows[0].c[0].v;
-                let ban = false;
-                if (zip_id == null) {
-                    ban = true;
-                } else if (zip_id.trim().length == 0) {
-                    ban = true;
-                }
-                if (ban) {
-                    throw new Error("No pack.zip ID loaded. This is likely due to a song upload occurring.")
-                    return;
-                }
                 const zip_url = "https://raw.githubusercontent.com/theballaam96/candys-shop/main/binaries.zip"
                 const zip_res = await fetch(zip_url, {
                     cache: "no-store"
@@ -1322,7 +1309,7 @@
                                         "" : "no-icon"
                                     }' src='${
                                         Object.keys(icon_json).includes(game_name) ?
-                                        icon_json[game_name] :
+                                        icon_json[game_name].icon :
                                         BASE_NO_ICON_IMG
                                     }' loading=lazy />
                                     ${Object.keys(icon_json).includes(game_name) ?
@@ -1413,6 +1400,7 @@
             function idToSongInfo(id) {
                 if (midi_data_copy != null) {
                     let song = null;
+                    let song_short = null;
                     let folder = null;
                     let download = null;
                     let song_index = null;
@@ -1423,6 +1411,7 @@
                     const entry = midi_data_copy.find(item => item.index == id);
                     if (entry) {
                         song = entry.name;
+                        song_short = entry.short_name;
                         folder = entry.group;
                         download = entry.drive_id;
                         song_index = id;
@@ -1434,6 +1423,7 @@
                     if (song != null) {
                         return {
                             "song": song,
+                            "song_short": song_short,
                             "game": game,
                             "folder": folder,
                             "download": download,
@@ -1665,6 +1655,7 @@
                             }
                             item_data = {
                                 "song": found_data.song,
+                                "song_short": found_data.song_short,
                                 "game": found_data.game,
                                 "composer": composer,
                                 "converter": converter,
@@ -1679,7 +1670,7 @@
                                     if (folder_data[found_data.folder].some(file => file.game === found_data.game)) {
                                         return folder_data[found_data.folder].find(file => file.game === found_data.game).logo;
                                     } else {
-                                        const response = await fetch(icon_json[found_data.game]);
+                                        const response = await fetch(icon_json[found_data.game].icon);
                                         return await response.arrayBuffer();
                                     }
                                 })()
@@ -1712,10 +1703,19 @@
                                 if (DUMP_IMAGES) {
                                     png_zip.file(logo_name, file.logo); // Game PNG in main zip
                                 }
+                                // Create short game name
+                                let game_short = file.game;
+                                if (Object.keys(icon_json).includes(file.game)) {
+                                    if (Object.keys(icon_json[file.game]).includes("short_name")) {
+                                        game_short = icon_json[file.game].short_name;
+                                    }
+                                }
                                 // Create a json file for the song info containing the song, game, composer, and converter, and the name of the logo file
                                 c_zip.file(filterFilename("data.json"), JSON.stringify({
                                     "song": file.song,
+                                    "song_short": file.song_short,
                                     "game": file.game,
+                                    "game_short": game_short,
                                     "group": file.group,
                                     "length": file.length,
                                     "logo": logo_name,
