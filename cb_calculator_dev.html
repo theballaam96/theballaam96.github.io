@@ -89,6 +89,22 @@
                         <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonSeasick" checked>
                         <label class="form-check-label" for="switchGalleonSeasick">Galleon Seasick Ship Spawned</label>
                     </div>
+                    <!-- Galleon Water -->
+                    <div class="small">
+                        Galleon Water Setting
+                    </div>
+                    <select class="form-select barrier-select" id="selectGalleonWater">
+                        <option value="Low" selected>Lowered</option>
+                        <option value="High">Raised</option>
+                    </select>
+                    <div class="form-check form-switch" hidden>
+                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLowered" checked>
+                        <label class="form-check-label" for="switchGalleonLowered">Galleon Low Water Access</label>
+                    </div>
+                    <div class="form-check form-switch" hidden>
+                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonRaised">
+                        <label class="form-check-label" for="switchGalleonRaised">Galleon High Water Access</label>
+                    </div>
                     <div class="mt-3">
                         <h5>Fungi Forest</h5>
                     </div>
@@ -101,6 +117,24 @@
                     <div class="form-check form-switch">
                         <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestYellow">
                         <label class="form-check-label" for="switchForestYellow">Fungi Yellow Tunnel Open</label>
+                    </div>
+                    <!-- Fungi Time of Day -->
+                    <div class="small">
+                        Fungi Time of Day Setting
+                    </div>
+                    <select class="form-select barrier-select" id="selectForestTime">
+                        <option value="Day" selected>Day Start</option>
+                        <option value="Night">Night Start</option>
+                        <option value="Dusk">Dusk</option>
+                        <option value="Progressive">Progressive</option>
+                    </select>
+                    <div class="form-check form-switch" hidden>
+                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestDay" checked>
+                        <label class="form-check-label" for="switchForestDay">Fungi Daytime Access</label>
+                    </div>
+                    <div class="form-check form-switch" hidden>
+                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestNight">
+                        <label class="form-check-label" for="switchForestNight">Fungi Nighttime Access</label>
                     </div>
                     <div class="mt-3">
                         <h5>Crystal Caves</h5>
@@ -248,8 +282,9 @@
                 static Sax = new Moves("Sax");
                 static Triangle = new Moves("Triangle");
                 // Misc Events
-                static Night = new Moves("Fungi Night");
+                
                 static W3Bonus = new Moves("Caves Warp 3 Bonus");
+                static AnyGun = new Moves("Any Gun");
                 // Barriers
                 static JapesCoconut = new Moves("Japes Coconut Gates", true, [], true); // No logic determined yet for this
                 static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
@@ -265,6 +300,10 @@
                 static ForestGreenTunnelFeather = new Moves("Green Tunnel Opened (Feather)", true, [Moves.Feather], true);
                 static ForestYellowTunnel = new Moves("Yellow Tunnel Opened", true, [Moves.Grape], true);
                 static CavesIglooPads = new Moves("Caves Igloo Pads Spawned", true, [Moves.Rocket], true);
+                static Night = new Moves("Fungi Night", true, [Moves.AnyGun], true);
+                static Day = new Moves("Fungi Day", true, [Moves.AnyGun], true);
+                static RaisedWater = new Moves("Galleon Raised Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
+                static LoweredWater = new Moves("Galleon Lowered Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
 
                 constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
                     this.name = name;
@@ -324,7 +363,7 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
-                ], 40);
+                ], 40, "Low", "Day");
                 static Beginner = new Preset("Beginner", "beginner", [
                     "switchAztec5DT",
                     "switchAztecLlama",
@@ -332,19 +371,19 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
-                ], 30);
+                ], 30, "Low", "Day");
                 static BLZR = new Preset("Balanced LZR", "blzr", [
                     "switchAztec5DT",
                     "switchFactoryProd",
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
-                ], 40);
+                ], 40, "Low", "Dusk");
                 static TreasureHurry = new Preset("Treasure Hurry", "thurry", [
                     "switchAztecLlama",
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
-                ], 50);
+                ], 50, "Low", "Day");
                 static Season3Candidates = new Preset("Season 3 Candidates (Excl. CLO)", "s3", [
                     "switchJapesCoconut",
                     "switchAztec5DT",
@@ -354,7 +393,7 @@
                     "switchGalleonLighthouse",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
-                ], 40);
+                ], 40, "High", "Dusk");
                 static Season3CLO = new Preset("Season 3 CLO Candidate", "s3clo", [
                     "switchJapesCoconut",
                     "switchAztec5DT",
@@ -365,15 +404,17 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
-                ], 40);
-                static Vanilla = new Preset("Vanilla", "vanilla", [], 75);
-                static Hell = new Preset("Hell Mode", "hell", [], 80);
+                ], 40, "Low", "Dusk");
+                static Vanilla = new Preset("Vanilla", "vanilla", [], 75, "Low", "Day");
+                static Hell = new Preset("Hell Mode", "hell", [], 80, "Low", "Progressive");
 
-                constructor (name, key, barriers, cb_requirement) {
+                constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
                     this.name = name;
                     this.key = key;
-                    this.barriers = barriers.slice()
-                    this.cb_requirement = cb_requirement
+                    this.barriers = barriers.slice();
+                    this.cb_requirement = cb_requirement;
+                    this.galleon_water = galleon_water;
+                    this.fungi_time = fungi_time;
                 }
             }
 
@@ -395,6 +436,38 @@
             }
             populatePresets();
 
+            function updateSelects() {
+                // Galleon Water
+                const gal_water = document.getElementById("selectGalleonWater").value;
+                let gal_water_low = false;
+                let gal_water_high = false;
+                if (gal_water == "Low") {
+                    gal_water_low = true;
+                    gal_water_high = false;
+                } else if (gal_water == "High") {
+                    gal_water_low = false;
+                    gal_water_high = true;
+                }
+                document.getElementById("switchGalleonLowered").checked = gal_water_low;
+                document.getElementById("switchGalleonRaised").checked = gal_water_high;
+                // Fungi Time of Day
+                const fun_tod = document.getElementById("selectForestTime").value;
+                let fun_day = false;
+                let fun_night = false;
+                if (fun_tod == "Day") {
+                    fun_day = true;
+                    fun_night = false;
+                } else if (fun_tod == "Night") {
+                    fun_day = false;
+                    fun_night = true;
+                } else if (["Dusk", "Progressive"].includes(fun_tod)) {
+                    fun_day = true;
+                    fun_night = true;
+                }
+                document.getElementById("switchForestDay").checked = fun_day;
+                document.getElementById("switchForestNight").checked = fun_night;
+            }
+
             function applyPreset() {
                 presets.forEach(p => {
                     if (p.key == document.getElementById("preset_selector").value) {
@@ -406,6 +479,9 @@
                             document.getElementById(barrier).checked = true;
                         })
                         document.getElementById("cb-req-medal").value = p.cb_requirement;
+                        document.getElementById("selectGalleonWater").value = p.galleon_water;
+                        document.getElementById("selectForestTime").value = p.fungi_time;
+                        updateSelects();
                         updateBarriers();
                         getRequiredMoves();
                     }
@@ -427,6 +503,10 @@
                     "switchForestGreen": [Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple],
                     "switchForestYellow": [Moves.ForestYellowTunnel],
                     "switchCavesIgloo": [Moves.CavesIglooPads],
+                    "switchForestDay": [Moves.Day],
+                    "switchForestNight": [Moves.Night],
+                    "switchGalleonLowered": [Moves.LoweredWater],
+                    "switchGalleonRaised": [Moves.RaisedWater],
                 }
                 opened_barriers = []
                 Object.keys(barrier_data).forEach(id => {
@@ -441,6 +521,14 @@
             const barrier_toggles = document.getElementsByClassName("barrier-switch");
             for (let b = 0; b < barrier_toggles.length; b++) {
                 barrier_toggles[b].addEventListener("change", (e) => {
+                    updateBarriers();
+                    getRequiredMoves();
+                })
+            }
+            const barrier_selects = document.getElementsByClassName("barrier-select");
+            for (let b = 0; b < barrier_selects.length; b++) {
+                barrier_selects[b].addEventListener("change", (e) => {
+                    updateSelects();
                     updateBarriers();
                     getRequiredMoves();
                 })
@@ -578,56 +666,58 @@
                 },
                 "Galleon": {
                     "DK": [
-                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Coconut]]),
-                        new Requirement(15, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Blast]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Coconut]]),
+                        new Requirement(15, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Blast]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Enguarde]]),
                         new Requirement(10, [[Moves.Coconut]]),
                         new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Diving, Moves.Bongos, Moves.GalleonPeanut]]),
-                        new Requirement(20, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Slam]]),
-                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Slam, Moves.Coconut]]),
+                        new Requirement(20, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Slam]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Slam, Moves.Coconut]]),
                     ],
                     "Diddy": [
                         new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Rocket]]),
-                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Rocket, Moves.Peanut]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Rocket, Moves.Peanut]]),
                         new Requirement(36, [[Moves.Diving, Moves.GalleonPeanut]]),
-                        new Requirement(14, [[Moves.Diving, Moves.Guitar, Moves.GalleonPeanut]]),
-                        new Requirement(10, [[Moves.Diving, Moves.Peanut, Moves.Enguarde, Moves.GalleonPeanut]]),
+                        new Requirement(14, [[Moves.LoweredWater, Moves.Diving, Moves.Guitar, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Peanut, Moves.Enguarde, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Peanut, Moves.GalleonPeanut]]),
                     ],
                     "Lanky": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(5, [[Moves.GalleonPeanut]]),
                         new Requirement(25, [[Moves.GalleonLighthouse, Moves.Diving]]),
-                        new Requirement(1, [[Moves.GalleonLighthouse, Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(1, [[Moves.GalleonLighthouse, Moves.Enguarde, Moves.RaisedWater, Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(5, [[Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Diving, Moves.Slam, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Grape, Moves.GalleonPeanut]]),
-                        new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.GalleonPeanut]]),
-                        new Requirement(4, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Balloon, Moves.GalleonPeanut]]),
+                        new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.LoweredWater, Moves.GalleonPeanut]]),
+                        new Requirement(4, [[Moves.GalleonLighthouse, Moves.Diving, Moves.RaisedWater, Moves.Enguarde, Moves.Balloon, Moves.GalleonPeanut]]),
                         new Requirement(20, [[Moves.Punch, Moves.Grape]]),
                     ],
                     "Tiny": [
                         new Requirement(9, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.Slam, Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(8, [[Moves.Vines]]),
-                        new Requirement(5, [[Moves.GalleonLighthouse, Moves.Diving]]),
-                        new Requirement(20, [[Moves.GalleonLighthouse, Moves.Feather]]),
-                        new Requirement(15, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Pineapple]]),
+                        new Requirement(5, [[Moves.GalleonLighthouse, Moves.RaisedWater]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.LoweredWater]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.RaisedWater]]),
+                        new Requirement(15, [[Moves.RaisedWater, Moves.Pineapple]]),
                         new Requirement(18, [[Moves.Sax, Moves.Diving, Moves.GalleonPeanut]]),
-                        new Requirement(5, [[Moves.Diving, Moves.Enguarde, Moves.GalleonPeanut]]),
-                        new Requirement(10, [[Moves.Diving, Moves.Enguarde, Moves.Feather, Moves.GalleonPeanut]]),
+                        new Requirement(5, [[Moves.RaisedWater, Moves.Diving, Moves.Enguarde, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Enguarde, Moves.Feather, Moves.GalleonPeanut]]),
                     ],
                     "Chunky": [
                         new Requirement(12, [[Moves.Moveless]]),
                         new Requirement(3, [[Moves.Vines]]),
-                        new Requirement(25, [[Moves.GalleonLighthouse, Moves.Diving, Moves.GalleonShipSpawned]]),
+                        new Requirement(20, [[Moves.RaisedWater, Moves.GalleonShipSpawned]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving]]),
-                        new Requirement(5, [[Moves.GalleonLighthouse, Moves.Diving, Moves.GalleonShipSpawned, Moves.Punch]]),
-                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Pineapple]]),
+                        new Requirement(5, [[Moves.RaisedWater, Moves.GalleonShipSpawned, Moves.Punch]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Pineapple]]),
                         new Requirement(20, [[Moves.Pineapple, Moves.GalleonPeanut]]),
                         new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(5, [[Moves.RaisedWater, Moves.GalleonPeanut]]),
                     ],
                 },
                 "Fungi": {
@@ -644,7 +734,7 @@
                         new Requirement(45, [[Moves.Moveless]]),
                         new Requirement(15, [[Moves.ForestYellowTunnel]]),
                         new Requirement(5, [[Moves.ForestYellowTunnel, Moves.Rocket]]),
-                        new Requirement(10, [[Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Peanut, Moves.Day]]),
                         new Requirement(10, [[Moves.Peanut, Moves.Slam]]),
                         new Requirement(5, [[Moves.Spring]]),
                         new Requirement(10, [[Moves.Night, Moves.Spring, Moves.Guitar]]),
@@ -658,11 +748,12 @@
                         ],
                     "Tiny": [
                         new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Mini, Moves.Punch]]),
-                        new Requirement(10, [[Moves.Mini]]),
-                        new Requirement(5, [[Moves.Mini, Moves.Night, Moves.Punch]]),
+                        new Requirement(5, [[Moves.Mini, Moves.Punch, Moves.Day]]), // Inside ? box in Mill Rear
+                        new Requirement(10, [[Moves.Mini, Moves.Day]]), // Not inside the rear mill
+                        new Requirement(5, [[Moves.Mini, Moves.Night, Moves.Punch, Moves.Day]]), // Spider boss bunch
                         new Requirement(17, [[Moves.Diving]]),
-                        new Requirement(20, [[Moves.Feather]]),
+                        new Requirement(10, [[Moves.Feather]]), // + Fungi Night, but assumed with the req for feather
+                        new Requirement(10, [[Moves.Feather]]),
                         new Requirement(4, [[Moves.ForestGreenTunnelFeather]]),
                         new Requirement(16, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]),
                         new Requirement(8, [[Moves.ForestYellowTunnel]]),
@@ -670,9 +761,9 @@
                     ],
                     "Chunky": [
                         new Requirement(51, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Punch]]),
+                        new Requirement(5, [[Moves.Punch, Moves.Day]]),
                         new Requirement(14, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]),
-                        new Requirement(5, [[Moves.Vines]]),
+                        new Requirement(5, [[Moves.Vines], [Moves.Night]]),
                         new Requirement(5, [[Moves.Slam]]),
                         new Requirement(10, [[Moves.Slam, Moves.Pineapple]]),
                         new Requirement(10, [[Moves.Pineapple]]),
@@ -840,35 +931,37 @@
                 })
                 let list = requirement_data[level][kong].slice();
                 // Precalcate list to handle barriers
-                list.forEach(item => {
-                    item.requirements.forEach((group, index) => {
-                        // Get list of move extensions and removals
-                        let purged_moves = [];
-                        let extended_moves = [];
-                        group.forEach(move_set => {
-                            if (move_set.is_barrier) {
-                                replacement_moves = getBarrierRequirement(move_set);
-                                if (replacement_moves != null) {
-                                    purged_moves.push(move_set);
-                                    extended_moves = extended_moves.concat(replacement_moves)
+                for (let i = 0; i < 2; i++) {
+                    list.forEach(item => {
+                        item.requirements.forEach((group, index) => {
+                            // Get list of move extensions and removals
+                            let purged_moves = [];
+                            let extended_moves = [];
+                            group.forEach(move_set => {
+                                if (move_set.is_barrier) {
+                                    replacement_moves = getBarrierRequirement(move_set);
+                                    if (replacement_moves != null) {
+                                        purged_moves.push(move_set);
+                                        extended_moves = extended_moves.concat(replacement_moves)
+                                    }
                                 }
+                            })
+                            // remove/extend group
+                            group = group.filter(k => !purged_moves.includes(k)).slice();
+                            group = group.concat(extended_moves).slice();
+                            // Correct moveless situations
+                            moveless_check = group.filter(k => k != Moves.Moveless)
+                            if (moveless_check.length > 0) {
+                                // If there's move requirements, filter out all "moveless" entries
+                                group = moveless_check.slice()
+                            } else if ((moveless_check.length == 0) && (group.length == 0)) {
+                                // No moves in here at all
+                                group = [Moves.Moveless].slice()
                             }
+                            item.requirements[index] = group.slice();
                         })
-                        // remove/extend group
-                        group = group.filter(k => !purged_moves.includes(k)).slice();
-                        group = group.concat(extended_moves).slice();
-                        // Correct moveless situations
-                        moveless_check = group.filter(k => k != Moves.Moveless)
-                        if (moveless_check.length > 0) {
-                            // If there's move requirements, filter out all "moveless" entries
-                            group = moveless_check.slice()
-                        } else if ((moveless_check.length == 0) && (group.length == 0)) {
-                            // No moves in here at all
-                            group = [Moves.Moveless].slice()
-                        }
-                        item.requirements[index] = group.slice();
                     })
-                })
+                }
 
                 // Calculate all moves in this list
                 let updated_threshold = threshold;
