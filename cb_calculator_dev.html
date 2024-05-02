@@ -17,138 +17,166 @@
             .container-header {
                 padding: 20px;
             }
+            .appl_preset_filled {
+                margin-top: -10px;
+                margin-bottom: 10px;
+            }
+            #preset_selector {
+                transition: 0.5s ease-in-out;
+            }
+            #preset_selector.pulse-select {
+                background-color: rgba(0, 255, 0, 0.1);
+            }
         </style>
     </head>
     <body>
-        <!-- Modal -->
+        <!-- Toggles Modal -->
         <div class="modal fade" id="barrierModal" tabindex="-1" aria-labelledby="barrierModalLabel" aria-hidden="true">
             <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                <h1 class="modal-title fs-5" id="barrierModalLabel">Select opened barriers</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <h5>Jungle Japes</h5>
-                    <!-- Japes Coconut Gates -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesCoconut">
-                        <label class="form-check-label" for="switchJapesCoconut">Japes Coconut Gates</label>
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="barrierModalLabel">Select opened barriers</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <!-- Japes Shellhive Gates -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesShellhive">
-                        <label class="form-check-label" for="switchJapesShellhive">Japes Shellhive Gate</label>
+                    <div class="modal-body">
+                        <h5>Jungle Japes</h5>
+                        <!-- Japes Coconut Gates -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesCoconut">
+                            <label class="form-check-label" for="switchJapesCoconut">Japes Coconut Gates</label>
+                        </div>
+                        <!-- Japes Shellhive Gates -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesShellhive">
+                            <label class="form-check-label" for="switchJapesShellhive">Japes Shellhive Gate</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Angry Aztec</h5>
+                        </div>
+                        <!-- Aztec Tunnel Door -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecTunnel">
+                            <label class="form-check-label" for="switchAztecTunnel">Aztec Tunnel Door</label>
+                        </div>
+                        <!-- Aztec 5DT Switches -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztec5DT" checked>
+                            <label class="form-check-label" for="switchAztec5DT">Aztec 5-Door Temple Switches Spawned</label>
+                        </div>
+                        <!-- Aztec Llama Switches -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecLlama" checked>
+                            <label class="form-check-label" for="switchAztecLlama">Aztec Llama Temple Switches Spawned</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Frantic Factory</h5>
+                        </div>
+                        <!-- Factory Production Room -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryProd" checked>
+                            <label class="form-check-label" for="switchFactoryProd">Factory Production Room On</label>
+                        </div>
+                        <!-- Factory Testing Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryTesting">
+                            <label class="form-check-label" for="switchFactoryTesting">Factory Testing Gate Open</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Gloomy Galleon</h5>
+                        </div>
+                        <!-- Galleon Lighthouse Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLighthouse">
+                            <label class="form-check-label" for="switchGalleonLighthouse">Galleon Lighthouse Side Open</label>
+                        </div>
+                        <!-- Galleon Shipyard Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonShipyard" checked>
+                            <label class="form-check-label" for="switchGalleonShipyard">Galleon Shipyard Side Open</label>
+                        </div>
+                        <!-- Galleon Seasick Ship -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonSeasick" checked>
+                            <label class="form-check-label" for="switchGalleonSeasick">Galleon Seasick Ship Spawned</label>
+                        </div>
+                        <!-- Galleon Water -->
+                        <div class="small">
+                            Galleon Water Setting
+                        </div>
+                        <select class="form-select barrier-select" id="selectGalleonWater">
+                            <option value="Low" selected>Lowered</option>
+                            <option value="High">Raised</option>
+                        </select>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLowered" checked>
+                            <label class="form-check-label" for="switchGalleonLowered">Galleon Low Water Access</label>
+                        </div>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonRaised">
+                            <label class="form-check-label" for="switchGalleonRaised">Galleon High Water Access</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Fungi Forest</h5>
+                        </div>
+                        <!-- Fungi Green Tunnel -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestGreen">
+                            <label class="form-check-label" for="switchForestGreen">Fungi Green Tunnel Open</label>
+                        </div>
+                        <!-- Fungi Yellow Tunnel -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestYellow">
+                            <label class="form-check-label" for="switchForestYellow">Fungi Yellow Tunnel Open</label>
+                        </div>
+                        <!-- Fungi Time of Day -->
+                        <div class="small">
+                            Fungi Time of Day Setting
+                        </div>
+                        <select class="form-select barrier-select" id="selectForestTime">
+                            <option value="Day" selected>Day Start</option>
+                            <option value="Night">Night Start</option>
+                            <option value="Dusk">Dusk</option>
+                            <option value="Progressive">Progressive</option>
+                        </select>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestDay" checked>
+                            <label class="form-check-label" for="switchForestDay">Fungi Daytime Access</label>
+                        </div>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestNight">
+                            <label class="form-check-label" for="switchForestNight">Fungi Nighttime Access</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Crystal Caves</h5>
+                        </div>
+                        <!-- Caves 5DI Pads -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesIgloo" checked>
+                            <label class="form-check-label" for="switchCavesIgloo">Caves Igloo Pads Spawned</label>
+                        </div>
                     </div>
-                    <div class="mt-3">
-                        <h5>Angry Aztec</h5>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
-                    <!-- Aztec Tunnel Door -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecTunnel">
-                        <label class="form-check-label" for="switchAztecTunnel">Aztec Tunnel Door</label>
-                    </div>
-                    <!-- Aztec 5DT Switches -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztec5DT" checked>
-                        <label class="form-check-label" for="switchAztec5DT">Aztec 5-Door Temple Switches Spawned</label>
-                    </div>
-                    <!-- Aztec Llama Switches -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecLlama" checked>
-                        <label class="form-check-label" for="switchAztecLlama">Aztec Llama Temple Switches Spawned</label>
-                    </div>
-                    <div class="mt-3">
-                        <h5>Frantic Factory</h5>
-                    </div>
-                    <!-- Factory Production Room -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryProd" checked>
-                        <label class="form-check-label" for="switchFactoryProd">Factory Production Room On</label>
-                    </div>
-                    <!-- Factory Testing Gate -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryTesting">
-                        <label class="form-check-label" for="switchFactoryTesting">Factory Testing Gate Open</label>
-                    </div>
-                    <div class="mt-3">
-                        <h5>Gloomy Galleon</h5>
-                    </div>
-                    <!-- Galleon Lighthouse Gate -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLighthouse">
-                        <label class="form-check-label" for="switchGalleonLighthouse">Galleon Lighthouse Side Open</label>
-                    </div>
-                    <!-- Galleon Shipyard Gate -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonShipyard" checked>
-                        <label class="form-check-label" for="switchGalleonShipyard">Galleon Shipyard Side Open</label>
-                    </div>
-                    <!-- Galleon Seasick Ship -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonSeasick" checked>
-                        <label class="form-check-label" for="switchGalleonSeasick">Galleon Seasick Ship Spawned</label>
-                    </div>
-                    <!-- Galleon Water -->
-                    <div class="small">
-                        Galleon Water Setting
-                    </div>
-                    <select class="form-select barrier-select" id="selectGalleonWater">
-                        <option value="Low" selected>Lowered</option>
-                        <option value="High">Raised</option>
-                    </select>
-                    <div class="form-check form-switch" hidden>
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLowered" checked>
-                        <label class="form-check-label" for="switchGalleonLowered">Galleon Low Water Access</label>
-                    </div>
-                    <div class="form-check form-switch" hidden>
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonRaised">
-                        <label class="form-check-label" for="switchGalleonRaised">Galleon High Water Access</label>
-                    </div>
-                    <div class="mt-3">
-                        <h5>Fungi Forest</h5>
-                    </div>
-                    <!-- Fungi Green Tunnel -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestGreen">
-                        <label class="form-check-label" for="switchForestGreen">Fungi Green Tunnel Open</label>
-                    </div>
-                    <!-- Fungi Yellow Tunnel -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestYellow">
-                        <label class="form-check-label" for="switchForestYellow">Fungi Yellow Tunnel Open</label>
-                    </div>
-                    <!-- Fungi Time of Day -->
-                    <div class="small">
-                        Fungi Time of Day Setting
-                    </div>
-                    <select class="form-select barrier-select" id="selectForestTime">
-                        <option value="Day" selected>Day Start</option>
-                        <option value="Night">Night Start</option>
-                        <option value="Dusk">Dusk</option>
-                        <option value="Progressive">Progressive</option>
-                    </select>
-                    <div class="form-check form-switch" hidden>
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestDay" checked>
-                        <label class="form-check-label" for="switchForestDay">Fungi Daytime Access</label>
-                    </div>
-                    <div class="form-check form-switch" hidden>
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestNight">
-                        <label class="form-check-label" for="switchForestNight">Fungi Nighttime Access</label>
-                    </div>
-                    <div class="mt-3">
-                        <h5>Crystal Caves</h5>
-                    </div>
-                    <!-- Caves 5DI Pads -->
-                    <div class="form-check form-switch">
-                        <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesIgloo" checked>
-                        <label class="form-check-label" for="switchCavesIgloo">Caves Igloo Pads Spawned</label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
+        </div>
+        <!-- Custom Presets Modal -->
+        <div class="modal fade" id="customPresetModal" tabindex="-1" aria-labelledby="customPresetModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="customPresetModalLabel">Alter custom presets</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="customPresetList"></div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addCurrent()">Add new</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container">
@@ -192,6 +220,7 @@
                     </div>
                     <hr />
                     <h4>Presets</h4>
+                    <div class="small" id="applied_preset_indic"></div>
                     <div class="d-flex">
                         <select class="form-select" aria-label="Presets" id="preset_selector"></select>
                         <div class="ps-3">
@@ -199,11 +228,14 @@
                                 Apply
                             </button>
                         </div>
+                        <div class="ps-1">
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customPresetModal">
+                                Edit
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-            
-
             <div id="permutations"></div>
         </div>
         
@@ -384,7 +416,7 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                 ], 50, "Low", "Day");
-                static Season3Candidates = new Preset("Season 3 Candidates (Excl. CLO)", "s3", [
+                static Season3Candidates = new Preset("Season 3 Candidates (Excl. CLO)", "s3can", [
                     "switchJapesCoconut",
                     "switchAztec5DT",
                     "switchAztecTunnel",
@@ -407,6 +439,16 @@
                 ], 40, "Low", "Dusk");
                 static Vanilla = new Preset("Vanilla", "vanilla", [], 75, "Low", "Day");
                 static Hell = new Preset("Hell Mode", "hell", [], 80, "Low", "Progressive");
+                static Season3 = new Preset("Season 3", "s3", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 45, "High", "Day");
 
                 constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
                     this.name = name;
@@ -419,9 +461,10 @@
             }
 
             const presets = [
-                Preset.Season2,
-                Preset.Season3Candidates,
-                Preset.Season3CLO,
+                //Preset.Season2,
+                Preset.Season3,
+                //Preset.Season3Candidates,
+                //Preset.Season3CLO,
                 Preset.Beginner,
                 Preset.BLZR,
                 Preset.Vanilla,
@@ -429,10 +472,157 @@
                 Preset.Hell,
             ]
 
-            function populatePresets() {
-                presets.forEach((p, index) => {
-                    document.getElementById("preset_selector").innerHTML += `<option ${index == 0 ? 'selected' : ''} value="${p.key}">${p.name}</option>`
+            // Function to set a cookie
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            // Function to get a cookie value
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+                    while (cookie.charAt(0) === ' ') {
+                        cookie = cookie.substring(1, cookie.length);
+                    }
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return cookie.substring(nameEQ.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            let custom_presets = [{
+                "key": "custom0",
+                "name": "Season 2 (Obsolete)",
+                "setstr": '14738|00|40'
+            }];
+
+            function updateCookie() {
+                setCookie("customPresets", JSON.stringify(custom_presets), 365);
+            }
+
+            function deleteCustom(index) {
+                custom_presets = custom_presets.filter((x, i) => i != index);
+                custom_presets.forEach((p, i) => {
+                    p.key = `custom${i}`
                 })
+                populatePresets();
+                updateCookie();
+            }
+
+            function addCurrent() {
+                custom_presets.push({
+                    "key": `${custom_presets.length}`,
+                    "name": "New Preset",
+                    "setstr": convertSettingsToString()
+                })
+                populatePresets();
+                updateCookie();
+            }
+
+            function updatePresetName(i) {
+                custom_presets[i].name = document.getElementById(`customPresetHandler${i}`).value;
+                populatePresets();
+                updateCookie();
+            }
+
+            function populateCustomPresets() {
+                document.getElementById("customPresetList").innerHTML = "";
+                if (custom_presets.length == 0) {
+                    document.getElementById("customPresetList").innerHTML = "<div class='text-center'>There's no custom presets here (yet!)</div>"
+                }
+                custom_presets.forEach((p, index) => {
+                    document.getElementById("preset_selector").innerHTML += `<option iscustom="true" value="${p.key}">${p.name}</option>`
+                    document.getElementById("customPresetList").innerHTML += `
+                        <div class="d-flex">
+                            <div class="flex-grow-1 input-group">
+                                <input type="text" class="mb-3 form-control" id="customPresetHandler${index}" onfocusout="updatePresetName(${index})" value="${p.name}" />
+                            </div>
+                            <div class="input-group px-2">
+                                <input type="text" class="mb-3 form-control" style="color:#888" value="${p.setstr}" disabled />
+                            </div>
+                            <div>
+                                <button class="btn btn-danger mb-3" onclick="deleteCustom(${index})">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    `
+                })
+            }
+
+            function convertSettingsToString() {
+                let switch_booleans = [];
+                let select_indexes = [];
+                let switch_str = 0;
+                const switches = document.getElementsByClassName("barrier-switch");
+                const selects = document.getElementsByClassName("barrier-select");
+                const cb_count = document.getElementById("cb-req-medal").value;
+                for (let s = 0; s < switches.length; s++) {
+                    let boolean_val = switches[s].checked;
+                    switch_booleans.push(boolean_val);
+                    if (boolean_val) {
+                        switch_str |= (1 << s);
+                    }
+                }
+                for (let k = 0; k < selects.length; k++) {
+                    select_indexes.push(0);
+                    const k_options = selects[k].getElementsByTagName("option");
+                    for (let j = 0; j < k_options.length; j++) {
+                        if (k_options[j].getAttribute("value") == selects[k].value) {
+                            select_indexes[k] = j;
+                        }
+                    }
+                }
+                return `${switch_str.toString(16)}|${select_indexes.join("")}|${cb_count}`
+            }
+
+            function applySettingsString(set_str) {
+                const segs = set_str.split("|");
+                // CB Count
+                cb_count = document.getElementById("cb-req-medal").value = parseInt(segs[2]);
+                // Selects
+                const selects = document.getElementsByClassName("barrier-select");
+                segs[1].split("").forEach((val, index) => {
+                    if (index < selects.length) {
+                        const k_selects = selects[index].getElementsByTagName("option");
+                        const sub_index = parseInt(val);
+                        if (sub_index < k_selects.length) {
+                            selects[index].value = k_selects[sub_index].getAttribute("value");
+                        }
+                    }
+                })
+                // Toggles
+                const switches = document.getElementsByClassName("barrier-switch");
+                const raw_val = parseInt(segs[0], 16);
+                for (let i = 0; i < switches.length; i++) {
+                    const check = 1 << i;
+                    if (raw_val & check) {
+                        switches[i].checked = true;
+                    } else {
+                        switches[i].checked = false;
+                    }
+                }
+            }
+
+            function populatePresets() {
+                document.getElementById("preset_selector").innerHTML = "";
+                presets.forEach((p, index) => {
+                    document.getElementById("preset_selector").innerHTML += `<option ${index == 0 ? 'selected' : ''} iscustom="false" value="${p.key}">${p.name}</option>`
+                })
+                populateCustomPresets();
+            }
+            let custom_preset_cookie = getCookie("customPresets");
+            if (custom_preset_cookie != null) {
+                custom_presets = JSON.parse(custom_preset_cookie)
             }
             populatePresets();
 
@@ -468,6 +658,30 @@
                 document.getElementById("switchForestNight").checked = fun_night;
             }
 
+            function resetPresetHeader() {
+                const appl_preset = document.getElementById("applied_preset_indic");
+                appl_preset.innerText = "";
+                appl_preset.classList.remove("appl_preset_filled");
+            }
+
+            function pulseSelect() {
+                const select_el = document.getElementById("preset_selector");
+                select_el.classList.add("pulse-select");
+                setTimeout(() => {
+                    document.getElementById("preset_selector").classList.remove("pulse-select");
+                }, 500);
+            }
+
+            function updateDisplay(preset_name) {
+                updateSelects();
+                updateBarriers();
+                getRequiredMoves();
+                const appl_preset = document.getElementById("applied_preset_indic");
+                appl_preset.innerText = `Applied Preset: ${preset_name}`;
+                appl_preset.classList.add("appl_preset_filled");
+                pulseSelect();
+            }
+
             function applyPreset() {
                 presets.forEach(p => {
                     if (p.key == document.getElementById("preset_selector").value) {
@@ -481,9 +695,14 @@
                         document.getElementById("cb-req-medal").value = p.cb_requirement;
                         document.getElementById("selectGalleonWater").value = p.galleon_water;
                         document.getElementById("selectForestTime").value = p.fungi_time;
-                        updateSelects();
-                        updateBarriers();
-                        getRequiredMoves();
+                        updateDisplay(p.name);
+                        return;
+                    }
+                })
+                custom_presets.forEach(json => {
+                    if (json.key == document.getElementById("preset_selector").value) {
+                        applySettingsString(json.setstr);
+                        updateDisplay(json.name);
                     }
                 })
             }
@@ -523,6 +742,7 @@
                 barrier_toggles[b].addEventListener("change", (e) => {
                     updateBarriers();
                     getRequiredMoves();
+                    resetPresetHeader();
                 })
             }
             const barrier_selects = document.getElementsByClassName("barrier-select");
@@ -531,6 +751,7 @@
                     updateSelects();
                     updateBarriers();
                     getRequiredMoves();
+                    resetPresetHeader();
                 })
             }
 

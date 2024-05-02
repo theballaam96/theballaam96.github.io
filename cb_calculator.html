@@ -3,7 +3,13 @@
         <title>DK64 Randomizer Colored Banana Calculator</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Discord -->
+        <meta content="DK64 CB Calculator (Dev)" property="og:title" />
+        <meta content="A calculator, primarily for Donkey Kong 64 Randomizer players, to determine the requirements to obtain a banana medal check in Donkey Kong 64 in a glitchless in-logic context." property="og:description" />
+        <meta content="DK64 Utils" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/head.png" property="og:image" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <style>
             .container {
                 width: 70%;
@@ -11,18 +17,184 @@
             .container-header {
                 padding: 20px;
             }
+            .appl_preset_filled {
+                margin-top: -10px;
+                margin-bottom: 10px;
+            }
+            #preset_selector {
+                transition: 0.5s ease-in-out;
+            }
+            #preset_selector.pulse-select {
+                background-color: rgba(0, 255, 0, 0.1);
+            }
         </style>
     </head>
     <body>
+        <!-- Toggles Modal -->
+        <div class="modal fade" id="barrierModal" tabindex="-1" aria-labelledby="barrierModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="barrierModalLabel">Select opened barriers</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Jungle Japes</h5>
+                        <!-- Japes Coconut Gates -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesCoconut">
+                            <label class="form-check-label" for="switchJapesCoconut">Japes Coconut Gates</label>
+                        </div>
+                        <!-- Japes Shellhive Gates -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesShellhive">
+                            <label class="form-check-label" for="switchJapesShellhive">Japes Shellhive Gate</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Angry Aztec</h5>
+                        </div>
+                        <!-- Aztec Tunnel Door -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecTunnel">
+                            <label class="form-check-label" for="switchAztecTunnel">Aztec Tunnel Door</label>
+                        </div>
+                        <!-- Aztec 5DT Switches -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztec5DT" checked>
+                            <label class="form-check-label" for="switchAztec5DT">Aztec 5-Door Temple Switches Spawned</label>
+                        </div>
+                        <!-- Aztec Llama Switches -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecLlama" checked>
+                            <label class="form-check-label" for="switchAztecLlama">Aztec Llama Temple Switches Spawned</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Frantic Factory</h5>
+                        </div>
+                        <!-- Factory Production Room -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryProd" checked>
+                            <label class="form-check-label" for="switchFactoryProd">Factory Production Room On</label>
+                        </div>
+                        <!-- Factory Testing Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryTesting">
+                            <label class="form-check-label" for="switchFactoryTesting">Factory Testing Gate Open</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Gloomy Galleon</h5>
+                        </div>
+                        <!-- Galleon Lighthouse Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLighthouse">
+                            <label class="form-check-label" for="switchGalleonLighthouse">Galleon Lighthouse Side Open</label>
+                        </div>
+                        <!-- Galleon Shipyard Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonShipyard" checked>
+                            <label class="form-check-label" for="switchGalleonShipyard">Galleon Shipyard Side Open</label>
+                        </div>
+                        <!-- Galleon Seasick Ship -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonSeasick" checked>
+                            <label class="form-check-label" for="switchGalleonSeasick">Galleon Seasick Ship Spawned</label>
+                        </div>
+                        <!-- Galleon Water -->
+                        <div class="small">
+                            Galleon Water Setting
+                        </div>
+                        <select class="form-select barrier-select" id="selectGalleonWater">
+                            <option value="Low" selected>Lowered</option>
+                            <option value="High">Raised</option>
+                        </select>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLowered" checked>
+                            <label class="form-check-label" for="switchGalleonLowered">Galleon Low Water Access</label>
+                        </div>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonRaised">
+                            <label class="form-check-label" for="switchGalleonRaised">Galleon High Water Access</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Fungi Forest</h5>
+                        </div>
+                        <!-- Fungi Green Tunnel -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestGreen">
+                            <label class="form-check-label" for="switchForestGreen">Fungi Green Tunnel Open</label>
+                        </div>
+                        <!-- Fungi Yellow Tunnel -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestYellow">
+                            <label class="form-check-label" for="switchForestYellow">Fungi Yellow Tunnel Open</label>
+                        </div>
+                        <!-- Fungi Time of Day -->
+                        <div class="small">
+                            Fungi Time of Day Setting
+                        </div>
+                        <select class="form-select barrier-select" id="selectForestTime">
+                            <option value="Day" selected>Day Start</option>
+                            <option value="Night">Night Start</option>
+                            <option value="Dusk">Dusk</option>
+                            <option value="Progressive">Progressive</option>
+                        </select>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestDay" checked>
+                            <label class="form-check-label" for="switchForestDay">Fungi Daytime Access</label>
+                        </div>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestNight">
+                            <label class="form-check-label" for="switchForestNight">Fungi Nighttime Access</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Crystal Caves</h5>
+                        </div>
+                        <!-- Caves 5DI Pads -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesIgloo" checked>
+                            <label class="form-check-label" for="switchCavesIgloo">Caves Igloo Pads Spawned</label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Custom Presets Modal -->
+        <div class="modal fade" id="customPresetModal" tabindex="-1" aria-labelledby="customPresetModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="customPresetModalLabel">Alter custom presets</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="customPresetList"></div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-success" onclick="addCurrent()">Add new</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="container">
             <div class="container-header">
                 <h1>DK64 Randomizer Medal Move Requirement Calculator</h1>
             </div>
             <div class="card mb-3">
                 <div class="card-body">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">Medal Requirement</span>
-                        <input type="number" id="cb-req-medal" class="form-control recalculate" placeholder="Medal Requirement" aria-label="Medal Requirement" value="40" aria-describedby="basic-addon1"/>
+                    <div class="d-flex">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Medal Requirement</span>
+                            <input type="number" id="cb-req-medal" class="form-control recalculate" placeholder="Medal Requirement" aria-label="Medal Requirement" value="40" aria-describedby="basic-addon1"/>
+                        </div>
+                        <div class="ps-3 mb-3">
+                            <button type="button" class="btn btn-primary config-button" data-bs-toggle="modal" data-bs-target="#barrierModal" style="height:100%">
+                                <i class="fa-solid fa-gear"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <select class="form-select recalculate" aria-label="Select Level" id="medal-level">
@@ -46,11 +218,24 @@
                             <option value="Chunky">Chunky</option>
                         </select>
                     </div>
-                    
+                    <hr />
+                    <h4>Presets</h4>
+                    <div class="small" id="applied_preset_indic"></div>
+                    <div class="d-flex">
+                        <select class="form-select" aria-label="Presets" id="preset_selector"></select>
+                        <div class="ps-3">
+                            <button type="button" class="btn btn-secondary" onclick="applyPreset()">
+                                Apply
+                            </button>
+                        </div>
+                        <div class="ps-1">
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customPresetModal">
+                                Edit
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-
             <div id="permutations"></div>
         </div>
         
@@ -99,6 +284,7 @@
                 // Special Moves
                 static Strong = new Moves("Strong Kong");
                 static Blast = new Moves("Baboon Blast");
+                static Grab = new Moves("Gorilla Grab");
                 static Rocket = new Moves("Rocketbarrel Boost");
                 static Spring = new Moves("Simian Spring");
                 static Charge = new Moves("Chimpy Charge");
@@ -128,12 +314,34 @@
                 static Sax = new Moves("Sax");
                 static Triangle = new Moves("Triangle");
                 // Misc Events
-                static Night = new Moves("Fungi Night");
+                
                 static W3Bonus = new Moves("Caves Warp 3 Bonus");
+                static AnyGun = new Moves("Any Gun");
+                // Barriers
+                static JapesCoconut = new Moves("Japes Coconut Gates", true, [], true); // No logic determined yet for this
+                static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
+                static AztecTunnelDoor = new Moves("Aztec Tunnel Door", true, [Moves.Guitar, Moves.Vines], true);
+                static Aztec5DT = new Moves("Aztec 5DT Switches", true, [Moves.Rocket, Moves.Peanut], true);
+                static AztecLlama = new Moves("Aztec Llama Switch", true, [Moves.Blast], true);
+                static FactoryProduction = new Moves("Production Room On", true, [Moves.Grab, Moves.Coconut], true);
+                static FactoryTesting = new Moves("Testing Side Open", true, [], true); // No logic determined yet for this
+                static GalleonLighthouse = new Moves("Lighthouse Side Open", true, [Moves.Coconut], true);
+                static GalleonPeanut = new Moves("Shipwreck Side Open", true, [Moves.Peanut], true);
+                static GalleonShipSpawned = new Moves("Ship Spawned", true, [Moves.Slam, Moves.Grab], true);
+                static ForestGreenTunnelPineapple = new Moves("Green Tunnel Opened (Pineapple)", true, [Moves.Pineapple], true);
+                static ForestGreenTunnelFeather = new Moves("Green Tunnel Opened (Feather)", true, [Moves.Feather], true);
+                static ForestYellowTunnel = new Moves("Yellow Tunnel Opened", true, [Moves.Grape], true);
+                static CavesIglooPads = new Moves("Caves Igloo Pads Spawned", true, [Moves.Rocket], true);
+                static Night = new Moves("Fungi Night", true, [Moves.AnyGun], true);
+                static Day = new Moves("Fungi Day", true, [Moves.AnyGun], true);
+                static RaisedWater = new Moves("Galleon Raised Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
+                static LoweredWater = new Moves("Galleon Lowered Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
 
-                constructor (name, requires_moves=true) {
+                constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
                     this.name = name;
                     this.requires_moves = requires_moves
+                    this.barrier_moves = barrier_moves
+                    this.is_barrier = is_barrier
                 }
             }
 
@@ -141,6 +349,8 @@
                 constructor (amount, requirements) {
                     this.amount = amount;
                     this.requirements = requirements;
+                    this.amount_copy = amount;
+                    this.requirements_copy = requirements.slice();
                 }
 
                 can_acquire(move_list) {
@@ -158,6 +368,391 @@
                     })
                     return acquire;
                 }
+
+                reset() {
+                    this.requirements = this.requirements_copy.slice();
+                    this.amount = this.amount_copy;
+                }
+            }
+
+            let opened_barriers = [];
+
+            function getBarrierRequirement(barrier) {
+                if (barrier.is_barrier) {
+                    if (opened_barriers.includes(barrier)) {
+                        return []
+                    }
+                    return barrier.barrier_moves;
+                }
+                return null
+            }
+
+            class Preset {
+                static Season2 = new Preset("Season 2", "s2", [
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 40, "Low", "Day");
+                static Beginner = new Preset("Beginner", "beginner", [
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 30, "Low", "Day");
+                static BLZR = new Preset("Balanced LZR", "blzr", [
+                    "switchAztec5DT",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 40, "Low", "Dusk");
+                static TreasureHurry = new Preset("Treasure Hurry", "thurry", [
+                    "switchAztecLlama",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                ], 50, "Low", "Day");
+                static Season3Candidates = new Preset("Season 3 Candidates (Excl. CLO)", "s3can", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 40, "High", "Dusk");
+                static Season3CLO = new Preset("Season 3 CLO Candidate", "s3clo", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 40, "Low", "Dusk");
+                static Vanilla = new Preset("Vanilla", "vanilla", [], 75, "Low", "Day");
+                static Hell = new Preset("Hell Mode", "hell", [], 80, "Low", "Progressive");
+                static Season3 = new Preset("Season 3", "s3", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 45, "High", "Day");
+
+                constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
+                    this.name = name;
+                    this.key = key;
+                    this.barriers = barriers.slice();
+                    this.cb_requirement = cb_requirement;
+                    this.galleon_water = galleon_water;
+                    this.fungi_time = fungi_time;
+                }
+            }
+
+            const presets = [
+                //Preset.Season2,
+                Preset.Season3,
+                //Preset.Season3Candidates,
+                //Preset.Season3CLO,
+                Preset.Beginner,
+                Preset.BLZR,
+                Preset.Vanilla,
+                Preset.TreasureHurry,
+                Preset.Hell,
+            ]
+
+            // Function to set a cookie
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            // Function to get a cookie value
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+                    while (cookie.charAt(0) === ' ') {
+                        cookie = cookie.substring(1, cookie.length);
+                    }
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return cookie.substring(nameEQ.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            let custom_presets = [{
+                "key": "custom0",
+                "name": "Season 2 (Obsolete)",
+                "setstr": '14738|00|40'
+            }];
+
+            function updateCookie() {
+                setCookie("customPresets", JSON.stringify(custom_presets), 365);
+            }
+
+            function deleteCustom(index) {
+                custom_presets = custom_presets.filter((x, i) => i != index);
+                custom_presets.forEach((p, i) => {
+                    p.key = `custom${i}`
+                })
+                populatePresets();
+                updateCookie();
+            }
+
+            function addCurrent() {
+                custom_presets.push({
+                    "key": `${custom_presets.length}`,
+                    "name": "New Preset",
+                    "setstr": convertSettingsToString()
+                })
+                populatePresets();
+                updateCookie();
+            }
+
+            function updatePresetName(i) {
+                custom_presets[i].name = document.getElementById(`customPresetHandler${i}`).value;
+                populatePresets();
+                updateCookie();
+            }
+
+            function populateCustomPresets() {
+                document.getElementById("customPresetList").innerHTML = "";
+                if (custom_presets.length == 0) {
+                    document.getElementById("customPresetList").innerHTML = "<div class='text-center'>There's no custom presets here (yet!)</div>"
+                }
+                custom_presets.forEach((p, index) => {
+                    document.getElementById("preset_selector").innerHTML += `<option iscustom="true" value="${p.key}">${p.name}</option>`
+                    document.getElementById("customPresetList").innerHTML += `
+                        <div class="d-flex">
+                            <div class="flex-grow-1 input-group">
+                                <input type="text" class="mb-3 form-control" id="customPresetHandler${index}" onfocusout="updatePresetName(${index})" value="${p.name}" />
+                            </div>
+                            <div class="input-group px-2">
+                                <input type="text" class="mb-3 form-control" style="color:#888" value="${p.setstr}" disabled />
+                            </div>
+                            <div>
+                                <button class="btn btn-danger mb-3" onclick="deleteCustom(${index})">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    `
+                })
+            }
+
+            function convertSettingsToString() {
+                let switch_booleans = [];
+                let select_indexes = [];
+                let switch_str = 0;
+                const switches = document.getElementsByClassName("barrier-switch");
+                const selects = document.getElementsByClassName("barrier-select");
+                const cb_count = document.getElementById("cb-req-medal").value;
+                for (let s = 0; s < switches.length; s++) {
+                    let boolean_val = switches[s].checked;
+                    switch_booleans.push(boolean_val);
+                    if (boolean_val) {
+                        switch_str |= (1 << s);
+                    }
+                }
+                for (let k = 0; k < selects.length; k++) {
+                    select_indexes.push(0);
+                    const k_options = selects[k].getElementsByTagName("option");
+                    for (let j = 0; j < k_options.length; j++) {
+                        if (k_options[j].getAttribute("value") == selects[k].value) {
+                            select_indexes[k] = j;
+                        }
+                    }
+                }
+                return `${switch_str.toString(16)}|${select_indexes.join("")}|${cb_count}`
+            }
+
+            function applySettingsString(set_str) {
+                const segs = set_str.split("|");
+                // CB Count
+                cb_count = document.getElementById("cb-req-medal").value = parseInt(segs[2]);
+                // Selects
+                const selects = document.getElementsByClassName("barrier-select");
+                segs[1].split("").forEach((val, index) => {
+                    if (index < selects.length) {
+                        const k_selects = selects[index].getElementsByTagName("option");
+                        const sub_index = parseInt(val);
+                        if (sub_index < k_selects.length) {
+                            selects[index].value = k_selects[sub_index].getAttribute("value");
+                        }
+                    }
+                })
+                // Toggles
+                const switches = document.getElementsByClassName("barrier-switch");
+                const raw_val = parseInt(segs[0], 16);
+                for (let i = 0; i < switches.length; i++) {
+                    const check = 1 << i;
+                    if (raw_val & check) {
+                        switches[i].checked = true;
+                    } else {
+                        switches[i].checked = false;
+                    }
+                }
+            }
+
+            function populatePresets() {
+                document.getElementById("preset_selector").innerHTML = "";
+                presets.forEach((p, index) => {
+                    document.getElementById("preset_selector").innerHTML += `<option ${index == 0 ? 'selected' : ''} iscustom="false" value="${p.key}">${p.name}</option>`
+                })
+                populateCustomPresets();
+            }
+            let custom_preset_cookie = getCookie("customPresets");
+            if (custom_preset_cookie != null) {
+                custom_presets = JSON.parse(custom_preset_cookie)
+            }
+            populatePresets();
+
+            function updateSelects() {
+                // Galleon Water
+                const gal_water = document.getElementById("selectGalleonWater").value;
+                let gal_water_low = false;
+                let gal_water_high = false;
+                if (gal_water == "Low") {
+                    gal_water_low = true;
+                    gal_water_high = false;
+                } else if (gal_water == "High") {
+                    gal_water_low = false;
+                    gal_water_high = true;
+                }
+                document.getElementById("switchGalleonLowered").checked = gal_water_low;
+                document.getElementById("switchGalleonRaised").checked = gal_water_high;
+                // Fungi Time of Day
+                const fun_tod = document.getElementById("selectForestTime").value;
+                let fun_day = false;
+                let fun_night = false;
+                if (fun_tod == "Day") {
+                    fun_day = true;
+                    fun_night = false;
+                } else if (fun_tod == "Night") {
+                    fun_day = false;
+                    fun_night = true;
+                } else if (["Dusk", "Progressive"].includes(fun_tod)) {
+                    fun_day = true;
+                    fun_night = true;
+                }
+                document.getElementById("switchForestDay").checked = fun_day;
+                document.getElementById("switchForestNight").checked = fun_night;
+            }
+
+            function resetPresetHeader() {
+                const appl_preset = document.getElementById("applied_preset_indic");
+                appl_preset.innerText = "";
+                appl_preset.classList.remove("appl_preset_filled");
+            }
+
+            function pulseSelect() {
+                const select_el = document.getElementById("preset_selector");
+                select_el.classList.add("pulse-select");
+                setTimeout(() => {
+                    document.getElementById("preset_selector").classList.remove("pulse-select");
+                }, 500);
+            }
+
+            function updateDisplay(preset_name) {
+                updateSelects();
+                updateBarriers();
+                getRequiredMoves();
+                const appl_preset = document.getElementById("applied_preset_indic");
+                appl_preset.innerText = `Applied Preset: ${preset_name}`;
+                appl_preset.classList.add("appl_preset_filled");
+                pulseSelect();
+            }
+
+            function applyPreset() {
+                presets.forEach(p => {
+                    if (p.key == document.getElementById("preset_selector").value) {
+                        const switches = document.getElementsByClassName("barrier-switch");
+                        for (let s = 0; s < switches.length; s++) {
+                            switches[s].checked = false;
+                        }
+                        p.barriers.forEach(barrier => {
+                            document.getElementById(barrier).checked = true;
+                        })
+                        document.getElementById("cb-req-medal").value = p.cb_requirement;
+                        document.getElementById("selectGalleonWater").value = p.galleon_water;
+                        document.getElementById("selectForestTime").value = p.fungi_time;
+                        updateDisplay(p.name);
+                        return;
+                    }
+                })
+                custom_presets.forEach(json => {
+                    if (json.key == document.getElementById("preset_selector").value) {
+                        applySettingsString(json.setstr);
+                        updateDisplay(json.name);
+                    }
+                })
+            }
+
+            function updateBarriers() {
+                barrier_data = {
+                    "switchJapesCoconut": [Moves.JapesCoconut],
+                    "switchJapesShellhive": [Moves.JapesShellhive],
+                    "switchAztecTunnel": [Moves.AztecTunnelDoor],
+                    "switchAztec5DT": [Moves.Aztec5DT],
+                    "switchAztecLlama": [Moves.AztecLlama],
+                    "switchFactoryProd": [Moves.FactoryProduction],
+                    "switchFactoryTesting": [Moves.FactoryTesting],
+                    "switchGalleonLighthouse": [Moves.GalleonLighthouse],
+                    "switchGalleonShipyard": [Moves.GalleonPeanut],
+                    "switchGalleonSeasick": [Moves.GalleonShipSpawned],
+                    "switchForestGreen": [Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple],
+                    "switchForestYellow": [Moves.ForestYellowTunnel],
+                    "switchCavesIgloo": [Moves.CavesIglooPads],
+                    "switchForestDay": [Moves.Day],
+                    "switchForestNight": [Moves.Night],
+                    "switchGalleonLowered": [Moves.LoweredWater],
+                    "switchGalleonRaised": [Moves.RaisedWater],
+                }
+                opened_barriers = []
+                Object.keys(barrier_data).forEach(id => {
+                    const doc = document.getElementById(id);
+                    if (doc.checked) {
+                        opened_barriers = opened_barriers.concat(barrier_data[id]);
+                    }
+                })
+            }
+            updateBarriers()
+
+            const barrier_toggles = document.getElementsByClassName("barrier-switch");
+            for (let b = 0; b < barrier_toggles.length; b++) {
+                barrier_toggles[b].addEventListener("change", (e) => {
+                    updateBarriers();
+                    getRequiredMoves();
+                    resetPresetHeader();
+                })
+            }
+            const barrier_selects = document.getElementsByClassName("barrier-select");
+            for (let b = 0; b < barrier_selects.length; b++) {
+                barrier_selects[b].addEventListener("change", (e) => {
+                    updateSelects();
+                    updateBarriers();
+                    getRequiredMoves();
+                    resetPresetHeader();
+                })
             }
 
             const llama_temple_guns = [Moves.Coconut, Moves.Grape, Moves.Feather];
@@ -193,25 +788,27 @@
                         new Requirement(10, [[Moves.Moveless]]),
                         new Requirement(12, [[Moves.Coconut]]),
                         new Requirement(10, [[Moves.Coconut, Moves.Feather]]),
-                        new Requirement(15, [[Moves.Feather]]),
-                        new Requirement(48, [[Moves.Feather, Moves.Mini]]),
+                        new Requirement(10, [[Moves.Feather]]),
+                        new Requirement(5, [[Moves.JapesShellhive]]),
+                        new Requirement(38, [[Moves.JapesShellhive, Moves.Mini]]),
+                        new Requirement(10, [[Moves.JapesShellhive, Moves.Mini, Moves.Feather]]),
                         new Requirement(5, [[Moves.Peanut, Moves.Feather]]),
                     ],
                     "Chunky": [
                         new Requirement(30, [[Moves.Moveless]]),
                         new Requirement(30, [[Moves.Coconut, Moves.Pineapple]]),
                         new Requirement(5, [[Moves.Coconut, Moves.Barrels]]),
-                        new Requirement(20, [[Moves.Feather, Moves.Hunky]]),
+                        new Requirement(20, [[Moves.JapesShellhive, Moves.Hunky]]),
                         new Requirement(15, [[Moves.Barrels]]),
                     ]
                 },
                 "Aztec": {
                     "DK": [
                         new Requirement(18, [[Moves.Moveless]]),
-                        new Requirement(30, [[Moves.Coconut, Moves.Vines, Moves.Guitar]]),
-                        new Requirement(20, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar, Moves.Slam, Moves.Strong].concat([item]))),
-                        new Requirement(15, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
-                        new Requirement(7, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(30, [[Moves.Coconut, Moves.AztecTunnelDoor]]),
+                        new Requirement(20, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.Slam, Moves.Strong, Moves.AztecLlama].concat([item]))),
+                        new Requirement(15, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
+                        new Requirement(7, [[Moves.AztecTunnelDoor]]),
                         new Requirement(10, [[Moves.Strong, Moves.Coconut]]),
                     ],
                     "Diddy": [
@@ -219,62 +816,69 @@
                         new Requirement(10, [[Moves.Peanut]]),
                         new Requirement(18, [[Moves.Peanut, Moves.Slam]]),
                         new Requirement(7, [[Moves.Peanut, Moves.Diving]]),
-                        new Requirement(30, [[Moves.Guitar, Moves.Vines]]),
-                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Rocket]]),
-                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Peanut]]),
-                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Coconut, Moves.Slam, Moves.Strong, Moves.Peanut]]),
+                        new Requirement(30, [[Moves.AztecTunnelDoor]]),
+                        new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Peanut, Moves.Aztec5DT]]),
+                        new Requirement(10, [[Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.Coconut, Moves.Slam, Moves.Strong, Moves.Peanut]]),
                     ],
                     "Lanky": [
                         new Requirement(5, [[Moves.Moveless]]),
-                        new Requirement(35, [[Moves.Guitar, Moves.Vines]]),
-                        new Requirement(35, [[Moves.Guitar, Moves.Vines, Moves.Grape]]),
+                        new Requirement(35, [[Moves.AztecTunnelDoor]]),
+                        new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Aztec5DT, Moves.Grape]]),
+                        new Requirement(25, [[Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.Grape]]),
                         new Requirement(14, [[Moves.Grape, Moves.Diving]]),
-                        new Requirement(11, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
+                        new Requirement(11, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
                     ],
                     "Tiny": [
-                        new Requirement(50, [[Moves.Guitar, Moves.Vines]]),
+                        new Requirement(50, [[Moves.AztecTunnelDoor]]),
                         new Requirement(5, [[Moves.Feather, Moves.Mini, Moves.Diving]]),
                         new Requirement(20, [[Moves.Feather, Moves.Diving]]),
-                        new Requirement(3, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar].concat([item]))),
-                        new Requirement(2, llama_temple_guns.map(item => [Moves.Vines, Moves.Guitar, Moves.Mini].concat([item]))),
+                        new Requirement(3, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
+                        new Requirement(2, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.Mini, Moves.AztecLlama].concat([item]))),
                         new Requirement(10, llama_temple_guns.map(item => 
-                            llama_lava_moves.map(item2 => [Moves.Guitar, Moves.Vines, Moves.Mini].concat([item2]).concat([item]))
+                            llama_lava_moves.map(item2 => [Moves.AztecTunnelDoor, Moves.Mini, Moves.AztecLlama].concat([item2]).concat([item]))
                         ).flat(1)),
-                        new Requirement(10, [[Moves.Guitar, Moves.Vines, Moves.Feather]]),
+                        new Requirement(10, [[Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.Feather]]),
                     ],
                     "Chunky": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(59, [[Moves.Pineapple]]),
-                        new Requirement(16, [[Moves.Guitar, Moves.Vines]]),
-                        new Requirement(20, [[Moves.Guitar, Moves.Vines, Moves.Pineapple]]),
+                        new Requirement(16, [[Moves.AztecTunnelDoor]]),
+                        new Requirement(20, [[Moves.AztecTunnelDoor, Moves.Pineapple, Moves.Aztec5DT]]),
                     ],
                 },
                 "Factory": {
                     "DK": [
                         new Requirement(20, [[Moves.Moveless]]),
                         new Requirement(20, [[Moves.Blast]]),
-                        new Requirement(15, [[Moves.Strong]]),
+                        new Requirement(15, [[Moves.Strong, Moves.FactoryProduction]]),
                         new Requirement(45, [[Moves.Coconut]]),
                     ],
                     "Diddy": [
-                        new Requirement(50, [[Moves.Moveless]]),
+                        new Requirement(35, [[Moves.Moveless]]),
+                        new Requirement(15, [[Moves.FactoryProduction]]),
                         new Requirement(20, [[Moves.Spring]]),
                         new Requirement(30, [[Moves.Guitar, Moves.Peanut]]),
                     ],
                     "Lanky": [
-                        new Requirement(47, [[Moves.Moveless]]),
-                        new Requirement(23, [[Moves.Orangstand]]),
-                        new Requirement(20, [[Moves.Grape]]),
+                        new Requirement(27, [[Moves.Moveless]]),
+                        new Requirement(20, [[Moves.FactoryProduction]]),
+                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryProduction]]),
+                        new Requirement(3, [[Moves.Orangstand]]),
+                        new Requirement(20, [[Moves.Grape, Moves.FactoryProduction]]),
                         new Requirement(10, [[Moves.Trombone, Moves.Grape]]),
                     ],
                     "Tiny": [
-                        new Requirement(60, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Twirl]]),
+                        new Requirement(40, [[Moves.Moveless]]),
+                        new Requirement(20, [[Moves.FactoryProduction]]),
+                        new Requirement(5, [[Moves.Twirl, Moves.FactoryProduction]]),
                         new Requirement(5, [[Moves.Mini]]),
-                        new Requirement(30, [[Moves.Feather]]),
+                        new Requirement(20, [[Moves.Feather]]),
+                        new Requirement(10, [[Moves.Feather, Moves.FactoryProduction]]),
                     ],
                     "Chunky": [
-                        new Requirement(45, [[Moves.Moveless]]),
+                        new Requirement(25, [[Moves.Moveless]]),
+                        new Requirement(20, [[Moves.FactoryProduction]]),
                         new Requirement(15, [[Moves.Punch]]),
                         new Requirement(20, [[Moves.Pineapple]]),
                         new Requirement(10, [[Moves.Punch, Moves.Triangle]]),
@@ -283,52 +887,58 @@
                 },
                 "Galleon": {
                     "DK": [
-                        new Requirement(10, [[Moves.Coconut, Moves.Diving]]),
-                        new Requirement(15, [[Moves.Coconut, Moves.Diving, Moves.Blast]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Enguarde]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Coconut]]),
+                        new Requirement(15, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Blast]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving, Moves.Enguarde]]),
                         new Requirement(10, [[Moves.Coconut]]),
-                        new Requirement(15, [[Moves.Diving]]),
-                        new Requirement(10, [[Moves.Diving, Moves.Bongos]]),
-                        new Requirement(30, [[Moves.Coconut, Moves.Diving, Moves.Slam]]),
+                        new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Bongos, Moves.GalleonPeanut]]),
+                        new Requirement(20, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Slam]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Slam, Moves.Coconut]]),
                     ],
                     "Diddy": [
                         new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Rocket]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Rocket, Moves.Peanut]]),
-                        new Requirement(36, [[Moves.Diving]]),
-                        new Requirement(14, [[Moves.Diving, Moves.Guitar]]),
-                        new Requirement(10, [[Moves.Diving, Moves.Guitar, Moves.Enguarde]]),
-                        new Requirement(10, [[Moves.Peanut]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Rocket, Moves.Peanut]]),
+                        new Requirement(36, [[Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(14, [[Moves.LoweredWater, Moves.Diving, Moves.Guitar, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Peanut, Moves.Enguarde, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.Peanut, Moves.GalleonPeanut]]),
                     ],
                     "Lanky": [
-                        new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(26, [[Moves.Coconut, Moves.Diving]]),
-                        new Requirement(5, [[Moves.Diving]]),
-                        new Requirement(10, [[Moves.Diving, Moves.Slam]]),
-                        new Requirement(10, [[Moves.Grape]]),
-                        new Requirement(15, [[Moves.Diving, Moves.Trombone]]),
-                        new Requirement(4, [[Moves.Coconut, Moves.Diving, Moves.Balloon]]),
+                        new Requirement(5, [[Moves.Moveless]]),
+                        new Requirement(5, [[Moves.GalleonPeanut]]),
+                        new Requirement(25, [[Moves.GalleonLighthouse, Moves.Diving]]),
+                        new Requirement(1, [[Moves.GalleonLighthouse, Moves.Enguarde, Moves.RaisedWater, Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(5, [[Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Slam, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.Grape, Moves.GalleonPeanut]]),
+                        new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.LoweredWater, Moves.GalleonPeanut]]),
+                        new Requirement(4, [[Moves.GalleonLighthouse, Moves.Diving, Moves.RaisedWater, Moves.Enguarde, Moves.Balloon, Moves.GalleonPeanut]]),
                         new Requirement(20, [[Moves.Punch, Moves.Grape]]),
                     ],
                     "Tiny": [
                         new Requirement(9, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.Slam, Moves.Diving]]),
+                        new Requirement(10, [[Moves.Slam, Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(8, [[Moves.Vines]]),
-                        new Requirement(5, [[Moves.Coconut, Moves.Diving]]),
-                        new Requirement(20, [[Moves.Coconut, Moves.Feather]]),
-                        new Requirement(15, [[Moves.Coconut, Moves.Diving, Moves.Pineapple]]),
-                        new Requirement(18, [[Moves.Sax, Moves.Diving]]),
-                        new Requirement(5, [[Moves.Diving, Moves.Enguarde]]),
-                        new Requirement(10, [[Moves.Diving, Moves.Enguarde, Moves.Feather]]),
+                        new Requirement(5, [[Moves.GalleonLighthouse, Moves.RaisedWater]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.LoweredWater]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.RaisedWater]]),
+                        new Requirement(15, [[Moves.RaisedWater, Moves.Pineapple]]),
+                        new Requirement(18, [[Moves.Sax, Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(5, [[Moves.RaisedWater, Moves.Diving, Moves.Enguarde, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Enguarde, Moves.Feather, Moves.GalleonPeanut]]),
                     ],
                     "Chunky": [
                         new Requirement(12, [[Moves.Moveless]]),
                         new Requirement(3, [[Moves.Vines]]),
-                        new Requirement(35, [[Moves.Coconut, Moves.Diving]]),
-                        new Requirement(5, [[Moves.Coconut, Moves.Diving, Moves.Punch]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.Diving, Moves.Pineapple]]),
-                        new Requirement(20, [[Moves.Pineapple]]),
-                        new Requirement(15, [[Moves.Diving]]),
+                        new Requirement(20, [[Moves.RaisedWater, Moves.GalleonShipSpawned]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving]]),
+                        new Requirement(5, [[Moves.RaisedWater, Moves.GalleonShipSpawned, Moves.Punch]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Pineapple]]),
+                        new Requirement(20, [[Moves.Pineapple, Moves.GalleonPeanut]]),
+                        new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(5, [[Moves.RaisedWater, Moves.GalleonPeanut]]),
                     ],
                 },
                 "Fungi": {
@@ -343,35 +953,38 @@
                     ],
                     "Diddy": [
                         new Requirement(45, [[Moves.Moveless]]),
-                        new Requirement(15, [[Moves.Grape]]),
-                        new Requirement(5, [[Moves.Grape, Moves.Rocket]]),
-                        new Requirement(10, [[Moves.Peanut]]),
+                        new Requirement(15, [[Moves.ForestYellowTunnel]]),
+                        new Requirement(5, [[Moves.ForestYellowTunnel, Moves.Rocket]]),
+                        new Requirement(10, [[Moves.Peanut, Moves.Day]]),
                         new Requirement(10, [[Moves.Peanut, Moves.Slam]]),
                         new Requirement(5, [[Moves.Spring]]),
                         new Requirement(10, [[Moves.Night, Moves.Spring, Moves.Guitar]]),
                     ],
                     "Lanky": [
                         new Requirement(32, [[Moves.Moveless]]),
-                        new Requirement(38, [[Moves.Grape]]),
+                        new Requirement(20, [[Moves.Grape]]),
+                        new Requirement(18, [[Moves.ForestYellowTunnel]]),
                         new Requirement(20, [[Moves.Slam, Moves.Orangstand]]),
                         new Requirement(10, [[Moves.Night]]),
                         ],
                     "Tiny": [
                         new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Mini, Moves.Punch]]),
-                        new Requirement(10, [[Moves.Mini]]),
-                        new Requirement(5, [[Moves.Mini, Moves.Night, Moves.Punch]]),
+                        new Requirement(5, [[Moves.Mini, Moves.Punch, Moves.Day]]), // Inside ? box in Mill Rear
+                        new Requirement(10, [[Moves.Mini, Moves.Day]]), // Not inside the rear mill
+                        new Requirement(5, [[Moves.Mini, Moves.Night, Moves.Punch, Moves.Day]]), // Spider boss bunch
                         new Requirement(17, [[Moves.Diving]]),
-                        new Requirement(24, [[Moves.Feather]]),
-                        new Requirement(16, [[Moves.Feather, Moves.Pineapple]]),
-                        new Requirement(8, [[Moves.Grape]]),
-                        new Requirement(5, [[Moves.Grape, Moves.Mini, Moves.Sax]]),
+                        new Requirement(10, [[Moves.Feather]]), // + Fungi Night, but assumed with the req for feather
+                        new Requirement(10, [[Moves.Feather]]),
+                        new Requirement(4, [[Moves.ForestGreenTunnelFeather]]),
+                        new Requirement(16, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]),
+                        new Requirement(8, [[Moves.ForestYellowTunnel]]),
+                        new Requirement(5, [[Moves.ForestYellowTunnel, Moves.Mini, Moves.Sax]]),
                     ],
                     "Chunky": [
                         new Requirement(51, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Punch]]),
-                        new Requirement(14, [[Moves.Feather, Moves.Pineapple]]),
-                        new Requirement(5, [[Moves.Vines]]),
+                        new Requirement(5, [[Moves.Punch, Moves.Day]]),
+                        new Requirement(14, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]),
+                        new Requirement(5, [[Moves.Vines], [Moves.Night]]),
                         new Requirement(5, [[Moves.Slam]]),
                         new Requirement(10, [[Moves.Slam, Moves.Pineapple]]),
                         new Requirement(10, [[Moves.Pineapple]]),
@@ -384,15 +997,15 @@
                         new Requirement(20, [[Moves.Punch, Moves.Coconut]]),
                         new Requirement(20, [[Moves.Blast]]),
                         new Requirement(15, [[Moves.Bongos]]),
-                        new Requirement(10, [[Moves.Bongos, Moves.Coconut]]),
-                        new Requirement(7, [[Moves.Bongos, Moves.Strong]]),
+                        new Requirement(10, [[Moves.Bongos, Moves.Coconut, Moves.CavesIglooPads]]),
+                        new Requirement(7, [[Moves.Bongos, Moves.Strong, Moves.CavesIglooPads]]),
                     ],
                     "Diddy": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.Mini, Moves.Twirl, Moves.Rocket]]),
                         new Requirement(30, [[Moves.Rocket]]),
                         new Requirement(20, [[Moves.Peanut]]),
-                        new Requirement(10, [[Moves.Guitar, Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Guitar, Moves.Peanut, Moves.CavesIglooPads]]),
                         new Requirement(15, [[Moves.Guitar, Moves.Spring, Moves.Rocket]]),
                         new Requirement(5, [[Moves.Guitar]]),
                         new Requirement(5, [[Moves.Guitar, Moves.Rocket]]),
@@ -404,14 +1017,17 @@
                         new Requirement(20, [[Moves.Rocket]]),
                         new Requirement(20, [[Moves.Balloon]]),
                         new Requirement(10, [[Moves.Grape]]),
-                        new Requirement(1, [[Moves.Trombone]]),
-                        new Requirement(9, [[Moves.Trombone, Moves.Balloon]]),
-                        new Requirement(10, [[Moves.Trombone, Moves.Grape]]),
+                        new Requirement(1, [[Moves.Trombone, Moves.CavesIglooPads]]),
+                        new Requirement(4, [[Moves.Trombone, Moves.Balloon, Moves.CavesIglooPads]]),
+                        new Requirement(5, [[Moves.Trombone, Moves.Balloon]]),
+                        new Requirement(10, [[Moves.Trombone, Moves.Grape, Moves.CavesIglooPads]]),
                     ],
                     "Tiny": [
                         new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(15, [[Moves.Sax]]),
-                        new Requirement(20, [[Moves.Sax, Moves.Feather]]),
+                        new Requirement(10, [[Moves.Sax]]),
+                        new Requirement(5, [[Moves.Sax, Moves.CavesIglooPads]]),
+                        new Requirement(10, [[Moves.Sax, Moves.Feather, Moves.CavesIglooPads]]),
+                        new Requirement(10, [[Moves.Sax, Moves.Feather]]),
                         new Requirement(10, [[Moves.Feather]]),
                         new Requirement(10, [[Moves.Feather, Moves.Mini, Moves.Twirl]]),
                         new Requirement(5, [[Moves.Mini, Moves.Monkeyport, Moves.Twirl]]),
@@ -426,7 +1042,7 @@
                         new Requirement(10, [[Moves.Punch, Moves.Pineapple]]),
                         new Requirement(10, [[Moves.Punch, Moves.Barrels, Moves.Hunky]]),
                         new Requirement(20, [[Moves.Triangle, Moves.Gone]]),
-                        new Requirement(10, [[Moves.Triangle, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Triangle, Moves.Pineapple, Moves.CavesIglooPads]]),
                         new Requirement(10, [[Moves.Mini, Moves.Pineapple, Moves.W3Bonus]]),
                     ],
                 },
@@ -509,7 +1125,66 @@
                 if (threshold == 0) {
                     return;
                 }
-                const list = requirement_data[level][kong];
+                // Reset everything just in case
+                const levels = [
+                    "Japes",
+                    "Aztec",
+                    "Factory",
+                    "Galleon",
+                    "Fungi",
+                    "Caves",
+                    "Castle",
+                ]
+                const kongs = [
+                    "DK",
+                    "Diddy",
+                    "Lanky",
+                    "Tiny",
+                    "Chunky",
+                ]
+
+                levels.forEach(level => {
+                    kongs.forEach(kong => {
+                        requirement_data[level][kong].forEach(g => {
+                            g.reset();
+                        })
+                    })
+                })
+                let list = requirement_data[level][kong].slice();
+                // Precalcate list to handle barriers
+                for (let i = 0; i < 2; i++) {
+                    list.forEach(item => {
+                        item.requirements.forEach((group, index) => {
+                            // Get list of move extensions and removals
+                            let purged_moves = [];
+                            let extended_moves = [];
+                            group.forEach(move_set => {
+                                if (move_set.is_barrier) {
+                                    replacement_moves = getBarrierRequirement(move_set);
+                                    if (replacement_moves != null) {
+                                        purged_moves.push(move_set);
+                                        extended_moves = extended_moves.concat(replacement_moves)
+                                    }
+                                }
+                            })
+                            // remove/extend group
+                            group = group.filter(k => !purged_moves.includes(k)).slice();
+                            group = group.concat(extended_moves).slice();
+                            // Correct moveless situations
+                            moveless_check = group.filter(k => k != Moves.Moveless)
+                            if (moveless_check.length > 0) {
+                                // If there's move requirements, filter out all "moveless" entries
+                                group = moveless_check.slice()
+                            } else if ((moveless_check.length == 0) && (group.length == 0)) {
+                                // No moves in here at all
+                                group = [Moves.Moveless].slice()
+                            }
+                            item.requirements[index] = group.slice();
+                        })
+                    })
+                }
+
+                // Calculate all moves in this list
                 let updated_threshold = threshold;
                 let all_moves = [];
                 list.forEach(item => {
