@@ -66,7 +66,7 @@
                     requirements[i + 1] = getGBCount(i, cap);
                 }
                 lims.forEach((lim, index) => {
-                    let lower_bound = index == 0 ? 1 : lims[index - 1];
+                    let lower_bound = index == 0 ? 1 : lims[index - 1] + 1;
                     const bound_match = lim == lower_bound;
                     const bound_segments = [
                         lower_bound,
