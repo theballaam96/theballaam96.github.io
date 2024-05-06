@@ -541,11 +541,11 @@
                 const data = new Uint8Array(output_bin_file.slice());
                 document.getElementById("stat-size").innerHTML = `<strong>Binary Size</strong>: ${data.length} ${
                     data.length > VANILLA_BIN_LIMIT ?
-                    `<span title='${
+                    `<i title='${
                         data.length > RANDO_BIN_LIMIT ? "File is too big for DK64 Randomizer" : "File is too big for vanilla DK64, but not randomizer"
                     }' class='${
                         data.length > RANDO_BIN_LIMIT ? "major-warning" : "minor-warning"
-                    }'>&nbsp;&#9888;</span>` :
+                    } fa-solid fa-triangle-exclamation'></i>` :
                     ""
                 } <span class="reload noselect" id="recalculate-binary" title="Recalculate" onclick="updateBinarySize()">&#x21bb;</span>`
                 updateStatStyle()
