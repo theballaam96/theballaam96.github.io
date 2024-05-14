@@ -1254,6 +1254,9 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             attempt.writeNum(out_array[x], 1)
         }
     }
+    if (has_loop) {
+        attempt.writeNum(loop_point, 4)
+    }
     return attempt.data.slice()
 }
 
