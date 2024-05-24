@@ -1679,7 +1679,14 @@
                         }
                     }
                 }
-                const zip = new JSZip();
+                let zip = null;
+                console.log(UPLOADED_ZIP)
+                if (UPLOADED_ZIP != null) {
+                    zip = UPLOADED_ZIP;
+                    console.log(zip)
+                } else {
+                    zip = new JSZip();
+                }
                 const promises = [];
                 if (DUMP_IMAGES) {
                     const png_zip = zip.folder("music_icons")
@@ -2126,6 +2133,7 @@
             }
 
             const PARSEABLE_EXTENSIONS = ["bin","candy"]
+            let UPLOADED_ZIP = null;
 
             async function handlePack(data) {
                 // Load all data
@@ -2153,13 +2161,13 @@
                 }
                 // console.log(site_data)
                 // Load uploaded zip file
-                const new_zip = new JSZip();
+                UPLOADED_ZIP = new JSZip();
                 let site_song_data = {};
                 let compressed_data = {}
-                const zip_data = await new_zip.loadAsync(data);
-                for (let [filename_0, file_0] of Object.entries(zip_data.files)) {
+                const zip_store = await UPLOADED_ZIP.loadAsync(data);
+                for (let [filename_0, file_0] of Object.entries(zip_store.files)) {
                     if (!file_0.dir) {
-                        const fileData = await zip_data.files[filename_0].async("Uint8Array");
+                        const fileData = await zip_store.files[filename_0].async("Uint8Array");
                         const file_path_array = filename_0.split("/")
                         const file_group = file_path_array[file_path_array.length - 2];
                         compressed_data[filename_0] = {
@@ -2216,20 +2224,7 @@
                             if (!matching_songs.includes(new_song)) {
                                 matching_songs.push(new_song)
                             }
-                        } else {
-                            // console.log(song_a)
-                            // Song isn't on site. TODO: Handle persisting these songs
-                            const item_name = last(song_a.split("/"));
-                            const item_group = compressed_data[song_a].group;
-                            const item_data = files_pushed[song_i];
-                            if (!Object.keys(uploaded_pack_data).includes(item_group)) {
-                                uploaded_pack_data[item_group] = []
-                            }
-                            uploaded_pack_data[item_group].push({
-                                "song": item_name,
-                                "data": new Blob([new Uint8Array(item_data)]),
-                                "append_extension": false,
-                            })
+                            UPLOADED_ZIP.remove(song_a)
                         }
                     }
                 })
