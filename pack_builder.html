@@ -2164,19 +2164,50 @@
                 UPLOADED_ZIP = new JSZip();
                 let site_song_data = {};
                 let compressed_data = {}
+                let renames = {}
                 const zip_store = await UPLOADED_ZIP.loadAsync(data);
                 for (let [filename_0, file_0] of Object.entries(zip_store.files)) {
                     if (!file_0.dir) {
+                        let parsed_filename = filename_0;
                         const fileData = await zip_store.files[filename_0].async("Uint8Array");
+                        // File Extension checking
+                        const fileExtArr = filename_0.split(".");
+                        const fileExt = fileExtArr[fileExtArr.length - 1];
+                        const preFileExtName = fileExtArr.filter((item, index) => (index != (fileExtArr.length - 1))).join(".");
+                        let extension_fine = true;
+                        if (["candy", "bin"].includes(fileExt)) {
+                            // Is song file
+                            if (fileData[0] == 80) {
+                                // Is Candy
+                                if (fileExt != "candy") {
+                                    parsed_filename = `${preFileExtName}.candy`
+                                    console.log(`Converting ${filename_0} to a candy to match internal data`)
+                                    renames[filename_0] = parsed_filename
+                                }
+                            } else if ((fileData[0] == 0) && (fileData[1] == 0) && (fileData[2] == 0) && (fileData[3] == 0x44)) {
+                                // Is Bin
+                                if (fileExt != "bin") {
+                                    parsed_filename = `${preFileExtName}.bin`
+                                    console.log(`Converting ${filename_0} to a binary to match internal data`)
+                                    renames[filename_0] = parsed_filename
+                                }
+                            }
+                        }
                         const file_path_array = filename_0.split("/")
                         const file_group = file_path_array[file_path_array.length - 2];
-                        compressed_data[filename_0] = {
+                        compressed_data[parsed_filename] = {
                             "group": file_group,
                             "data": Array.from(fileData),
                             "blob": fileData
                         };
                     }
                 }
+                Object.keys(renames).forEach(init_name => {
+                    output_name = renames[init_name];
+                    blob = compressed_data[output_name].blob;
+                    UPLOADED_ZIP.remove(init_name);
+                    UPLOADED_ZIP.file(output_name, blob);
+                })
 
                 await waitFor(_ => loaded_count >= midi_data_copy.length);
 
