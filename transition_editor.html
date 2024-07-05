@@ -117,16 +117,19 @@
             <div id="toasts">
                 <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
             </div>
+            <div class="d-flex justify-content-center">
+                <div class="p-2">
+                    <label for="canvas_scale">Canvas Scale: </label>
+                    1
+                    <input type="range" min="1" max="20" value="7" id="canvas_scale" />
+                    20
+                </div>
+            </div>
             <div class="content-center">
                 <div class="d-flex">
                     <div id="color-panel" class="d-flex flex-column m-2 pt-3"></div>
                     <div class="py-3">
-                        <div class="p-2">
-                            <label for="canvas_scale">Canvas Scale: </label>
-                            1
-                            <input type="range" min="1" max="20" value="7" id="canvas_scale" />
-                            20
-                        </div>
+                        
                         <canvas id="viewport" width="0" height="0"></canvas>
                     </div>
                     <div class="d-flex flex-column mt-5 mx-3 p-3 border border-light rounded">
@@ -355,16 +358,19 @@
                 mouseY = e.clientY;
             })
 
-            scale_hook.addEventListener("mousedown", (e) => {
-                if (rangeEvent == null) {
-                    rangeEvent = setInterval(() => {
-                        upscale_rate = e.target.value;
-                        canvas_dim = image_dim * upscale_rate;
-                        canvas.setAttribute("width", canvas_dim);
-                        canvas.setAttribute("height", canvas_dim);
-                        imagedata = context.createImageData(canvas_dim, canvas_dim);
-                    }, click_interval_speed * 10);
-                }
+            const evts = ["mousedown", "click", "touchstart"];
+            evts.forEach(evt => {
+                scale_hook.addEventListener(evt, (e) => {
+                    if (rangeEvent == null) {
+                        rangeEvent = setInterval(() => {
+                            upscale_rate = e.target.value;
+                            canvas_dim = image_dim * upscale_rate;
+                            canvas.setAttribute("width", canvas_dim);
+                            canvas.setAttribute("height", canvas_dim);
+                            imagedata = context.createImageData(canvas_dim, canvas_dim);
+                        }, click_interval_speed * 10);
+                    }
+                })
             })
 
             files_in_pack = [];
@@ -423,7 +429,7 @@
                         }
                         let intensity = is_edge ? 255 : 255 - ia.intensity;
                         let alpha = is_edge ? 255 : ia.alpha;
-
+                        
                         this.bitmap.data[idx + 0] = intensity; // Red channel
                         this.bitmap.data[idx + 1] = intensity; // Green channel
                         this.bitmap.data[idx + 2] = intensity; // Blue channel
@@ -469,6 +475,8 @@
             }, click_interval_speed);
 
             // Handle Uploaded Image
+            const BORDER_SIZE = 0;
+            const DESCALE_RATE = image_dim - (2 * BORDER_SIZE);
             upload_image_hook.addEventListener("change", (e) => {
                 var fr = new FileReader();
                 fr.onload = function(k) {
@@ -482,7 +490,7 @@
                         // Scale Image Down
                         width = image.bitmap.width;
                         height = image.bitmap.height;
-                        descale = Math.min(62 / width, 62 / height); // Minus 2 because needs border
+                        descale = Math.min(DESCALE_RATE / width, DESCALE_RATE / height); // Minus 2 because needs border
                         image.resize(width * descale, height * descale);
                         // Regrab data
                         width = image.bitmap.width;
