@@ -147,6 +147,12 @@
             .midi-checkbox[ticked="true"] {
                 background-color: rgba(61, 255, 145, 0.3);
             }
+            .new-pill {
+                display: none;
+            }
+            .midi-checkbox[update_notif="true"] .new-pill {
+                display: inline-block;
+            }
             .midi-checkbox .name_data {
                 flex: 1;
                 font-weight: bold;
@@ -293,10 +299,9 @@
                 height: 10px;
                 padding: 2.5px;
             }
-            .panel-all, .panel-some {
+            .panel-all, .panel-some, .panel-new {
                 width: 10px;
                 height: 10px;
-                margin-left: auto;
                 border-radius: 10px;
             }
             .panel-all {
@@ -304,6 +309,10 @@
             }
             .panel-some {
                 background-color: white;
+            }
+            .panel-new {
+                background-color: dodgerblue;
+                content: "!";
             }
             /*
             #advf-container {
@@ -952,6 +961,7 @@
                     this.converter = converter;
                     this.drive_id = drive_id;
                     this.timestamp = timestamp;
+                    this.initial_timestamp = timestamp;
                     this.audio = audio;
                     this.index = index;
                     this.midi_length = midi_length ? parseFloat(midi_length) : null;
@@ -1008,6 +1018,9 @@
                     }
                     this.notes = replacement.notes ? replacement.notes : this.notes;
                     this.timestamp = replacement.timestamp;
+                    if (this.initial_timestamp == null) {
+                        this.initial_timestamp = this.timestamp;
+                    }
                     this.days_since_submission = replacement.days_since_submission;
                     this.is_new = replacement.is_new;
                     this.short_name = replacement.short_name;
@@ -1223,7 +1236,8 @@
                                         class='midi-checkbox noselect' 
                                         song-id='${song.index}' 
                                         onclick='updateTickbox(this,\"${game}\")' 
-                                        ticked=${parseSeed(state_index) ? 'true' : 'false'} 
+                                        ticked=${parseSeed(state_index) ? 'true' : 'false'}
+                                        update_notif='false'
                                         group='${group}'
                                         game='${game}'
                                         safe='${!song.tags.includes(unsafe_song_tag)}'
@@ -1256,6 +1270,7 @@
                                                 </span>`
                                                 : ""
                                             }
+                                            <span class='badge text-bg-info rounded-pill new-pill' title='This song is newer than when you last built your pack.'>New!</span>
                                             ${
                                                 song.tags.includes(unsafe_song_tag) ? 
                                                 "<span class='badge text-bg-danger rounded-pill' title='This song has been tied to copyright claim issues which may result in demonetization.'>Stream Unsafe</span>" : ""
@@ -1318,7 +1333,7 @@
                                     }
                                 </div>
                                 <div class='game-internal-name'>${game_name}</div>
-                                <div class='game-fullness-panel'></div>
+                                <div class='game-fullness-panel d-flex justify-content-end'></div>
                             </div>
                             <div class='game-songs hide' game='${game}'>
                                 ${local_html_total}
@@ -1372,6 +1387,7 @@
                     let total_counts = {}
                     let has_song = false;
                     let has_all_songs = true;
+                    let new_song_count = 0;
                     for (let s = 0; s < song_boxes.length; s++) {
                         const group = song_boxes[s].getAttribute("group")
                         if (!Object.keys(filled_counts).includes(group)) {
@@ -1381,6 +1397,7 @@
                             total_counts[group] = 0
                         }
                         const ticked = song_boxes[s].getAttribute("ticked") == "true";
+                        const update_notif = song_boxes[s].getAttribute("update_notif") == "true";
                         total_counts[group] += 1;
                         if (ticked) {
                             has_song = true;
@@ -1388,10 +1405,14 @@
                         } else {
                             has_all_songs = false;
                         }
+                        if (update_notif) {
+                            new_song_count += 1;
+                        }
                     }
                     const hint_text = Object.keys(filled_counts).map(key => `${group_internal_to_name[key]}: ${filled_counts[key]}/${total_counts[key]}`).join("\n")
                     game_boxes[g].getElementsByClassName("game-fullness-panel")[0].innerHTML = `
-                        ${has_song ? `<div class="${has_all_songs ? "panel-all" : "panel-some"}" title="${hint_text}"></div>` : ""}
+                        ${new_song_count > 0 ? `<div class="ms-2 panel-new" title="${new_song_count} new song${new_song_count == 1 ? '' : 's'}"></div>` : ""}
+                        ${has_song ? `<div class="ms-2 ${has_all_songs ? "panel-all" : "panel-some"}" title="${hint_text}"></div>` : ""}
                     `;
 
                 }
@@ -1680,7 +1701,7 @@
                     }
                 }
                 let zip = null;
-                console.log(UPLOADED_ZIP)
+                //console.log(UPLOADED_ZIP)
                 if (UPLOADED_ZIP != null) {
                     zip = UPLOADED_ZIP;
                     console.log(zip)
@@ -1749,6 +1770,10 @@
                         }
                     })
                 })
+                metadata = {
+                    "creation": new Date().toISOString(),
+                }
+                zip.file("metadata.json", JSON.stringify(metadata, null, 2))
                 
                 if (output_as_encoded) {
                     Promise.all(promises).then((data) => {
@@ -2134,6 +2159,7 @@
 
             const PARSEABLE_EXTENSIONS = ["bin","candy"]
             let UPLOADED_ZIP = null;
+            let uploaded_date = null;
 
             async function handlePack(data) {
                 // Load all data
@@ -2192,6 +2218,10 @@
                                     renames[filename_0] = parsed_filename
                                 }
                             }
+                        } else if (filename_0 == "metadata.json") {
+                            let metadata = await zip_store.files[filename_0].async("string");
+                            metadata = JSON.parse(metadata)
+                            uploaded_date = metadata.creation;
                         }
                         const file_path_array = filename_0.split("/")
                         const file_group = file_path_array[file_path_array.length - 2];
@@ -2260,12 +2290,31 @@
                     }
                 })
 
-                // console.log(matching_songs)
-
                 const checkboxes = document.getElementsByClassName("midi-checkbox")
                 for (let c = 0; c < checkboxes.length; c++) {
                     checkboxes[c].setAttribute("ticked", "false");
+                    checkboxes[c].setAttribute("update_notif", "false");
                 }
+
+                if (uploaded_date != null) {
+                    midi_data_copy.forEach(item => {
+                        if (!matching_songs.includes(item.drive_id) && (item.initial_timestamp != null)) {
+                            // Not in pack
+                            const init_date = new Date(item.initial_timestamp);
+                            const pack_date = new Date(uploaded_date);
+                            if (init_date > pack_date) {
+                                const game = item.game;
+                                const id = item.index;
+                                for (c = 0; c < checkboxes.length; c++) {
+                                    if (checkboxes[c].getAttribute("song-id") == id) {
+                                        checkboxes[c].setAttribute("update_notif", "true");
+                                    }
+                                }
+                            }
+                        }
+                    })
+                }
+
                 matching_songs.forEach(m_drive_id => {
                     const entry = midi_data_copy.find(item => item.drive_id == m_drive_id)
                     if (entry) {
