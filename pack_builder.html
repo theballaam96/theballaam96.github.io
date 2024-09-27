@@ -1609,6 +1609,9 @@
                     setTimeout(() => {
                         document.getElementById("load-event").classList.add("hide")
                     }, TRANSITION_SPEED * 2);
+                    if (generated_delayed_toast != "") {
+                        generateToast(generated_delayed_toast);
+                    }
                 }
             }
 
@@ -2587,12 +2590,32 @@
 
             }
 
+            const setting_presets = {
+                "spooky": "ADcESB2E2COASACAEYB2AM3ACISQAGQ2AI2A2ECAQC2AEIAE6AE2AC3ABE6AJBLAQACBCAB7AECB2AIAEcWIABAEN4AIQIAIQ3AEADAC2ACQEZ3BAICBU3AGQAI10AS2AI3AQAQJ2CABQAFC3AI3AQKA2EUIQC3AMQ3ACQDBQI2AUEJKAC2QAH2ADEAEAQA2BEAQKS2AY2QYCBAI5AI2AC9AIQE11AJ2AEA2IAI5AC4ABAQUE2CAUBUGYAEbG4ACGNKICI3AIAIC2ASQ2ACGIA",
+            }
+
+            let generated_delayed_toast = "";
+            function generateDelayedToast(message) {
+                // Generates toast as soon as soon as the page shows up
+                generated_delayed_toast = message; 
+            }
+
             function parseSeed(index) {
                 const queryString = window.location.search;
                 const urlParams = new URLSearchParams(queryString);
-                const seed = urlParams.get("s")
+                let seed = urlParams.get("s");
+                const preset = urlParams.get("preset");
                 if (seed == null) {
-                    return false; // No data
+                    if (preset == null) {
+                        return false; // No data
+                    }
+                    if (!Object.keys(setting_presets).includes(preset)) {
+                        return false; // Invalid Preset
+                    }
+                    seed = setting_presets[preset];
+                    generateDelayedToast(`Applying the ${preset} preset`)
+                } else {
+                    generateDelayedToast(`Applying selections from URL Parameters`)
                 }
                 const seed_arr = unpackSeed(seed);
                 const loc = Math.floor(index / BIT_SIZE_PER_CHAR);
