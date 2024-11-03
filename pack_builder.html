@@ -1316,7 +1316,7 @@
                         })
                         const game_name = game_pretty;
                         html += `<div class='game-handler' title='${filterNote(game_name)}'>
-                            <div class='game-header noselect collapsed' onclick='toggleGameVisibility(\"${game}\",this)'>
+                            <div class='game-header noselect collapsed' game_id='${game}' onclick='toggleGameVisibility(\"${game}\",this)'>
                                 <div class='game-icon'>
                                     <span class='icon-alignment'></span>
                                     <img class='game-image ${
@@ -1564,6 +1564,13 @@
                 const song_el = document.getElementsByClassName("game-songs");
                 document.getElementById("popup_game_name").innerText = game_pretty;
                 document.getElementById("sub-breadcrumb").innerText = game_pretty;
+                // Set game
+                let url = new URL(window.location.href);
+                let stateObj = {}
+                url.searchParams.set("game", game_internal.toString())
+                stateObj["game", game_internal.toString()]
+                window.history.replaceState(stateObj, "", url.toString());
+
                 changeGlobalSongListState(false);
                 for (let s = 0; s < song_el.length; s++) {
                     if (song_el[s].getAttribute("game") == game_internal) {
@@ -2571,6 +2578,14 @@
                 const urlParams = new URLSearchParams(queryString);
                 const urlOutput = urlParams.get("conversion_id")
                 if (urlOutput == null) {
+                    const game = urlParams.get("game");
+                    if (game == null) {
+                        return;
+                    }
+                    const btn = document.querySelector(`.game-header[game_id='${game}']`);
+                    if (btn) {
+                        btn.click();
+                    }
                     return;
                 }
                 let song_id = null;
