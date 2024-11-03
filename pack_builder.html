@@ -870,8 +870,8 @@
             }
 
             let recent_history = {}
-            const timeframe_names = ["This week", "Last Week", "2 weeks ago", "3 weeks ago", "Last Month", "Older"]
-            const timeframe_limit = [7, 14, 21, 28, 60, 999999]
+            const timeframe_names = ["This week", "Last Week", "2 weeks ago", "3 weeks ago", "Last Month", "Older"];
+            const timeframe_limit = [7, 14, 21, 28, 60, 999999];
 
             function getTimeframeName(time_ago) {
                 if (time_ago != null) {
@@ -928,8 +928,9 @@
                     recent_history[key].sort()
                     recent_history[key].reverse()
                 })
+                const displayable_names = timeframe_names.filter((item, index) => index < timeframe_names.length - 1);
                 document.getElementById("popup_recent").innerHTML = `
-                    ${timeframe_names.map(frame => `${!Object.keys(recent_history).includes(frame) ? "" : `
+                    ${displayable_names.map(frame => `${!Object.keys(recent_history).includes(frame) ? "" : `
                         <div class="flexsplitter">
                             <div class="popup_subtitle" style="flex:1">${frame}</div>
                             <div style="flex:1; text-align:right">
