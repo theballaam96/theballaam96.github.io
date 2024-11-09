@@ -282,6 +282,10 @@
                 </div>
             </div>
         </div>
+        <!-- Toasts -->
+        <div id="toasts">
+            <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
+        </div>
         <div class="d-flex req-midi hide" style="width: 90%; margin-left: auto; margin-right: auto" hidden>
             <div class="card m-3" style="flex:1">
                 <div id="stats" class="p-3">
@@ -592,6 +596,12 @@
                 var fr = new FileReader();
                 fr.onload = function() {
                     var data = fr.result;
+                    const midi = new Midi(data);
+                    console.log(midi)
+                    if (midi.tracks.length > 16) {
+                        generateToast("Too many tracks. Input MIDI Files cannot have more than 16 tracks", true);
+                        return;
+                    }
                     setup_data = fr.result;
                     var array = new Uint8Array(data);
                     //window.clampMidi(fr.result)
@@ -603,7 +613,6 @@
                     }
                     console.log(current_midi_file)
                     // Midi Stat stuff
-                    const midi = new Midi(data);
                     document.getElementById("player-navigator").setAttribute("min", 0)
                     document.getElementById("player-navigator").value = 0
                     document.getElementById("player-navigator").setAttribute("max", midi.durationTicks)
@@ -731,7 +740,12 @@
                 console.log("Loop Point:",loop_point)
                 console.log("Disable Repeaters:",no_repeaters)
                 console.log("Output File:",output_file)
-                output_bin_file = MidiToGEFormat(file_bytes, [], loop, loop_point, no_repeaters, true)
+                try {
+                    output_bin_file = MidiToGEFormat(file_bytes, [], loop, loop_point, no_repeaters, true)
+                } catch (e) {
+                    generateToast(e, true);
+                    return;
+                }
                 data_len = output_bin_file.length
                 cap = 0x10
                 if ((data_len % cap) != 0) {
@@ -1029,5 +1043,28 @@
             loadTemplates();
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script>
+            // TOAST GENERATOR
+            const toastTrigger = document.getElementById('liveToastBtn')
+            const toastContainer = document.getElementById("toasts")
+
+            let toast_counter = 0;
+
+            function generateToast(message, error=false) {
+                toastContainer.getElementsByClassName("toast-container")[0].innerHTML += `
+                <div id="liveToast${toast_counter}" class="toast align-items-center ${error ? 'text-bg-danger' : 'text-bg-primary'} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>                    
+                </div>`
+                const toastEl = document.getElementById(`liveToast${toast_counter}`)
+                const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl)
+                toastBootstrap.show()
+                toast_counter += 1;
+            }
+        </script>
     </body>
 </html>
