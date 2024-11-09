@@ -296,12 +296,11 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
     num_tracks = temp.readNum(2) // 0xA
     tempo = temp.readNum(2) // 0xC
     if (num_tracks > TRACK_LIMIT_SMALL) {
-        console.log(`Too many tracks, truncating to ${TRACK_LIMIT_SMALL}`)
-        num_tracks = TRACK_LIMIT_SMALL
+        throw new Error(`Too many tracks. Input MIDI Files cannot have more than ${TRACK_LIMIT_SMALL} tracks`);
     }
     numberTracks = num_tracks
     if (![0, 1].includes(midi_type)) {
-        throw new Error ("Invalid Midi Type")
+        throw new Error ("Invalid Midi Type");
     }
     position = 0xE
     repeatPattern = null
@@ -316,7 +315,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
         temp.seek(position)
         track_header = temp.readNum(4)
         if (track_header != 0x4D54726B) {
-            throw new Error("Invalid Track Midi Header")
+            throw new Error("Invalid Track Midi Header");
         }
         track_length = temp.readNum(4)
         position += 8
@@ -561,7 +560,7 @@ function MidiToGEFormat(in_file, bin, has_loop, loop_point, no_repeaters) {
             } else {
                 if (!unknown_shit) {
                     unknown_shit = true
-                    throw new Error(`Invalid Midi Character Found (${eventVal})`)
+                    throw new Error(`Invalid Midi Character Found (${eventVal})`);
                 }
             }
         }
