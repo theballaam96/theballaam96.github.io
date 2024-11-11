@@ -599,8 +599,8 @@
                     const midi = new Midi(data);
                     console.log(midi)
                     if (midi.tracks.length > 16) {
-                        generateToast("Too many tracks. Input MIDI Files cannot have more than 16 tracks", true);
-                        return;
+                        //generateToast("Too many tracks. Input MIDI Files cannot have more than 16 tracks", true);
+                        //return;
                     }
                     setup_data = fr.result;
                     var array = new Uint8Array(data);
