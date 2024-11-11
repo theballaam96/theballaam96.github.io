@@ -68,6 +68,14 @@
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecLlama" checked>
                             <label class="form-check-label" for="switchAztecLlama">Aztec Llama Temple Switches Spawned</label>
                         </div>
+                        <!-- Aztec Tiny Temple Ice -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecIce" checked>
+                            <label class="form-check-label" for="switchAztecIce">
+                                Aztec Tiny Temple Ice Melted
+                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
+                            </label>
+                        </div>
                         <div class="mt-3">
                             <h5>Frantic Factory</h5>
                         </div>
@@ -98,6 +106,14 @@
                         <div class="form-check form-switch">
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonSeasick" checked>
                             <label class="form-check-label" for="switchGalleonSeasick">Galleon Seasick Ship Spawned</label>
+                        </div>
+                        <!-- Galleon Treasure Room -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonTreasure">
+                            <label class="form-check-label" for="switchGalleonTreasure">
+                                Galleon Treasure Room Opened
+                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
+                            </label>
                         </div>
                         <!-- Galleon Water -->
                         <div class="small">
@@ -154,9 +170,28 @@
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesIgloo" checked>
                             <label class="form-check-label" for="switchCavesIgloo">Caves Igloo Pads Spawned</label>
                         </div>
+                        <!-- Caves Ice Walls -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesWalls">
+                            <label class="form-check-label" for="switchCavesWalls">
+                                Caves Ice Walls punched
+                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
+                            </label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Creepy Castle</h5>
+                        </div>
+                        <!-- Castle Crypt Doors -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCryptDoors">
+                            <label class="form-check-label" for="switchCryptDoors">
+                                Castle Crypt Doors Opened
+                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
+                            </label>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -167,14 +202,14 @@
                 <div class="modal-content">
                     <div class="modal-header">
                     <h1 class="modal-title fs-5" id="customPresetModalLabel">Alter custom presets</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div id="customPresetList"></div>
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-success" onclick="addCurrent()">Add new</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" onclick="addCurrent()">Add new</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
@@ -336,6 +371,15 @@
                 static Day = new Moves("Fungi Day", true, [Moves.AnyGun], true);
                 static RaisedWater = new Moves("Galleon Raised Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
                 static LoweredWater = new Moves("Galleon Lowered Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
+                static TinyTempleIce = new Moves("Tiny Temple Ice Melted", true, [Moves.Guitar, Moves.Slam, Moves.Peanut], true);
+                static GalleonTreasure = new Moves("Treasure Room Open", true, [Moves.Enguarde, Moves.RaisedWater], true);
+                static CavesIceWalls = new Moves("Caves Ice Walls", true, [Moves.Punch], true);
+                // Crypt Entry
+                static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
+                static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
+                static CryptLankyEntry = new Moves("Castle Crypt Doors", true, [Moves.Grape], true);
+                static CryptTinyEntry = new Moves("Castle Crypt Doors", true, [Moves.Feather], true);
+                static CryptChunkyEntry = new Moves("Castle Crypt Doors", true, [Moves.Pineapple], true);
 
                 constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
                     this.name = name;
@@ -395,6 +439,7 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
+                    "switchAztecIce",
                 ], 40, "Low", "Day");
                 static Beginner = new Preset("Beginner", "beginner", [
                     "switchAztec5DT",
@@ -403,6 +448,7 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
+                    "switchAztecIce",
                 ], 30, "Low", "Day");
                 static BLZR = new Preset("Balanced LZR", "blzr", [
                     "switchAztec5DT",
@@ -410,11 +456,13 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
+                    "switchAztecIce",
                 ], 40, "Low", "Dusk");
                 static TreasureHurry = new Preset("Treasure Hurry", "thurry", [
                     "switchAztecLlama",
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
+                    "switchAztecIce",
                 ], 50, "Low", "Day");
                 static Season3Candidates = new Preset("Season 3 Candidates (Excl. CLO)", "s3can", [
                     "switchJapesCoconut",
@@ -425,6 +473,7 @@
                     "switchGalleonLighthouse",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
+                    "switchAztecIce",
                 ], 40, "High", "Dusk");
                 static Season3CLO = new Preset("Season 3 CLO Candidate", "s3clo", [
                     "switchJapesCoconut",
@@ -436,6 +485,7 @@
                     "switchGalleonShipyard",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
+                    "switchAztecIce",
                 ], 40, "Low", "Dusk");
                 static Vanilla = new Preset("Vanilla", "vanilla", [], 75, "Low", "Day");
                 static Hell = new Preset("Hell Mode", "hell", [], 80, "Low", "Progressive");
@@ -448,6 +498,7 @@
                     "switchGalleonLighthouse",
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
+                    "switchAztecIce",
                 ], 45, "High", "Day");
 
                 constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
@@ -682,6 +733,21 @@
                 pulseSelect();
             }
 
+            function applySpecificPreset(p) {
+                const switches = document.getElementsByClassName("barrier-switch");
+                for (let s = 0; s < switches.length; s++) {
+                    switches[s].checked = false;
+                }
+                p.barriers.forEach(barrier => {
+                    document.getElementById(barrier).checked = true;
+                })
+                document.getElementById("cb-req-medal").value = p.cb_requirement;
+                document.getElementById("selectGalleonWater").value = p.galleon_water;
+                document.getElementById("selectForestTime").value = p.fungi_time;
+                updateDisplay(p.name);
+                return;
+            }
+
             function applyPreset() {
                 presets.forEach(p => {
                     if (p.key == document.getElementById("preset_selector").value) {
@@ -726,6 +792,10 @@
                     "switchForestNight": [Moves.Night],
                     "switchGalleonLowered": [Moves.LoweredWater],
                     "switchGalleonRaised": [Moves.RaisedWater],
+                    "switchAztecIce": [Moves.TinyTempleIce],
+                    "switchGalleonTreasure": [Moves.GalleonTreasure],
+                    "switchCavesWalls": [Moves.CavesIceWalls],
+                    "switchCryptDoors": [Moves.CryptDKEntry, Moves.CryptDiddyEntry, Moves.CryptLankyEntry, Moves.CryptTinyEntry, Moves.CryptChunkyEntry],
                 }
                 opened_barriers = []
                 Object.keys(barrier_data).forEach(id => {
@@ -815,7 +885,7 @@
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.Peanut]]),
                         new Requirement(18, [[Moves.Peanut, Moves.Slam]]),
-                        new Requirement(7, [[Moves.Peanut, Moves.Diving]]),
+                        new Requirement(7, [[Moves.Peanut, Moves.Diving, Moves.TinyTempleIce]]),
                         new Requirement(30, [[Moves.AztecTunnelDoor]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Rocket]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Peanut, Moves.Aztec5DT]]),
@@ -826,13 +896,13 @@
                         new Requirement(35, [[Moves.AztecTunnelDoor]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Aztec5DT, Moves.Grape]]),
                         new Requirement(25, [[Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.Grape]]),
-                        new Requirement(14, [[Moves.Grape, Moves.Diving]]),
+                        new Requirement(14, [[Moves.Grape, Moves.Diving, Moves.TinyTempleIce]]),
                         new Requirement(11, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
                     ],
                     "Tiny": [
                         new Requirement(50, [[Moves.AztecTunnelDoor]]),
-                        new Requirement(5, [[Moves.Feather, Moves.Mini, Moves.Diving]]),
-                        new Requirement(20, [[Moves.Feather, Moves.Diving]]),
+                        new Requirement(5, [[Moves.Feather, Moves.Mini, Moves.Diving, Moves.TinyTempleIce]]),
+                        new Requirement(20, [[Moves.Feather, Moves.Diving, Moves.TinyTempleIce]]),
                         new Requirement(3, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
                         new Requirement(2, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.Mini, Moves.AztecLlama].concat([item]))),
                         new Requirement(10, llama_temple_guns.map(item => 
@@ -842,7 +912,8 @@
                     ],
                     "Chunky": [
                         new Requirement(5, [[Moves.Moveless]]),
-                        new Requirement(59, [[Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Diving, Moves.Pineapple, Moves.TinyTempleIce]]),
+                        new Requirement(49, [[Moves.Pineapple]]),
                         new Requirement(16, [[Moves.AztecTunnelDoor]]),
                         new Requirement(20, [[Moves.AztecTunnelDoor, Moves.Pineapple, Moves.Aztec5DT]]),
                     ],
@@ -902,19 +973,19 @@
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.Rocket, Moves.Peanut]]),
                         new Requirement(36, [[Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(14, [[Moves.LoweredWater, Moves.Diving, Moves.Guitar, Moves.GalleonPeanut]]),
-                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Peanut, Moves.Enguarde, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Peanut, Moves.GalleonTreasure, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Peanut, Moves.GalleonPeanut]]),
                     ],
                     "Lanky": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(5, [[Moves.GalleonPeanut]]),
                         new Requirement(25, [[Moves.GalleonLighthouse, Moves.Diving]]),
-                        new Requirement(1, [[Moves.GalleonLighthouse, Moves.Enguarde, Moves.RaisedWater, Moves.Diving, Moves.GalleonPeanut]]),
+                        new Requirement(1, [[Moves.GalleonLighthouse, Moves.GalleonTreasure, Moves.RaisedWater, Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(5, [[Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Diving, Moves.Slam, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Grape, Moves.GalleonPeanut]]),
                         new Requirement(15, [[Moves.Diving, Moves.Trombone, Moves.LoweredWater, Moves.GalleonPeanut]]),
-                        new Requirement(4, [[Moves.GalleonLighthouse, Moves.Diving, Moves.RaisedWater, Moves.Enguarde, Moves.Balloon, Moves.GalleonPeanut]]),
+                        new Requirement(4, [[Moves.GalleonLighthouse, Moves.Diving, Moves.RaisedWater, Moves.GalleonTreasure, Moves.Balloon, Moves.GalleonPeanut]]),
                         new Requirement(20, [[Moves.Punch, Moves.Grape]]),
                     ],
                     "Tiny": [
@@ -926,8 +997,8 @@
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.RaisedWater]]),
                         new Requirement(15, [[Moves.RaisedWater, Moves.Pineapple]]),
                         new Requirement(18, [[Moves.Sax, Moves.Diving, Moves.GalleonPeanut]]),
-                        new Requirement(5, [[Moves.RaisedWater, Moves.Diving, Moves.Enguarde, Moves.GalleonPeanut]]),
-                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.Enguarde, Moves.Feather, Moves.GalleonPeanut]]),
+                        new Requirement(5, [[Moves.Diving, Moves.GalleonTreasure, Moves.GalleonPeanut]]),
+                        new Requirement(10, [[Moves.RaisedWater, Moves.Diving, Moves.GalleonTreasure, Moves.Feather, Moves.GalleonPeanut]]),
                     ],
                     "Chunky": [
                         new Requirement(12, [[Moves.Moveless]]),
@@ -994,8 +1065,8 @@
                 "Caves": {
                     "DK": [
                         new Requirement(25, [[Moves.Moveless]]),
-                        new Requirement(3, [[Moves.Punch]]),
-                        new Requirement(20, [[Moves.Punch, Moves.Coconut]]),
+                        new Requirement(3, [[Moves.CavesIceWalls]]),
+                        new Requirement(20, [[Moves.CavesIceWalls, Moves.Coconut]]),
                         new Requirement(20, [[Moves.Blast]]),
                         new Requirement(15, [[Moves.Bongos]]),
                         new Requirement(10, [[Moves.Bongos, Moves.Coconut, Moves.CavesIglooPads]]),
@@ -1033,15 +1104,15 @@
                         new Requirement(10, [[Moves.Feather, Moves.Mini, Moves.Twirl]]),
                         new Requirement(5, [[Moves.Mini, Moves.Monkeyport, Moves.Twirl]]),
                         new Requirement(5, [[Moves.Mini]]),
-                        new Requirement(20, [[Moves.Barrels, Moves.Punch, Moves.Hunky, Moves.Monkeyport]]),
+                        new Requirement(20, [[Moves.Barrels, Moves.CavesIceWalls, Moves.Hunky, Moves.Monkeyport]]),
                     ],
                     "Chunky": [
                         new Requirement(18, [[Moves.Moveless]]),
                         new Requirement(5, [[Moves.Barrels]]),
-                        new Requirement(11, [[Moves.Punch]]),
-                        new Requirement(6, [[Moves.Punch, Moves.Barrels]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Pineapple]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Barrels, Moves.Hunky]]),
+                        new Requirement(11, [[Moves.CavesIceWalls]]),
+                        new Requirement(6, [[Moves.CavesIceWalls, Moves.Barrels]]),
+                        new Requirement(10, [[Moves.CavesIceWalls, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.CavesIceWalls, Moves.Barrels, Moves.Hunky]]),
                         new Requirement(20, [[Moves.Triangle, Moves.Gone]]),
                         new Requirement(10, [[Moves.Triangle, Moves.Pineapple, Moves.CavesIglooPads]]),
                         new Requirement(10, [[Moves.Mini, Moves.Pineapple, Moves.W3Bonus]]),
@@ -1053,15 +1124,17 @@
                         new Requirement(10, [[Moves.Slam]]),
                         new Requirement(10, [[Moves.Slam, Moves.Strong]]),
                         new Requirement(15, [[Moves.Blast, Moves.Coconut]]),
-                        new Requirement(15, [[Moves.Coconut]]),
+                        new Requirement(5, [[Moves.CryptDKEntry]]),
+                        new Requirement(10, [[Moves.CryptDKEntry, Moves.Coconut]]),
                     ],
                     "Diddy": [
-                        new Requirement(25, [[Moves.Peanut]]),
+                        new Requirement(5, [[Moves.CryptDiddyEntry]]),
+                        new Requirement(20, [[Moves.Peanut]]),
                         new Requirement(10, [[Moves.Rocket]]),
                         new Requirement(15, [[Moves.Slam, Moves.Rocket]]),
                         new Requirement(20, [[Moves.Slam, Moves.Peanut]]),
                         new Requirement(20, [[Moves.Punch]]),
-                        new Requirement(10, [[Moves.Charge, Moves.Peanut]]),
+                        new Requirement(10, [[Moves.Charge, Moves.Peanut, Moves.CryptDiddyEntry]]),
                     ],
                     "Lanky": [
                         new Requirement(30, [[Moves.Moveless]]),
@@ -1076,11 +1149,13 @@
                         new Requirement(5, [[Moves.Diddy, Moves.Slam]]),
                         new Requirement(15, [[Moves.Diddy, Moves.Slam, Moves.Monkeyport]]),
                         new Requirement(10, [[Moves.Diddy, Moves.Slam, Moves.Monkeyport, Moves.Feather]]),
-                        new Requirement(15, [[Moves.Feather]]),
+                        new Requirement(10, [[Moves.Feather]]),
+                        new Requirement(5, [[Moves.CryptTinyEntry]]),
                     ],
                     "Chunky": [
                         new Requirement(30, [[Moves.Moveless]]),
-                        new Requirement(40, [[Moves.Punch, Moves.Pineapple]]),
+                        new Requirement(10, [[Moves.Punch, Moves.CryptChunkyEntry]]),
+                        new Requirement(30, [[Moves.Punch, Moves.Pineapple]]),
                         new Requirement(5, [[Moves.Slam, Moves.Barrels, Moves.Punch]]),
                         new Requirement(5, [[Moves.Blast]]),
                         new Requirement(10, [[Moves.Blast, Moves.Punch, Moves.Pineapple]]),
@@ -1264,6 +1339,8 @@
                     getRequiredMoves();
                 });
             }
+
+            applySpecificPreset(Preset.Season3);
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
