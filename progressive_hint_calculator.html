@@ -30,6 +30,12 @@
                         <span class="input-group-text" id="basic-addon1">Hint Cap</span>
                         <input type="number" id="hint-35-req" class="form-control recalculate" placeholder="Hint Cap" aria-label="Hint 35 Requirement" value="50" aria-describedby="basic-addon1"/>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="devHintCurve">
+                        <label class="form-check-label" for="devHintCurve">
+                            Dev Branch Hint curve
+                        </label>
+                    </div>
                 </div>
             </div>
             <div id="hint-reqs"></div>
@@ -37,7 +43,32 @@
         
 
         <script>
+            DEV_EXPONENT = 1.7
+            DEV_OFF_DIV = 15
+
+            function getHintCountDev(index, cap) {
+                if (index == 34) {
+                    return cap;
+                }
+                offset = cap / DEV_OFF_DIV;
+                hint_slot = index & 0xFC;
+                multiplier = cap - offset;
+                final_offset = (cap + offset) / 2;
+                exp_result = (1 + (Math.pow(hint_slot, DEV_EXPONENT) / Math.pow(34, DEV_EXPONENT)));
+                z = Math.PI * exp_result;
+                required_gb_count = Math.floor(multiplier * 0.5 * Math.cos(z) + final_offset);
+                if (required_gb_count == 0) return 0;
+                return required_gb_count;
+            }
+
+            function isDev() {
+                return document.getElementById("devHintCurve").checked;
+            }
+
             function getGBCount(index, cap) {
+                if (isDev()) {
+                    return getHintCountDev(index, cap);
+                }
                 slot = index;
                 if (slot < 34) {
                     slot &= 0xFC;
@@ -74,7 +105,8 @@
                         lim,
                     ]
                     const bound_text = bound_match ? lower_bound : bound_segments.join(" ");
-                    const text_value = `<strong>Hint${bound_match ? '' : 's'} ${bound_text}</strong>: ${requirements[lim]} GB${requirements[lim] == 1 ? "" : "s"}`;
+                    const item_name = isDev() ? "Item" : "GB";
+                    const text_value = `<strong>Hint${bound_match ? '' : 's'} ${bound_text}</strong>: ${requirements[lim]} ${item_name}${requirements[lim] == 1 ? "" : "s"}`;
                     hook.innerHTML += `<li class="list-group-item">${text_value}</li>`
                 })
                 hook.innerHTML = `
@@ -90,6 +122,9 @@
                 </div>`
             }
 
+            document.getElementById("devHintCurve").addEventListener("click", (e) => {
+                getGBTotals();
+            })
             document.getElementById("hint-35-req").addEventListener("keyup", (e) => {
                 getGBTotals();
             })
