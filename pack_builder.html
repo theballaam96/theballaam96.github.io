@@ -2087,7 +2087,7 @@
                     })
                     return valid_entry;
                 }
-                if (filter_value == "") {
+                if (filter_value.replaceAll(" ","") == "") {
                     return true;
                 }
                 return midi_info.game.toLowerCase().includes(filtered_game) || midi_info.name.toLowerCase().includes(filter_value);
