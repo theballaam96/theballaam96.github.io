@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thumbnail Generator</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        canvas { border: 1px solid black; width: 720px; height: 405px; }
+        #controls { margin-top: 10px; }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container text-center p-5">
+        <h1>Thumbnail Generator</h1>
+        <br />
+        <canvas id="thumbnailCanvas" width="1920" height="1080"></canvas>
+        <div class="d-flex">
+            <div class="form-floating m-3 flex-grow-1">
+                <input type="text" class="form-control" id="playerOne" placeholder="2dos" value="2dos">
+                <label for="playerOne">Player 1</label>
+            </div>
+            <div class="form-floating m-3 flex-grow-1">
+                <input type="text" class="form-control" id="playerTwo" placeholder="Lrauq" value="Lrauq">
+                <label for="playerTwo">Player 2</label>
+            </div>
+        </div>
+        <div class="text-start">
+            <h5>Background Image</h5>
+            <div class="d-flex">
+                <div class="input-group m-3">
+                    <input type="file" id="imageUpload" accept="image/*" class="form-control">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const canvas = document.getElementById("thumbnailCanvas");
+        const ctx = canvas.getContext("2d");
+        const textInputs = [
+            document.getElementById("playerOne"),
+            document.getElementById("playerTwo"),
+        ];
+        const imageUpload = document.getElementById("imageUpload");
+        
+        const bgImage = new Image();
+        bgImage.src = "assets/s3p5 static.png";
+        
+        let overlayImage = null;
+        let offsetX = 0, offsetY = 0;
+        let isDragging = false;
+
+        function drawThumbnail() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            if (overlayImage) {
+                ctx.fillStyle = "black";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.save();
+                ctx.globalAlpha = 0.8;  // Apply mild darkening effect
+                ctx.drawImage(overlayImage, offsetX, offsetY, 2400, 1800);
+                ctx.restore();
+            }
+            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
+            
+            ctx.font = "bold 90px 'Trebuchet MS'";
+            ctx.fillStyle = "white";
+            ctx.textAlign = "center";
+            ctx.fillText(`${textInputs[0].value} vs. ${textInputs[1].value}`, canvas.width / 2, 940);
+        }
+
+        bgImage.onload = drawThumbnail;
+        textInputs.forEach(ti => {
+            ti.addEventListener("input", drawThumbnail);
+        });
+        
+        imageUpload.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    overlayImage = new Image();
+                    overlayImage.src = e.target.result;
+                    overlayImage.onload = drawThumbnail;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        canvas.addEventListener("mousedown", (e) => {
+            isDragging = true;
+        });
+        canvas.addEventListener("mousemove", (e) => {
+            if (isDragging && overlayImage) {
+                offsetX += e.movementX;
+                offsetY += e.movementY;
+                drawThumbnail();
+            }
+        });
+        canvas.addEventListener("mouseup", () => { isDragging = false; });
+        canvas.addEventListener("mouseleave", () => { isDragging = false; });
+    </script>
+</body>
+</html>
