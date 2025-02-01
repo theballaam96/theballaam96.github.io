@@ -16,14 +16,40 @@
         <h1>Thumbnail Generator</h1>
         <br />
         <canvas id="thumbnailCanvas" width="1920" height="1080"></canvas>
-        <div class="d-flex">
-            <div class="form-floating m-3 flex-grow-1">
-                <input type="text" class="form-control" id="playerOne" placeholder="2dos" value="2dos">
-                <label for="playerOne">Player 1</label>
+        <div class="row row-cols-2">
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="playerOne" placeholder="2dos" value="2dos">
+                    <label for="playerOne">Player 1</label>
+                </div>
             </div>
-            <div class="form-floating m-3 flex-grow-1">
-                <input type="text" class="form-control" id="playerTwo" placeholder="Lrauq" value="Lrauq">
-                <label for="playerTwo">Player 2</label>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="playerTwo" placeholder="Lrauq" value="Lrauq">
+                    <label for="playerTwo">Player 2</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select id="logoImage" class="form-select">
+                        <option value="normal" selected>Normal</option>
+                        <option value="kevin">KEVIN-ified</option>
+                        <option value="bingo">Bingo</option>
+                    </select>
+                    <label for="logoImage">Randomizer Logo</label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <select id="categoryTitle" class="form-select">
+                        <option value="bingo">Bingo</option>
+                        <option value="season 3">Season 3</option>
+                        <option value="season 3_5" selected>Season 3.5</option>
+                        <option value="kevin">KEVIN</option>
+                        <option value="kevin blitz">KEVIN Blitz</option>
+                    </select>
+                    <label for="categoryTitle">Randomizer Logo</label>
+                </div>
             </div>
         </div>
         <div class="text-start">
@@ -43,9 +69,15 @@
             document.getElementById("playerTwo"),
         ];
         const imageUpload = document.getElementById("imageUpload");
+        const categorySelect = document.getElementById("categoryTitle");
+        const logoSelect = document.getElementById("logoImage");
         
         const bgImage = new Image();
-        bgImage.src = "assets/s3p5 static.png";
+        bgImage.src = "assets/thumb_generator/s3p5 static.png";
+        let logoImage = new Image();
+        logoImage.src = "assets/thumb_generator/logos/normal.png";
+        let categoryImage = new Image();
+        categoryImage.src = "assets/thumb_generator/categories/season 3_5.png";
         
         let overlayImage = null;
         let offsetX = 0, offsetY = 0;
@@ -54,6 +86,7 @@
         function drawThumbnail() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             
+            // Draw Background
             if (overlayImage) {
                 ctx.fillStyle = "black";
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -62,8 +95,33 @@
                 ctx.drawImage(overlayImage, offsetX, offsetY, 2400, 1800);
                 ctx.restore();
             }
-            ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height);
             
+            // Logo Layer
+            logo_width = logoImage.width;
+            logo_height = logoImage.height;
+            const targ_width = 972;
+            const targ_height = 650;
+            w_scale = logo_width / targ_width;
+            h_scale = logo_height / targ_height;
+            logo_scale = 1 / Math.max(w_scale, h_scale);
+            logo_x = parseInt((canvas.width / 2) - ((logo_width * logo_scale) / 2))
+            logo_y = 670 - (logo_height * logo_scale);
+            ctx.drawImage(logoImage, logo_x, logo_y, parseInt(logo_width * logo_scale), parseInt(logo_height * logo_scale));
+            
+            // Category Layer
+            cat_width = categoryImage.width;
+            cat_height = categoryImage.height;
+            cat_x = parseInt((canvas.width / 2) - (cat_width / 2));
+            cat_y = parseInt(750 - (cat_height / 2));
+            ctx.drawImage(categoryImage, cat_x, cat_y);
+            
+            // Black Bar
+            ctx.fillStyle = "black";
+            ctx.alpha = 0.8;
+            ctx.fillRect(0, 845, canvas.width, 140);
+            ctx.restore();
+            
+            // Text
             ctx.font = "bold 90px 'Trebuchet MS'";
             ctx.fillStyle = "white";
             ctx.textAlign = "center";
@@ -71,6 +129,8 @@
         }
 
         bgImage.onload = drawThumbnail;
+        logoImage.onload = drawThumbnail;
+        categoryImage.onload = drawThumbnail;
         textInputs.forEach(ti => {
             ti.addEventListener("input", drawThumbnail);
         });
@@ -87,6 +147,20 @@
                 reader.readAsDataURL(file);
             }
         });
+        logoSelect.addEventListener("change", (e) => {
+            logoImage = new Image();
+            img = `assets/thumb_generator/logos/${e.target.value}.png`;
+            console.log(`Loading: ${img}`)
+            logoImage.src = img;
+            logoImage.onload = drawThumbnail;
+        })
+        categorySelect.addEventListener("change", (e) => {
+            categoryImage = new Image();
+            img = `assets/thumb_generator/categories/${e.target.value}.png`;
+            console.log(`Loading: ${img}`)
+            categoryImage.src = img;
+            categoryImage.onload = drawThumbnail;
+        })
 
         canvas.addEventListener("mousedown", (e) => {
             isDragging = true;
