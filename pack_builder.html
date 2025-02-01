@@ -1222,9 +1222,9 @@
                         let local_html = {};
                         song_list.forEach(song => {
                             const group = song.group;
-                            let displayed_song_name = song.name;
-                            let composer = song.composer ? song.composer : "";
-                            let converter = song.converter ? song.converter : "";
+                            let displayed_song_name = song.name.replace(/['"]/g, '');
+                            let composer = song.composer ? song.composer.replace(/['"]/g, '') : "";
+                            let converter = song.converter ? song.converter.replace(/['"]/g, '') : "";
                             let audio = song.audio;
                             if (!Object.keys(local_html).includes(group)) {
                                 local_html[group] = "";
