@@ -484,7 +484,7 @@
                             </ul>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link excluded_link" href="#" onclick="selectAllSongs()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
+                            <a class="nav-link excluded_link" href="#" onclick="produceSelectAllSongsWarning()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#accessibilityModal"><i class="fa-solid fa-universal-access"></i> Accessibility</a>
@@ -652,6 +652,28 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Select all songs warning -->
+            <button id="sasWarningInitiator" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#sasModal" hidden></button>
+            <div class="modal fade" id="sasModal" tabindex="-1" aria-labelledby="sasModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="background-color:#300">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="sasModalLabel">Warning</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>You have clicked "Select all Songs" or "Deselect all songs". If you have spent time selecting specific songs, this is going to effectively erase that progress.</p>
+                            <p>Are you sure you want to do this?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="d-flex">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="selectAllSongs()">Yes</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2099,6 +2121,10 @@
                 return success;
             }
 
+            function produceSelectAllSongsWarning() {
+                document.getElementById("sasWarningInitiator").click();
+            }
+
             function selectAllSongs() {
                 const checkboxes = document.getElementsByClassName("midi-checkbox");
                 let all_checked = true;
@@ -2152,8 +2178,9 @@
             function checkSongArrayMatch(array_a, array_b, filename_a) {
                 const extension = last(filename_a.split("."));
                 if (PARSEABLE_EXTENSIONS.includes(extension)) { // Binary file
-                    if (filename_a == "bgm/Undertale Spider Dance.candy") {
-                        //console.log(array_a, array_b)
+                    if (filename_a.toLowerCase().includes("yoshi sound")) {
+                        // console.log(array_a, array_b)
+                        // console.log(filename_a, checkArrayMatch(array_a, array_b));
                     }
                     return checkArrayMatch(array_a, array_b);
                 }
@@ -2260,7 +2287,6 @@
                 let files_parsed = 0;
                 const files_pushed = Array(Object.keys(compressed_data).length).fill(null);
                 Object.keys(compressed_data).forEach((song_a, song_i) => {
-                    // console.log(song_a)
                     const extension = last(song_a.split("."));
                     if (extension == "candy") {
                         c_zip = new JSZip();
