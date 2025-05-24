@@ -73,7 +73,6 @@
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecIce" checked>
                             <label class="form-check-label" for="switchAztecIce">
                                 Aztec Tiny Temple Ice Melted
-                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
                             </label>
                         </div>
                         <div class="mt-3">
@@ -112,7 +111,6 @@
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonTreasure">
                             <label class="form-check-label" for="switchGalleonTreasure">
                                 Galleon Treasure Room Opened
-                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
                             </label>
                         </div>
                         <!-- Galleon Water -->
@@ -175,7 +173,6 @@
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesWalls">
                             <label class="form-check-label" for="switchCavesWalls">
                                 Caves Ice Walls punched
-                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
                             </label>
                         </div>
                         <div class="mt-3">
@@ -186,7 +183,15 @@
                             <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCryptDoors">
                             <label class="form-check-label" for="switchCryptDoors">
                                 Castle Crypt Doors Opened
-                                <i class="fa-solid fa-gear" title="4.0+ Only"></i>
+                            </label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Global</h5>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchClimbing">
+                            <label class="form-check-label" for="switchClimbing">
+                                Start with Climbing
                             </label>
                         </div>
                     </div>
@@ -382,6 +387,8 @@
                 static CryptLankyEntry = new Moves("Castle Crypt Doors", true, [Moves.Grape], true);
                 static CryptTinyEntry = new Moves("Castle Crypt Doors", true, [Moves.Feather], true);
                 static CryptChunkyEntry = new Moves("Castle Crypt Doors", true, [Moves.Pineapple], true);
+                // Climbing
+                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true);
                 
 
                 constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
@@ -443,6 +450,7 @@
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
                     "switchAztecIce",
+                    "switchClimbing",
                 ], 40, "Low", "Day");
                 static Beginner = new Preset("Beginner", "beginner", [
                     "switchAztec5DT",
@@ -452,6 +460,7 @@
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
                     "switchAztecIce",
+                    "switchClimbing",
                 ], 30, "Low", "Day");
                 static BLZR = new Preset("Balanced LZR", "blzr", [
                     "switchAztec5DT",
@@ -477,6 +486,7 @@
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
                     "switchAztecIce",
+                    "switchClimbing",
                 ], 40, "High", "Dusk");
                 static Season3CLO = new Preset("Season 3 CLO Candidate", "s3clo", [
                     "switchJapesCoconut",
@@ -489,8 +499,9 @@
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
                     "switchAztecIce",
+                    "switchClimbing",
                 ], 40, "Low", "Dusk");
-                static Vanilla = new Preset("Vanilla", "vanilla", [], 75, "Low", "Day");
+                static Vanilla = new Preset("Vanilla", "vanilla", ["switchClimbing"], 75, "Low", "Day");
                 static Hell = new Preset("Hell Mode", "hell", [], 80, "Low", "Progressive");
                 static Season3 = new Preset("Season 3", "s3", [
                     "switchJapesCoconut",
@@ -502,6 +513,7 @@
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
                     "switchAztecIce",
+                    "switchClimbing",
                 ], 45, "High", "Day");
                 static KEVIN = new Preset("KEVIN", "kevin", [
                     "switchJapesCoconut",
@@ -515,6 +527,18 @@
                     "switchGalleonSeasick",
                     "switchCavesIgloo",
                 ], 40, "High", "Dusk");
+                static Season4 = new Preset("Season 4", "s4", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryTesting",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchForestGreen",
+                    "switchCavesWalls",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 50, "High", "Night");
 
                 constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
                     this.name = name;
@@ -528,9 +552,10 @@
 
             const presets = [
                 //Preset.Season2,
-                Preset.Season3,
+                //Preset.Season3,
                 //Preset.Season3Candidates,
                 //Preset.Season3CLO,
+                Preset.Season4,
                 Preset.Beginner,
                 Preset.BLZR,
                 Preset.Vanilla,
@@ -812,6 +837,7 @@
                     "switchGalleonTreasure": [Moves.GalleonTreasure],
                     "switchCavesWalls": [Moves.CavesIceWalls],
                     "switchCryptDoors": [Moves.CryptDKEntry, Moves.CryptDiddyEntry, Moves.CryptLankyEntry, Moves.CryptTinyEntry, Moves.CryptChunkyEntry],
+                    "switchClimbing": [Moves.ClimbingCheck],
                 };
                 opened_barriers = []
                 Object.keys(barrier_data).forEach(id => {
@@ -844,30 +870,30 @@
             const llama_temple_guns = [Moves.Coconut, Moves.Grape, Moves.Feather];
             const llama_lava_moves = [Moves.Twirl, Moves.LevelSlam];
             const mush_top_access = [Moves.Rocket, Moves.Orangstand];
-            //const diddy_aztec_tree = [[Moves.Rocket, Moves.Climbing]];
-            //const mush_climb = [[Moves.Climbing, Moves.Rocket]];
+            //const diddy_aztec_tree = [[Moves.Rocket, Moves.ClimbingCheck]];
+            //const mush_climb = [[Moves.ClimbingCheck, Moves.Rocket]];
 
             const requirement_data = {
                 "Japes": {
                     "DK": [
                         new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.Climbing]]),
-                        new Requirement(16, [[Moves.Climbing]]),
+                        new Requirement(10, [[Moves.Coconut, Moves.ClimbingCheck]]),
+                        new Requirement(16, [[Moves.ClimbingCheck]]),
                         new Requirement(39, [[Moves.Coconut]]),
-                        new Requirement(10, [[Moves.Vines, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.Vines, Moves.Climbing, Moves.Blast]]),
+                        new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck, Moves.Blast]]),
                     ],
                     "Diddy": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.Diving]]),
-                        new Requirement(27, [[Moves.Climbing]]),
-                        new Requirement(30, [[Moves.Peanut, Moves.Climbing]]),
-                        new Requirement(20, [[Moves.Peanut, Moves.LevelSlam, Moves.Climbing]]),
+                        new Requirement(27, [[Moves.ClimbingCheck]]),
+                        new Requirement(30, [[Moves.Peanut, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.Peanut, Moves.LevelSlam, Moves.ClimbingCheck]]),
                         new Requirement(8, [[Moves.Coconut]]),
                     ],
                     "Lanky": [
                         new Requirement(4, [[Moves.Moveless]]),
-                        new Requirement(15, [[Moves.Climbing]]),
+                        new Requirement(15, [[Moves.ClimbingCheck]]),
                         new Requirement(20, [[Moves.Grape]]),
                         new Requirement(10, [[Moves.Coconut]]),
                         new Requirement(11, [[Moves.Orangstand]]),
@@ -878,7 +904,7 @@
                     ],
                     "Tiny": [
                         new Requirement(5, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Climbing]]),
+                        new Requirement(5, [[Moves.ClimbingCheck]]),
                         new Requirement(12, [[Moves.Coconut]]),
                         new Requirement(10, [[Moves.Coconut, Moves.Feather]]),
                         new Requirement(10, [[Moves.Feather]]),
@@ -889,17 +915,17 @@
                     ],
                     "Chunky": [
                         new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(15, [[Moves.Climbing]]),
+                        new Requirement(15, [[Moves.ClimbingCheck]]),
                         new Requirement(30, [[Moves.Coconut, Moves.Pineapple]]),
                         new Requirement(5, [[Moves.Coconut, Moves.Barrels]]),
-                        new Requirement(20, [[Moves.JapesShellhive, Moves.Hunky, Moves.Climbing]]),
+                        new Requirement(20, [[Moves.JapesShellhive, Moves.Hunky, Moves.ClimbingCheck]]),
                         new Requirement(15, [[Moves.Barrels]]),
                     ]
                 },
                 "Aztec": {
                     "DK": [
                         new Requirement(3, [[Moves.Moveless]]),
-                        new Requirement(15, [[Moves.Climbing]]),
+                        new Requirement(15, [[Moves.ClimbingCheck]]),
                         new Requirement(30, [[Moves.Coconut, Moves.AztecTunnelDoor]]),
                         new Requirement(20, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.LevelSlam, Moves.Strong, Moves.AztecLlama].concat([item]))),
                         new Requirement(15, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
@@ -912,7 +938,7 @@
                         new Requirement(18, [[Moves.Peanut, Moves.LevelSlam]]),
                         new Requirement(7, [[Moves.Peanut, Moves.Diving, Moves.TinyTempleIce]]),
                         new Requirement(15, [[Moves.AztecTunnelDoor]]),
-                        new Requirement(15, [[Moves.Climbing]]), // Either or with Climb/Rocket
+                        new Requirement(15, [[Moves.ClimbingCheck]]), // Either or with Climb/Rocket
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Rocket]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Peanut, Moves.Aztec5DT]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.Coconut, Moves.LevelSlam, Moves.Strong, Moves.Peanut]]),
@@ -920,7 +946,7 @@
                     "Lanky": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor]]),
-                        new Requirement(25, [[Moves.AztecTunnelDoor, Moves.Climbing]]),
+                        new Requirement(25, [[Moves.AztecTunnelDoor, Moves.ClimbingCheck]]),
                         new Requirement(10, [[Moves.AztecTunnelDoor, Moves.Aztec5DT, Moves.Grape]]),
                         new Requirement(25, [[Moves.AztecTunnelDoor, Moves.AztecLlama, Moves.Grape]]),
                         new Requirement(14, [[Moves.Grape, Moves.Diving, Moves.TinyTempleIce]]),
@@ -928,7 +954,7 @@
                     ],
                     "Tiny": [
                         new Requirement(25, [[Moves.AztecTunnelDoor]]),
-                        new Requirement(25, [[Moves.Climbing]]), // I wish I knew how to make this an either/or for Climb or Twirl
+                        new Requirement(25, [[Moves.ClimbingCheck]]), // I wish I knew how to make this an either/or for Climb or Twirl
                         new Requirement(5, [[Moves.Feather, Moves.Mini, Moves.Diving, Moves.TinyTempleIce]]),
                         new Requirement(20, [[Moves.Feather, Moves.Diving, Moves.TinyTempleIce]]),
                         new Requirement(3, llama_temple_guns.map(item => [Moves.AztecTunnelDoor, Moves.AztecLlama].concat([item]))),
@@ -949,48 +975,48 @@
                 "Factory": {
                     "DK": [
                         new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.Climbing]]),
+                        new Requirement(5, [[Moves.ClimbingCheck]]),
                         new Requirement(20, [[Moves.Blast]]),
                         new Requirement(15, [[Moves.Strong, Moves.FactoryProduction]]),
-                        new Requirement(35, [[Moves.Coconut, Moves.FactoryTesting, Moves.Climbing]]),
+                        new Requirement(35, [[Moves.Coconut, Moves.FactoryTesting, Moves.ClimbingCheck]]),
                         new Requirement(10, [[Moves.Coconut]]),
                     ],
                     "Diddy": [
                         new Requirement(12, [[Moves.Moveless]]),
-                        new Requirement(8, [[Moves.FactoryTesting, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.Climbing]]),
-                        new Requirement(15, [[Moves.FactoryProduction, Moves.Climbing]]),
-                        new Requirement(25, [[Moves.Spring, Moves.Climbing, Moves.FactoryTesting]]),
-                        new Requirement(30, [[Moves.Guitar, Moves.Peanut, Moves.FactoryTesting, Moves.Climbing]]),
+                        new Requirement(8, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.ClimbingCheck]]),
+                        new Requirement(15, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
+                        new Requirement(25, [[Moves.Spring, Moves.ClimbingCheck, Moves.FactoryTesting]]),
+                        new Requirement(30, [[Moves.Guitar, Moves.Peanut, Moves.FactoryTesting, Moves.ClimbingCheck]]),
                     ],
                     "Lanky": [
                         new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.Climbing]]),
-                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryProduction, Moves.Climbing]]),
+                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryProduction, Moves.ClimbingCheck]]),
                         new Requirement(5, [[Moves.Orangstand]]),
-                        new Requirement(15, [[Moves.FactoryTesting, Moves.Climbing]]),
-                        new Requirement(20, [[Moves.Grape, Moves.FactoryProduction, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.FactoryTesting, Moves.Climbing, Moves.Trombone, Moves.Grape]]),
+                        new Requirement(15, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.Grape, Moves.FactoryProduction, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.FactoryTesting, Moves.ClimbingCheck, Moves.Trombone, Moves.Grape]]),
                     ],
                     "Tiny": [
                         new Requirement(10, [[Moves.Moveless]]), // 2 Bunches on Mid Hatch, Maybe Move to Climb?
-                        new Requirement(5, [[Moves.Climbing]]),
-                        new Requirement(25, [[Moves.FactoryTesting, Moves.Climbing]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.Climbing]]),
-                        new Requirement(5, [[Moves.Twirl, Moves.FactoryProduction, Moves.Climbing]]),
-                        new Requirement(5, [[Moves.Mini, Moves.FactoryTesting, Moves.Climbing]]),
-                        new Requirement(20, [[Moves.FactoryTesting, Moves.Feather, Moves.Climbing]]),
+                        new Requirement(5, [[Moves.ClimbingCheck]]),
+                        new Requirement(25, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
+                        new Requirement(5, [[Moves.Twirl, Moves.FactoryProduction, Moves.ClimbingCheck]]),
+                        new Requirement(5, [[Moves.Mini, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.FactoryTesting, Moves.Feather, Moves.ClimbingCheck]]),
                         new Requirement(10, [[Moves.Feather, Moves.FactoryProduction]]),
                     ],
                     "Chunky": [
                         new Requirement(20, [[Moves.Moveless]]), // Same as Factory Tiny's Moveless
-                        new Requirement(5, [[Moves.Climbing, Moves.FactoryTesting]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.Climbing]]),
+                        new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]),
+                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
                         new Requirement(15, [[Moves.Punch]]),
                         new Requirement(10, [[Moves.Pineapple]]),
-                        new Requirement(10, [[Moves.Pineapple, Moves.FactoryTesting, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.FactoryTesting, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple, Moves.FactoryTesting, Moves.Climbing]]),
+                        new Requirement(10, [[Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]),
                     ],
                 },
                 "Galleon": {
@@ -1001,8 +1027,8 @@
                         new Requirement(10, [[Moves.Coconut]]),
                         new Requirement(15, [[Moves.Diving, Moves.GalleonPeanut]]),
                         new Requirement(10, [[Moves.Diving, Moves.Bongos, Moves.GalleonPeanut]]),
-                        new Requirement(20, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.LevelSlam, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.LevelSlam, Moves.Coconut, Moves.Climbing]]),
+                        new Requirement(20, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.LevelSlam, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.LevelSlam, Moves.Coconut, Moves.ClimbingCheck]]),
                     ],
                     "Diddy": [
                         new Requirement(10, [[Moves.Moveless]]),
@@ -1052,10 +1078,10 @@
                 "Fungi": {
                     "DK": [
                         new Requirement(28, [[Moves.Moveless]]), // Kick Jump to Mid Mush Exterior to get the middle (13?) + 1 on Bottom Part of Ladder CBs 
-                        new Requirement(2, [[Moves.Climbing]]), // 2 on the Blast Pad Ladder
+                        new Requirement(2, [[Moves.ClimbingCheck]]), // 2 on the Blast Pad Ladder
                         new Requirement(15, [[Moves.Coconut, Moves.Peanut, Moves.Grape, Moves.Feather, Moves.Pineapple, Moves.LevelSlam]]), //CoL
-                        new Requirement(10, [[Moves.Blast, Moves.Climbing]]),
-                        new Requirement(5, [[Moves.Climbing]]), // W5 Upper
+                        new Requirement(10, [[Moves.Blast, Moves.ClimbingCheck]]),
+                        new Requirement(5, [[Moves.ClimbingCheck]]), // W5 Upper
                         new Requirement(10, [[Moves.Coconut]]), // Behind Dark Barn
                         new Requirement(5, [[Moves.Slam, Moves.Day]]), // Inside Mill Box
                         new Requirement(10, [[Moves.Coconut, Moves.LevelSlam]]), // Inside Mill Grab Box
@@ -1065,22 +1091,22 @@
                     ],
                     "Diddy": [
                         new Requirement(28, [[Moves.Moveless]]),
-                        new Requirement(17, [[Moves.Climbing]]),
+                        new Requirement(17, [[Moves.ClimbingCheck]]),
                         new Requirement(15, [[Moves.ForestYellowTunnel]]),
                         new Requirement(5, [[Moves.ForestYellowTunnel, Moves.Rocket]]),
                         new Requirement(10, [[Moves.Peanut, Moves.Day]]),
-                        new Requirement(10, [[Moves.Peanut, Moves.LevelSlam, Moves.Climbing]]),
+                        new Requirement(10, [[Moves.Peanut, Moves.LevelSlam, Moves.ClimbingCheck]]),
                         new Requirement(5, [[Moves.Spring]]),
                         new Requirement(10, [[Moves.Night, Moves.Spring, Moves.Guitar]]),
                     ],
                     "Lanky": [
                         new Requirement(21, [[Moves.Moveless]]),
-                        new Requirement(11, [[Moves.Climbing]]), // Either or with Climb/Balloon
+                        new Requirement(11, [[Moves.ClimbingCheck]]), // Either or with Climb/Balloon
                         new Requirement(10, [[Moves.Grape]]),
-                        new Requirement(10, [[Moves.Grape, Moves.Climbing]]),
+                        new Requirement(10, [[Moves.Grape, Moves.ClimbingCheck]]),
                         new Requirement(18, [[Moves.ForestYellowTunnel]]),
-                        new Requirement(5, [[Moves.Orangstand, Moves.Climbing]]),
-                        new Requirement(15, [[Moves.LevelSlam, Moves.Orangstand, Moves.Climbing]]),
+                        new Requirement(5, [[Moves.Orangstand, Moves.ClimbingCheck]]),
+                        new Requirement(15, [[Moves.LevelSlam, Moves.Orangstand, Moves.ClimbingCheck]]),
                         new Requirement(10, [[Moves.Night]]),
                         ],
                     "Tiny": [
@@ -1093,19 +1119,19 @@
                         new Requirement(10, [[Moves.Feather]]),
                         new Requirement(4, [[Moves.ForestGreenTunnelFeather]]),
                         new Requirement(1, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]),
-                        new Requirement(15, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple, Moves.Climbing]]), // Top of Mush Trees
+                        new Requirement(15, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple, Moves.ClimbingCheck]]), // Top of Mush Trees
                         new Requirement(8, [[Moves.ForestYellowTunnel]]),
                         new Requirement(5, [[Moves.ForestYellowTunnel, Moves.Mini, Moves.Sax]]),
                     ],
                     "Chunky": [
                         new Requirement(11, [[Moves.Moveless]]),
-                        new Requirement(40, [[Moves.Climbing]]),
+                        new Requirement(40, [[Moves.ClimbingCheck]]),
                         new Requirement(5, [[Moves.Punch, Moves.Day]]),
                         new Requirement(14, [[Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple]]),
-                        new Requirement(5, [[Moves.Vines], [Moves.Night], [Moves.Climbing]]), // Not 100% sure why the moves are in different brackets
-                        new Requirement(5, [[Moves.LevelSlam, Moves.Climbing]]), // Either or with Rocket/Punch
-                        new Requirement(10, [[Moves.LevelSlam, Moves.Pineapple, Moves.Climbing]]),
-                        new Requirement(10, [[Moves.Pineapple, Moves.Climbing]]), // Night Door Kasplat Balloon, I believe?
+                        new Requirement(5, [[Moves.Vines], [Moves.Night], [Moves.ClimbingCheck]]), // Not 100% sure why the moves are in different brackets
+                        new Requirement(5, [[Moves.LevelSlam, Moves.ClimbingCheck]]), // Either or with Rocket/Punch
+                        new Requirement(10, [[Moves.LevelSlam, Moves.Pineapple, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.Pineapple, Moves.ClimbingCheck]]), // Night Door Kasplat Balloon, I believe?
                     ],
                 },
                 "Caves": {
@@ -1386,7 +1412,7 @@
                 });
             }
 
-            applySpecificPreset(Preset.Season3);
+            applySpecificPreset(Preset.Season4);
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
