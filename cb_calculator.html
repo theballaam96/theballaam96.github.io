@@ -359,8 +359,9 @@
                 
                 static W3Bonus = new Moves("Caves Warp 3 Bonus");
                 static AnyGun = new Moves("Any Gun");
+                static FreeDiddyGun = new Moves("Free Diddy Gun");
                 // Barriers
-                static JapesCoconut = new Moves("Japes Coconut Gates", true, [], true); // No logic determined yet for this
+                static JapesCoconut = new Moves("Japes Coconut Gates", true, [Moves.FreeDiddyGun], true); // No logic determined yet for this
                 static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
                 static AztecTunnelDoor = new Moves("Aztec Tunnel Door", true, [Moves.Guitar, Moves.Vines], true);
                 static Aztec5DT = new Moves("Aztec 5DT Switches", true, [Moves.Rocket, Moves.Peanut], true);
@@ -876,10 +877,12 @@
             const requirement_data = {
                 "Japes": {
                     "DK": [
-                        new Requirement(15, [[Moves.Moveless]]),
+                        new Requirement(10, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.Coconut, Moves.ClimbingCheck]]),
-                        new Requirement(16, [[Moves.ClimbingCheck]]),
-                        new Requirement(39, [[Moves.Coconut]]),
+                        new Requirement(21, [[Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.Coconut]]),
+                        new Requirement(9, [[Moves.JapesCoconut]]),
+                        new Requirement(20, [[Moves.JapesCoconut, Moves.Coconut]]),
                         new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck]]),
                         new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck, Moves.Blast]]),
                     ],
@@ -889,14 +892,18 @@
                         new Requirement(27, [[Moves.ClimbingCheck]]),
                         new Requirement(30, [[Moves.Peanut, Moves.ClimbingCheck]]),
                         new Requirement(20, [[Moves.Peanut, Moves.LevelSlam, Moves.ClimbingCheck]]),
-                        new Requirement(8, [[Moves.Coconut]]),
+                        new Requirement(3, [[Moves.JapesCoconut]]),
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]),
                     ],
                     "Lanky": [
-                        new Requirement(4, [[Moves.Moveless]]),
+                        new Requirement(1, [[Moves.Moveless]]),
+                        new Requirement(3, [[Moves.JapesCoconut]]),
                         new Requirement(15, [[Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Grape]]),
-                        new Requirement(10, [[Moves.Coconut]]),
-                        new Requirement(11, [[Moves.Orangstand]]),
+                        new Requirement(20, [[Moves.JapesCoconut, Moves.Grape]]),
+                        new Requirement(5, [[Moves.JapesCoconut]]),
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]),
+                        new Requirement(2, [[Moves.Orangstand]]),
+                        new Requirement(9, [[Moves.JapesCoconut, Moves.Orangstand]]),
                         new Requirement(5, [[Moves.Diving]]),
                         new Requirement(20, [[Moves.Orangstand, Moves.Peanut]]),
                         new Requirement(10, [[Moves.Orangstand, Moves.Peanut, Moves.Grape]]),
@@ -905,20 +912,22 @@
                     "Tiny": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(12, [[Moves.Coconut]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.Feather]]),
-                        new Requirement(10, [[Moves.Feather]]),
-                        new Requirement(5, [[Moves.JapesShellhive]]),
-                        new Requirement(38, [[Moves.JapesShellhive, Moves.Mini]]),
-                        new Requirement(10, [[Moves.JapesShellhive, Moves.Mini, Moves.Feather]]),
+                        new Requirement(2, [[Moves.JapesCoconut]]),
+                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]),
+                        new Requirement(10, [[Moves.JapesCoconut, Moves.Feather]]),
+                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut, Moves.Feather]]),
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.JapesShellhive]]),
+                        new Requirement(38, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini]]),
+                        new Requirement(10, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini, Moves.Feather]]),
                         new Requirement(5, [[Moves.Peanut, Moves.Feather]]),
                     ],
                     "Chunky": [
                         new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(15, [[Moves.ClimbingCheck]]),
-                        new Requirement(30, [[Moves.Coconut, Moves.Pineapple]]),
-                        new Requirement(5, [[Moves.Coconut, Moves.Barrels]]),
-                        new Requirement(20, [[Moves.JapesShellhive, Moves.Hunky, Moves.ClimbingCheck]]),
+                        new Requirement(10, [[Moves.ClimbingCheck]]),
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]),
+                        new Requirement(30, [[Moves.JapesCoconut, Moves.Coconut, Moves.Pineapple]]),
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut, Moves.Barrels]]),
+                        new Requirement(20, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Hunky, Moves.ClimbingCheck]]),
                         new Requirement(15, [[Moves.Barrels]]),
                     ]
                 },
