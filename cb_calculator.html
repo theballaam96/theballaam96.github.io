@@ -309,7 +309,6 @@
             }
 
             class Portal {
-                static JapesVanilla = new Portal("Japes Vanilla");
                 static JapesBehindRambiDoor = new Portal("Behind Rambi Door");
                 static JapesHive = new Portal("Hive");
                 static FactoryTopOfProduction = new Portal("Top of Production");
@@ -926,7 +925,8 @@
                         new Requirement(10, [[Moves.ClimbingCheck]]),
                         new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]),
                         new Requirement(20, [[Moves.JapesCoconut, Moves.Grape]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]), // 5 in destructible hut, 5 in rambi area
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]), // bunch in destructible hut
+                        new Requirement(5, [[Moves.JapesBehindRambiDoor]]), // Singles in rambi area
                         new Requirement(2, [[Moves.Orangstand]]),
                         new Requirement(9, [[Moves.JapesCoconut, Moves.Orangstand]]),
                         new Requirement(5, [[Moves.Diving]]),
@@ -948,7 +948,8 @@
                         new Requirement(5, [[Moves.Peanut, Moves.Feather]]),
                     ],
                     "Chunky": [
-                        new Requirement(15, [[Moves.Moveless]]), // around boulder and in hive tunnel, 10 should have JapesCoconut?
+                        new Requirement(5, [[Moves.Moveless]]), // singles around Chunky underground
+                        new Requirement(10, [[Moves.JapesCoconut]]), // singles in Hive tunnel
                         new Requirement(10, [[Moves.ClimbingCheck]]), // on top of funky's hut
                         new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]), // on top of cranky's hut
                         new Requirement(30, [[Moves.JapesBehindRambiDoor, Moves.Pineapple]]), // balloons in rambi area
