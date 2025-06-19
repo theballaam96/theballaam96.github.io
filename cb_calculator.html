@@ -310,7 +310,10 @@
 
             class Portal {
                 static JapesVanilla = new Portal("Japes Vanilla");
-                static JapesBehindRambiDoor = new Portal("Japes Behind Rambi Door");
+                static JapesBehindRambiDoor = new Portal("Behind Rambi Door");
+                static JapesHive = new Portal("Hive");
+                static FactoryTopOfProduction = new Portal("Top of Production");
+                static GalleonPastVines = new Portal("Past Vines");
 
                 constructor (name) {
                     this.name = name;
@@ -396,6 +399,8 @@
                 static TinyTempleIce = new Moves("Tiny Temple Ice Melted", true, [Moves.Guitar, Moves.LevelSlam, Moves.Peanut], true);
                 static GalleonTreasure = new Moves("Treasure Room Open", true, [Moves.Enguarde, Moves.RaisedWater], true);
                 static CavesIceWalls = new Moves("Caves Ice Walls", true, [Moves.Punch], true);
+                // Logic Regions
+                static JapesBehindRambiDoor = new Moves("Japes Behind Rambi Door", true, [Moves.JapesCoconut, Moves.Coconut], true);
                 // Crypt Entry
                 static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
                 static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
@@ -861,6 +866,12 @@
                         opened_barriers = opened_barriers.concat(barrier_data[id]);
                     }
                 });
+                portal_data = {};
+                portal_data[Portal.JapesBehindRambiDoor.name] = [Moves.JapesBehindRambiDoor];
+                const portal_location = document.getElementById("medal-portal").value;
+                if (Object.keys(portal_data).includes(portal_location)){
+                    opened_barriers = opened_barriers.concat(portal_data[portal_location]);
+                }
             }
             updateBarriers()
 
@@ -915,7 +926,7 @@
                         new Requirement(10, [[Moves.ClimbingCheck]]),
                         new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]),
                         new Requirement(20, [[Moves.JapesCoconut, Moves.Grape]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]),
+                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]), // 5 in destructible hut, 5 in rambi area
                         new Requirement(2, [[Moves.Orangstand]]),
                         new Requirement(9, [[Moves.JapesCoconut, Moves.Orangstand]]),
                         new Requirement(5, [[Moves.Diving]]),
@@ -926,21 +937,22 @@
                     "Tiny": [
                         new Requirement(5, [[Moves.Moveless]]),
                         new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(2, [[Moves.JapesCoconut]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]),
+                        new Requirement(2, [[Moves.JapesCoconut]]), // singles before rambi door
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]), // bunch inside destructible hut
+                        new Requirement(5, [[Moves.JapesBehindRambiDoor]]), // singles before rambi door
                         new Requirement(10, [[Moves.JapesCoconut, Moves.Feather]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut, Moves.Feather]]),
+                        new Requirement(10, [[Moves.JapesBehindRambiDoor, Moves.Feather]]), // balloon in rambi area
                         new Requirement(5, [[Moves.JapesCoconut, Moves.JapesShellhive]]),
                         new Requirement(38, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini]]),
                         new Requirement(10, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini, Moves.Feather]]),
                         new Requirement(5, [[Moves.Peanut, Moves.Feather]]),
                     ],
                     "Chunky": [
-                        new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]),
-                        new Requirement(30, [[Moves.JapesCoconut, Moves.Coconut, Moves.Pineapple]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut, Moves.Barrels]]),
+                        new Requirement(15, [[Moves.Moveless]]), // around boulder and in hive tunnel, 10 should have JapesCoconut?
+                        new Requirement(10, [[Moves.ClimbingCheck]]), // on top of funky's hut
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]), // on top of cranky's hut
+                        new Requirement(30, [[Moves.JapesBehindRambiDoor, Moves.Pineapple]]), // balloons in rambi area
+                        new Requirement(5, [[Moves.JapesBehindRambiDoor, Moves.Barrels]]), // under rock in rambi area
                         new Requirement(20, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Hunky, Moves.ClimbingCheck]]),
                         new Requirement(15, [[Moves.Barrels]]),
                     ]
@@ -1436,11 +1448,11 @@
                 });
             }
 
-            const portal_data = {
-                "Japes": [Portal.JapesBehindRambiDoor],
+            const portal_levels = {
+                "Japes": [Portal.JapesBehindRambiDoor, Portal.JapesHive],
                 "Aztec": [],
-                "Factory": [],
-                "Galleon": [],
+                "Factory": [Portal.FactoryTopOfProduction],
+                "Galleon": [Portal.GalleonPastVines],
                 "Fungi": [],
                 "Caves": [],
                 "Castle": [],
@@ -1451,13 +1463,18 @@
             level_dropdown.addEventListener('change', () => {
                 portal_dropdown.innerHTML = '<option selected value="Vanilla">Vanilla Spawn</option>';
                 const level_name = level_dropdown.value;
-                portal_data[level_name].forEach(item => {
+                portal_levels[level_name].forEach(item => {
                     const new_option = document.createElement('option');
-                    new_option.value = item.name.toLowerCase();
+                    new_option.value = item.name;
                     new_option.text = item.name;
                     portal_dropdown.appendChild(new_option);
                 })
             });
+
+            portal_dropdown.addEventListener('change', () => {
+                updateBarriers();
+                getRequiredMoves();
+            })
 
             applySpecificPreset(Preset.Season4);
         </script>
