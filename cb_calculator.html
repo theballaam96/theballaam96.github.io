@@ -249,6 +249,11 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
+                        <select class="form-select recalculate" aria-label="Select Spawn" id="medal-portal">
+                            <option selected value="default" disabled="disabled">DK Portal</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
                         <select class="form-select recalculate" aria-label="Select Kong" id="medal-kong">
                             <option selected value="default" disabled="disabled">Kong</option>
                             <option value="DK">DK</option>
@@ -297,6 +302,15 @@
                 static Fungi = new Level("Fungi");
                 static Caves = new Level("Caves");
                 static Castle = new Level("Castle");
+
+                constructor (name) {
+                    this.name = name;
+                }
+            }
+
+            class Portal {
+                static JapesVanilla = new Portal("Japes Vanilla");
+                static JapesBehindRambiDoor = new Portal("Japes Behind Rambi Door");
 
                 constructor (name) {
                     this.name = name;
@@ -1421,6 +1435,29 @@
                     getRequiredMoves();
                 });
             }
+
+            const portal_data = {
+                "Japes": [Portal.JapesBehindRambiDoor],
+                "Aztec": [],
+                "Factory": [],
+                "Galleon": [],
+                "Fungi": [],
+                "Caves": [],
+                "Castle": [],
+            };
+
+            const level_dropdown = document.getElementById("medal-level");
+            const portal_dropdown = document.getElementById("medal-portal");
+            level_dropdown.addEventListener('change', () => {
+                portal_dropdown.innerHTML = '<option selected value="Vanilla">Vanilla Spawn</option>';
+                const level_name = level_dropdown.value;
+                portal_data[level_name].forEach(item => {
+                    const new_option = document.createElement('option');
+                    new_option.value = item.name.toLowerCase();
+                    new_option.text = item.name;
+                    portal_dropdown.appendChild(new_option);
+                })
+            });
 
             applySpecificPreset(Preset.Season4);
         </script>
