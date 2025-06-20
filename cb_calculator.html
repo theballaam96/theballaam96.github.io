@@ -376,6 +376,7 @@
                 static W3Bonus = new Moves("Caves Warp 3 Bonus");
                 static AnyGun = new Moves("Any Gun");
                 static FreeDiddyGun = new Moves("Free Diddy Gun");
+                static SaxOrOranges = new Moves("Sax or Oranges"); // for shellhive
                 // Barriers
                 static JapesCoconut = new Moves("Japes Coconut Gates", true, [Moves.FreeDiddyGun, Moves.ClimbingCheck], true); // No logic determined yet for this
                 static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
@@ -400,7 +401,7 @@
                 static CavesIceWalls = new Moves("Caves Ice Walls", true, [Moves.Punch], true);
                 // Logic Regions
                 static JapesBehindRambiDoor = new Moves("Japes Behind Rambi Door", true, [Moves.JapesCoconut, Moves.Coconut], true);
-                static JapesHiveArea = new Moves("Japes Shellhive Area", true, [Moves.JapesCoconut, Moves.JapesShellhive], true); // disambiguate with JApesShellhive?
+                static JapesHiveArea = new Moves("Japes Shellhive Area", true, [Moves.JapesCoconut, Moves.JapesShellhive], true); // disambiguate with JapesShellhive?
                 // Crypt Entry
                 static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
                 static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
@@ -951,7 +952,7 @@
                         new Requirement(10, [[Moves.JapesBehindRambiDoor, Moves.Feather]]), // balloon in rambi area
                         new Requirement(5, [[Moves.JapesHiveArea]]), // bunch in front of hive
                         new Requirement(30, [[Moves.JapesHiveArea, Moves.Mini]]), // bunches inside logs
-                        new Requirement(8, [[Moves.JapesHiveArea, Moves.Mini, Moves.LevelSlam]]), // 8 singles around gb in shellhive
+                        new Requirement(8, [[Moves.JapesHiveArea, Moves.Mini, Moves.LevelSlam, Moves.SaxOrOranges]]), // 8 singles around gb in shellhive
                         new Requirement(10, [[Moves.JapesHiveArea, Moves.Mini, Moves.Feather]]), // balloon in shellhive
                         new Requirement(5, [[Moves.Peanut, Moves.Feather]]), // bunch in feather cage
                     ],
