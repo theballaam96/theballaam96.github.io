@@ -310,7 +310,7 @@
 
             class Portal {
                 static JapesBehindRambiDoor = new Portal("Behind Rambi Door");
-                static JapesHive = new Portal("Hive");
+                static JapesHiveArea = new Portal("Hive");
                 static FactoryTopOfProduction = new Portal("Top of Production");
                 static GalleonPastVines = new Portal("Past Vines");
 
@@ -400,6 +400,7 @@
                 static CavesIceWalls = new Moves("Caves Ice Walls", true, [Moves.Punch], true);
                 // Logic Regions
                 static JapesBehindRambiDoor = new Moves("Japes Behind Rambi Door", true, [Moves.JapesCoconut, Moves.Coconut], true);
+                static JapesHiveArea = new Moves("Japes Shellhive Area", true, [Moves.JapesCoconut, Moves.JapesShellhive], true); // disambiguate with JApesShellhive?
                 // Crypt Entry
                 static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
                 static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
@@ -867,9 +868,13 @@
                 });
                 portal_data = {};
                 portal_data[Portal.JapesBehindRambiDoor.name] = [Moves.JapesBehindRambiDoor];
+                portal_data[Portal.JapesHiveArea.name] = [Moves.JapesHiveArea];
                 const portal_location = document.getElementById("medal-portal").value;
+                console.log(portal_location);
                 if (Object.keys(portal_data).includes(portal_location)){
+                    console.log('included');
                     opened_barriers = opened_barriers.concat(portal_data[portal_location]);
+                    console.log(opened_barriers);
                 }
             }
             updateBarriers()
@@ -944,10 +949,10 @@
                         new Requirement(5, [[Moves.JapesBehindRambiDoor]]), // singles before rambi door
                         new Requirement(10, [[Moves.JapesCoconut, Moves.Feather]]), // balloon in stormy tunnel area
                         new Requirement(10, [[Moves.JapesBehindRambiDoor, Moves.Feather]]), // balloon in rambi area
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.JapesShellhive]]), // bunch in front of hive
-                        new Requirement(30, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini]]), // bunches inside logs
-                        new Requirement(8, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini, Moves.LevelSlam]]), // 8 singles around gb in shellhive
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini, Moves.Feather]]), // balloon in shellhive
+                        new Requirement(5, [[Moves.JapesHiveArea]]), // bunch in front of hive
+                        new Requirement(30, [[Moves.JapesHiveArea, Moves.Mini]]), // bunches inside logs
+                        new Requirement(8, [[Moves.JapesHiveArea, Moves.Mini, Moves.LevelSlam]]), // 8 singles around gb in shellhive
+                        new Requirement(10, [[Moves.JapesHiveArea, Moves.Mini, Moves.Feather]]), // balloon in shellhive
                         new Requirement(5, [[Moves.Peanut, Moves.Feather]]), // bunch in feather cage
                     ],
                     "Chunky": [
@@ -957,7 +962,7 @@
                         new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]), // on top of cranky's hut
                         new Requirement(30, [[Moves.JapesBehindRambiDoor, Moves.Pineapple]]), // balloons in rambi area
                         new Requirement(5, [[Moves.JapesBehindRambiDoor, Moves.Barrels]]), // under rock in rambi area
-                        new Requirement(20, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Hunky, Moves.ClimbingCheck]]), // bunches on trees in hive area
+                        new Requirement(20, [[Moves.JapesHiveArea, Moves.Hunky, Moves.ClimbingCheck]]), // bunches on trees in hive area
                         new Requirement(15, [[Moves.Barrels]]), // 5 singles and two bunches in underground
                     ]
                 },
@@ -1453,7 +1458,7 @@
             }
 
             const portal_levels = {
-                "Japes": [Portal.JapesBehindRambiDoor, Portal.JapesHive],
+                "Japes": [Portal.JapesBehindRambiDoor, Portal.JapesHiveArea],
                 "Aztec": [],
                 "Factory": [Portal.FactoryTopOfProduction],
                 "Galleon": [Portal.GalleonPastVines],
