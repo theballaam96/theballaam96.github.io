@@ -1019,49 +1019,50 @@
                 },
                 "Factory": {
                     "DK": [
-                        new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Blast]]),
-                        new Requirement(15, [[Moves.Strong, Moves.FactoryProduction]]),
-                        new Requirement(35, [[Moves.Coconut, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Coconut]]),
+                        new Requirement(15, [[Moves.Moveless]]), // 5 upper lobby to prod, 6 lower to prod, 4 prod to storage
+                        new Requirement(5, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // singles to numbers game
+                        new Requirement(20, [[Moves.Blast]]), // in blast
+                        new Requirement(15, [[Moves.Strong, Moves.FactoryProduction]]), // crushers
+                        new Requirement(35, [[Moves.Coconut, Moves.FactoryTesting, Moves.ClimbingCheck]]), // balloon by numbers, balloon in rnd, 3 bunches in power hut
+                        new Requirement(10, [[Moves.Coconut]]), // balloon by shops
                     ],
                     "Diddy": [
-                        new Requirement(12, [[Moves.Moveless]]),
-                        new Requirement(8, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.ClimbingCheck]]),
-                        new Requirement(15, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(25, [[Moves.Spring, Moves.ClimbingCheck, Moves.FactoryTesting]]),
-                        new Requirement(30, [[Moves.Guitar, Moves.Peanut, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(12, [[Moves.Moveless]]), // lower prod singles
+                        new Requirement(8, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // by funky
+                        new Requirement(10, [[Moves.ClimbingCheck]]), // by arcade
+                        new Requirement(15, [[Moves.FactoryProduction, Moves.ClimbingCheck]]), // 3 bunches at top of production
+                        new Requirement(25, [[Moves.Spring, Moves.ClimbingCheck, Moves.FactoryTesting]]), // 5 blocktower bunches
+                        new Requirement(30, [[Moves.Guitar, Moves.Peanut, Moves.FactoryTesting, Moves.ClimbingCheck]]), // rnd balloons
                     ],
                     "Lanky": [
-                        new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.Orangstand]]),
-                        new Requirement(15, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Grape, Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.FactoryTesting, Moves.ClimbingCheck, Moves.Trombone, Moves.Grape]]),
+                        new Requirement(11, [[Moves.Moveless]]), // w2 bunch and singles by shops
+                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]), // 3 bunches on steps and 1 bunch at base of production pipe
+                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryProduction, Moves.ClimbingCheck]]), // 4 bunches on production pipe
+                        new Requirement(4, [[Moves.Orangstand]]), // storage pipe
+                        new Requirement(15, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // 10 singles and a bunch in rnd
+                        new Requirement(10, [[Moves.Grape, Moves.FactoryProduction, Moves.ClimbingCheck]]), // balloon at top of prod
+                        new Requirement(10, [[Moves.Grape, Moves.FactoryProduction]]), // balloon in crushers
+                        new Requirement(10, [[Moves.FactoryTesting, Moves.ClimbingCheck, Moves.Trombone, Moves.Grape]]), // piano balloon
                     ],
                     "Tiny": [
-                        new Requirement(10, [[Moves.Moveless]]), // 2 Bunches on Mid Hatch, Maybe Move to Climb?
-                        new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(25, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.Twirl, Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.Mini, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.FactoryTesting, Moves.Feather, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Feather, Moves.FactoryProduction]]),
+                        new Requirement(13, [[Moves.Moveless]]), // 3 singles to testing and 2 Bunches on Mid Hatch, Maybe Move to Climb? climb depends on portal
+                        new Requirement(5, [[Moves.ClimbingCheck]]), // bunch in arcade
+                        new Requirement(22, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // 7 singles to testing, bunch before dartboard, singles to car race
+                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]), // 4 bunches at top of prod
+                        new Requirement(5, [[Moves.Twirl, Moves.FactoryProduction, Moves.ClimbingCheck]]), // bunch at top of prod past barrel
+                        new Requirement(5, [[Moves.Mini, Moves.FactoryTesting, Moves.ClimbingCheck]]), // bunch by dartboard
+                        new Requirement(20, [[Moves.FactoryTesting, Moves.Feather, Moves.ClimbingCheck]]), // balloon by snide, balloon by funky
+                        new Requirement(10, [[Moves.Feather, Moves.FactoryProduction]]), // balloon in prod
                     ],
                     "Chunky": [
-                        new Requirement(20, [[Moves.Moveless]]), // Same as Factory Tiny's Moveless
-                        new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(15, [[Moves.Punch]]),
-                        new Requirement(10, [[Moves.Pineapple]]),
-                        new Requirement(10, [[Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.Moveless]]), // Same as Factory Tiny's Moveless, 10 singles on pole, 2 bunches on w1
+                        new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]), // bunch by snide
+                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]), // 4 bunches in prod
+                        new Requirement(15, [[Moves.Punch]]), // 3 bunches in dark room
+                        new Requirement(10, [[Moves.Pineapple]]), // balloon by hatch
+                        new Requirement(10, [[Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]), // balloon above snide
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.FactoryTesting, Moves.ClimbingCheck]]), // 10 singles by toy monster
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]), // balloon by toy monster
                     ],
                 },
                 "Galleon": {
