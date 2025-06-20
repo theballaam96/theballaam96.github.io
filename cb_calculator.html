@@ -405,6 +405,7 @@
                 static JapesBehindRambiDoor = new Moves("Japes Behind Rambi Door", true, [Moves.JapesCoconut, Moves.Coconut], true);
                 static JapesHiveArea = new Moves("Japes Shellhive Area", true, [Moves.JapesCoconut, Moves.JapesShellhive], true); // disambiguate with JapesShellhive?
                 static FactoryTopOfProduction = new Moves("Factory Top of Production", true, [Moves.FactoryProduction, Moves.ClimbingCheck], true);
+                static GalleonPastVines = new Moves("Galleon Past Vines", true, [Moves.Vines], true);
                 // Crypt Entry
                 static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
                 static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
@@ -872,12 +873,10 @@
                 portal_data[Portal.JapesBehindRambiDoor.name] = [Moves.JapesBehindRambiDoor];
                 portal_data[Portal.JapesHiveArea.name] = [Moves.JapesHiveArea];
                 portal_data[Portal.FactoryTopOfProduction.name] = [Moves.FactoryTopOfProduction];
+                portal_data[Portal.GalleonPastVines.name] = [Moves.GalleonPastVines];
                 const portal_location = document.getElementById("medal-portal").value;
-                console.log(portal_location);
                 if (Object.keys(portal_data).includes(portal_location)){
-                    console.log('included');
                     opened_barriers = opened_barriers.concat(portal_data[portal_location]);
-                    console.log(opened_barriers);
                 }
             }
             updateBarriers()
@@ -1102,7 +1101,7 @@
                     "Tiny": [
                         new Requirement(9, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.LevelSlam, Moves.Diving, Moves.GalleonPeanut]]),
-                        new Requirement(8, [[Moves.Vines]]),
+                        new Requirement(8, [[Moves.GalleonPastVines]]), // bunch and 3 singles past vines
                         new Requirement(5, [[Moves.GalleonLighthouse, Moves.RaisedWater]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.LoweredWater]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.RaisedWater]]),
@@ -1113,7 +1112,7 @@
                     ],
                     "Chunky": [
                         new Requirement(12, [[Moves.Moveless]]),
-                        new Requirement(3, [[Moves.Vines]]),
+                        new Requirement(3, [[Moves.GalleonPastVines]]), // 3 singles past vines
                         new Requirement(20, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.GalleonShipSpawned]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving]]),
                         new Requirement(5, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.GalleonShipSpawned, Moves.Punch]]),
