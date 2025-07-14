@@ -228,7 +228,7 @@ async function getMidiData() {
                                     "<span class='badge text-bg-warning rounded-pill' title='This song was submitted before our current policies were installed, and would go against them. However, we have grandfathered this song in to the pack builder. This song may be stream unsafe as a result.'>Grandfathered</span>" : ""
                                 }
                                 ${
-                                    song.tags.filter(t => t != unsafe_song_tag).map((item, index) => index < 10 ? `
+                                    song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).map((item, index) => index < 10 ? `
                                         <span class='badge text-bg-light rounded-pill'>
                                             ${item}
                                         </span>
