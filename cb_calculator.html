@@ -946,7 +946,7 @@
                                     replacement_moves = getBarrierRequirement(move_set);
                                     if (replacement_moves != null) {
                                         purged_moves.push(move_set);
-                                        extended_moves = extended_moves.concat(replacement_moves)
+                                        extended_moves = extended_moves.concat(replacement_moves);
                                     }
                                 }
                             })
@@ -954,7 +954,7 @@
                             group = group.filter(k => !purged_moves.includes(k)).slice();
                             group = group.concat(extended_moves).slice();
                             // Correct moveless situations
-                            moveless_check = group.filter(k => k != Moves.Moveless)
+                            moveless_check = group.filter(k => k != Moves.Moveless);
                             if (moveless_check.length > 0) {
                                 // If there's move requirements, filter out all "moveless" entries
                                 group = moveless_check.slice();
@@ -968,9 +968,9 @@
 
                         // Small bugfix: There may be multiple requirements to get an item. If one of those requirements
                         // is completely satisfied by presets, it becomes moveless and should compleetely erase all other requirements.
-                        // For example, Lanky CBs in Fungi are [[Climbing], [Balloon]], but when Climbing is in the present,
-                        // we should never report them as "Balloon is logically required".
-                        // If we detect that any requirement group becomes moveless, we clear *all* requirement groups.
+                        // For example, some Lanky CBs in Fungi require [[Climbing], [Balloon]], but when Climbing is in the preset,
+                        // we should never consider them to logically require Balloon.
+                        // Thus, if we detect that any requirement group became moveless, we remove all other requirements.
                         if (anyRequirementIsMoveless) {
                             item.requirements = [[Moves.Moveless]];
                         }
