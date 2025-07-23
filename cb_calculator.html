@@ -1025,7 +1025,7 @@
                             }
                         })
                         added = perm.slice();
-                        added.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+                        added.sort((a, b) => a.name.localeCompare(b.name));
                         if (include) {
                             filtered_permutations.push(added);
                         }
@@ -1039,10 +1039,10 @@
                     // 1. Number of moves, ascending (fewer requirements listed first)
                     // 2. Alphabetical by first move (ties broken by second move, etc)
                     filtered_permutations.sort((a, b) => {
-                        if (a.length != b.length) return Math.sign(b.length - a.length);
+                        if (a.length != b.length) return Math.sign(a.length - b.length);
 
                         for (var i = 0; i < a.length; i++) {
-                            if (a[i] != b[i]) return a[i].name.localeCompare(b[i].name);
+                            if (a[i].name != b[i].name) return a[i].name.localeCompare(b[i].name);
                         }
 
                         return 0;
