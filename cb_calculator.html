@@ -1034,6 +1034,12 @@
                     filtered_permutations.forEach(perm => {
                         console.log(perm.map(item => item.name))
                     })
+
+                    // Sort permutations before rendering for improved readability.
+                    // The default JS sort actually seems to order by what we want here:
+                    // 1. Number of moves ascending (fewer requirements listed first)
+                    // 2. Alphabetical by first move (ties broken by second move, etc)
+                    filtered_permutations.sort()
                     dump_hook.innerHTML = movesToHTML(filtered_permutations)
                     return
                 }
