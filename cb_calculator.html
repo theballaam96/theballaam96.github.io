@@ -870,7 +870,7 @@
 
             // The requirement_data structure (which used to live right here) is instead imported after this inline script, directly from the DK64-Randomizer repo.
 
-            // verifyRequirements
+            // Verify that requirement_data has 100 CBs for each kong
             window.addEventListener('load', () => {
                 Object.keys(requirement_data).forEach(level => {
                     Object.keys(requirement_data[level]).forEach(kong => {
@@ -1036,10 +1036,17 @@
                     })
 
                     // Sort permutations before rendering for improved readability.
-                    // The default JS sort actually seems to order by what we want here:
-                    // 1. Number of moves ascending (fewer requirements listed first)
+                    // 1. Number of moves, ascending (fewer requirements listed first)
                     // 2. Alphabetical by first move (ties broken by second move, etc)
-                    filtered_permutations.sort()
+                    filtered_permutations.sort((a, b) => {
+                        if (a.length != b.length) return Math.sign(b.length - a.length);
+
+                        for (var i = 0; i < a.length; i++) {
+                            if (a[i] != b[i]) return a[i].localeCompare(b[i]);
+                        }
+
+                        return 0;
+                    });
                     dump_hook.innerHTML = movesToHTML(filtered_permutations)
                     return
                 }
@@ -1063,7 +1070,9 @@
                 });
             }
 
-            applySpecificPreset(Preset.Season4);
+            window.addEventListener('load', () => {
+                applySpecificPreset(Preset.Season4);
+            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
         <script type="text/javascript" src="https://jbzdarkid.github.io/DK64-Randomizer/requirement_data.js"></script>
