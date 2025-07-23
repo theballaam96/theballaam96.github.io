@@ -869,7 +869,8 @@
 
             // The requirement_data structure (which used to live right here) is instead imported after this inline script, directly from the DK64-Randomizer repo.
 
-            verifyRequirements = () => {
+            // verifyRequirements
+            window.addEventListener('load', () => {
                 Object.keys(requirement_data).forEach(level => {
                     Object.keys(requirement_data[level]).forEach(kong => {
                         sum = requirement_data[level][kong].map(item => item.amount).reduce((partialSum, a) => partialSum + a, 0);
@@ -878,8 +879,7 @@
                         }
                     })
                 })
-            }
-            verifyRequirements()
+            })
 
             movesToHTML = (list) => {
                 return `
