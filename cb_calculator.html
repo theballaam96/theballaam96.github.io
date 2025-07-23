@@ -936,6 +936,7 @@
                 // Precalcate list to handle barriers
                 for (let i = 0; i < 2; i++) {
                     list.forEach(item => {
+                        let anyRequirementIsMoveless = false;
                         item.requirements.forEach((group, index) => {
                             // Get list of move extensions and removals
                             let purged_moves = [];
@@ -956,13 +957,23 @@
                             moveless_check = group.filter(k => k != Moves.Moveless)
                             if (moveless_check.length > 0) {
                                 // If there's move requirements, filter out all "moveless" entries
-                                group = moveless_check.slice()
+                                group = moveless_check.slice();
                             } else if ((moveless_check.length == 0) && (group.length == 0)) {
                                 // No moves in here at all
-                                group = [Moves.Moveless].slice()
+                                group = [Moves.Moveless].slice();
+                                anyRequirementIsIsMoveless = true;
                             }
                             item.requirements[index] = group.slice();
                         })
+
+                        // Small bugfix: There may be multiple requirements to get an item. If one of those requirements
+                        // is completely satisfied by presets, it becomes moveless and should compleetely erase all other requirements.
+                        // For example, Lanky CBs in Fungi are [[Climbing], [Balloon]], but when Climbing is in the present,
+                        // we should never report them as "Balloon is logically required".
+                        // If we detect that any requirement group becomes moveless, we clear *all* requirement groups.
+                        if (anyRequirementIsMoveless) {
+                            item.requirements = [[Moves.Moveless]];
+                        }
                     })
                 }
 
