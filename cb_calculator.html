@@ -1042,7 +1042,7 @@
                         if (a.length != b.length) return Math.sign(b.length - a.length);
 
                         for (var i = 0; i < a.length; i++) {
-                            if (a[i] != b[i]) return a[i].localeCompare(b[i]);
+                            if (a[i] != b[i]) return a[i].name.localeCompare(b[i].name);
                         }
 
                         return 0;
