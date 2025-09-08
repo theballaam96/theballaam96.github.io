@@ -90,6 +90,16 @@
                 </div>
             </div>
         </div>
+        <div class="text-start">
+            <h5>Download Options</h5>
+            <div class="form-check form-switch m-3">
+                <input class="form-check-input" type="checkbox" role="switch" id="shrinkForYT">
+                <label class="form-check-label" for="shrinkForYT" title="YouTube limits Thumbnails to a max of 2MB. This will ensure the output image, when utilizing the download button, will shrink the image to fit within YouTube's recommendations.">Ensure small enough for YT Upload</label>
+            </div>
+            <button class="btn btn-success mt-4" style="width: 100%" id="downloadButton">
+                Download Thumbnail
+            </button>
+        </div>
     </div>
     <script>
         const canvas = document.getElementById("thumbnailCanvas");
@@ -260,6 +270,63 @@
         });
         canvas.addEventListener("mouseup", () => { isDragging = false; });
         canvas.addEventListener("mouseleave", () => { isDragging = false; });
+
+        document.getElementById("downloadButton").addEventListener("click", (e) => {
+            const canvas = document.getElementById("thumbnailCanvas");
+            if (!canvas) {
+                console.error("Canvas with id 'thumbnailCanvas' not found.");
+                return;
+            }
+
+            let width = canvas.width;
+            let height = canvas.height;
+            const maxSize = 2 * 1024 * 1024; // 2MB in bytes
+            const mustShrink = document.getElementById("shrinkForYT").checked;
+
+            // Create an offscreen canvas for resizing
+            const offscreen = document.createElement("canvas");
+            const ctx = offscreen.getContext("2d");
+
+            let blobPromise = () => new Promise(resolve => {
+                canvas.toBlob(resolve, "image/png");
+            });
+
+            function resizeAndCheck() {
+                return new Promise(async (resolve) => {
+                    let blob = await blobPromise();
+                    if ((blob.size <= maxSize) || (!mustShrink)) {
+                        resolve(blob);
+                        return;
+                    }
+
+                    // Keep scaling down until below 2MB
+                    (async function shrink() {
+                        while (blob.size > maxSize) {
+                            width = Math.floor(width * 0.9);   // shrink by 10%
+                            height = Math.floor(height * 0.9);
+                            offscreen.width = width;
+                            offscreen.height = height;
+                            ctx.clearRect(0, 0, width, height);
+                            ctx.drawImage(canvas, 0, 0, width, height);
+
+                            blob = await new Promise(r => offscreen.toBlob(r, "image/png"));
+                        }
+                        resolve(blob);
+                    })();
+                });
+            }
+
+            resizeAndCheck().then(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = "thumbnail.png";
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
     </script>
 </body>
 </html>
