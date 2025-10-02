@@ -3,6 +3,12 @@ const grandfathered_song_tag = "grandfathered";
 const site_is_down = false;
 const total_prog = 6;
 let icon_json = {}
+const group_priority = {
+    "bgm": "Background Music",
+    "events": "Events",
+    "majoritems": "Major Items",
+    "minoritems": "Minor Items"
+}
 
 function lazyLoadImages() {
     document.getElementById("lazy-loader").innerHTML = Object.keys(icon_json).map(key => `
@@ -116,6 +122,102 @@ function handleSize() {
 window.onresize = handleSize;
 handleSize();
 
+function getGameTabName(game_name) {
+    const filtered_name = game_name
+        .replace(/[^a-zA-Z0-9 ]/g, '') // keep only alphanumeric + space
+        .trim()                         // remove leading/trailing spaces
+        .replace(/\s+/g, '-');          // replace spaces with hyphens
+    return `game-${filtered_name}`;  // Make to start with game- to fix those which start with an invalid character
+}
+
+function addGame(game_name, image_url, songs, shown) {
+    console.log(songs)
+    const tab_name = getGameTabName(game_name);
+    // Game Construction
+    const local_game_html = `<li class="list-group-item ${shown ? 'active' : ''}" id="tab-${tab_name}" data-bs-toggle="pill" data-bs-target="#${tab_name}" type="button" role="tab" aria-controls="${tab_name}" aria-selected="${shown ? 'true' : 'false'}">
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <div>
+                    ${game_name}
+                </div>
+                <div>
+                    <small><span id="count-${tab_name}" game="${tab_name}" class="song_count_digits">0</span>/${songs.length} song${songs.length == 1 ? '' : 's'}</small>
+                </div>
+            </div>
+            <div>
+                <input type="checkbox" game="${tab_name}" id="all-${tab_name}" class="game_all_checkbox" />
+            </div>
+        </div>
+    </li>`;
+    // Song construction
+    let song_inner_html = "";
+    Object.keys(group_priority).forEach(key => {
+        const songs_for_group = songs.filter(s => s.group == key);
+        if (songs_for_group.length > 0) {
+            song_inner_html += `<h3>${group_priority[key]}</h3>`;
+            songs_for_group.forEach(s => {
+                song_inner_html += `<div>
+                    <div class="d-flex">
+                        <div class="p-2">
+                            <input type="checkbox" game="${tab_name}" class="song-select" />
+                        </div>
+                        <div class="flex-grow-1">
+                            <strong class="p-1">
+                                ${s.name}
+                            </strong>
+                        </div>
+                    </div>
+                </div>`
+            })
+        }
+    })
+
+
+    console.log(songs)
+    const local_song_html = `<div class="tab-pane fade ${shown ? 'show active' : ''}" id="${tab_name}" role="tabpanel" aria-labelledby="tab-${tab_name}" tabindex="0">
+        <h1>${game_name}</h1>
+        ${song_inner_html}
+    </div>`;
+    return [local_game_html, local_song_html];
+}
+
+function updateGameCount(name = null) {
+    let els = [];
+    if (name !== null) {
+        els = [document.getElementById(`count-${name}`)];
+    } else {
+        els = document.getElementsByClassName("song_count_digits");
+    }
+    for (let k = 0; k < els.length; k++) {
+        const local_game = els[k].getAttribute("game");
+        const song_checkboxes = document.querySelectorAll(`.song-select[game='${local_game}']`);
+        console.log(song_checkboxes, local_game);
+        let local_count = 0;
+        let found_false = false;
+        for (let i = 0; i < song_checkboxes.length; i++) {
+            if (song_checkboxes[i].checked) {
+                local_count++;
+            } else {
+                found_false = true;
+            }
+        }
+        document.getElementById(`all-${local_game}`).checked = !found_false;
+        els[k].innerText = local_count;
+    }
+}
+
+function selectAllForGame(name = null, state = true) {
+    let song_checkboxes = [];
+    if (name !== null) {
+        song_checkboxes = document.querySelectorAll(`.song-select[game='${name}']`);
+    } else {
+        song_checkboxes = document.querySelectorAll(`.song-select`);
+    }
+    for (let k = 0; k < song_checkboxes.length; k++) {
+        song_checkboxes[k].checked = state;
+    }
+}
+
 async function getMidiData() {
     let prog = 0;
     updateProgress(prog++, total_prog, "Initializing");
@@ -160,6 +262,10 @@ async function getMidiData() {
         }, {}
     );
     songs_by_game[MISC_NAME] = other.slice();
+
+    let game_html = "";
+    let song_html = "";
+    let is_first = true;
     
     Object.keys(songs_by_game).forEach(game_pretty => {
         let game = window.filterName(game_pretty);
@@ -248,12 +354,6 @@ async function getMidiData() {
                     </div>`
             })
             let local_html_total = "";
-            const group_priority = {
-                "bgm": "Background Music",
-                "events": "Events",
-                "majoritems": "Major Items",
-                "minoritems": "Minor Items"
-            }
             let first = true;
             Object.keys(group_priority).forEach(group => {
                 if (Object.keys(local_html).includes(group)) {
@@ -267,34 +367,41 @@ async function getMidiData() {
                 }
             })
             const game_name = game_pretty;
-            html += `<div class='game-handler' title='${filterNote(game_name)}'>
-                <div class='game-header noselect collapsed' game_id='${game}' onclick='toggleGameVisibility(\"${game}\",this)'>
-                    <div class='game-icon'>
-                        <span class='icon-alignment'></span>
-                        <img class='game-image ${
-                            Object.keys(icon_json).includes(game_name) ? 
-                            "" : "no-icon"
-                        }' src='${
-                            Object.keys(icon_json).includes(game_name) ?
-                            icon_json[game_name].icon :
-                            BASE_NO_ICON_IMG
-                        }' loading=lazy />
-                        ${Object.keys(icon_json).includes(game_name) ?
-                            "" :
-                            `<div class='game-image-replacement'>${game_name}</div>`
-                        }
-                    </div>
-                    <div class='game-internal-name'>${game_name}</div>
-                    <div class='game-fullness-panel d-flex justify-content-end'></div>
-                </div>
-                <div class='game-songs hide' game='${game}'>
-                    ${local_html_total}
-                </div>
-            </div>`
+            const [local_game, local_song] = addGame(game_name, Object.keys(icon_json).includes(game_name) ? icon_json[game_name].icon : BASE_NO_ICON_IMG, song_list, is_first);
+            is_first = false;
+            game_html += local_game;
+            song_html += local_song;
+            // html += `<div class='game-handler' title='${filterNote(game_name)}'>
+            //     <div class='game-header noselect collapsed' game_id='${game}' onclick='toggleGameVisibility(\"${game}\",this)'>
+            //         <div class='game-icon'>
+            //             <span class='icon-alignment'></span>
+            //             <img class='game-image ${
+            //                 Object.keys(icon_json).includes(game_name) ? 
+            //                 "" : "no-icon"
+            //             }' src='${
+            //                 Object.keys(icon_json).includes(game_name) ?
+            //                 icon_json[game_name].icon :
+            //                 BASE_NO_ICON_IMG
+            //             }' loading=lazy />
+            //             ${Object.keys(icon_json).includes(game_name) ?
+            //                 "" :
+            //                 `<div class='game-image-replacement'>${game_name}</div>`
+            //             }
+            //         </div>
+            //         <div class='game-internal-name'>${game_name}</div>
+            //         <div class='game-fullness-panel d-flex justify-content-end'></div>
+            //     </div>
+            //     <div class='game-songs hide' game='${game}'>
+            //         ${local_html_total}
+            //     </div>
+            // </div>`
             //hook.innerHTML = html // Start loading
         }
     })
-    hook.innerHTML = html;
+    // hook.innerHTML = html;
+    document.getElementById("game_list").innerHTML = game_html;
+    document.getElementById("song_panel").innerHTML = song_html;
+
     updateProgress(prog++, total_prog, "Lazy Loading Images");
     ReLoadImages();
     updateProgress(prog++, total_prog, "Populated Site");
@@ -307,6 +414,19 @@ async function getMidiData() {
     document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
     document.getElementById("min-view").addEventListener("click", () => {handleMinView(true, true)});
     document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
+
+    const song_selects = document.getElementsByClassName("song-select");
+    for (let s = 0; s < song_selects.length; s++) {
+        song_selects[s].addEventListener("click", (e) => {
+            updateGameCount(e.target.getAttribute("game"));
+        })
+    }
+    const game_all_cb = document.getElementsByClassName("game_all_checkbox");
+    for (let s = 0; s < game_all_cb.length; s++) {
+        game_all_cb[s].addEventListener("click", (e) => {
+            selectAllForGame(e.target.getAttribute("game"), e.target.checked);
+        })
+    }
 
     if (willAutoDownload()) {
         document.getElementById("build-pack-button").click();

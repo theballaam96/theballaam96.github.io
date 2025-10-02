@@ -458,9 +458,18 @@
                 white-space: nowrap;
                 text-overflow: ellipsis;
             }
+            .list-group-item small {
+                color: #777;
+            }
+            .list-group-item.active small {
+                color: #fff;
+            }
+            .scroll-panel {
+                height: 85vh;
+            }
         </style>
     </head>
-    <body>
+    <body class="overflow-y-hidden">
         <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand excluded_link" href="#" onclick="hidePopup()">
@@ -697,7 +706,13 @@
                     <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
                 </div>
             </div>
-            <div class="content-center">
+            <div class="px-4">
+                <div class="d-flex">
+                    <div class="overflow-y-scroll scroll-panel" style="width: 40%">
+                        <ul id="game_list" class="list-group" role="tablist"></ul>
+                    </div>
+                    <div id="song_panel" class="overflow-y-scroll tab-content p-4 scroll-panel" style="width: 60%"></div>
+                </div>
                 <div id="song_list" class="has-transition" style="display:grid; opacity: 1" render="grid" defaultrender="grid" gridtext="hide"></div>
                 <div id="popup_global_container" class="has-transition" hidden style="opacity:0">
                     <h1 id="popup_game_name">Add Songs to List</h1>
