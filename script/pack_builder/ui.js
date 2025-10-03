@@ -145,6 +145,11 @@ function getTagDetails(tag_name) {
         title = "This song has been tied to copyright claim issues which may result in demonetization.";
         tag_name = "Stream Unsafe";
         tag_order = 2;
+    } else if (tag_name == "new") {
+        color = "info new-pill";
+        title = "This song was uploaded after your pack was last updated.";
+        tag_name = "New!";
+        tag_order = -1;
     } else if (mood_tags.includes(tag_name)) {
         tag_order = 1;
     }
@@ -168,6 +173,7 @@ function addGame(game_name, image_url, songs, shown) {
                 </div>
                 <div>
                     <small><span id="count-${tab_name}" game="${tab_name}" class="song_count_digits">0</span>/${songs.length} song${songs.length == 1 ? '' : 's'}</small>
+                    <small><span id="new-${tab_name}" class="new_count"></span></small>
                 </div>
             </div>
             <div class="form-check position-relative" title="Select/Deselect all songs for game">
@@ -180,6 +186,7 @@ function addGame(game_name, image_url, songs, shown) {
     Object.keys(group_priority).forEach(key => {
         const songs_for_group = songs.filter(s => s.group == key);
         if (songs_for_group.length > 0) {
+            song_inner_html += "<div class='my-3'>";
             song_inner_html += `<h3>${group_priority[key]}</h3>`;
             songs_for_group.forEach(s => {
                 let converter = s.converter ? s.converter.replace(/['"]/g, '') : "";
@@ -187,11 +194,12 @@ function addGame(game_name, image_url, songs, shown) {
                 let tag_data = s.tags.map(tag => {
                     return getTagDetails(tag)
                 })
+                tag_data.push(getTagDetails("new"));
                 tag_data.sort((a, b) => a.tag_order - b.tag_order);
                 let tag_html = tag_data.map(tag => {
                     return `<span class='badge text-bg-${tag.color} rounded-pill ms-2' title='${tag.title}'>${tag.name}</span>`
                 }).join("")
-                song_inner_html += `<div id="song-${s.index}" class="card mb-2">
+                song_inner_html += `<div id="song-${s.index}" class="card mb-2 song-item" game="${tab_name}" song-id="${s.index}" group="${key}">
                     <div class="d-flex p-2">
                         <div class="flex-grow-1">
                             <div class="position-relative" style="height: 100%">
@@ -231,12 +239,10 @@ function addGame(game_name, image_url, songs, shown) {
                         </div>
                     </div>
                 </div>`
-            })
+            });
+            song_inner_html += "</div>";
         }
     })
-
-
-    console.log(songs)
     const local_song_html = `<div class="tab-pane fade ${shown ? 'show active' : ''}" id="${tab_name}" role="tabpanel" aria-labelledby="tab-${tab_name}" tabindex="0">
         <h1>${game_name}</h1>
         ${song_inner_html}
@@ -254,8 +260,8 @@ function updateGameCount(name = null) {
     for (let k = 0; k < els.length; k++) {
         const local_game = els[k].getAttribute("game");
         const song_checkboxes = document.querySelectorAll(`.song-select[game='${local_game}']`);
-        console.log(song_checkboxes, local_game);
         let local_count = 0;
+        let local_new_count = document.querySelectorAll(`.song-item[game='${local_game}'].song-new`).length;
         let found_false = false;
         let found_true = false;
         for (let i = 0; i < song_checkboxes.length; i++) {
@@ -275,8 +281,14 @@ function updateGameCount(name = null) {
             cbx.indeterminate = true;
         }
         els[k].innerText = local_count;
+        let new_text = "";
+        if (local_new_count > 0) {
+            new_text = `(${local_new_count} new)`;
+        }
+        document.getElementById(`new-${local_game}`).innerText = new_text;
     }
 }
+window.updateGameCount = updateGameCount;
 
 function selectAllForGame(name = null, state = true) {
     let song_checkboxes = [];
@@ -343,134 +355,13 @@ async function getMidiData() {
         let game = window.filterName(game_pretty);
         if (game != null) {
             const song_list = songs_by_game[game_pretty].sort()
-            // <input type='checkbox' class='midi-checkbox' id='' onclick='updateMaster(\"${game}\")' game='${game}'/>
-            let local_html = {};
-            song_list.forEach(song => {
-                const group = song.group;
-                let displayed_song_name = song.name.replace(/['"]/g, '');
-                let composer = song.composer ? song.composer.replace(/['"]/g, '') : "";
-                let converter = song.converter ? song.converter.replace(/['"]/g, '') : "";
-                let audio = song.audio;
-                if (!Object.keys(local_html).includes(group)) {
-                    local_html[group] = "";
-                }
-                const state_index = song.index;
-                local_html[group] += 
-                    `
-                    <div class='midi-checkbox-container'>
-                        <div 
-                            class='midi-checkbox noselect' 
-                            song-id='${song.index}' 
-                            onclick='updateTickbox(this,\"${game}\")' 
-                            ticked=${window.parseSeed(state_index) ? 'true' : 'false'}
-                            update_notif='false'
-                            group='${group}'
-                            game='${game}'
-                            safe='${!song.tags.includes(unsafe_song_tag)}'
-                            ${song.notes ? `title='${song.notes}'` : ''}>
-                            <div class='flexsplitter bottom-line'>
-                                <div class='name_data handle-overflow' title='${filterNote(displayed_song_name.replace('.bin',''))}'>${displayed_song_name.replace('.bin','')}</div>
-                            </div>
-                            <div class='bottom-line name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#119070; ${composer}</div>` : ''}
-                                ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate"></i> ${converter}</div>` : ''}
-                            </div>
-                            <div class='midi-tray'>
-                                ${
-                                    `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
-                                        data-bs-toggle='tooltip'>
-                                        <i class='fa-solid fa-guitar'></i>
-                                    </span>`
-                                }
-                                ${
-                                    song.notes ?
-                                    song.notes.trim().length > 0 ?
-                                    `<span class='midi-tag' title='${filterNote(song.notes)}'><i class='fa-solid fa-note-sticky'></i></span>`
-                                    : ""
-                                    : ""
-                                }
-                                ${
-                                    song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).length > 0 ?
-                                    `<span class='midi-tag' title='${song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).join(', ')}'>
-                                        <i class='fa-solid fa-tags'></i>
-                                    </span>`
-                                    : ""
-                                }
-                                <span class='badge text-bg-info rounded-pill new-pill' title='This song is newer than when you last built your pack.'>New!</span>
-                                ${
-                                    song.tags.includes(unsafe_song_tag) ? 
-                                    "<span class='badge text-bg-danger rounded-pill' title='This song has been tied to copyright claim issues which may result in demonetization.'>Stream Unsafe</span>" : ""
-                                }
-                                ${
-                                    song.tags.includes(grandfathered_song_tag) ? 
-                                    "<span class='badge text-bg-warning rounded-pill' title='This song was submitted before our current policies were installed, and would go against them. However, we have grandfathered this song in to the pack builder. This song may be stream unsafe as a result, and is subject to removal upon any issues.'>Grandfathered</span>" : ""
-                                }
-                                ${
-                                    song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).map((item, index) => index < 10 ? `
-                                        <span class='badge text-bg-light rounded-pill'>
-                                            ${item}
-                                        </span>
-                                    ` : "").join("")
-                                }
-                            </div>
-                        </div>
-                        <div class='audio_positioner'>
-                            <div class='audio_positioner_internal'>
-                                ${
-                                    audio ?
-                                    `<span class='midi-tag audio-clicker' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\", ${song.index})' data-bs-toggle="modal" data-bs-target="#playSongModal" conversion_id="${song.index}"><i class='fa-solid fa-play'></i></span>`
-                                    : ""
-                                }
-                            </div>
-                        </div>
-                    </div>`
-            })
-            let local_html_total = "";
-            let first = true;
-            Object.keys(group_priority).forEach(group => {
-                if (Object.keys(local_html).includes(group)) {
-                    local_html_total += `${first ? '' : '<br>'}
-                        <div class='fs-5'>${group_priority[group]}</div>
-                        <div class='midi-grid'>
-                            ${local_html[group]}
-                        </div>
-                    `
-                    first = false;
-                }
-            })
             const game_name = game_pretty;
             const [local_game, local_song] = addGame(game_name, Object.keys(icon_json).includes(game_name) ? icon_json[game_name].icon : BASE_NO_ICON_IMG, song_list, is_first);
             is_first = false;
             game_html += local_game;
             song_html += local_song;
-            // html += `<div class='game-handler' title='${filterNote(game_name)}'>
-            //     <div class='game-header noselect collapsed' game_id='${game}' onclick='toggleGameVisibility(\"${game}\",this)'>
-            //         <div class='game-icon'>
-            //             <span class='icon-alignment'></span>
-            //             <img class='game-image ${
-            //                 Object.keys(icon_json).includes(game_name) ? 
-            //                 "" : "no-icon"
-            //             }' src='${
-            //                 Object.keys(icon_json).includes(game_name) ?
-            //                 icon_json[game_name].icon :
-            //                 BASE_NO_ICON_IMG
-            //             }' loading=lazy />
-            //             ${Object.keys(icon_json).includes(game_name) ?
-            //                 "" :
-            //                 `<div class='game-image-replacement'>${game_name}</div>`
-            //             }
-            //         </div>
-            //         <div class='game-internal-name'>${game_name}</div>
-            //         <div class='game-fullness-panel d-flex justify-content-end'></div>
-            //     </div>
-            //     <div class='game-songs hide' game='${game}'>
-            //         ${local_html_total}
-            //     </div>
-            // </div>`
-            //hook.innerHTML = html // Start loading
         }
     })
-    // hook.innerHTML = html;
     document.getElementById("game_list").innerHTML = game_html;
     document.getElementById("song_panel").innerHTML = song_html;
 

@@ -128,35 +128,11 @@
                 font-weight: 600;
                 margin-top: 10px;
             }
-            .midi-checkbox-container {
-                margin: 5px;
-                position: relative;
-            }
-            .midi-checkbox {
-                border: 1px solid white;
-                border-radius: 5px;
-                cursor: pointer;
-                padding: 5px;
-                transition: 0.1s ease-in-out;
-                /*width: 100%;*/
-                min-height: 100%;
-                position: relative;
-            }
-            .midi-checkbox:hover {
-                background-color: rgb(61, 255, 145, 0.15);
-            }
-            .midi-checkbox[ticked="true"] {
-                background-color: rgba(61, 255, 145, 0.3);
-            }
-            .new-pill {
+            .song-item .new-pill {
                 display: none;
             }
-            .midi-checkbox[update_notif="true"] .new-pill {
+            .song-item.song-new .new-pill {
                 display: inline-block;
-            }
-            .midi-checkbox .name_data {
-                flex: 1;
-                font-weight: bold;
             }
             .popup_buttons {
                 flex: 1;
@@ -461,6 +437,9 @@
             }
             .list-group-item small {
                 color: #777;
+            }
+            .list-group-item small .new_count {
+                color: rgb(13, 202, 240);
             }
             .list-group-item.active small {
                 color: #fff;
@@ -876,42 +855,6 @@
             }
 
             function updateFullnessIndicators() {
-                const game_boxes = document.getElementsByClassName("game-handler");
-                for (let g = 0; g < game_boxes.length; g++) {
-                    const song_boxes = game_boxes[g].getElementsByClassName("midi-checkbox")
-                    let filled_counts = {}
-                    let total_counts = {}
-                    let has_song = false;
-                    let has_all_songs = true;
-                    let new_song_count = 0;
-                    for (let s = 0; s < song_boxes.length; s++) {
-                        const group = song_boxes[s].getAttribute("group")
-                        if (!Object.keys(filled_counts).includes(group)) {
-                            filled_counts[group] = 0
-                        }
-                        if (!Object.keys(total_counts).includes(group)) {
-                            total_counts[group] = 0
-                        }
-                        const ticked = song_boxes[s].getAttribute("ticked") == "true";
-                        const update_notif = song_boxes[s].getAttribute("update_notif") == "true";
-                        total_counts[group] += 1;
-                        if (ticked) {
-                            has_song = true;
-                            filled_counts[group] += 1;
-                        } else {
-                            has_all_songs = false;
-                        }
-                        if (update_notif) {
-                            new_song_count += 1;
-                        }
-                    }
-                    const hint_text = Object.keys(filled_counts).map(key => `${group_internal_to_name[key]}: ${filled_counts[key]}/${total_counts[key]}`).join("\n")
-                    game_boxes[g].getElementsByClassName("game-fullness-panel")[0].innerHTML = `
-                        ${new_song_count > 0 ? `<div class="ms-2 panel-new" title="${new_song_count} new song${new_song_count == 1 ? '' : 's'}"></div>` : ""}
-                        ${has_song ? `<div class="ms-2 ${has_all_songs ? "panel-all" : "panel-some"}" title="${hint_text}"></div>` : ""}
-                    `;
-
-                }
             }
 
             function scrollTo(value = 0) {
@@ -1071,11 +1014,11 @@
             }
 
             function updateMaster() {
-                const checkboxes = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
+                const checkboxes = document.getElementsByClassName("song-select");
                 let all_checked = true;
                 let all_unchecked = true;
                 for (let c = 0; c < checkboxes.length; c++) {
-                    if (checkboxes[c].getAttribute("ticked") == "true") {
+                    if (checkboxes[c].checked) {
                         all_unchecked = false;
                     } else {
                         all_checked = false;
@@ -1087,11 +1030,11 @@
                 }
                 document.getElementById("game-select-toggle").innerText = text;
                 document.getElementById("game-select-toggle-bottom").innerText = text;
-                const all_checkboxes = document.getElementsByClassName("midi-checkbox");
+                const all_checkboxes = document.getElementsByClassName("song-select");
                 all_checked = true;
                 all_unchecked = true;
                 for (c = 0; c < all_checkboxes.length; c++) {
-                    if (all_checkboxes[c].getAttribute("ticked") == "true") {
+                    if (all_checkboxes[c].checked) {
                         all_unchecked = false;
                     } else {
                         all_checked = false;
@@ -1108,20 +1051,10 @@
                     fa_hook.classList.add("fa-solid");
                 }
                 document.getElementById("select-all-songs").innerText = text;
+                window.updateGameCount();
                 updateCount();
             }
             window.updateMaster = updateMaster;
-
-            
-
-            function updateTickbox(el, game) {
-                if (el.getAttribute("ticked") == "false") {
-                    el.setAttribute("ticked",true);
-                } else {
-                    el.setAttribute("ticked",false);
-                }
-                updateMaster();
-            }
 
             function updateCount() {
                 const count = window.getSongSelectedCount();
@@ -1140,29 +1073,23 @@
                         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
             }
 
-            
-
             function produceSelectAllSongsWarning() {
                 document.getElementById("sasWarningInitiator").click();
             }
 
             function selectAllSongs() {
-                const checkboxes = document.getElementsByClassName("midi-checkbox");
+                const checkboxes = document.getElementsByClassName("song-select");
                 let all_checked = true;
                 for (let c = 0; c < checkboxes.length; c++) {
                     if (adheresToFilterCheckbox(checkboxes[c])) {
-                        if (checkboxes[c].getAttribute("ticked") == "false") {
+                        if (checkboxes[c].checked) {
                             all_checked = false;
                         }
                     }
                 }
-                let state = "true"
-                if (all_checked) {
-                    state = "false";
-                }
                 for (let c = 0; c < checkboxes.length; c++) {
                     if (adheresToFilterCheckbox(checkboxes[c])) {
-                        checkboxes[c].setAttribute("ticked",state);
+                        checkboxes[c].checked = !all_checked;
                     }
                 }
                 updateMaster();

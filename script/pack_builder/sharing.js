@@ -42,7 +42,7 @@ function getShareLink(include_settings=false, include_song=false, include_downlo
 
 function convertSelectionsToString() {
     let activated = [];
-    const checkboxes = document.getElementsByClassName("midi-checkbox")
+    const checkboxes = document.getElementsByClassName("song-item")
     for (let c = 0; c < checkboxes.length; c++) {
         const index = idToSongInfo(checkboxes[c].getAttribute("song-id")).index;
         if (activated.length <= index) {
@@ -51,7 +51,7 @@ function convertSelectionsToString() {
                 activated.push(false)
             }
         }
-        activated[index] = checkboxes[c].getAttribute("ticked") == "true"
+        activated[index] = checkboxes[c].getElementsByClassName("song-select")[0].checked;
     }
     const B64_SIZE = Math.ceil(activated.length / BIT_SIZE_PER_CHAR);
     let base64num = new Array(B64_SIZE).fill(0)

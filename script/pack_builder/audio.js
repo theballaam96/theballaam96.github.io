@@ -22,11 +22,11 @@ function getYTPlaylist() {
         window.generateToast("Cannot generate playlist, no songs selected", true);
         return;
     }
-    const checkboxes = document.getElementsByClassName("midi-checkbox");
+    const checkboxes = document.getElementsByClassName("song-item");
     folder_data = {...uploaded_pack_data}
     let data_array = []
     for (let c = 0; c < checkboxes.length; c++) {
-        if (checkboxes[c].getAttribute("ticked") == "true") {
+        if (checkboxes[c].getElementsByClassName("song-select")[0].checked) {
             if (checkboxes[c].getAttribute("group") == "bgm") {
                 const data = window.idToSongInfo(checkboxes[c].getAttribute("song-id"));
                 if (data != null) {
