@@ -187,28 +187,22 @@ function adheresToFilterCheckbox(el) {
 }
 
 function filterGame() {
-    const checkboxes = document.getElementsByClassName("midi-checkbox-container");
-    for (let c = 0; c < checkboxes.length; c++) {
-        if (adheresToFilterCheckbox(checkboxes[c].getElementsByClassName("midi-checkbox")[0])) {
-            checkboxes[c].classList.remove("hide");
-        } else {
-            checkboxes[c].classList.add("hide");
-        }
+    const list_items = document.querySelectorAll("#game_list li");
+    const search_term = document.getElementById("search_game_input").value;
+    let force_show = false;
+    if (search_term.trim().length == 0) {
+        force_show = true;
     }
-    const handlers = document.getElementsByClassName("game-handler")
-    for (let h = 0; h < handlers.length; h++) {
-        const h_checkboxes = handlers[h].getElementsByClassName("midi-checkbox-container");
-        let has_any = false;
-        for (let c = 0; c < h_checkboxes.length; c++) {
-            has_any |= !h_checkboxes[c].classList.contains("hide");
-        }
-        if (has_any) {
-            handlers[h].classList.remove("hide");
+    for (let l = 0; l < list_items.length; l++) {
+        const name = list_items[l].getElementsByClassName("name_container")[0].innerText;
+        if (name.toLowerCase().includes(search_term.toLowerCase()) || force_show) {
+            list_items[l].classList.remove("d-none");
         } else {
-            handlers[h].classList.add("hide");
+            list_items[l].classList.add("d-none");
         }
     }
 }
+window.filterGame = filterGame;
 
 function compileAdvancedFilters() {
     let filtering_information = {
@@ -241,5 +235,6 @@ function compileAdvancedFilters() {
         }
     })
     document.getElementById("search-game").value = filtering_array.join("&");
-    filterGame();
+    //filterGame();
 }
+

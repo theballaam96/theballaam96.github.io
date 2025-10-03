@@ -767,8 +767,16 @@
             </div>
             <div class="px-4">
                 <div class="d-flex">
-                    <div class="overflow-y-scroll scroll-panel" style="width: 40%">
-                        <ul id="game_list" class="list-group" role="tablist"></ul>
+                    <div style="width: 40%">
+                        <div class="input-group">
+                            <span class="input-group-text" id="search_head">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </span>
+                            <input type="search" id="search_game_input" placeholder="Search Game..." class="form-control" aria-label="Search Game" aria-describedby="search_head"/>
+                        </div>
+                        <div class="overflow-y-scroll scroll-panel" style="height: 75vh">
+                            <ul id="game_list" class="list-group" role="tablist"></ul>
+                        </div>
                     </div>
                     <div id="song_panel" class="overflow-y-scroll tab-content p-4 scroll-panel" style="width: 60%"></div>
                 </div>
@@ -782,11 +790,6 @@
                     <div id="popup_controls" style="padding-bottom: 100px"></div>
                 </div>
             </div>
-        </div>
-        <div class="flexsplitter fix-bottom has-transition content-center" id="sticky-controls" hidden>
-            <button type="button" class="btn btn-outline-info" id="game-select-toggle-bottom" onclick="selectMaster()">Select All</button>
-            <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
-            <button type="button" class="btn btn-outline-danger" onclick="hidePopup()">Close</button>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
             <div class="popup_prompt" style="width:fit-content">
@@ -1029,7 +1032,6 @@
                     text = "Deselect All";
                 }
                 document.getElementById("game-select-toggle").innerText = text;
-                document.getElementById("game-select-toggle-bottom").innerText = text;
                 const all_checkboxes = document.getElementsByClassName("song-select");
                 all_checked = true;
                 all_unchecked = true;

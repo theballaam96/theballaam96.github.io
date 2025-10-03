@@ -168,7 +168,7 @@ function addGame(game_name, image_url, songs, shown) {
     const local_game_html = `<li class="list-group-item ${shown ? 'active' : ''}" id="tab-${tab_name}" data-bs-toggle="pill" data-bs-target="#${tab_name}" type="button" role="tab" aria-controls="${tab_name}" aria-selected="${shown ? 'true' : 'false'}">
         <div class="d-flex">
             <div class="flex-grow-1">
-                <div>
+                <div class="name_container">
                     ${game_name}
                 </div>
                 <div>
@@ -400,6 +400,7 @@ async function getMidiData() {
             }
         })
     }
+    document.getElementById("search_game_input").addEventListener("input", window.filterGame)
 
     if (willAutoDownload()) {
         document.getElementById("build-pack-button").click();
