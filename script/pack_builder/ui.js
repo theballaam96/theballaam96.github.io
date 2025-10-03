@@ -1,5 +1,6 @@
 const unsafe_song_tag = "stream-unsafe";
 const grandfathered_song_tag = "grandfathered";
+const mood_tags = ["Happy", "Gloomy", "Calm"];
 const site_is_down = false;
 const total_prog = 6;
 let icon_json = {}
@@ -130,6 +131,31 @@ function getGameTabName(game_name) {
     return `game-${filtered_name}`;  // Make to start with game- to fix those which start with an invalid character
 }
 
+function getTagDetails(tag_name) {
+    let color = "light";
+    let title = "";
+    let tag_order = 0;
+    if (tag_name == grandfathered_song_tag) {
+        color = "warning";
+        title = "This song was submitted before our current policies were installed, and would go against them. However, we have grandfathered this song in to the pack builder. This song may be stream unsafe as a result, and is subject to removal upon any issues."
+        tag_name = "Grandfathered";
+        tag_order = 2;
+    } else if (tag_name == unsafe_song_tag) {
+        color = "danger";
+        title = "This song has been tied to copyright claim issues which may result in demonetization.";
+        tag_name = "Stream Unsafe";
+        tag_order = 2;
+    } else if (mood_tags.includes(tag_name)) {
+        tag_order = 1;
+    }
+    return {
+        "name": tag_name,
+        "color": color,
+        "title": title,
+        "tag_order": tag_order,
+    }
+}
+
 function addGame(game_name, image_url, songs, shown) {
     console.log(songs)
     const tab_name = getGameTabName(game_name);
@@ -144,8 +170,8 @@ function addGame(game_name, image_url, songs, shown) {
                     <small><span id="count-${tab_name}" game="${tab_name}" class="song_count_digits">0</span>/${songs.length} song${songs.length == 1 ? '' : 's'}</small>
                 </div>
             </div>
-            <div>
-                <input type="checkbox" game="${tab_name}" id="all-${tab_name}" class="game_all_checkbox" />
+            <div class="form-check position-relative" title="Select/Deselect all songs for game">
+                <input type="checkbox" game="${tab_name}" id="all-${tab_name}" class="game_all_checkbox form-check-input position-absolute top-50 translate-middle-y mt-0" />
             </div>
         </div>
     </li>`;
@@ -156,15 +182,52 @@ function addGame(game_name, image_url, songs, shown) {
         if (songs_for_group.length > 0) {
             song_inner_html += `<h3>${group_priority[key]}</h3>`;
             songs_for_group.forEach(s => {
-                song_inner_html += `<div>
-                    <div class="d-flex">
-                        <div class="p-2">
-                            <input type="checkbox" game="${tab_name}" class="song-select" />
-                        </div>
+                let converter = s.converter ? s.converter.replace(/['"]/g, '') : "";
+                let composer = s.composer ? s.composer.replace(/['"]/g, '') : "";
+                let tag_data = s.tags.map(tag => {
+                    return getTagDetails(tag)
+                })
+                tag_data.sort((a, b) => a.tag_order - b.tag_order);
+                let tag_html = tag_data.map(tag => {
+                    return `<span class='badge text-bg-${tag.color} rounded-pill ms-2' title='${tag.title}'>${tag.name}</span>`
+                }).join("")
+                song_inner_html += `<div id="song-${s.index}" class="card mb-2">
+                    <div class="d-flex p-2">
                         <div class="flex-grow-1">
-                            <strong class="p-1">
-                                ${s.name}
-                            </strong>
+                            <div class="position-relative" style="height: 100%">
+                                <div class="position-absolute top-50 start-0 translate-middle-y">
+                                    <div class="d-flex">
+                                        <div class="form-check" title="Add/Remove Song">
+                                            <input type="checkbox" game="${tab_name}" class="song-select form-check-input" />
+                                        </div>
+                                        <div class="flex-grow-1 fw-bold ps-1">
+                                            ${s.name}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <button class="btn song-play" audio="${s.audio}" song_index="${s.index}" play_state="not_loaded" style="width: fit-content">
+                                <i class="fa-solid fa-play"></i>
+                            </button>
+                            <div class="position-relative song-seek-container" style="min-width: 100px" hidden>
+                                <div class="song-time"></div>
+                                <div class="position-absolute bottom-0 start-0">
+                                    <input type="range" class="song-seek" value="0" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex px-2 pb-2 justify-content-between">
+                        <!--<div>
+                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#119070; ${composer}</div>` : ''}
+                        </div>-->
+                        <div>
+                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate"></i> ${converter}</div>` : ''}
+                        </div>
+                        <div>
+                            ${tag_html}
                         </div>
                     </div>
                 </div>`
@@ -194,14 +257,23 @@ function updateGameCount(name = null) {
         console.log(song_checkboxes, local_game);
         let local_count = 0;
         let found_false = false;
+        let found_true = false;
         for (let i = 0; i < song_checkboxes.length; i++) {
             if (song_checkboxes[i].checked) {
                 local_count++;
+                found_true = true;
             } else {
                 found_false = true;
             }
         }
-        document.getElementById(`all-${local_game}`).checked = !found_false;
+        const cbx = document.getElementById(`all-${local_game}`);
+        cbx.indeterminate = false;
+        if ((found_true !== found_false) && (found_true || found_false)) {
+            // One but not both are truthy
+            cbx.checked = !found_false;
+        } else if (found_true && found_false) {
+            cbx.indeterminate = true;
+        }
         els[k].innerText = local_count;
     }
 }
@@ -427,11 +499,20 @@ async function getMidiData() {
             selectAllForGame(e.target.getAttribute("game"), e.target.checked);
         })
     }
+    const song_buttons = document.getElementsByClassName("song-play");
+    for (let s = 0; s < song_buttons.length; s++) {
+        song_buttons[s].addEventListener("click", (e) => {
+            const btn = e.target.closest("button");
+            const sg_index = parseInt(btn.getAttribute("song_index"));
+            if (btn.getAttribute("play_state") == "not_loaded" || (window.current_song !== sg_index)) {
+                window.playSong(btn.getAttribute("audio"), "", sg_index);
+            }
+        })
+    }
 
     if (willAutoDownload()) {
         document.getElementById("build-pack-button").click();
     }
-    autoPlaySong();
 }
 
 function updateProgress(progress, total, text="", error=false) {
