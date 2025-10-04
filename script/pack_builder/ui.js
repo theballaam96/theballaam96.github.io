@@ -162,7 +162,7 @@ function getTagDetails(tag_name) {
 }
 
 function addGame(game_name, image_url, songs, shown) {
-    console.log(songs)
+    // console.log(songs)
     const tab_name = getGameTabName(game_name);
     // Game Construction
     const local_game_html = `<li class="list-group-item ${shown ? 'active' : ''}" id="tab-${tab_name}" data-bs-toggle="pill" data-bs-target="#${tab_name}" type="button" role="tab" aria-controls="${tab_name}" aria-selected="${shown ? 'true' : 'false'}">
@@ -224,7 +224,7 @@ function addGame(game_name, image_url, songs, shown) {
                             ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#119070; ${composer}</div>` : ''}
                         </div>-->
                         <div>
-                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate"></i> ${converter}</div>` : ''}
+                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate" style="width: 24px"></i> ${converter}</div>` : ''}
                         </div>
                         <div>
                             ${tag_html}
@@ -274,8 +274,10 @@ function updateGameCount(name = null) {
         }
         els[k].innerText = local_count;
         let new_text = "";
+        document.getElementById(`tab-${local_game}`).classList.remove("has-new");
         if (local_new_count > 0) {
             new_text = `(${local_new_count} new)`;
+            document.getElementById(`tab-${local_game}`).classList.add("has-new");
         }
         document.getElementById(`new-${local_game}`).innerText = new_text;
     }

@@ -199,6 +199,11 @@ async function handlePack(data) {
             }
         }
     })
+    document.getElementById("new-only-button").removeAttribute("hidden");
+    document.getElementById("new-only-button").style["border-top-left-radius"] = "0px";
+    document.getElementById("new-only-button").style["border-bottom-left-radius"] = "0px";
+    document.getElementById("search_game_input").style["border-top-right-radius"] = "0px";
+    document.getElementById("search_game_input").style["border-bottom-right-radius"] = "0px";
     window.updateMaster();
 }
 
@@ -213,3 +218,16 @@ document.getElementById("uploaded_pack").addEventListener("change", function(e) 
 function uploadPack() {
     document.getElementById("uploaded_pack").click();
 }
+
+document.getElementById("new-only-button").addEventListener("click", (e) => {
+    const btn = document.getElementById("new-only-button");
+    btn.classList.toggle("btn-outline-secondary");
+    btn.classList.toggle("btn-info");
+    if (btn.classList.contains("btn-info")) {
+        btn.setAttribute("title", "Show only new songs (Selected)");
+    } else {
+        btn.setAttribute("title", "Show only new songs");
+    }
+    document.getElementById("game_list").classList.toggle("new-only");
+    document.getElementById("song_panel").classList.toggle("new-only");
+})

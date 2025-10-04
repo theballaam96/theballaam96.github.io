@@ -517,6 +517,9 @@
             .song-time {
                 padding-top: 6px;
             }
+            #game_list.new-only li:not(.has-new), #song_panel.new-only .song-item:not(.song-new) {
+                display: none;
+            }
         </style>
     </head>
     <body class="overflow-y-hidden">
@@ -825,11 +828,20 @@
             <div class="px-4">
                 <div class="d-flex">
                     <div style="width: 40%">
-                        <div class="input-group">
-                            <span class="input-group-text" id="search_head">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
-                            <input type="search" id="search_game_input" placeholder="Search Game..." class="form-control" aria-label="Search Game" aria-describedby="search_head"/>
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <div class="input-group">
+                                    <span class="input-group-text" id="search_head">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </span>
+                                    <input type="search" id="search_game_input" placeholder="Search Game..." class="form-control" aria-label="Search Game" aria-describedby="search_head"/>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-secondary m-0" type="button" id="new-only-button" title="Show only new songs" style="height: 100%; width: fit-content" hidden>
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="overflow-y-scroll scroll-panel" style="height: 75vh">
                             <ul id="game_list" class="list-group" role="tablist"></ul>

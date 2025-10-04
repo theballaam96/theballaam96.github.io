@@ -130,6 +130,7 @@ function showSongPopup(id) {
     const song_name = container.getElementsByClassName("song_name_container")[0].innerText.trim();
     document.getElementById("rs-song").innerText = song_name;
     document.getElementById("rs-game").innerText = game_name;
+    console.log(`Playing: ${game_name} - ${song_name}`);
     const toastEl = document.getElementById('rs-toast-inner');
     if (!toastEl.classList.contains("show")) {
         const toastBootstrap = bootstrap.Toast.getOrCreateInstance(toastEl, {
@@ -152,6 +153,7 @@ function updateSongProgress(current, duration, seekBar, songTime) {
         songTime.innerHTML = `${numToTime(current)} / ${numToTime(duration)}`;
         if (seekBar.value == 100) {
             if (window.playing_random) {
+                console.log("New song")
                 window.playRandomSong();
             }
         }
@@ -201,6 +203,12 @@ function setupControls(autoplay) {
             updateSongProgress(current, duration, seekBar, songTime);
         }
     }, 500);
+    player.addEventListener("onStateChange", e => {
+        console.log("State Changed")
+        const duration = player.getDuration();
+        const current = player.getCurrentTime();
+        updateSongProgress(current, duration, seekBar, songTime);
+    });
 
     // Seeking
     seekBar.oninput = (e) => {
@@ -242,6 +250,12 @@ function updateAudioPlayer(url) {
             updateSongProgress(audio_handler.currentTime, audio_handler.duration, seekBar, songTime);
         }
     }, 500);
+    audio_container.addEventListener("timeupdate", () => {
+        const audio_handler = document.getElementById("audio-event-handler");
+        updateSongProgress(audio_handler.currentTime, audio_handler.duration, seekBar, songTime);
+    });
+
+
 
     // Seeking
     seekBar.oninput = (e) => {
