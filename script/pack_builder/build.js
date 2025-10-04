@@ -17,11 +17,11 @@ async function buildPack() {
         return;
     }
     window.generateToast(`Generating pack with ${ss_count} song${ss_count != 1 ? 's' : ''}`);
-    const checkboxes = document.getElementsByClassName("midi-checkbox");
+    const checkboxes = document.getElementsByClassName("song-item");
     folder_data = {...uploaded_pack_data}
     let data_array = []
     for (let c = 0; c < checkboxes.length; c++) {
-        if (checkboxes[c].getAttribute("ticked") == "true") {
+        if (checkboxes[c].getElementsByClassName("song-select")[0].checked) {
             const data = window.idToSongInfo(checkboxes[c].getAttribute("song-id"));
             if (data != null) {
                 data_array.push(data)

@@ -1,8 +1,15 @@
 const unsafe_song_tag = "stream-unsafe";
 const grandfathered_song_tag = "grandfathered";
+const mood_tags = ["Happy", "Gloomy", "Calm"];
 const site_is_down = false;
 const total_prog = 6;
 let icon_json = {}
+const group_priority = {
+    "bgm": "Background Music",
+    "events": "Events",
+    "majoritems": "Major Items",
+    "minoritems": "Minor Items"
+}
 
 function lazyLoadImages() {
     document.getElementById("lazy-loader").innerHTML = Object.keys(icon_json).map(key => `
@@ -57,64 +64,182 @@ function handleCredits(update_cookie) {
     }
 }
 
-function handleMinView(update_cookie, update_checkbox) {
-    let setting = "grid";
-    if (document.getElementById("min-view").checked) {
-        setting = "minimal";
-    }
-    document.getElementById("song_list").setAttribute("render",setting);
-    if (update_cookie) {
-        window.setPackCookie("min-view", setting);
-    }
-    document.getElementById("song_list").setAttribute("defaultrender", getCookie("min-view"));
+function getGameTabName(game_name) {
+    const filtered_name = game_name
+        .replace(/[^a-zA-Z0-9 ]/g, '') // keep only alphanumeric + space
+        .trim()                         // remove leading/trailing spaces
+        .replace(/\s+/g, '-');          // replace spaces with hyphens
+    return `game-${filtered_name}`;  // Make to start with game- to fix those which start with an invalid character
 }
 
-function handleTextView(update_cookie) {
-    let setting = "hide";
-    if (document.getElementById("text-view").checked) {
-        setting = "show";
+function getTagDetails(tag_name) {
+    let color = "light";
+    let title = "";
+    let tag_order = 0;
+    if (tag_name == grandfathered_song_tag) {
+        color = "warning";
+        title = "This song was submitted before our current policies were installed, and would go against them. However, we have grandfathered this song in to the pack builder. This song may be stream unsafe as a result, and is subject to removal upon any issues."
+        tag_name = "Grandfathered";
+        tag_order = 2;
+    } else if (tag_name == unsafe_song_tag) {
+        color = "danger";
+        title = "This song has been tied to copyright claim issues which may result in demonetization.";
+        tag_name = "Stream Unsafe";
+        tag_order = 2;
+    } else if (tag_name == "new") {
+        color = "info new-pill";
+        title = "This song was uploaded after your pack was last updated.";
+        tag_name = "New!";
+        tag_order = -1;
+    } else if (mood_tags.includes(tag_name)) {
+        tag_order = 1;
     }
-    document.getElementById("song_list").setAttribute("gridtext",setting);
-    if (update_cookie) {
-        window.setPackCookie("text-view", setting);
+    return {
+        "name": tag_name,
+        "color": color,
+        "title": title,
+        "tag_order": tag_order,
     }
 }
 
-function setMinView(state, update_cookie, update_checkbox) {
-    if (update_checkbox) {
-        document.getElementById("min-view").checked = state;
-    }
-    handleMinView(update_cookie, update_checkbox);
-}
-
-function setMinViewToDefault() {
-    const hook = document.getElementById("song_list");
-    hook.setAttribute("render", hook.getAttribute("defaultrender"));
-}
-
-function setTextView(state, update_cookie) {
-    document.getElementById("text-view").checked = state;
-    handleTextView(update_cookie);
-}
-
-let previous_width = null;
-function handleSize() {
-    return;
-    const force_limit = 700;
-    const width = document.documentElement.clientWidth;
-    if (width <= force_limit) {
-        if ((previous_width == null) || (previous_width > force_limit)) {
-            setMinView(true, false, false);
+function addGame(game_name, image_url, songs, shown) {
+    // console.log(songs)
+    const tab_name = getGameTabName(game_name);
+    // Game Construction
+    const local_game_html = `<li class="list-group-item ${shown ? 'active' : ''} game-tab" id="tab-${tab_name}" data-bs-toggle="pill" data-bs-target="#${tab_name}" type="button" role="tab" aria-controls="${tab_name}" aria-selected="${shown ? 'true' : 'false'}">
+        <div class="d-flex">
+            <div class="flex-grow-1">
+                <div class="name_container">
+                    ${game_name}
+                </div>
+                <div>
+                    <small><span id="count-${tab_name}" game="${tab_name}" class="song_count_digits">0</span>/${songs.length} song${songs.length == 1 ? '' : 's'}</small>
+                    <small><span id="new-${tab_name}" class="new_count"></span></small>
+                </div>
+            </div>
+            <div class="form-check position-relative" title="Select/Deselect all songs for game">
+                <input type="checkbox" game="${tab_name}" id="all-${tab_name}" class="game_all_checkbox form-check-input position-absolute top-50 translate-middle-y mt-0" />
+            </div>
+        </div>
+    </li>`;
+    // Song construction
+    let song_inner_html = "";
+    Object.keys(group_priority).forEach(key => {
+        const songs_for_group = songs.filter(s => s.group == key);
+        if (songs_for_group.length > 0) {
+            song_inner_html += "<div class='my-3'>";
+            song_inner_html += `<h3>${group_priority[key]}</h3>`;
+            songs_for_group.forEach(s => {
+                let converter = s.converter ? s.converter.replace(/['"]/g, '') : "";
+                let composer = s.composer ? s.composer.replace(/['"]/g, '') : "";
+                let tag_data = s.tags.map(tag => {
+                    return getTagDetails(tag)
+                })
+                tag_data.push(getTagDetails("new"));
+                tag_data.sort((a, b) => a.tag_order - b.tag_order);
+                let tag_html = tag_data.map(tag => {
+                    return `<span class='badge text-bg-${tag.color} rounded-pill ms-2' title='${tag.title}'>${tag.name}</span>`
+                }).join("")
+                song_inner_html += `<div id="song-${s.index}" class="card mb-2 song-item" game="${tab_name}" song-id="${s.index}" group="${key}">
+                    <div class="d-flex p-2">
+                        <div class="flex-grow-1">
+                            <div class="position-relative" style="height: 100%">
+                                <div class="position-absolute top-50 start-0 translate-middle-y">
+                                    <div class="d-flex">
+                                        <div class="form-check" title="Add/Remove Song">
+                                            <input type="checkbox" game="${tab_name}" song-id="${s.index}" class="song-select form-check-input" />
+                                        </div>
+                                        <div class="flex-grow-1 fw-bold ps-1 song_name_container">
+                                            ${s.name}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn song-play" audio="${s.audio}" song_index="${s.index}" play_state="not_loaded" style="width: fit-content">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex px-2 pb-2 justify-content-between">
+                        <div class="d-flex justify-content-start" style="width: 50%">
+                            <div style="width: 50%; max-width: 50%; overflow: hidden">
+                                ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate" style="width: 24px"></i> ${converter}</div>` : ''}
+                            </div>
+                            <div class="ms-3" style="width: 50%; max-width: 50%">
+                                ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow"><span class="fw-bold" style="width: 24px">&#119070;</span> ${composer}</div>` : ''}
+                            </div>
+                        </div>
+                        <div>
+                            ${tag_html}
+                        </div>
+                    </div>
+                </div>`
+            });
+            song_inner_html += "</div>";
         }
+    })
+    const local_song_html = `<div class="tab-pane fade ${shown ? 'show active' : ''}" id="${tab_name}" role="tabpanel" aria-labelledby="tab-${tab_name}" tabindex="0">
+        <h1>${game_name}</h1>
+        ${song_inner_html}
+    </div>`;
+    return [local_game_html, local_song_html];
+}
+
+function updateGameCount(name = null) {
+    let els = [];
+    if (name !== null) {
+        els = [document.getElementById(`count-${name}`)];
     } else {
-        if ((previous_width == null) || (previous_width <= force_limit)) {
-            setMinViewToDefault();
-        }
+        els = document.getElementsByClassName("song_count_digits");
     }
-    previous_width = width;
+    for (let k = 0; k < els.length; k++) {
+        const local_game = els[k].getAttribute("game");
+        const song_checkboxes = document.querySelectorAll(`.song-select[game='${local_game}']`);
+        let local_count = 0;
+        let local_new_count = document.querySelectorAll(`.song-item[game='${local_game}'].song-new`).length;
+        let found_false = false;
+        let found_true = false;
+        for (let i = 0; i < song_checkboxes.length; i++) {
+            if (song_checkboxes[i].checked) {
+                local_count++;
+                found_true = true;
+            } else {
+                found_false = true;
+            }
+        }
+        const cbx = document.getElementById(`all-${local_game}`);
+        cbx.indeterminate = false;
+        if ((found_true !== found_false) && (found_true || found_false)) {
+            // One but not both are truthy
+            cbx.checked = !found_false;
+        } else if (found_true && found_false) {
+            cbx.indeterminate = true;
+        }
+        els[k].innerText = local_count;
+        let new_text = "";
+        document.getElementById(`tab-${local_game}`).classList.remove("has-new");
+        if (local_new_count > 0) {
+            new_text = `(${local_new_count} new)`;
+            document.getElementById(`tab-${local_game}`).classList.add("has-new");
+        }
+        document.getElementById(`new-${local_game}`).innerText = new_text;
+    }
+    window.updateCount();
 }
-window.onresize = handleSize;
-handleSize();
+window.updateGameCount = updateGameCount;
+
+function selectAllForGame(name = null, state = true) {
+    let song_checkboxes = [];
+    if (name !== null) {
+        song_checkboxes = document.querySelectorAll(`.song-select[game='${name}']`);
+    } else {
+        song_checkboxes = document.querySelectorAll(`.song-select`);
+    }
+    for (let k = 0; k < song_checkboxes.length; k++) {
+        song_checkboxes[k].checked = state;
+    }
+    updateGameCount(name);
+}
 
 async function getMidiData() {
     let prog = 0;
@@ -160,158 +285,61 @@ async function getMidiData() {
         }, {}
     );
     songs_by_game[MISC_NAME] = other.slice();
+
+    let game_html = "";
+    let song_html = "";
+    let is_first = true;
     
     Object.keys(songs_by_game).forEach(game_pretty => {
         let game = window.filterName(game_pretty);
         if (game != null) {
             const song_list = songs_by_game[game_pretty].sort()
-            // <input type='checkbox' class='midi-checkbox' id='' onclick='updateMaster(\"${game}\")' game='${game}'/>
-            let local_html = {};
-            song_list.forEach(song => {
-                const group = song.group;
-                let displayed_song_name = song.name.replace(/['"]/g, '');
-                let composer = song.composer ? song.composer.replace(/['"]/g, '') : "";
-                let converter = song.converter ? song.converter.replace(/['"]/g, '') : "";
-                let audio = song.audio;
-                if (!Object.keys(local_html).includes(group)) {
-                    local_html[group] = "";
-                }
-                const state_index = song.index;
-                local_html[group] += 
-                    `
-                    <div class='midi-checkbox-container'>
-                        <div 
-                            class='midi-checkbox noselect' 
-                            song-id='${song.index}' 
-                            onclick='updateTickbox(this,\"${game}\")' 
-                            ticked=${window.parseSeed(state_index) ? 'true' : 'false'}
-                            update_notif='false'
-                            group='${group}'
-                            game='${game}'
-                            safe='${!song.tags.includes(unsafe_song_tag)}'
-                            ${song.notes ? `title='${song.notes}'` : ''}>
-                            <div class='flexsplitter bottom-line'>
-                                <div class='name_data handle-overflow' title='${filterNote(displayed_song_name.replace('.bin',''))}'>${displayed_song_name.replace('.bin','')}</div>
-                            </div>
-                            <div class='bottom-line name_meta_data${isCreditHidden() ? ' hide' : ''}'>
-                                ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#119070; ${composer}</div>` : ''}
-                                ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate"></i> ${converter}</div>` : ''}
-                            </div>
-                            <div class='midi-tray'>
-                                ${
-                                    `<span class='midi-tag credit-guitar${isCreditHidden() ? '' : ' hide'}' title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}\nConverter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}'
-                                        data-bs-toggle='tooltip'>
-                                        <i class='fa-solid fa-guitar'></i>
-                                    </span>`
-                                }
-                                ${
-                                    song.notes ?
-                                    song.notes.trim().length > 0 ?
-                                    `<span class='midi-tag' title='${filterNote(song.notes)}'><i class='fa-solid fa-note-sticky'></i></span>`
-                                    : ""
-                                    : ""
-                                }
-                                ${
-                                    song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).length > 0 ?
-                                    `<span class='midi-tag' title='${song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).join(', ')}'>
-                                        <i class='fa-solid fa-tags'></i>
-                                    </span>`
-                                    : ""
-                                }
-                                <span class='badge text-bg-info rounded-pill new-pill' title='This song is newer than when you last built your pack.'>New!</span>
-                                ${
-                                    song.tags.includes(unsafe_song_tag) ? 
-                                    "<span class='badge text-bg-danger rounded-pill' title='This song has been tied to copyright claim issues which may result in demonetization.'>Stream Unsafe</span>" : ""
-                                }
-                                ${
-                                    song.tags.includes(grandfathered_song_tag) ? 
-                                    "<span class='badge text-bg-warning rounded-pill' title='This song was submitted before our current policies were installed, and would go against them. However, we have grandfathered this song in to the pack builder. This song may be stream unsafe as a result, and is subject to removal upon any issues.'>Grandfathered</span>" : ""
-                                }
-                                ${
-                                    song.tags.filter(t => t != unsafe_song_tag && t != grandfathered_song_tag).map((item, index) => index < 10 ? `
-                                        <span class='badge text-bg-light rounded-pill'>
-                                            ${item}
-                                        </span>
-                                    ` : "").join("")
-                                }
-                            </div>
-                        </div>
-                        <div class='audio_positioner'>
-                            <div class='audio_positioner_internal'>
-                                ${
-                                    audio ?
-                                    `<span class='midi-tag audio-clicker' title='Listen to song' onclick='playSong(\"${audio}\",\"${converter}\",\"${filterNote(displayed_song_name.replace('.bin',''))}\", ${song.index})' data-bs-toggle="modal" data-bs-target="#playSongModal" conversion_id="${song.index}"><i class='fa-solid fa-play'></i></span>`
-                                    : ""
-                                }
-                            </div>
-                        </div>
-                    </div>`
-            })
-            let local_html_total = "";
-            const group_priority = {
-                "bgm": "Background Music",
-                "events": "Events",
-                "majoritems": "Major Items",
-                "minoritems": "Minor Items"
-            }
-            let first = true;
-            Object.keys(group_priority).forEach(group => {
-                if (Object.keys(local_html).includes(group)) {
-                    local_html_total += `${first ? '' : '<br>'}
-                        <div class='fs-5'>${group_priority[group]}</div>
-                        <div class='midi-grid'>
-                            ${local_html[group]}
-                        </div>
-                    `
-                    first = false;
-                }
-            })
             const game_name = game_pretty;
-            html += `<div class='game-handler' title='${filterNote(game_name)}'>
-                <div class='game-header noselect collapsed' game_id='${game}' onclick='toggleGameVisibility(\"${game}\",this)'>
-                    <div class='game-icon'>
-                        <span class='icon-alignment'></span>
-                        <img class='game-image ${
-                            Object.keys(icon_json).includes(game_name) ? 
-                            "" : "no-icon"
-                        }' src='${
-                            Object.keys(icon_json).includes(game_name) ?
-                            icon_json[game_name].icon :
-                            BASE_NO_ICON_IMG
-                        }' loading=lazy />
-                        ${Object.keys(icon_json).includes(game_name) ?
-                            "" :
-                            `<div class='game-image-replacement'>${game_name}</div>`
-                        }
-                    </div>
-                    <div class='game-internal-name'>${game_name}</div>
-                    <div class='game-fullness-panel d-flex justify-content-end'></div>
-                </div>
-                <div class='game-songs hide' game='${game}'>
-                    ${local_html_total}
-                </div>
-            </div>`
-            //hook.innerHTML = html // Start loading
+            const [local_game, local_song] = addGame(game_name, Object.keys(icon_json).includes(game_name) ? icon_json[game_name].icon : BASE_NO_ICON_IMG, song_list, is_first);
+            is_first = false;
+            game_html += local_game;
+            song_html += local_song;
         }
     })
-    hook.innerHTML = html;
+    document.getElementById("game_list").innerHTML = game_html;
+    document.getElementById("song_panel").innerHTML = song_html;
+
     updateProgress(prog++, total_prog, "Lazy Loading Images");
     ReLoadImages();
     updateProgress(prog++, total_prog, "Populated Site");
     window.updateMaster();
     updateProgress(prog++, total_prog, "Updated Master");
     // Update click events
-    setMinView(window.getCookie("min-view") == "minimal", false, true);
-    setTextView(window.getCookie("text-view") == "show", false)
     document.getElementById("credits_hidden").checked = window.getCookie("credits") == "true";
     document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
-    document.getElementById("min-view").addEventListener("click", () => {handleMinView(true, true)});
-    document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
+    const song_selects = document.getElementsByClassName("song-select");
+    for (let s = 0; s < song_selects.length; s++) {
+        song_selects[s].addEventListener("click", (e) => {
+            updateGameCount(e.target.getAttribute("game"));
+        })
+    }
+    const game_all_cb = document.getElementsByClassName("game_all_checkbox");
+    for (let s = 0; s < game_all_cb.length; s++) {
+        game_all_cb[s].addEventListener("click", (e) => {
+            selectAllForGame(e.target.getAttribute("game"), e.target.checked);
+        })
+    }
+    const song_buttons = document.getElementsByClassName("song-play");
+    for (let s = 0; s < song_buttons.length; s++) {
+        song_buttons[s].addEventListener("click", (e) => {
+            const btn = e.target.closest("button");
+            const sg_index = parseInt(btn.getAttribute("song_index"));
+            if (btn.getAttribute("play_state") == "not_loaded" || (window.current_song !== sg_index)) {
+                window.playSong(btn.getAttribute("audio"), sg_index);
+            }
+        })
+    }
+    document.getElementById("search_game_input").addEventListener("input", window.filterGame)
 
     if (willAutoDownload()) {
         document.getElementById("build-pack-button").click();
     }
-    autoPlaySong();
+    window.autoPlaySong();
 }
 
 function updateProgress(progress, total, text="", error=false) {

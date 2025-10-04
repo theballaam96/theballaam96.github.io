@@ -1,18 +1,6 @@
 function getSongSelectedCount() {
-    let count = 0;
-    const checkboxes = document.getElementsByClassName("midi-checkbox");
-    for (let c = 0; c < checkboxes.length; c++) {
-        if (checkboxes[c].getAttribute("ticked") == "true") {
-            count += 1;
-        }
-    }
-    const bad_checkboxes = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-    for (let c = 0; c < bad_checkboxes.length; c++) {
-        if (bad_checkboxes[c].getAttribute("ticked") == "true") {
-            count -= 1;
-        }
-    }
-    return count;
+    const checkboxes = document.querySelectorAll(".song-select:checked");
+    return checkboxes.length;
 }
 window.getSongSelectedCount = getSongSelectedCount;
 

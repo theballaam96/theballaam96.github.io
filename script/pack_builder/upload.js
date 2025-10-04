@@ -1,5 +1,5 @@
 const PARSEABLE_EXTENSIONS = ["bin","candy"];
-let uploaded_date = null;
+window.uploaded_date = null;
 
 function getUpdatedVersion(drive_id) {
     let found_id = null;
@@ -71,6 +71,7 @@ async function handlePack(data) {
             const fileExtArr = filename_0.split(".");
             const fileExt = fileExtArr[fileExtArr.length - 1];
             const preFileExtName = fileExtArr.filter((item, index) => (index != (fileExtArr.length - 1))).join(".");
+            const filename_local = filename_0.split("/")[filename_0.split("/").length - 1];
             if (["candy", "bin"].includes(fileExt)) {
                 // Is song file
                 if (fileData[0] == 80) {
@@ -88,10 +89,10 @@ async function handlePack(data) {
                         renames[filename_0] = parsed_filename
                     }
                 }
-            } else if (filename_0 == "metadata.json") {
+            } else if (filename_local == "metadata.json") {
                 let metadata = await zip_store.files[filename_0].async("string");
                 metadata = JSON.parse(metadata)
-                uploaded_date = metadata.creation;
+                window.uploaded_date = metadata.creation;
             }
             const file_path_array = filename_0.split("/")
             const file_group = file_path_array[file_path_array.length - 2];
@@ -160,23 +161,30 @@ async function handlePack(data) {
         }
     })
 
-    const checkboxes = document.getElementsByClassName("midi-checkbox")
+    const song_items = document.getElementsByClassName("song-item");
+    const checkboxes = document.getElementsByClassName("song-select")
     for (let c = 0; c < checkboxes.length; c++) {
-        checkboxes[c].setAttribute("ticked", "false");
-        checkboxes[c].setAttribute("update_notif", "false");
+        checkboxes[c].checked = false;
+    }
+    for (let s = 0; s < song_items.length; s++) {
+        song_items[s].classList.remove("song-new");
     }
 
-    if (uploaded_date != null) {
+    if (window.uploaded_date != null) {
         midi_data_copy.forEach(item => {
             if (!matching_songs.includes(item.drive_id) && (item.initial_timestamp != null)) {
                 // Not in pack
                 const init_date = new Date(item.initial_timestamp);
-                const pack_date = new Date(uploaded_date);
+                const pack_date = new Date(window.uploaded_date);
+                if (item.game == "Adibou 2") {
+                    console.log(init_date)
+                    console.log(pack_date)
+                }
                 if (init_date > pack_date) {
                     const id = item.index;
-                    for (c = 0; c < checkboxes.length; c++) {
-                        if (checkboxes[c].getAttribute("song-id") == id) {
-                            checkboxes[c].setAttribute("update_notif", "true");
+                    for (c = 0; c < song_items.length; c++) {
+                        if (song_items[c].getAttribute("song-id") == id) {
+                            song_items[c].classList.add("song-new");
                         }
                     }
                 }
@@ -188,9 +196,9 @@ async function handlePack(data) {
         const entry = midi_data_copy.find(item => item.drive_id == m_drive_id)
         if (entry) {
             const id = entry.index;
-            for (c = 0; c < checkboxes.length; c++) {
-                if (checkboxes[c].getAttribute("song-id") == id) {
-                    checkboxes[c].setAttribute("ticked", "true");
+            for (c = 0; c < song_items.length; c++) {
+                if (song_items[c].getAttribute("song-id") == id) {
+                    song_items[c].getElementsByClassName("song-select")[0].checked = true;
                 }
             }
         }

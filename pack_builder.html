@@ -13,6 +13,7 @@
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#ffffff">
 		<meta name="description" content="" />
+        <meta charset="UTF-8">
         <!-- Discord -->
         <meta content="DK64 Pack Builder" property="og:title" />
         <meta content="Music Pack creator for Donkey Kong 64, serving as hub for video game songs which have been transposed to the DK64 soundfont." property="og:description" />
@@ -127,35 +128,11 @@
                 font-weight: 600;
                 margin-top: 10px;
             }
-            .midi-checkbox-container {
-                margin: 5px;
-                position: relative;
-            }
-            .midi-checkbox {
-                border: 1px solid white;
-                border-radius: 5px;
-                cursor: pointer;
-                padding: 5px;
-                transition: 0.1s ease-in-out;
-                /*width: 100%;*/
-                min-height: 100%;
-                position: relative;
-            }
-            .midi-checkbox:hover {
-                background-color: rgb(61, 255, 145, 0.15);
-            }
-            .midi-checkbox[ticked="true"] {
-                background-color: rgba(61, 255, 145, 0.3);
-            }
-            .new-pill {
+            .song-item .new-pill {
                 display: none;
             }
-            .midi-checkbox[update_notif="true"] .new-pill {
+            .song-item.song-new .new-pill {
                 display: inline-block;
-            }
-            .midi-checkbox .name_data {
-                flex: 1;
-                font-weight: bold;
             }
             .popup_buttons {
                 flex: 1;
@@ -227,11 +204,6 @@
             }*/
             #search-game {
                 height: 100%;
-            }
-            #song_selected_count {
-                padding: 5px;
-                margin-left: auto;
-                margin-right: auto;
             }
             .audio_positioner_container {
                 width: 100%;
@@ -432,9 +404,6 @@
                 margin-left: auto;
                 flex: 1;
             }
-            #song_selected_count {
-                text-align: right;
-            }
             .has-transition {
                 transition: 0.1s ease-in-out;
             }
@@ -458,9 +427,94 @@
                 white-space: nowrap;
                 text-overflow: ellipsis;
             }
+            .list-group-item small {
+                color: #777;
+            }
+            .list-group-item small .new_count {
+                color: rgb(13, 202, 240);
+            }
+            .list-group-item.active small {
+                color: #fff;
+            }
+            .scroll-panel {
+                height: 85vh;
+            }
+            #player {
+                display: none;
+            }
+            .song-seek {
+                -webkit-appearance: none; /* remove default styling */
+                width: 100%;
+                height: 2px; /* thin track */
+                background: white;
+                border-radius: 1px;
+                outline: none;
+                margin: 10px 0;
+            }
+
+            /* Webkit browsers */
+            .song-seek::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 6px;
+                height: 6px;
+                background: white;
+                border-radius: 50%;
+                cursor: pointer;
+                margin-top: -1px; /* center thumb on thin track */
+            }
+
+            /* Firefox */
+            .song-seek::-moz-range-thumb {
+                width: 6px;
+                height: 6px;
+                background: white;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+            /* IE */
+            .song-seek::-ms-thumb {
+                width: 6px;
+                height: 6px;
+                background: white;
+                border-radius: 50%;
+                cursor: pointer;
+            }
+
+            /* Optional: track styling for Firefox */
+            .song-seek::-moz-range-track {
+                background: white;
+                height: 4px;
+                border-radius: 2px;
+            }
+
+            /* Optional: track styling for IE */
+            .song-seek::-ms-track {
+                background: transparent;
+                border-color: transparent;
+                color: transparent;
+                height: 2px;
+            }
+
+            .song-play, .btn-media {
+                background-color: rgba(255, 255, 255, 0);
+                border-radius: 300px;
+                border-color: none;
+                transition: 0.3s ease-in-out;
+            }
+            .song-play:hover, .btn-media:hover {
+                background-color: rgba(255, 255, 255, 0.3);
+            }
+            .song-time {
+                padding-top: 6px;
+            }
+            #game_list li.filter-invalidated, .song-item.filter-invalidated {
+                display: none;
+            }
         </style>
     </head>
-    <body>
+    <body class="overflow-y-hidden">
         <nav class="navbar sticky-top navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
                 <a class="navbar-brand excluded_link" href="#" onclick="hidePopup()">
@@ -486,9 +540,6 @@
                         <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" onclick="produceSelectAllSongsWarning()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#accessibilityModal"><i class="fa-solid fa-universal-access"></i> Accessibility</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Misc
@@ -499,13 +550,10 @@
                                 <li><a class="dropdown-item excluded_link" href="https://theballaam96.github.io/music_converter" rel="noreferrer noopener" target="_blank"><i class="fa-solid fa-arrows-rotate"></i> Convert Song</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="getShareLink(true, false, false, 0, false)"><i class="fa-solid fa-link"></i> Get Shareable Link</a></li>
                                 <li><a class="dropdown-item excluded_link" href="#" onclick="getYTPlaylist()"><i class="fa-brands fa-youtube"></i> Get YouTube Playlist</a></li>
+                                <li><a class="dropdown-item excluded_link" href="#" onclick="playRandomSong()"><i class="fa-solid fa-dice-five"></i> Play Random Song</a></li>
                             </ul>
                         </li>
                     </ul>
-                    <div class="d-flex">
-                        <input class="form-control me-2" type="text" placeholder="Search Game or Song..." aria-label="Search Game or Song..." id="search-game" onkeyup="filterGame()">
-                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal" style="width:fit-content"><i class="fa-solid fa-gear"></i></button>
-                    </div>
                 </div>
             </div>
         </nav>
@@ -546,112 +594,74 @@
                   </div>
                 </div>
             </div>
-            <!-- Accessibility Modal -->
-            <div class="modal fade" id="accessibilityModal" tabindex="-1" aria-labelledby="accessibilityModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="accessibilityModalLabel">Accessibility Options</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            All options will be cached:
-                            <form style="text-align: center" class="mt-3">
-                                <div class="input-group">
-                                    <div>
-                                        <input type="checkbox" data-toggle="toggle" class="form-check-input" id="min-view" />
-                                        Minimal View
-                                    </div>
-                                </div>
-                                <div class="input-group" id="text-view-container">
-                                    <div>
-                                        <input type="checkbox" data-toggle="toggle" class="form-check-input" id="text-view" />
-                                        Grid Text Shown
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-              </div>
             <!-- Advanced Filters Modal -->
             <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="advf-container">
-                                <div class="mb-3">
-                                    <label for="advf-game" class="form-label">Game Name</label>
-                                    <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
+                            <div class="row g-3">
+                                <!-- Song Name -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <input type="search" class="form-control" id="filter-songname" placeholder="Here Comes Trouble">
+                                    <label for="filter-songname">Song Name</label>
+                                    </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="advf-song" class="form-label">Song Name</label>
-                                    <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-group" class="form-label">Group</label>
-                                    <select id="advf-group" class="form-select">
-                                        <option selected>Any</option>
+                                <!-- Group -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <select class="form-select" id="filter-group" aria-label="Group Filter">
+                                        <option value="any" selected>Any</option>
                                         <option value="bgm">Background Music</option>
                                         <option value="events">Events</option>
                                         <option value="majoritems">Major Items</option>
                                         <option value="minoritems">Minor Items</option>
                                     </select>
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-bgm-length" class="form-label">BGM Length</label>
-                                    <div class="slider-range" id="advf-bgm-length"></div>
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
-                                    <div class="slider-range" id="advf-noloop-length"></div>
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-composer" class="form-label">Composers</label>
-                                    <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
-                                    <div id="composerHelpBock" class="form-text">
-                                        Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
+                                    <label for="filter-group">Song Group</label>
                                     </div>
                                 </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-converter" class="form-label">Converters</label>
-                                    <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
-                                    <div id="converterHelpBock" class="form-text">
-                                        Split names with comma (Eg. Ballaam, Adeleine64DS)
+                                <!-- Composer -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <input type="search" class="form-control" id="filter-composer" placeholder="Grant Kirkhope">
+                                    <label for="filter-composer">Composer</label>
                                     </div>
                                 </div>
-            
-                                <div class="mb-3">
-                                    <label class="form-label">Tags</label>
-                                    <div class="advf-hint">Select all that you are happy with</div>
-                                    <div id="tag-list" class="flexsplitter"></div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Show stream-safe songs only</label>
-                                    <br />
-                                    <div class="d-flex">
-                                        <input type='checkbox' class='form-check-input' value='' id='advf-safe' data-toggle='toggle' />
-                                        <label for='advf-safe' class="form-check-label ps-2">Only shows songs which are safe for stream highlights and YouTube VODs</label>
+                                <!-- Converter -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <input type="search" class="form-control" id="filter-converter" placeholder="Ballaam">
+                                    <label for="filter-converter">Converter</label>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="mt-3 mb-1">
+                                This option will only filter after uploading a previously-made pack.
+                            </div>
+                            <div class="row g-3">
+                                <!-- Is New -->
+                                <div class="col-md-6">
+                                    
+                                    <div class="form-floating">
+                                        <select class="form-select" id="filter-new" aria-label="New Filter">
+                                            <option value="any" selected>Don't care</option>
+                                            <option value="not-new">Not New</option>
+                                            <option value="new">New</option>
+                                        </select>
+                                        <label for="filter-new">Song Group</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
+                            <div class="d-flex" style="width: 100%">
+                                <button type="button" class="btn btn-primary" style="width:50%" onclick="resetFilters()">Reset Filters</button>
+                                <button type="button" class="btn btn-success" style="width:50%" data-bs-dismiss="modal" onclick="rebuildView()">Apply Filters</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -682,22 +692,98 @@
             <div id="toasts">
                 <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
             </div>
-            <!-- Breadcrumb -->
-            <div class="breadcrumb-container">
-                <nav aria-label="breadcrumb" style="flex:1">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page" onclick="hidePopup()">Home</li>
-                        <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
-                    </ol>
-                </nav>
-                <div id="song_selected_count" class="has-transition">0/0 songs selected</div>
-                <div class="flexsplitter has-transition" id="popup_master_controls" style="opacity:0" hidden>
-                    <button type="button" class="btn btn-outline-info" id="game-select-toggle" onclick="selectMaster()">Select All</button>
-                    <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
-                    <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
+            <!-- Random Song Toast -->
+            <div id="rs-toast">
+                <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x">
+                    <div class="toast fade" role="alert" aria-live="assertive" aria-atomic="true" id="rs-toast-inner">
+                        <div class="toast-body">
+                            <div class="d-flex justify-content-between">
+                                <div>
+                                    <!-- Song Info -->
+                                    <div>
+                                        <i class="fa-solid fa-music" style="width: 20px"></i>
+                                        <span id="rs-song" class="fw-bold"></span>
+                                    </div>
+                                    <div>
+                                        <i class="fa-solid fa-gamepad" style="width: 20px"></i>
+                                        <span id="rs-game"></span>
+                                    </div>
+                                </div>
+                                <div class="position-relative">
+                                    <!-- Volume Control -->
+                                    <button class="btn btn-sm btn-media" id="volume-control-btn" data-bs-toggle="modal" data-bs-target="#volumeModal">
+                                        <i class="fa-solid fa-volume-high"></i>
+                                    </button>
+                                    <div class="modal fade rounded-pill card start-100 top-50 translate-middle-y position-absolute" style="width: fit-content; height: fit-content" id="volumeModal" tabindex="-1" aria-labelledby="volume-control-btn" aria-hidden="true">
+                                        <div class="modal-dialog my-0">
+                                            <div class="modal-content ps-3 pe-1" style="height: fit-content">
+                                                <div class="d-flex">
+                                                    <div class="position-relative" style="width: 80px">
+                                                        <div class="position-absolute top-50 translate-middle-y">
+                                                            <input type="range" class="song-seek" id="rs-volume" />
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close" style="font-size: 0.5rem"></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-2">
+                                <input type="range" class="song-seek" value="0" id="rs-seek" />
+                            </div>
+                            <div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="text-start">
+                                        <span id="song-time"></span>
+                                    </div>
+                                    <div>
+                                        <button type="button" class="btn btn-sm btn-media" title="Previous Track" id="rs-prev" style="width: fit-content">
+                                            <i class="fa-solid fa-backward-fast"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-media" title="Toggle Playing" id="rs-toggle" style="width: fit-content">
+                                            <i class="fa-solid fa-play"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-media" title="Next Track" id="rs-next" style="width: fit-content">
+                                            <i class="fa-solid fa-forward-fast"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="content-center">
+            <!-- YT Player -->
+            <div id="player"></div>
+            <div>
+                <div id="song_selected_count" class="has-transition ms-auto p-2">0/0 songs selected</div>
+            </div>
+            <div class="px-4">
+                <div class="d-flex">
+                    <div style="width: 40%">
+                        <div class="d-flex">
+                            <div class="flex-grow-1">
+                                <div class="input-group">
+                                    <span class="input-group-text" id="search_head">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </span>
+                                    <input type="search" id="search_game_input" placeholder="Search Game..." class="form-control" aria-label="Search Game" aria-describedby="search_head" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" />
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-outline-secondary m-0" type="button" title="Filter Songs" style="height: 100%; width: fit-content; border-top-left-radius: 0px; border-bottom-left-radius: 0px" data-bs-toggle="modal" data-bs-target="#filterModal">
+                                    <i class="fa-solid fa-filter"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="overflow-y-scroll scroll-panel" style="height: 75vh">
+                            <ul id="game_list" class="list-group" role="tablist"></ul>
+                        </div>
+                    </div>
+                    <div id="song_panel" class="overflow-y-scroll tab-content p-4 scroll-panel" style="width: 60%"></div>
+                </div>
                 <div id="song_list" class="has-transition" style="display:grid; opacity: 1" render="grid" defaultrender="grid" gridtext="hide"></div>
                 <div id="popup_global_container" class="has-transition" hidden style="opacity:0">
                     <h1 id="popup_game_name">Add Songs to List</h1>
@@ -708,11 +794,6 @@
                     <div id="popup_controls" style="padding-bottom: 100px"></div>
                 </div>
             </div>
-        </div>
-        <div class="flexsplitter fix-bottom has-transition content-center" id="sticky-controls" hidden>
-            <button type="button" class="btn btn-outline-info" id="game-select-toggle-bottom" onclick="selectMaster()">Select All</button>
-            <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
-            <button type="button" class="btn btn-outline-danger" onclick="hidePopup()">Close</button>
         </div>
         <div class="popup_background hide" id="audio-event" style="z-index:2000">
             <div class="popup_prompt" style="width:fit-content">
@@ -743,6 +824,8 @@
         <script src="script/pack_builder/upload.js" type="text/javascript"></script>
         <script src="script/pack_builder/audio.js" type="text/javascript"></script>
         <script src="script/pack_builder/changelog.js" type="text/javascript"></script>
+        <script src="script/pack_builder/random_song.js" type="text/javascript"></script>
+        <script src="https://www.youtube.com/iframe_api"></script>
         <script>      
             const ZELDA_NAME = "The Legend of Zelda: "
             let midi_data_copy = null;
@@ -777,45 +860,6 @@
                 "events": "Events",
                 "majoritems": "Major Items",
                 "minoritems": "Minor Items",
-            }
-
-            function updateFullnessIndicators() {
-                const game_boxes = document.getElementsByClassName("game-handler");
-                for (let g = 0; g < game_boxes.length; g++) {
-                    const song_boxes = game_boxes[g].getElementsByClassName("midi-checkbox")
-                    let filled_counts = {}
-                    let total_counts = {}
-                    let has_song = false;
-                    let has_all_songs = true;
-                    let new_song_count = 0;
-                    for (let s = 0; s < song_boxes.length; s++) {
-                        const group = song_boxes[s].getAttribute("group")
-                        if (!Object.keys(filled_counts).includes(group)) {
-                            filled_counts[group] = 0
-                        }
-                        if (!Object.keys(total_counts).includes(group)) {
-                            total_counts[group] = 0
-                        }
-                        const ticked = song_boxes[s].getAttribute("ticked") == "true";
-                        const update_notif = song_boxes[s].getAttribute("update_notif") == "true";
-                        total_counts[group] += 1;
-                        if (ticked) {
-                            has_song = true;
-                            filled_counts[group] += 1;
-                        } else {
-                            has_all_songs = false;
-                        }
-                        if (update_notif) {
-                            new_song_count += 1;
-                        }
-                    }
-                    const hint_text = Object.keys(filled_counts).map(key => `${group_internal_to_name[key]}: ${filled_counts[key]}/${total_counts[key]}`).join("\n")
-                    game_boxes[g].getElementsByClassName("game-fullness-panel")[0].innerHTML = `
-                        ${new_song_count > 0 ? `<div class="ms-2 panel-new" title="${new_song_count} new song${new_song_count == 1 ? '' : 's'}"></div>` : ""}
-                        ${has_song ? `<div class="ms-2 ${has_all_songs ? "panel-all" : "panel-some"}" title="${hint_text}"></div>` : ""}
-                    `;
-
-                }
             }
 
             function scrollTo(value = 0) {
@@ -895,107 +939,16 @@
                 }, 300 + TRANSITION_SPEED)
             }
 
-            function destroyPopup() {
-                const song_el = document.getElementsByClassName("game-songs");
-                for (let s = 0; s < song_el.length; s++) {
-                    if (song_el[s].getAttribute("game") == current_game) {
-                        let songs_set = {};
-                        const inputs = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-                        for (let i = 0; i < inputs.length; i++) {
-                            songs_set[inputs[i].getAttribute("song-id")] = inputs[i].getAttribute("ticked");
-                        }
-                        const new_inputs = song_el[s].getElementsByClassName("midi-checkbox");
-                        for (let n = 0; n < new_inputs.length; n++) {
-                            new_inputs[n].setAttribute("ticked", songs_set[new_inputs[n].getAttribute("song-id")]);
-                        }
-                        hidePopup();
-                        return;
-                    }
-                }
-                hidePopup()
-                updateFullnessIndicators()
-            }
-
-            function toggleGameVisibility(game_internal, el) {
-                const game_pretty = el.getElementsByClassName("game-internal-name")[0].innerText;
-                const song_el = document.getElementsByClassName("game-songs");
-                document.getElementById("popup_game_name").innerText = game_pretty;
-                document.getElementById("sub-breadcrumb").innerText = game_pretty;
-                // Set game
-                let url = new URL(window.location.href);
-                let stateObj = {}
-                url.searchParams.set("game", game_internal.toString())
-                stateObj["game", game_internal.toString()]
-                window.history.replaceState(stateObj, "", url.toString());
-
-                changeGlobalSongListState(false);
-                for (let s = 0; s < song_el.length; s++) {
-                    if (song_el[s].getAttribute("game") == game_internal) {
-                        document.getElementById("popup_controls").innerHTML = song_el[s].innerHTML;
-                        let songs_set = {};
-                        const inputs = song_el[s].getElementsByClassName("midi-checkbox");
-                        for (let i = 0; i < inputs.length; i++) {
-                            songs_set[inputs[i].getAttribute("song-id")] = inputs[i].getAttribute("ticked");
-                        }
-                        const new_inputs = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-                        for (let n = 0; n < new_inputs.length; n++) {
-                            new_inputs[n].setAttribute("ticked", songs_set[new_inputs[n].getAttribute("song-id")]);
-                        }
-                        updateMaster();
-                        handleCredits(false);
-                        current_game = game_internal;
-                        return;
-                    }
-                }
-            }
-
             let folder_data = {}
             let build_progress = 0;
             let build_limit = 0;
 
-            function selectMaster() {
-                const checkboxes = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-                let all_checked = true;
-                let all_unchecked = true;
-                for (let c = 0; c < checkboxes.length; c++) {
-                    if (checkboxes[c].getAttribute("ticked") == "true") {
-                        all_unchecked = false;
-                    } else {
-                        all_checked = false;
-                    }
-                }
-                let setting = true;
-                if (all_checked) {
-                    setting = false;
-                }
-                for (let c = 0; c < checkboxes.length; c++) {
-                    checkboxes[c].setAttribute("ticked", setting.toString());
-                }
-                updateMaster();
-            }
-
             function updateMaster() {
-                const checkboxes = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
+                const all_checkboxes = document.getElementsByClassName("song-select");
                 let all_checked = true;
                 let all_unchecked = true;
-                for (let c = 0; c < checkboxes.length; c++) {
-                    if (checkboxes[c].getAttribute("ticked") == "true") {
-                        all_unchecked = false;
-                    } else {
-                        all_checked = false;
-                    }
-                }
-                let text = "Select All";
-                if (all_checked) {
-                    text = "Deselect All";
-                }
-                document.getElementById("game-select-toggle").innerText = text;
-                document.getElementById("game-select-toggle-bottom").innerText = text;
-                const all_checkboxes = document.getElementsByClassName("midi-checkbox");
-                all_checked = true;
-                all_unchecked = true;
                 for (c = 0; c < all_checkboxes.length; c++) {
-                    if (all_checkboxes[c].getAttribute("ticked") == "true") {
+                    if (all_checkboxes[c].checked) {
                         all_unchecked = false;
                     } else {
                         all_checked = false;
@@ -1004,7 +957,7 @@
                 const fa_hook = document.getElementById("select-all-songs-fa");
                 fa_hook.classList.remove("fa-regular");
                 fa_hook.classList.remove("fa-solid");
-                text = "Select All Songs";
+                let text = "Select All Songs";
                 if (all_checked) {
                     text = "Deselect All Songs";
                     fa_hook.classList.add("fa-regular");
@@ -1012,20 +965,10 @@
                     fa_hook.classList.add("fa-solid");
                 }
                 document.getElementById("select-all-songs").innerText = text;
+                window.updateGameCount();
                 updateCount();
             }
             window.updateMaster = updateMaster;
-
-            
-
-            function updateTickbox(el, game) {
-                if (el.getAttribute("ticked") == "false") {
-                    el.setAttribute("ticked",true);
-                } else {
-                    el.setAttribute("ticked",false);
-                }
-                updateMaster();
-            }
 
             function updateCount() {
                 const count = window.getSongSelectedCount();
@@ -1033,9 +976,9 @@
                 if (count == 1) {
                     song_text = "song";
                 }
-                document.getElementById("song_selected_count").innerText = `${count}/${midi_data_copy.length} ${song_text} selected.`
-                updateFullnessIndicators();
+                document.getElementById("song_selected_count").innerText = `${count}/${midi_data_copy.length} ${song_text} selected.`;
             }
+            window.updateCount = updateCount;
 
             function isNumeric(str) {
                 if (typeof str == "number") return true // Failsafe
@@ -1044,30 +987,20 @@
                         !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
             }
 
-            
-
             function produceSelectAllSongsWarning() {
                 document.getElementById("sasWarningInitiator").click();
             }
 
             function selectAllSongs() {
-                const checkboxes = document.getElementsByClassName("midi-checkbox");
+                const checkboxes = document.getElementsByClassName("song-select");
                 let all_checked = true;
                 for (let c = 0; c < checkboxes.length; c++) {
-                    if (adheresToFilterCheckbox(checkboxes[c])) {
-                        if (checkboxes[c].getAttribute("ticked") == "false") {
-                            all_checked = false;
-                        }
+                    if (!checkboxes[c].checked) {
+                        all_checked = false;
                     }
-                }
-                let state = "true"
-                if (all_checked) {
-                    state = "false";
                 }
                 for (let c = 0; c < checkboxes.length; c++) {
-                    if (adheresToFilterCheckbox(checkboxes[c])) {
-                        checkboxes[c].setAttribute("ticked",state);
-                    }
+                    checkboxes[c].checked = !all_checked;
                 }
                 updateMaster();
             }
