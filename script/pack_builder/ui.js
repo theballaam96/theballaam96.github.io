@@ -208,24 +208,16 @@ function addGame(game_name, image_url, songs, shown) {
                                         <div class="form-check" title="Add/Remove Song">
                                             <input type="checkbox" game="${tab_name}" class="song-select form-check-input" />
                                         </div>
-                                        <div class="flex-grow-1 fw-bold ps-1">
+                                        <div class="flex-grow-1 fw-bold ps-1 song_name_container">
                                             ${s.name}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="d-flex">
-                            <button class="btn song-play" audio="${s.audio}" song_index="${s.index}" play_state="not_loaded" style="width: fit-content">
-                                <i class="fa-solid fa-play"></i>
-                            </button>
-                            <div class="position-relative song-seek-container" style="min-width: 100px" hidden>
-                                <div class="song-time"></div>
-                                <div class="position-absolute bottom-0 start-0">
-                                    <input type="range" class="song-seek" value="0" />
-                                </div>
-                            </div>
-                        </div>
+                        <button class="btn song-play" audio="${s.audio}" song_index="${s.index}" play_state="not_loaded" style="width: fit-content">
+                            <i class="fa-solid fa-play"></i>
+                        </button>
                     </div>
                     <div class="d-flex px-2 pb-2 justify-content-between">
                         <!--<div>
