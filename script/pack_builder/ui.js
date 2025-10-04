@@ -147,7 +147,7 @@ function addGame(game_name, image_url, songs, shown) {
                                 <div class="position-absolute top-50 start-0 translate-middle-y">
                                     <div class="d-flex">
                                         <div class="form-check" title="Add/Remove Song">
-                                            <input type="checkbox" game="${tab_name}" class="song-select form-check-input" />
+                                            <input type="checkbox" game="${tab_name}" song-id="${s.index}" class="song-select form-check-input" />
                                         </div>
                                         <div class="flex-grow-1 fw-bold ps-1 song_name_container">
                                             ${s.name}
