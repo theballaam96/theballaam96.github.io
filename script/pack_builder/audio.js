@@ -69,7 +69,7 @@ let player;
 let currentInterval;
 window.current_song = null;
 
-function updatePlayer(videoId, index) {
+function updatePlayer(videoId, autoplay=true) {
     console.log(`Playing ${videoId}`)
     if (player && player.destroy) {
         player.destroy();
@@ -85,7 +85,7 @@ function updatePlayer(videoId, index) {
         },
         events: {
             onReady: (event) => {
-                setupControls(true);
+                setupControls(autoplay);
             }
         }
     });
@@ -174,7 +174,7 @@ function setVolumeFA() {
     container.innerHTML = `<i class="fa-solid fa-${fa_class}"></i>`;
 }
 
-function setupControls(autoplay) {
+function setupControls(autoplay = true) {
     console.log("Setting up controls")
     const playBtn = document.getElementById("rs-toggle");
     // const pauseBtn = document.getElementById('pause');
@@ -204,7 +204,6 @@ function setupControls(autoplay) {
         }
     }, 500);
     player.addEventListener("onStateChange", e => {
-        console.log("State Changed")
         const duration = player.getDuration();
         const current = player.getCurrentTime();
         updateSongProgress(current, duration, seekBar, songTime);
@@ -217,10 +216,12 @@ function setupControls(autoplay) {
     };
     if (autoplay) {
         playVideo();
+    } else {
+        pauseVideo();
     }
 }
 
-function updateAudioPlayer(url) {
+function updateAudioPlayer(url, autoplay=true) {
     const audio_container = document.getElementById("audio-event-content");
     audio_container.innerHTML = `
         <audio controls autoplay id="audio-event-handler">
@@ -263,7 +264,11 @@ function updateAudioPlayer(url) {
         const audio_handler = document.getElementById("audio-event-handler");
         audio_handler.currentTime = audio_handler.duration * percent;
     };
-    playVideo(false);
+    if (autoplay) {
+        playVideo(false);
+    } else {
+        pauseVideo(false);
+    }
 }
 
 function stopAllAudio() {
@@ -281,20 +286,14 @@ function stopAllAudio() {
 }
 window.stopAllAudio = stopAllAudio;
 
-function playSong(url, converter, index=null) {
+function playSong(url, index=null, autoplay=true) {
     getShareLink(false, true, false, index, false);
     stopAllAudio();
     window.current_song = index;
     if ((url.includes("cdn.discordapp.com")) || (url.includes(GITHUB_AUDIO))) {
         // Embedded audio
-        updateAudioPlayer(url);
+        updateAudioPlayer(url, autoplay);
     } else if ((url.includes("youtube")) || (url.includes("youtu.be"))) {
-        const CONVERTER_NO_EXTERNAL = []; // Any users who make their videos non-distributable on external websites will just open a new tab to YT
-        if (CONVERTER_NO_EXTERNAL.includes(converter)) {
-            window.open(url, "_blank");
-            document.getElementById("playSongModalClose").click();
-            return;
-        }
         // Embedded YT Link
         let video_id = null;
         if (url.includes("youtube")) {
@@ -307,7 +306,7 @@ function playSong(url, converter, index=null) {
             video_id = window.last(url.split("/")).split("?")[0]
         }
         if (video_id != null) {
-            updatePlayer(video_id, index);
+            updatePlayer(video_id, autoplay);
         }
     } else {
         window.open(url, "_blank");
@@ -326,30 +325,21 @@ function autoPlaySong() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const urlOutput = urlParams.get("conversion_id")
+    console.log(urlOutput)
     if (urlOutput == null) {
-        const game = urlParams.get("game");
-        if (game == null) {
-            return;
-        }
-        const btn = document.querySelector(`.game-header[game_id='${game}']`);
-        if (btn) {
-            btn.click();
-        }
         return;
     }
     let song_id = null;
     if (!isNaN(urlOutput)) {
         song_id = Number(urlOutput);
     }
-    const audio_clickers = document.getElementsByClassName("audio-clicker")
-    for (let a = 0; a < audio_clickers.length; a++) {
-        const targ_id = audio_clickers[a].getAttribute("conversion_id");
-        if (!isNaN(targ_id)) {
-            if (Number(targ_id) == song_id) {
-                audio_clickers[a].click();
-                return;
-            }
+    console.log(song_id)
+    const container = document.getElementById(`song-${song_id}`);
+    if (container) {
+        const btn = container.getElementsByClassName("song-play")[0];
+        if (btn) {
+            playSong(btn.getAttribute("audio"), parseInt(btn.getAttribute("song_index")), false);
         }
     }
-
 }
+window.autoPlaySong = autoPlaySong;

@@ -1,5 +1,5 @@
 const PARSEABLE_EXTENSIONS = ["bin","candy"];
-let uploaded_date = null;
+window.uploaded_date = null;
 
 function getUpdatedVersion(drive_id) {
     let found_id = null;
@@ -92,7 +92,7 @@ async function handlePack(data) {
             } else if (filename_local == "metadata.json") {
                 let metadata = await zip_store.files[filename_0].async("string");
                 metadata = JSON.parse(metadata)
-                uploaded_date = metadata.creation;
+                window.uploaded_date = metadata.creation;
             }
             const file_path_array = filename_0.split("/")
             const file_group = file_path_array[file_path_array.length - 2];
@@ -170,12 +170,16 @@ async function handlePack(data) {
         song_items[s].classList.remove("song-new");
     }
 
-    if (uploaded_date != null) {
+    if (window.uploaded_date != null) {
         midi_data_copy.forEach(item => {
             if (!matching_songs.includes(item.drive_id) && (item.initial_timestamp != null)) {
                 // Not in pack
                 const init_date = new Date(item.initial_timestamp);
-                const pack_date = new Date(uploaded_date);
+                const pack_date = new Date(window.uploaded_date);
+                if (item.game == "Adibou 2") {
+                    console.log(init_date)
+                    console.log(pack_date)
+                }
                 if (init_date > pack_date) {
                     const id = item.index;
                     for (c = 0; c < song_items.length; c++) {
@@ -199,11 +203,6 @@ async function handlePack(data) {
             }
         }
     })
-    document.getElementById("new-only-button").removeAttribute("hidden");
-    document.getElementById("new-only-button").style["border-top-left-radius"] = "0px";
-    document.getElementById("new-only-button").style["border-bottom-left-radius"] = "0px";
-    document.getElementById("search_game_input").style["border-top-right-radius"] = "0px";
-    document.getElementById("search_game_input").style["border-bottom-right-radius"] = "0px";
     window.updateMaster();
 }
 
@@ -218,16 +217,3 @@ document.getElementById("uploaded_pack").addEventListener("change", function(e) 
 function uploadPack() {
     document.getElementById("uploaded_pack").click();
 }
-
-document.getElementById("new-only-button").addEventListener("click", (e) => {
-    const btn = document.getElementById("new-only-button");
-    btn.classList.toggle("btn-outline-secondary");
-    btn.classList.toggle("btn-info");
-    if (btn.classList.contains("btn-info")) {
-        btn.setAttribute("title", "Show only new songs (Selected)");
-    } else {
-        btn.setAttribute("title", "Show only new songs");
-    }
-    document.getElementById("game_list").classList.toggle("new-only");
-    document.getElementById("song_panel").classList.toggle("new-only");
-})

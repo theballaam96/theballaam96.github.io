@@ -509,7 +509,7 @@
             .song-time {
                 padding-top: 6px;
             }
-            #game_list.new-only li:not(.has-new), #song_panel.new-only .song-item:not(.song-new) {
+            #game_list li.filter-invalidated, .song-item.filter-invalidated {
                 display: none;
             }
         </style>
@@ -540,9 +540,6 @@
                         <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" onclick="produceSelectAllSongsWarning()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#accessibilityModal"><i class="fa-solid fa-universal-access"></i> Accessibility</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Misc
@@ -557,10 +554,6 @@
                             </ul>
                         </li>
                     </ul>
-                    <div class="d-flex">
-                        <input class="form-control me-2" type="text" placeholder="Search Game or Song..." aria-label="Search Game or Song..." id="search-game" onkeyup="filterGame()">
-                        <button class="btn btn-outline-info" data-bs-toggle="modal" data-bs-target="#filterModal" style="width:fit-content"><i class="fa-solid fa-gear"></i></button>
-                    </div>
                 </div>
             </div>
         </nav>
@@ -601,112 +594,72 @@
                   </div>
                 </div>
             </div>
-            <!-- Accessibility Modal -->
-            <div class="modal fade" id="accessibilityModal" tabindex="-1" aria-labelledby="accessibilityModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="accessibilityModalLabel">Accessibility Options</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            All options will be cached:
-                            <form style="text-align: center" class="mt-3">
-                                <div class="input-group">
-                                    <div>
-                                        <input type="checkbox" data-toggle="toggle" class="form-check-input" id="min-view" />
-                                        Minimal View
-                                    </div>
-                                </div>
-                                <div class="input-group" id="text-view-container">
-                                    <div>
-                                        <input type="checkbox" data-toggle="toggle" class="form-check-input" id="text-view" />
-                                        Grid Text Shown
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-              </div>
             <!-- Advanced Filters Modal -->
             <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="filterModalLabel">Advanced Filters</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="advf-container">
-                                <div class="mb-3">
-                                    <label for="advf-game" class="form-label">Game Name</label>
-                                    <input type="text" class="form-control" id="advf-game" placeholder="Game Name..." />
+                            <div class="row g-3">
+                                <!-- Song Name -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <input type="search" class="form-control" id="filter-songname" placeholder="Here Comes Trouble">
+                                    <label for="filter-songname">Song Name</label>
+                                    </div>
                                 </div>
-                                
-                                <div class="mb-3">
-                                    <label for="advf-song" class="form-label">Song Name</label>
-                                    <input type="text" id="advf-song" class="form-control" placeholder="Song Name..." />
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-group" class="form-label">Group</label>
-                                    <select id="advf-group" class="form-select">
-                                        <option selected>Any</option>
+                                <!-- Group -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <select class="form-select" id="filter-group" aria-label="Group Filter">
+                                        <option value="any" selected>Any</option>
                                         <option value="bgm">Background Music</option>
                                         <option value="events">Events</option>
                                         <option value="majoritems">Major Items</option>
                                         <option value="minoritems">Minor Items</option>
                                     </select>
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-bgm-length" class="form-label">BGM Length</label>
-                                    <div class="slider-range" id="advf-bgm-length"></div>
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-noloop-length" class="form-label">Non-Looping Lengths</label>
-                                    <div class="slider-range" id="advf-noloop-length"></div>
-                                </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-composer" class="form-label">Composers</label>
-                                    <input type="text" id="advf-composer" class="form-control" placeholder="Composer Name..." aria-describedby="composerHelpBlock"/>
-                                    <div id="composerHelpBock" class="form-text">
-                                        Split names with comma (Eg. Koji Kondo, Grant Kirkhope)
+                                    <label for="filter-group">Song Group</label>
                                     </div>
                                 </div>
-            
-                                <div class="mb-3">
-                                    <label for="advf-converter" class="form-label">Converters</label>
-                                    <input type="text" id="advf-converter" class="form-control" placeholder="Converter Name..."  aria-describedby="converterHelpBlock"/>
-                                    <div id="converterHelpBock" class="form-text">
-                                        Split names with comma (Eg. Ballaam, Adeleine64DS)
+                                <!-- Composer -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <input type="search" class="form-control" id="filter-composer" placeholder="Grant Kirkhope">
+                                    <label for="filter-composer">Composer</label>
                                     </div>
                                 </div>
-            
-                                <div class="mb-3">
-                                    <label class="form-label">Tags</label>
-                                    <div class="advf-hint">Select all that you are happy with</div>
-                                    <div id="tag-list" class="flexsplitter"></div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label class="form-label">Show stream-safe songs only</label>
-                                    <br />
-                                    <div class="d-flex">
-                                        <input type='checkbox' class='form-check-input' value='' id='advf-safe' data-toggle='toggle' />
-                                        <label for='advf-safe' class="form-check-label ps-2">Only shows songs which are safe for stream highlights and YouTube VODs</label>
+                                <!-- Converter -->
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                    <input type="search" class="form-control" id="filter-converter" placeholder="Ballaam">
+                                    <label for="filter-converter">Converter</label>
                                     </div>
                                 </div>
-                            </form>
+                            </div>
+                            <div class="mt-3 mb-1">
+                                This option will only filter after uploading a previously-made pack.
+                            </div>
+                            <div class="row g-3">
+                                <!-- Is New -->
+                                <div class="col-md-6">
+                                    
+                                    <div class="form-floating">
+                                        <select class="form-select" id="filter-new" aria-label="New Filter">
+                                            <option value="any" selected>Don't care</option>
+                                            <option value="not-new">Not New</option>
+                                            <option value="new">New</option>
+                                        </select>
+                                        <label for="filter-new">Song Group</label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="compileAdvancedFilters()">Apply</button>
+                            <button type="button" class="btn btn-primary" onclick="resetFilters()">Reset</button>
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="rebuildView()">Apply Filters</button>
                         </div>
                     </div>
                 </div>
@@ -814,12 +767,12 @@
                                     <span class="input-group-text" id="search_head">
                                         <i class="fa-solid fa-magnifying-glass"></i>
                                     </span>
-                                    <input type="search" id="search_game_input" placeholder="Search Game..." class="form-control" aria-label="Search Game" aria-describedby="search_head"/>
+                                    <input type="search" id="search_game_input" placeholder="Search Game..." class="form-control" aria-label="Search Game" aria-describedby="search_head" style="border-top-right-radius: 0px; border-bottom-right-radius: 0px" />
                                 </div>
                             </div>
                             <div>
-                                <button class="btn btn-outline-secondary m-0" type="button" id="new-only-button" title="Show only new songs" style="height: 100%; width: fit-content" hidden>
-                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                <button class="btn btn-outline-secondary m-0" type="button" title="Filter Songs" style="height: 100%; width: fit-content; border-top-left-radius: 0px; border-bottom-left-radius: 0px" data-bs-toggle="modal" data-bs-target="#filterModal">
+                                    <i class="fa-solid fa-filter"></i>
                                 </button>
                             </div>
                         </div>

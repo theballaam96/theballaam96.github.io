@@ -64,65 +64,6 @@ function handleCredits(update_cookie) {
     }
 }
 
-function handleMinView(update_cookie, update_checkbox) {
-    let setting = "grid";
-    if (document.getElementById("min-view").checked) {
-        setting = "minimal";
-    }
-    document.getElementById("song_list").setAttribute("render",setting);
-    if (update_cookie) {
-        window.setPackCookie("min-view", setting);
-    }
-    document.getElementById("song_list").setAttribute("defaultrender", getCookie("min-view"));
-}
-
-function handleTextView(update_cookie) {
-    let setting = "hide";
-    if (document.getElementById("text-view").checked) {
-        setting = "show";
-    }
-    document.getElementById("song_list").setAttribute("gridtext",setting);
-    if (update_cookie) {
-        window.setPackCookie("text-view", setting);
-    }
-}
-
-function setMinView(state, update_cookie, update_checkbox) {
-    if (update_checkbox) {
-        document.getElementById("min-view").checked = state;
-    }
-    handleMinView(update_cookie, update_checkbox);
-}
-
-function setMinViewToDefault() {
-    const hook = document.getElementById("song_list");
-    hook.setAttribute("render", hook.getAttribute("defaultrender"));
-}
-
-function setTextView(state, update_cookie) {
-    document.getElementById("text-view").checked = state;
-    handleTextView(update_cookie);
-}
-
-let previous_width = null;
-function handleSize() {
-    return;
-    const force_limit = 700;
-    const width = document.documentElement.clientWidth;
-    if (width <= force_limit) {
-        if ((previous_width == null) || (previous_width > force_limit)) {
-            setMinView(true, false, false);
-        }
-    } else {
-        if ((previous_width == null) || (previous_width <= force_limit)) {
-            setMinViewToDefault();
-        }
-    }
-    previous_width = width;
-}
-window.onresize = handleSize;
-handleSize();
-
 function getGameTabName(game_name) {
     const filtered_name = game_name
         .replace(/[^a-zA-Z0-9 ]/g, '') // keep only alphanumeric + space
@@ -165,7 +106,7 @@ function addGame(game_name, image_url, songs, shown) {
     // console.log(songs)
     const tab_name = getGameTabName(game_name);
     // Game Construction
-    const local_game_html = `<li class="list-group-item ${shown ? 'active' : ''}" id="tab-${tab_name}" data-bs-toggle="pill" data-bs-target="#${tab_name}" type="button" role="tab" aria-controls="${tab_name}" aria-selected="${shown ? 'true' : 'false'}">
+    const local_game_html = `<li class="list-group-item ${shown ? 'active' : ''} game-tab" id="tab-${tab_name}" data-bs-toggle="pill" data-bs-target="#${tab_name}" type="button" role="tab" aria-controls="${tab_name}" aria-selected="${shown ? 'true' : 'false'}">
         <div class="d-flex">
             <div class="flex-grow-1">
                 <div class="name_container">
@@ -367,13 +308,8 @@ async function getMidiData() {
     window.updateMaster();
     updateProgress(prog++, total_prog, "Updated Master");
     // Update click events
-    setMinView(window.getCookie("min-view") == "minimal", false, true);
-    setTextView(window.getCookie("text-view") == "show", false)
     document.getElementById("credits_hidden").checked = window.getCookie("credits") == "true";
     document.getElementById("credits_hidden").addEventListener("click", () => {handleCredits(true)});
-    document.getElementById("min-view").addEventListener("click", () => {handleMinView(true, true)});
-    document.getElementById("text-view").addEventListener("click", () => {handleTextView(true)});
-
     const song_selects = document.getElementsByClassName("song-select");
     for (let s = 0; s < song_selects.length; s++) {
         song_selects[s].addEventListener("click", (e) => {
@@ -392,7 +328,7 @@ async function getMidiData() {
             const btn = e.target.closest("button");
             const sg_index = parseInt(btn.getAttribute("song_index"));
             if (btn.getAttribute("play_state") == "not_loaded" || (window.current_song !== sg_index)) {
-                window.playSong(btn.getAttribute("audio"), "", sg_index);
+                window.playSong(btn.getAttribute("audio"), sg_index);
             }
         })
     }
@@ -401,6 +337,7 @@ async function getMidiData() {
     if (willAutoDownload()) {
         document.getElementById("build-pack-button").click();
     }
+    window.autoPlaySong();
 }
 
 function updateProgress(progress, total, text="", error=false) {
