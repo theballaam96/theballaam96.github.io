@@ -1258,16 +1258,62 @@
             }
             verifyRequirements()
 
+            let highlightedItem = "";
+            updateHighlightedItem = (itemName) => {
+                const oldItem = highlightedItem;
+                const newItem = itemName === oldItem ? "" : itemName;
+
+                if (oldItem !== "") {
+                    document.querySelectorAll(`span[data-item-name="${oldItem}"]`).forEach(el => {
+                        el.classList.replace("text-bg-warning", "text-bg-info");
+                    });
+                }
+
+                if (newItem !== "") {
+                    document.querySelectorAll(`span[data-item-name="${newItem}"]`).forEach(el => {
+                        el.classList.replace("text-bg-info", "text-bg-warning");
+                    });
+                }
+
+                highlightedItem = newItem;
+            }
+
             movesToHTML = (list) => {
-                return `
-                <div class="card mb-3">
-                    <div class="card-header">
-                        Required Moves
-                    </div>
-                    <ul class='list-group'>
-                        ${list.map(perm => `<li class='list-group-item'>${perm.map(item => `<span class='badge text-bg-info'>${item.name}</span>`).join(" ")}</li>`).join("")}
-                    </ul>
-                </div>`
+                const container = document.createElement("div");
+                container.classList.add("card", "mb-3");
+
+                const header = document.createElement("div");
+                header.className = "card-header";
+                header.innerText = "Required Moves";
+                container.appendChild(header);
+
+                const ul = document.createElement("ul");
+                ul.className = "list-group";
+
+                list.forEach(perm => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item";
+
+                    perm.forEach(item => {
+                        const span = document.createElement("span");
+                        span.classList.add("badge", "text-bg-info");
+                        span.innerText = item.name;
+                        span.style.cursor = "pointer";
+
+                        span.dataset.itemName = item.name;
+
+                        span.addEventListener("click", () => updateHighlightedItem(item.name));
+
+                        li.appendChild(span);
+                        li.append(" ");
+                    });
+
+                    ul.appendChild(li);
+                });
+
+                container.appendChild(ul);
+
+                return container;
             }
 
             getRequiredMoves = () => {
@@ -1300,6 +1346,7 @@
                     "Tiny",
                     "Chunky",
                 ]
+                updateHighlightedItem("");
 
                 levels.forEach(level => {
                     kongs.forEach(kong => {
@@ -1399,11 +1446,10 @@
                     filtered_permutations.forEach(perm => {
                         console.log(perm.map(item => item.name))
                     })
-                    dump_hook.innerHTML = movesToHTML(filtered_permutations)
+                    dump_hook.appendChild(movesToHTML(filtered_permutations));
                     return
                 }
-                dump_hook.innerHTML = movesToHTML([[Moves.Moveless]])
-                
+                dump_hook.appendChild(movesToHTML([[Moves.Moveless]]));
             }
 
             const recalculators = document.getElementsByClassName("recalculate");
