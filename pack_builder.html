@@ -658,8 +658,10 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" onclick="resetFilters()">Reset</button>
-                            <button type="button" class="btn btn-success" data-bs-dismiss="modal" onclick="rebuildView()">Apply Filters</button>
+                            <div class="d-flex" style="width: 100%">
+                                <button type="button" class="btn btn-primary" style="width:50%" onclick="resetFilters()">Reset Filters</button>
+                                <button type="button" class="btn btn-success" style="width:50%" data-bs-dismiss="modal" onclick="rebuildView()">Apply Filters</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -699,11 +701,11 @@
                                 <div>
                                     <!-- Song Info -->
                                     <div>
-                                        <i class="fa-solid fa-music"></i>
+                                        <i class="fa-solid fa-music" style="width: 20px"></i>
                                         <span id="rs-song" class="fw-bold"></span>
                                     </div>
                                     <div>
-                                        <i class="fa-solid fa-gamepad"></i>
+                                        <i class="fa-solid fa-gamepad" style="width: 20px"></i>
                                         <span id="rs-game"></span>
                                     </div>
                                 </div>

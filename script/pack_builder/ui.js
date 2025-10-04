@@ -161,11 +161,13 @@ function addGame(game_name, image_url, songs, shown) {
                         </button>
                     </div>
                     <div class="d-flex px-2 pb-2 justify-content-between">
-                        <!--<div>
-                            ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow">&#119070; ${composer}</div>` : ''}
-                        </div>-->
-                        <div>
-                            ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate" style="width: 24px"></i> ${converter}</div>` : ''}
+                        <div class="d-flex justify-content-start" style="width: 50%">
+                            <div style="width: 50%; max-width: 50%; overflow: hidden">
+                                ${converter != '' ? `<div title='Converter${converter.includes(',') ? 's' : ''} into DK64 Soundfont: ${converter}' class="handle-overflow"><i class="fa-solid fa-rotate" style="width: 24px"></i> ${converter}</div>` : ''}
+                            </div>
+                            <div class="ms-3" style="width: 50%; max-width: 50%">
+                                ${composer != '' ? `<div title='Composer${composer.includes(',') ? 's' : ''} of original song: ${composer}' class="handle-overflow"><span class="fw-bold" style="width: 24px">&#119070;</span> ${composer}</div>` : ''}
+                            </div>
                         </div>
                         <div>
                             ${tag_html}
