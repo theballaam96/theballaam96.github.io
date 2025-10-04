@@ -205,11 +205,6 @@
             #search-game {
                 height: 100%;
             }
-            #song_selected_count {
-                padding: 5px;
-                margin-left: auto;
-                margin-right: auto;
-            }
             .audio_positioner_container {
                 width: 100%;
                 position: relative;
@@ -408,9 +403,6 @@
             #popup_master_controls {
                 margin-left: auto;
                 flex: 1;
-            }
-            #song_selected_count {
-                text-align: right;
             }
             .has-transition {
                 transition: 0.1s ease-in-out;
@@ -810,20 +802,8 @@
             </div>
             <!-- YT Player -->
             <div id="player"></div>
-            <!-- Breadcrumb -->
-            <div class="breadcrumb-container">
-                <nav aria-label="breadcrumb" style="flex:1">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item active" id="home-breadcrumb" aria-current="page" onclick="hidePopup()">Home</li>
-                        <li class="breadcrumb-item hide" id="sub-breadcrumb">Library</li>
-                    </ol>
-                </nav>
-                <div id="song_selected_count" class="has-transition">0/0 songs selected</div>
-                <div class="flexsplitter has-transition" id="popup_master_controls" style="opacity:0" hidden>
-                    <button type="button" class="btn btn-outline-info" id="game-select-toggle" onclick="selectMaster()">Select All</button>
-                    <button type="button" class="btn btn-outline-success" onclick="destroyPopup()">Apply changes</button>
-                    <button type="button" class="btn btn-outline-danger" id="addSongClose" onclick="hidePopup()">Close</button>
-                </div>
+            <div>
+                <div id="song_selected_count" class="has-transition ms-auto p-2">0/0 songs selected</div>
             </div>
             <div class="px-4">
                 <div class="d-flex">
@@ -927,9 +907,6 @@
                 "minoritems": "Minor Items",
             }
 
-            function updateFullnessIndicators() {
-            }
-
             function scrollTo(value = 0) {
                 document.body.scrollTop = value; // For Safari
                 document.documentElement.scrollTop = value; // For Chrome, Firefox, IE and Opera
@@ -1007,104 +984,14 @@
                 }, 300 + TRANSITION_SPEED)
             }
 
-            function destroyPopup() {
-                const song_el = document.getElementsByClassName("game-songs");
-                for (let s = 0; s < song_el.length; s++) {
-                    if (song_el[s].getAttribute("game") == current_game) {
-                        let songs_set = {};
-                        const inputs = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-                        for (let i = 0; i < inputs.length; i++) {
-                            songs_set[inputs[i].getAttribute("song-id")] = inputs[i].getAttribute("ticked");
-                        }
-                        const new_inputs = song_el[s].getElementsByClassName("midi-checkbox");
-                        for (let n = 0; n < new_inputs.length; n++) {
-                            new_inputs[n].setAttribute("ticked", songs_set[new_inputs[n].getAttribute("song-id")]);
-                        }
-                        hidePopup();
-                        return;
-                    }
-                }
-                hidePopup()
-                updateFullnessIndicators()
-            }
-
-            function toggleGameVisibility(game_internal, el) {
-                const game_pretty = el.getElementsByClassName("game-internal-name")[0].innerText;
-                const song_el = document.getElementsByClassName("game-songs");
-                document.getElementById("popup_game_name").innerText = game_pretty;
-                document.getElementById("sub-breadcrumb").innerText = game_pretty;
-                // Set game
-                let url = new URL(window.location.href);
-                let stateObj = {}
-                url.searchParams.set("game", game_internal.toString())
-                stateObj["game", game_internal.toString()]
-                window.history.replaceState(stateObj, "", url.toString());
-
-                changeGlobalSongListState(false);
-                for (let s = 0; s < song_el.length; s++) {
-                    if (song_el[s].getAttribute("game") == game_internal) {
-                        document.getElementById("popup_controls").innerHTML = song_el[s].innerHTML;
-                        let songs_set = {};
-                        const inputs = song_el[s].getElementsByClassName("midi-checkbox");
-                        for (let i = 0; i < inputs.length; i++) {
-                            songs_set[inputs[i].getAttribute("song-id")] = inputs[i].getAttribute("ticked");
-                        }
-                        const new_inputs = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-                        for (let n = 0; n < new_inputs.length; n++) {
-                            new_inputs[n].setAttribute("ticked", songs_set[new_inputs[n].getAttribute("song-id")]);
-                        }
-                        updateMaster();
-                        handleCredits(false);
-                        current_game = game_internal;
-                        return;
-                    }
-                }
-            }
-
             let folder_data = {}
             let build_progress = 0;
             let build_limit = 0;
 
-            function selectMaster() {
-                const checkboxes = document.getElementById("popup_controls").getElementsByClassName("midi-checkbox");
-                let all_checked = true;
-                let all_unchecked = true;
-                for (let c = 0; c < checkboxes.length; c++) {
-                    if (checkboxes[c].getAttribute("ticked") == "true") {
-                        all_unchecked = false;
-                    } else {
-                        all_checked = false;
-                    }
-                }
-                let setting = true;
-                if (all_checked) {
-                    setting = false;
-                }
-                for (let c = 0; c < checkboxes.length; c++) {
-                    checkboxes[c].setAttribute("ticked", setting.toString());
-                }
-                updateMaster();
-            }
-
             function updateMaster() {
-                const checkboxes = document.getElementsByClassName("song-select");
+                const all_checkboxes = document.getElementsByClassName("song-select");
                 let all_checked = true;
                 let all_unchecked = true;
-                for (let c = 0; c < checkboxes.length; c++) {
-                    if (checkboxes[c].checked) {
-                        all_unchecked = false;
-                    } else {
-                        all_checked = false;
-                    }
-                }
-                let text = "Select All";
-                if (all_checked) {
-                    text = "Deselect All";
-                }
-                document.getElementById("game-select-toggle").innerText = text;
-                const all_checkboxes = document.getElementsByClassName("song-select");
-                all_checked = true;
-                all_unchecked = true;
                 for (c = 0; c < all_checkboxes.length; c++) {
                     if (all_checkboxes[c].checked) {
                         all_unchecked = false;
@@ -1115,7 +1002,7 @@
                 const fa_hook = document.getElementById("select-all-songs-fa");
                 fa_hook.classList.remove("fa-regular");
                 fa_hook.classList.remove("fa-solid");
-                text = "Select All Songs";
+                let text = "Select All Songs";
                 if (all_checked) {
                     text = "Deselect All Songs";
                     fa_hook.classList.add("fa-regular");
@@ -1134,9 +1021,9 @@
                 if (count == 1) {
                     song_text = "song";
                 }
-                document.getElementById("song_selected_count").innerText = `${count}/${midi_data_copy.length} ${song_text} selected.`
-                updateFullnessIndicators();
+                document.getElementById("song_selected_count").innerText = `${count}/${midi_data_copy.length} ${song_text} selected.`;
             }
+            window.updateCount = updateCount;
 
             function isNumeric(str) {
                 if (typeof str == "number") return true // Failsafe
@@ -1153,16 +1040,12 @@
                 const checkboxes = document.getElementsByClassName("song-select");
                 let all_checked = true;
                 for (let c = 0; c < checkboxes.length; c++) {
-                    if (adheresToFilterCheckbox(checkboxes[c])) {
-                        if (checkboxes[c].checked) {
-                            all_checked = false;
-                        }
+                    if (!checkboxes[c].checked) {
+                        all_checked = false;
                     }
                 }
                 for (let c = 0; c < checkboxes.length; c++) {
-                    if (adheresToFilterCheckbox(checkboxes[c])) {
-                        checkboxes[c].checked = !all_checked;
-                    }
+                    checkboxes[c].checked = !all_checked;
                 }
                 updateMaster();
             }

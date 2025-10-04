@@ -281,6 +281,7 @@ function updateGameCount(name = null) {
         }
         document.getElementById(`new-${local_game}`).innerText = new_text;
     }
+    window.updateCount();
 }
 window.updateGameCount = updateGameCount;
 
@@ -294,6 +295,7 @@ function selectAllForGame(name = null, state = true) {
     for (let k = 0; k < song_checkboxes.length; k++) {
         song_checkboxes[k].checked = state;
     }
+    updateGameCount(name);
 }
 
 async function getMidiData() {

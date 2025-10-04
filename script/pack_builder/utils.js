@@ -1,7 +1,6 @@
 function getSongSelectedCount() {
-    const checkboxes = document.querySelectorAll(".song-select[checked]");
-    let count = checkboxes.length;
-    return count;
+    const checkboxes = document.querySelectorAll(".song-select:checked");
+    return checkboxes.length;
 }
 window.getSongSelectedCount = getSongSelectedCount;
 
