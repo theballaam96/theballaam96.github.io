@@ -330,6 +330,7 @@ async function getMidiData() {
             const btn = e.target.closest("button");
             const sg_index = parseInt(btn.getAttribute("song_index"));
             if (btn.getAttribute("play_state") == "not_loaded" || (window.current_song !== sg_index)) {
+                window.pushSong(sg_index);
                 window.playSong(btn.getAttribute("audio"), sg_index);
             }
         })

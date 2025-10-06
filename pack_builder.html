@@ -437,7 +437,7 @@
                 color: #fff;
             }
             .scroll-panel {
-                height: 85vh;
+                height: 74vh;
             }
             #player {
                 display: none;
@@ -502,6 +502,9 @@
                 border-radius: 300px;
                 border-color: none;
                 transition: 0.3s ease-in-out;
+            }
+            .song-play:disabled, .btn-media:disabled {
+                border: 0;
             }
             .song-play:hover, .btn-media:hover {
                 background-color: rgba(255, 255, 255, 0.3);
@@ -739,12 +742,19 @@
                                         <span id="song-time"></span>
                                     </div>
                                     <div>
-                                        <button type="button" class="btn btn-sm btn-media" title="Previous Track" id="rs-prev" style="width: fit-content">
+                                        <!-- Shuffle -->
+                                        <button type="button" class="btn btn-sm btn-media text-secondary" title="Shuffle" id="rs-shuffle" style="width: fit-content">
+                                            <i class="fa-solid fa-shuffle"></i>
+                                        </button>
+                                        <!-- Prev -->
+                                        <button type="button" class="btn btn-sm btn-media text-secondary" title="Previous Track" id="rs-prev" style="width: fit-content" disabled>
                                             <i class="fa-solid fa-backward-fast"></i>
                                         </button>
+                                        <!-- Play/Pause -->
                                         <button type="button" class="btn btn-sm btn-media" title="Toggle Playing" id="rs-toggle" style="width: fit-content">
                                             <i class="fa-solid fa-play"></i>
                                         </button>
+                                        <!-- Next -->
                                         <button type="button" class="btn btn-sm btn-media" title="Next Track" id="rs-next" style="width: fit-content">
                                             <i class="fa-solid fa-forward-fast"></i>
                                         </button>
@@ -778,7 +788,7 @@
                                 </button>
                             </div>
                         </div>
-                        <div class="overflow-y-scroll scroll-panel" style="height: 75vh">
+                        <div class="overflow-y-scroll scroll-panel" style="height: 70vh">
                             <ul id="game_list" class="list-group" role="tablist"></ul>
                         </div>
                     </div>

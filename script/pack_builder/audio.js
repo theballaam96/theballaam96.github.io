@@ -333,12 +333,13 @@ function autoPlaySong() {
     if (!isNaN(urlOutput)) {
         song_id = Number(urlOutput);
     }
-    console.log(song_id)
     const container = document.getElementById(`song-${song_id}`);
     if (container) {
         const btn = container.getElementsByClassName("song-play")[0];
         if (btn) {
-            playSong(btn.getAttribute("audio"), parseInt(btn.getAttribute("song_index")), false);
+            const id = parseInt(btn.getAttribute("song_index"));
+            window.pushSong(id);
+            playSong(btn.getAttribute("audio"), id, false);
         }
     }
 }
