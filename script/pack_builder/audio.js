@@ -130,6 +130,12 @@ function showSongPopup(id) {
     const song_name = container.getElementsByClassName("song_name_container")[0].innerText.trim();
     document.getElementById("rs-song").innerText = song_name;
     document.getElementById("rs-game").innerText = game_name;
+    
+    // Enable the goto button when a song is playing
+    const gotoBtn = document.getElementById("rs-goto");
+    gotoBtn.classList.remove("text-secondary");
+    gotoBtn.removeAttribute("disabled");
+    
     console.log(`Playing: ${game_name} - ${song_name}`);
     const toastEl = document.getElementById('rs-toast-inner');
     if (!toastEl.classList.contains("show")) {
@@ -283,6 +289,13 @@ function stopAllAudio() {
     if (player && player.destroy) {
         player.destroy();
     }
+    
+    // Disable the goto button when audio stops
+    const gotoBtn = document.getElementById("rs-goto");
+    if (gotoBtn) {
+        gotoBtn.classList.add("text-secondary");
+        gotoBtn.setAttribute("disabled", "disabled");
+    }
 }
 window.stopAllAudio = stopAllAudio;
 
@@ -318,7 +331,17 @@ function playSong(url, index=null, autoplay=true) {
 window.playSong = playSong;
 
 function closeSong() {
-    document.getElementById("audio-event-content").innerHTML = ""
+    document.getElementById("audio-event-content").innerHTML = "";
+    
+    // Disable the goto button when the song modal is closed
+    const gotoBtn = document.getElementById("rs-goto");
+    if (gotoBtn) {
+        gotoBtn.classList.add("text-secondary");
+        gotoBtn.setAttribute("disabled", "disabled");
+    }
+    
+    // Clear the current song
+    window.current_song = null;
 }
 
 function autoPlaySong() {
@@ -344,3 +367,86 @@ function autoPlaySong() {
     }
 }
 window.autoPlaySong = autoPlaySong;
+
+function gotoCurrentGame() {
+    if (window.current_song == null) {
+        console.warn("No current song playing");
+        return;
+    }
+    
+    const container = document.getElementById(`song-${window.current_song}`);
+    if (!container) {
+        console.warn(`Could not find song container for song ${window.current_song}`);
+        return;
+    }
+    
+    const game = container.getAttribute("game");
+    const game_tab = document.getElementById(`tab-${game}`);
+    if (!game_tab) {
+        console.warn(`Could not find game tab: tab-${game}`);
+        return;
+    }
+    
+    console.log(`Going to song ${window.current_song} in game: ${game}`);
+    
+    // Switch to game view if needed
+    const global_song_list = document.getElementById("song_list");
+    const popup_container = document.getElementById("popup_global_container");
+    
+    if (global_song_list && !global_song_list.hasAttribute("hidden")) {
+        global_song_list.setAttribute("hidden", "");
+        popup_container.removeAttribute("hidden");
+    }
+    
+    // Activate the game tab
+    game_tab.click();
+    
+    // Scroll to and highlight the song after a brief delay
+    setTimeout(() => {
+        const songElement = document.querySelector(`#${game} #song-${window.current_song}`);
+        if (songElement) {
+            songElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            // Add highlight effect
+            songElement.style.backgroundColor = 'rgba(255, 193, 7, 0.3)';
+            songElement.style.border = '2px solid #ffc107';
+            songElement.style.transition = 'all 0.3s ease';
+            
+            // Remove highlight after 3 seconds
+            setTimeout(() => {
+                songElement.style.backgroundColor = '';
+                songElement.style.border = '';
+            }, 3000);
+        }
+    }, 200);
+}
+
+function activateGameTabAndGoToSong(game_tab, goToSongCallback) {
+    try {
+        if (typeof bootstrap !== 'undefined' && bootstrap.Tab) {
+            const tabTrigger = new bootstrap.Tab(game_tab);
+            tabTrigger.show();
+            console.log("Activated game tab using Bootstrap");
+            
+            // Wait for tab content to be shown, then scroll to song
+            setTimeout(goToSongCallback, 300);
+        } else {
+            // Fallback: manually trigger the tab
+            game_tab.click();
+            console.log("Activated game tab using click");
+            
+            // Wait for tab content to be shown, then scroll to song
+            setTimeout(goToSongCallback, 300);
+        }
+    } catch (error) {
+        console.error("Error activating tab:", error);
+        // Last resort: try clicking and still attempt to scroll
+        try {
+            game_tab.click();
+            setTimeout(goToSongCallback, 500);
+        } catch (clickError) {
+            console.error("Even clicking failed:", clickError);
+        }
+    }
+}
+window.gotoCurrentGame = gotoCurrentGame;

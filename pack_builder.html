@@ -758,6 +758,10 @@
                                         <button type="button" class="btn btn-sm btn-media" title="Next Track" id="rs-next" style="width: fit-content">
                                             <i class="fa-solid fa-forward-fast"></i>
                                         </button>
+                                        <!-- Goto Game -->
+                                        <button type="button" class="btn btn-sm btn-media text-secondary" title="Go to Game" id="rs-goto" style="width: fit-content" disabled>
+                                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -881,63 +885,81 @@
 
             function changeGlobalSongListState(shown=true) {
                 const global_song_list = document.getElementById("song_list");
-                const was_shown = !global_song_list.hasAttribute("hidden");
                 const game_song_list = document.getElementById("popup_global_container");
+                
+                // Check if critical elements exist
+                if (!global_song_list || !game_song_list) {
+                    console.warn("Critical elements for changeGlobalSongListState are missing");
+                    return;
+                }
+                
+                // Optional elements - function can work without these
                 const game_song_buttons = document.getElementById("popup_master_controls");
                 const sticky_controls = document.getElementById("sticky-controls");
                 const ss_count_el = document.getElementById("song_selected_count");
                 const main_breadcrumb = document.getElementById("home-breadcrumb");
                 const sub_breadcrumb = document.getElementById("sub-breadcrumb");
+                
+                const was_shown = !global_song_list.hasAttribute("hidden");
                 if (shown == was_shown) {
                     return;
                 }
                 if (shown) {
                     game_song_list.style.opacity = 0;
-                    game_song_buttons.style.opacity = 0;
-                    sticky_controls.style.opacity = 0;
-                    main_breadcrumb.classList.add("active");
-                    main_breadcrumb.setAttribute("aria-current","page");
-                    sub_breadcrumb.classList.remove("active");
-                    sub_breadcrumb.removeAttribute("aria-current");
-                    main_breadcrumb.innerHTML = "Home";
-                    sub_breadcrumb.classList.add("hide");
+                    if (game_song_buttons) game_song_buttons.style.opacity = 0;
+                    if (sticky_controls) sticky_controls.style.opacity = 0;
+                    if (main_breadcrumb) {
+                        main_breadcrumb.classList.add("active");
+                        main_breadcrumb.setAttribute("aria-current","page");
+                        main_breadcrumb.innerHTML = "Home";
+                    }
+                    if (sub_breadcrumb) {
+                        sub_breadcrumb.classList.remove("active");
+                        sub_breadcrumb.removeAttribute("aria-current");
+                        sub_breadcrumb.classList.add("hide");
+                    }
                     setTimeout(() => {
                         game_song_list.setAttribute("hidden","");
-                        game_song_buttons.setAttribute("hidden","");
-                        sticky_controls.setAttribute("hidden","");
+                        if (game_song_buttons) game_song_buttons.setAttribute("hidden","");
+                        if (sticky_controls) sticky_controls.setAttribute("hidden","");
                         global_song_list.removeAttribute("hidden");
-                        ss_count_el.removeAttribute("hidden");
+                        if (ss_count_el) ss_count_el.removeAttribute("hidden");
                         setTimeout(() => {
                             global_song_list.style.opacity = 1;
-                            ss_count_el.style.opacity = 1;
+                            if (ss_count_el) ss_count_el.style.opacity = 1;
                         }, TRANSITION_BUFFER);
                         scrollTo(stored_scroll);
                     }, TRANSITION_SPEED);
                 } else {
                     global_song_list.style.opacity = 0;
-                    ss_count_el.style.opacity = 0;
-                    main_breadcrumb.classList.remove("active");
-                    main_breadcrumb.removeAttribute("aria-current");
-                    sub_breadcrumb.classList.add("active");
-                    sub_breadcrumb.setAttribute("aria-current","page");
-                    main_breadcrumb.innerHTML = "<a href='#' class='excluded_link'>Home</a>";
-                    sub_breadcrumb.classList.remove("hide");
+                    if (ss_count_el) ss_count_el.style.opacity = 0;
+                    if (main_breadcrumb) {
+                        main_breadcrumb.classList.remove("active");
+                        main_breadcrumb.removeAttribute("aria-current");
+                        main_breadcrumb.innerHTML = "<a href='#' class='excluded_link'>Home</a>";
+                    }
+                    if (sub_breadcrumb) {
+                        sub_breadcrumb.classList.add("active");
+                        sub_breadcrumb.setAttribute("aria-current","page");
+                        sub_breadcrumb.classList.remove("hide");
+                    }
                     stored_scroll = document.body.scrollTop;
                     setTimeout(() => {
                         global_song_list.setAttribute("hidden","");
-                        ss_count_el.setAttribute("hidden", "");
+                        if (ss_count_el) ss_count_el.setAttribute("hidden", "");
                         game_song_list.removeAttribute("hidden");
-                        game_song_buttons.removeAttribute("hidden");
-                        sticky_controls.removeAttribute("hidden");
+                        if (game_song_buttons) game_song_buttons.removeAttribute("hidden");
+                        if (sticky_controls) sticky_controls.removeAttribute("hidden");
                         setTimeout(() => {
                             game_song_list.style.opacity = 1;
-                            game_song_buttons.style.opacity = 1;
-                            sticky_controls.style.opacity = 1;
+                            if (game_song_buttons) game_song_buttons.style.opacity = 1;
+                            if (sticky_controls) sticky_controls.style.opacity = 1;
                         }, TRANSITION_BUFFER);
                         scrollTo();
                     }, TRANSITION_SPEED);
                 }
             }
+            window.changeGlobalSongListState = changeGlobalSongListState;
 
             function hidePopup() {
                 document.getElementById("addSongClose").click();
