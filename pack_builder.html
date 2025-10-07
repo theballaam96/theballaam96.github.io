@@ -891,9 +891,7 @@
                 if (!global_song_list || !game_song_list) {
                     console.warn("Critical elements for changeGlobalSongListState are missing");
                     return;
-                }
-                
-                // Optional elements - function can work without these
+                }         
                 const game_song_buttons = document.getElementById("popup_master_controls");
                 const sticky_controls = document.getElementById("sticky-controls");
                 const ss_count_el = document.getElementById("song_selected_count");
