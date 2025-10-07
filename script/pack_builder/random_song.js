@@ -150,6 +150,13 @@ document.getElementById("rs-shuffle").addEventListener("click", () => {
         window.playing_random = false;
     }
 });
+
+document.getElementById("rs-goto").addEventListener("click", () => {
+    const btn = document.getElementById("rs-goto");
+    if (!btn.hasAttribute("disabled") && !btn.classList.contains("text-secondary")) {
+        window.gotoCurrentGame();
+    }
+});
 // document.getElementById("rs-toggle").addEventListener("click", () => {
 //     const toastEl = document.getElementById('rs-toast-inner');
 //     const toast = bootstrap.Toast.getOrCreateInstance(toastEl);
