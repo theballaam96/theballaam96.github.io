@@ -55,6 +55,12 @@ window.getFile = getFile;
 
 function readFile(buffer, offset, size) {
     let val = 0;
+    if (offset > buffer.length) {
+        throw Error("Offset goes past buffer.")
+    }
+    if ((offset + size) > buffer.length) {
+        size = buffer.length - offset;
+    }
     for (let i = 0; i < size; i++) {
         val <<= 8;
         val += (buffer[offset + i]);

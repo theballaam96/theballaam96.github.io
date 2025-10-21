@@ -66,3 +66,4 @@ function getColorString(triangle) {
 }
 
 window.getColorString = getColorString;
+window.getRatioString = getRatioString;

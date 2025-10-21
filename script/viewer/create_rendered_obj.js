@@ -1,11 +1,16 @@
 function renderHandler(reset_camera) {
     const map_id = parseInt(document.getElementById("map_id_selector").value);
     const bg_id = document.getElementById("bg_selector").value;
-    const tris = window.getCollisionTris(map_id, bg_id);
-    console.log(tris)
-    const obj = trisToObj(tris);
-    console.log(obj)
-    window.loadOBJ(obj, reset_camera);
+    let obj = null;
+    if (bg_id == "geo") {
+        obj = window.generateGeometry(map_id);
+    } else {
+        const tris = window.getCollisionTris(map_id, bg_id);
+        obj = trisToObj(tris);
+    }
+    if (obj) {
+        window.loadOBJ(obj, reset_camera);
+    }
 }
 window.renderHandler = renderHandler;
 

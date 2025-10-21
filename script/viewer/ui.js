@@ -247,7 +247,7 @@ const geometries = {
     "Collision (Floor Properties)": "floors",
     "Collision (Slippable Floors)": "slip",
     "Collision (Floor Special)": "enum_floors",
-    //"Level Geometry": "geo",
+    "Level Geometry (Heavy WIP)": "geo",
 }
 
 const markers = [
