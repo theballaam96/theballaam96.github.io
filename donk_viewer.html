@@ -43,12 +43,15 @@
             height: auto;
             vertical-align: middle;
         }
+        #trigger_grouping div, #rendering_options div {
+            width: 50%;
+        }
     </style>
 </head>
 <body>
     <div id="info-panel">Click a mesh to highlight it.</div>
     <div class="position-absolute top-0 end-0">
-        <div class="card p-3 m-4">
+        <div class="card p-3 mt-4 me-4 ms-2 mb-2">
             <div class="mb-2">
                 <small>ROM File</small>
                 <div class="input-group flex-nowrap" id="fileUploadButton">
@@ -70,13 +73,21 @@
                 <select id="bg_selector" class="form-select"></select>
             </div>
             <div class="mb-2">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="wf_selector">
-                    <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
+                <label for="trigger_grouping">Extra Objects</label>
+                <div class="d-flex flex-wrap" id="trigger_grouping">
+                    <div class="form-check form-switch py-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="trigger_selector">
+                        <label class="form-check-label" for="trigger_selector">Show Triggers</label>
+                    </div>
                 </div>
-                <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="trigger_selector">
-                    <label class="form-check-label" for="trigger_selector">Show Triggers</label>
+            </div>
+            <div class="mb-2">
+                <label for="rendering_options">Rendering Options</label>
+                <div class="d-flex flex-wrap" id="rendering_options">
+                    <div class="form-check form-switch py-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="wf_selector">
+                        <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -149,6 +160,7 @@
             // Load a default demo object
             if (isLoaded) {
                 window.renderHandler(true);  // Temp
+                window.renderHandler(false);
             }
             
             animate();
@@ -373,7 +385,8 @@
             window.rom_bytes = new Uint8Array(arrayBuffer);
             window.detectVersion(window.rom_bytes);
             window.rom_dv = new DataView(arrayBuffer);
-            window.renderHandler(true)
+            window.renderHandler(false);
+            window.renderHandler(false);
         }
 
         // --- Interaction (Clickable Meshes) ---

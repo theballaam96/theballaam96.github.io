@@ -24,6 +24,7 @@ const map_ids = {
     },
     "Factory": {
         "Frantic Factory": 26,
+        "Frantic Factory: Barrel Blast": 110,
         "Frantic Factory: Car Race": 27,
         "Frantic Factory: Power Shed": 29,
         "Frantic Factory: Crusher Room": 36,
@@ -157,7 +158,6 @@ const map_ids = {
         "Big Bug Bash! (very easy)": 102,
         "Searchlight Seek! (very easy)": 103,
         "Beaver Bother! (easy)": 104,
-        "Frantic Factory: Barrel Blast": 110,
         "Kremling Kosh! (easy)": 115,
         "Kremling Kosh! (normal)": 116,
         "Kremling Kosh! (hard)": 117,

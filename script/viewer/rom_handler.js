@@ -5,13 +5,21 @@ window.geo_offset = 0;
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
     const table_head = window.pointer_offset + dv.getUint32(window.pointer_offset + (table_index * 4), false);
-    const file_start = window.pointer_offset + (dv.getUint32(table_head + (file_index * 4), false) & 0x7FFFFFFF);
+    const file_start_read = dv.getUint32(table_head + (file_index * 4), false);
+    const is_pointer = (file_start_read & 0x80000000) != 0;
+    const file_start = window.pointer_offset + (file_start_read & 0x7FFFFFFF);
     const file_end = window.pointer_offset + (dv.getUint32(table_head + ((file_index + 1) * 4), false) & 0x7FFFFFFF);
     const file_size = file_end - file_start;
+    let pointing_file_index = null;
+    if (is_pointer) {
+        pointing_file_index = dv.getUint32(file_start, false) >> 16;
+    }
     return {
-        "start": file_start,
-        "end": file_end,
-        "size": file_size,
+        start: file_start,
+        end: file_end,
+        size: file_size,
+        is_pointer: is_pointer,
+        pointing_file_index: pointing_file_index,
     }
 }
 
@@ -36,6 +44,9 @@ function addFakeGzipFooter(buf, decompressedSize) {
 
 function getFile(bytes, dv, table_index, file_index, decompress) {
     const data = getFileBoundaries(dv, table_index, file_index);
+    if (data.is_pointer) {
+        return getFile(bytes, dv, table_index, data.pointing_file_index, decompress);
+    }
     if (data.size == 0) {
         return new Uint8Array([]);
     }
@@ -130,10 +141,10 @@ function detectVersion(buffer) {
         window.table_offset = vdata.table_offset;
         window.geo_offset = vdata.geo_offset;
         if (vdata.emoji) {
-            document.getElementById("fileUploadText").innerHTML = `<span id="versionFlag">${vdata.emoji}</span> version loaded`;
+            document.getElementById("fileUploadText").innerHTML = `<span id="versionFlag">${vdata.emoji}</span> loaded`;
             twemoji.parse(document.getElementById('versionFlag'), { folder: 'svg', ext: '.svg' });
         } else {
-            document.getElementById("fileUploadText").innerHTML = `${vdata.name} version loaded`;
+            document.getElementById("fileUploadText").innerHTML = `${vdata.name} loaded`;
         }
         return;
     }
