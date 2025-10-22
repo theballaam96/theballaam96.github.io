@@ -25,17 +25,12 @@ function getCollisionTris(map_id, mode) {
     files = {};
     const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
     let tris = [];
-    console.log(mode);
     files_to_load[mode].forEach(file => {
         const counts = collision_info[file].counts.map(count => {
             return window.readFile(map_geo, count, 2)
         })
-        console.log(file, map_id)
-        console.log(window.readFile(map_geo, 9, 1));
         const compressed = (window.readFile(map_geo, 9, 1) & collision_info[file].compressed_bit) != 0;
-        console.log(compressed);
         files[file] = window.getFile(window.rom_bytes, window.rom_dv, file, map_id, compressed);
-        console.log(files[file]);
         tris = tris.concat(dumpTris(files[file], counts[0] * counts[1], file, mode, map_id))
     })
     return tris;
@@ -262,7 +257,6 @@ function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, 
             data.is_water = (properties & 0x1) != 0
         } else if (["slip", "slip_forceostandslip"].includes(dump_mode)) {
             coord_set = (coord_set_0, coord_set_1, coord_set_2)
-            console.log(willSlip(data.coords, sfx >> 8, false), sfx >> 8)
             data.force_slip = willSlip(data.coords, sfx >> 8, false) == "Slippery";
             data.persist_slip = willSlip(data.coords, sfx >> 8, false) == "PersistSlip";
             data.ostand_slip = willSlip(data.coords, sfx >> 8, dump_mode == "slip") == "Slippery";
@@ -278,7 +272,7 @@ function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, 
         //     # Why was this changed?
         //     self.is_solid = (properties & 0xC0) == 0xC0
         // else:
-        data.is_solid = (properties & 0x10) != 0;
+        data.is_solid = (properties & 0x418) != 0;
         if (((properties & 0xFFEF) == 0) && [0x418, 0x8].includes(properties)) {
             data.has_unused_wall = true;
         }

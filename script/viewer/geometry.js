@@ -1,77 +1,3 @@
-const getLong = (buffer, offset) => {
-    return window.readFile(buffer, offset, 4);
-};
-
-/**
- * Reads a 1-byte unsigned integer (Char) from the buffer using the mocked API.
- * @param {ArrayBuffer | Uint8Array} buffer - The raw geometry data buffer.
- * @param {number} offset - The starting position.
- * @returns {number} The 8-bit unsigned integer.
- */
-const getChar = (buffer, offset) => {
-    return window.readFile(buffer, offset, 1);
-};
-
-/**
- * Returns a raw slice of the buffer (series of bytes).
- * @param {Uint8Array} buffer - The raw geometry data buffer.
- * @param {number} offset - The starting position.
- * @param {number} length - The length of the slice.
- * @returns {Uint8Array} The sliced raw data.
- */
-const getBytes = (buffer, offset, length) => {
-    return buffer.slice(offset, offset + length);
-};
-
-/**
- * Reads a signed 16-bit integer (short) from the buffer (Big-Endian).
- * Equivalent to Python's c_int16(int.from_bytes).value.
- * @param {Uint8Array} buffer - The buffer containing the 2 bytes.
- * @param {number} offset - The starting position.
- * @returns {number} The 16-bit signed integer.
- */
-const readInt16 = (buffer, offset) => {
-    // Create a DataView over the 2-byte segment
-    const view = new DataView(buffer.buffer, buffer.byteOffset + offset, 2);
-    // Read a 16-bit signed integer (Big-Endian: false)
-    return view.getInt16(0, false); 
-};
-
-/**
- * Converts a raw Uint8Array (bytes) into a single Big-Endian number (Uint32).
- * @param {Uint8Array} bytes - The raw bytes (up to 4).
- * @returns {number} The 32-bit unsigned integer.
- */
-const bytesToUint32 = (bytes) => {
-    if (bytes.length > 4) bytes = bytes.slice(0, 4);
-    if (bytes.length === 0) return 0;
-    
-    const paddedBuffer = new ArrayBuffer(4);
-    const paddedView = new Uint8Array(paddedBuffer);
-    
-    // Copy the bytes into the end of the 4-byte buffer (Big-Endian alignment)
-    paddedView.set(bytes, 4 - bytes.length);
-
-    return new DataView(paddedBuffer).getUint32(0, false);
-};
-
-/**
- * Reads raw bytes from the display list data buffer and advances the offset.
- * Replaces file stream reading logic.
- * @param {Uint8Array} buffer - The display list data buffer.
- * @param {number} size - The number of bytes to read (must be 8 for commands).
- * @returns {Uint8Array | null} The raw bytes read, or null if end of data is reached.
- */
-const readNextBytes = (buffer, size) => {
-    if (displayListDataOffset + size > buffer.length) {
-        return null; // End of file/data reached
-    }
-    const bytes = buffer.slice(displayListDataOffset, displayListDataOffset + size);
-    displayListDataOffset += size; // Advance the offset
-    return bytes;
-};
-
-
 // --- II. CORE DATA STRUCTURES: VERTEX, TRIANGLE ---
 
 class Vertex {
@@ -373,10 +299,10 @@ class DisplayList {
      */
     constructor(rawData, rawVertexData, vertexPointer, offset, branches = [], branched = false) {
         this._rawData = rawData;
-        this._rawVertexData = rawVertexData;
+        this.branches = branches;
+        this.rawVertexData = rawVertexData;
         this.vertexPointer = vertexPointer;
         this.offset = offset;
-        this.branches = branches;
         this.isBranched = branched;
     }
 
@@ -393,7 +319,7 @@ class DisplayList {
     }
 
     get rawVertexData() {
-        return this._rawVertexData;
+        return this.rawVertexData;
     }
 
     set rawVertexData(rawVertexData) {
@@ -547,7 +473,6 @@ function createDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansion
             }
             cmd = getCommand(command_bytes);
             raw_data = raw_data.concat(Array.from(command_bytes));
-            console.log(seg_ref.toString(16), cmd.opcode.toString(16))
             if (cmd.opcode == 0xDE) {
                 let addr = window.readFile(cmd.address, 0, 4);
                 branches = branches.concat(readDisplayLists(addr, true, dl_raw_vertex_data));
@@ -623,7 +548,6 @@ function generateGeometry(map_id) {
 
     display_lists.forEach((dl, dl_num) => {
         if (dl.isBranched) {
-            console.log("Returning branch ", dl_num + 1)
             return;
         }
         obj_data += `# Display List ${dl_num + 1}, Offset: ${dl.offset}\n\n`
@@ -653,7 +577,6 @@ function generateGeometry(map_id) {
             tri_offset += verticies.length;
         })
     })
-    console.log(obj_data)
     return obj_data;
 }
 window.generateGeometry = generateGeometry;
