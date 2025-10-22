@@ -265,15 +265,25 @@ document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(
 document.getElementById("bg_selector").innerHTML = Object.keys(geometries).map(name => {
     return `<option value="${geometries[name]}">${name}</option>`
 }).join("");
+
+// Dropdowns
 document.getElementById("map_id_selector").addEventListener("change", () => {
-    window.renderHandler(true)
+    window.renderHandler(true);
+    window.renderHandler(false);
 });
 document.getElementById("bg_selector").addEventListener("change", () => {
     window.renderHandler(false);
 });
+
+// Toggles
 document.getElementById("wf_selector").addEventListener("click", () => {
     window.renderHandler(false);
 });
+document.getElementById("trigger_selector").addEventListener("click", () => {
+    window.renderHandler(false);
+});
+
+// File Upload
 document.getElementById("fileUploadButton").addEventListener("click", () => {
     document.getElementById("fileInput").click();
 })

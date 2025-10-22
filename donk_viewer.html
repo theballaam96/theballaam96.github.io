@@ -74,6 +74,10 @@
                     <input class="form-check-input" type="checkbox" role="switch" id="wf_selector">
                     <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
                 </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="trigger_selector">
+                    <label class="form-check-label" for="trigger_selector">Show Triggers</label>
+                </div>
             </div>
         </div>
     </div>
@@ -87,6 +91,7 @@
     <script src="script/viewer/lib.js" type="text/javascript"></script>
     <script src="script/viewer/ui.js" type="text/javascript"></script>
     <script src="script/viewer/vtx.js" type="text/javascript"></script>
+    <script src="script/viewer/parser.js" type="text/javascript"></script>
     <script src="script/viewer/rom_handler.js" type="text/javascript"></script>
     <script src="script/viewer/geometry.js" type="text/javascript"></script>
     <script src="script/viewer/collision.js" type="text/javascript"></script>
@@ -97,6 +102,7 @@
         let scene, camera, renderer, controls;
         let raycaster, mouse;
         let loadedObject = null;
+        let loadedExtras = [];
         let intersected = null;
         const INFO_PANEL = document.getElementById('info-panel');
         const { decompressSync } = fflate;
@@ -195,6 +201,18 @@
                     if (child.material) child.material.dispose();
                 });
             }
+            if (loadedExtras) {
+                if (loadedExtras.length > 0) {
+                    loadedExtras.forEach(extra => {
+                        scene.remove(extra);
+                        extra.traverse(child => {
+                            if (child.geometry) child.geometry.dispose();
+                            if (child.material) child.material.dispose();
+                        });
+                    })
+                }
+                loadedExtras = [];
+            }
 
             try {
                 const loader = new THREE.OBJLoader();
@@ -240,6 +258,14 @@
             }
         }
         window.loadOBJ = loadOBJ;
+
+        function addToScene(list) {
+            list.forEach(item => {
+                scene.add(item);
+            })
+            loadedExtras = loadedExtras.concat(list);
+        }
+        window.addToScene = addToScene;
         
         window.rom_bytes;
         window.rom_dv;

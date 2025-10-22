@@ -1,3 +1,22 @@
+function parseViews(map_id) {
+    const views = window.allViews(map_id);
+    let output = [];
+    views.forEach(view => {
+        if (view.shape == "cylinder") {
+            const geometry = new THREE.CylinderGeometry(view.radius, view.radius, view.height, 32);
+            const material = new THREE.MeshStandardMaterial({
+                color: view.color,
+                transparent: true,
+                opacity: 0.5,
+            })
+            const cyl = new THREE.Mesh(geometry, material);
+            cyl.position.set(view.coords[0], view.coords[1] + (view.height / 2), view.coords[2]);
+            output.push(cyl);
+        }
+    })
+    return output;
+}
+
 function renderHandler(reset_camera) {
     const map_id = parseInt(document.getElementById("map_id_selector").value);
     const bg_id = document.getElementById("bg_selector").value;
@@ -8,10 +27,11 @@ function renderHandler(reset_camera) {
         const tris = window.getCollisionTris(map_id, bg_id);
         obj = trisToObj(tris);
     }
-    console.log(obj)
     if (obj !== null && obj.length > 0) {
         window.loadOBJ(obj, reset_camera);
     }
+    const additions = parseViews(map_id);
+    window.addToScene(additions);
 }
 window.renderHandler = renderHandler;
 

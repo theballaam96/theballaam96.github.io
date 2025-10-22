@@ -5,10 +5,9 @@ window.geo_offset = 0;
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
     const table_head = window.pointer_offset + dv.getUint32(window.pointer_offset + (table_index * 4), false);
-    const file_start = window.pointer_offset + (dv.getUint32(table_head + (file_index * 4), false));
-    const file_end = window.pointer_offset + (dv.getUint32(table_head + ((file_index + 1) * 4), false));
+    const file_start = window.pointer_offset + (dv.getUint32(table_head + (file_index * 4), false) & 0x7FFFFFFF);
+    const file_end = window.pointer_offset + (dv.getUint32(table_head + ((file_index + 1) * 4), false) & 0x7FFFFFFF);
     const file_size = file_end - file_start;
-    console.log(file_start.toString(16), file_end.toString(16))
     return {
         "start": file_start,
         "end": file_end,
@@ -60,7 +59,7 @@ function getFile(bytes, dv, table_index, file_index, decompress) {
 }
 window.getFile = getFile;
 
-function readFile(buffer, offset, size) {
+function readFile(buffer, offset, size, signed = false) {
     let val = 0;
     if (offset > buffer.length) {
         throw Error(`Offset (0x${offset.toString(16)}) goes past buffer (0x${buffer.length.toString(16)}).`)
@@ -71,6 +70,13 @@ function readFile(buffer, offset, size) {
     for (let i = 0; i < size; i++) {
         val <<= 8;
         val += (buffer[offset + i]);
+    }
+    if (signed) {
+        const limit = 1 << ((size * 8) - 1);
+        const offset = 1 << (size * 8);
+        if (val >= limit) {
+            val -= offset;
+        }
     }
     return val;
 }
