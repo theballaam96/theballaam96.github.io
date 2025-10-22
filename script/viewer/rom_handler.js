@@ -1,8 +1,12 @@
-let pointer_offset = 0x101C50;
+window.pointer_offset = 0x101C50;
+window.table_offset = 0;
+window.geo_offset = 0;
+
 function getFileBoundaries(dv, table_index, file_index) {
-    const table_head = pointer_offset + dv.getUint32(pointer_offset + (table_index * 4), false);
-    const file_start = pointer_offset + (dv.getUint32(table_head + (file_index * 4), false));
-    const file_end = pointer_offset + (dv.getUint32(table_head + ((file_index + 1) * 4), false));
+    table_index -= window.table_offset;
+    const table_head = window.pointer_offset + dv.getUint32(window.pointer_offset + (table_index * 4), false);
+    const file_start = window.pointer_offset + (dv.getUint32(table_head + (file_index * 4), false));
+    const file_end = window.pointer_offset + (dv.getUint32(table_head + ((file_index + 1) * 4), false));
     const file_size = file_end - file_start;
     console.log(file_start.toString(16), file_end.toString(16))
     return {
@@ -33,6 +37,9 @@ function addFakeGzipFooter(buf, decompressedSize) {
 
 function getFile(bytes, dv, table_index, file_index, decompress) {
     const data = getFileBoundaries(dv, table_index, file_index);
+    if (data.size == 0) {
+        return new Uint8Array([]);
+    }
     let output = bytes.slice(data.start, data.end);
     output = output.slice(); // forces a copy, zero offset
 
@@ -68,3 +75,62 @@ function readFile(buffer, offset, size) {
     return val;
 }
 window.readFile = readFile;
+
+const version_details = {
+    "NDOE": {
+        name: "US",
+        table_offset: 0,
+        geo_offset: 0,
+        pointer_offset: 0x101C50,
+        emoji: "\u{1F1FA}\u{1F1F8}",
+    },
+    "NDOJ": {
+        name: "JP",
+        table_offset: 0,
+        geo_offset: 0,
+        pointer_offset: 0x1039C0,
+        emoji: "\u{1F1EF}\u{1F1F5}",
+    },
+    "NDPE": {
+        name: "Kiosk",
+        table_offset: 1,
+        geo_offset: 8,
+        pointer_offset: 0x1A7C20,
+    },
+    "NDOG": {
+        name: "Lodgenet",
+        table_offset: 0,
+        geo_offset: 0,
+        pointer_offset: 0x1037C0,
+    },
+    "NDOP": {
+        name: "PAL",
+        table_offset: 0,
+        geo_offset: 0,
+        pointer_offset: 0x1038D0,
+        emoji: "\u{1F1EA}\u{1F1FA}",
+    },
+}
+
+function detectVersion(buffer) {
+    let indicator = "";
+    for (let i = 0; i < 4; i++) {
+        indicator += String.fromCharCode(buffer[0x3B + i]);
+    }
+    console.log(`Testing version: ${indicator}`)
+    if (version_details[indicator]) {
+        const vdata = version_details[indicator];
+        window.pointer_offset = vdata.pointer_offset;
+        window.table_offset = vdata.table_offset;
+        window.geo_offset = vdata.geo_offset;
+        if (vdata.emoji) {
+            document.getElementById("fileUploadText").innerHTML = `<span id="versionFlag">${vdata.emoji}</span> version loaded`;
+            twemoji.parse(document.getElementById('versionFlag'), { folder: 'svg', ext: '.svg' });
+        } else {
+            document.getElementById("fileUploadText").innerHTML = `${vdata.name} version loaded`;
+        }
+        return;
+    }
+    document.getElementById("fileUploadText").innerText = "Invalid ROM";
+}
+window.detectVersion = detectVersion;

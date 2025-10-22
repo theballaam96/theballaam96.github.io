@@ -247,7 +247,7 @@ const geometries = {
     "Collision (Floor Properties)": "floors",
     "Collision (Slippable Floors)": "slip",
     "Collision (Floor Special)": "enum_floors",
-    "Level Geometry (Heavy WIP)": "geo",
+    "Level Geometry (Vertex Colors)": "geo",
 }
 
 const markers = [
@@ -274,3 +274,6 @@ document.getElementById("bg_selector").addEventListener("change", () => {
 document.getElementById("wf_selector").addEventListener("click", () => {
     window.renderHandler(false);
 });
+document.getElementById("fileUploadButton").addEventListener("click", () => {
+    document.getElementById("fileInput").click();
+})

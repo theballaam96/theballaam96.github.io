@@ -28,19 +28,6 @@
     <style>
         body { margin: 0; overflow: hidden; font-family: sans-serif; }
         canvas { display: block; }
-        #ui-container {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.7);
-            color: white;
-            border-radius: 5px;
-            z-index: 10;
-        }
-        #ui-container input {
-            padding: 5px;
-        }
         #info-panel {
             position: absolute;
             bottom: 10px;
@@ -51,16 +38,29 @@
             border-radius: 5px;
             z-index: 10;
         }
+        #versionFlag img {
+            width: 24px;
+            height: auto;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
-    <div id="ui-container">
-        <label for="fileInput">Load Z64 File:</label>
-        <input type="file" id="fileInput" accept=".z64">
-    </div>
     <div id="info-panel">Click a mesh to highlight it.</div>
     <div class="position-absolute top-0 end-0">
         <div class="card p-3 m-4">
+            <div class="mb-2">
+                <small>ROM File</small>
+                <div class="input-group flex-nowrap" id="fileUploadButton">
+                    <button class="btn btn-secondary">
+                        <i class="fa-solid fa-file-arrow-up"></i>
+                    </button>
+                    <span class="form-control" id="fileUploadText">Choose a file</span>
+                </div>
+                <div hidden>
+                    <input type="file" id="fileInput" accept=".z64" hidden>
+                </div>
+            </div>
             <div class="mb-2">
                 <label for="map_id_selector">Map</label>
                 <select id="map_id_selector" class="form-select"></select>
@@ -70,8 +70,10 @@
                 <select id="bg_selector" class="form-select"></select>
             </div>
             <div class="mb-2">
-                <label for="wf_selector">Wireframe</label>
-                <input id="wf_selector" class="form-check" type="checkbox" />
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="wf_selector">
+                    <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
+                </div>
             </div>
         </div>
     </div>
@@ -81,6 +83,8 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <script src="https://unpkg.com/fflate@0.8.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
+    <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
+    <script src="script/viewer/lib.js" type="text/javascript"></script>
     <script src="script/viewer/ui.js" type="text/javascript"></script>
     <script src="script/viewer/vtx.js" type="text/javascript"></script>
     <script src="script/viewer/rom_handler.js" type="text/javascript"></script>
@@ -270,6 +274,7 @@
         function setGlobalRomData(arrayBuffer) {
             window.rom_bytes = new Uint8Array(arrayBuffer);
             window.rom_dv = new DataView(arrayBuffer);
+            detectVersion(window.rom_bytes);
             console.log("Global ROM data updated.");
         }
 
@@ -340,6 +345,7 @@
             }
 
             window.rom_bytes = new Uint8Array(arrayBuffer);
+            window.detectVersion(window.rom_bytes);
             window.rom_dv = new DataView(arrayBuffer);
             window.renderHandler(true)
         }

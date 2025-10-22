@@ -24,6 +24,9 @@ const files_to_load = {
 function getCollisionTris(map_id, mode) {
     files = {};
     const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length === 0) {
+        return [];
+    }
     let tris = [];
     files_to_load[mode].forEach(file => {
         const counts = collision_info[file].counts.map(count => {
@@ -31,6 +34,9 @@ function getCollisionTris(map_id, mode) {
         })
         const compressed = (window.readFile(map_geo, 9, 1) & collision_info[file].compressed_bit) != 0;
         files[file] = window.getFile(window.rom_bytes, window.rom_dv, file, map_id, compressed);
+        if (files[file].length === 0) {
+            return [];
+        }
         tris = tris.concat(dumpTris(files[file], counts[0] * counts[1], file, mode, map_id))
     })
     return tris;
@@ -351,6 +357,11 @@ function dumpTris(buffer, count, table_index, mode, map_id) {
                 applied_mode = "slip_forceostandslip"
             }
             if (allow_mesh_population) {
+                for (let ci = 0; ci < 3; ci++) {
+                    for (let cj = 0; cj < 3; cj++) {
+                        coord_set[ci][cj] *= window.getScale(map_id);
+                    }
+                }
                 mesh.push(createTriangle(coord_set[0], coord_set[1], coord_set[2], properties, sfx, brightness, unk17, table_index, applied_mode))
             }
         }

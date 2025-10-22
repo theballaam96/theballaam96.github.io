@@ -526,14 +526,17 @@ function createDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansion
 
 function generateGeometry(map_id) {
     const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
-    const dl_start = window.readFile(map_geo, 0x34, 4);
-    const vert_start = window.readFile(map_geo, 0x38, 4);
-    const unk_start = window.readFile(map_geo, 0x40, 4);
+    if (map_geo.length == 0) {
+        return "";
+    }
+    const dl_start = window.readFile(map_geo, 0x34 - window.geo_offset, 4);
+    const vert_start = window.readFile(map_geo, 0x38 - window.geo_offset, 4);
+    const unk_start = window.readFile(map_geo, 0x40 - window.geo_offset, 4);
     const vert_length = unk_start - vert_start;
-    const vert_chunk_start = window.readFile(map_geo, 0x68, 4);
-    const unk_start_0 = window.readFile(map_geo, 0x6C, 4);
+    const vert_chunk_start = window.readFile(map_geo, 0x68 - window.geo_offset, 4);
+    const unk_start_0 = window.readFile(map_geo, 0x6C - window.geo_offset, 4);
     const vert_chunk_length = unk_start_0 - vert_chunk_start;
-    const dl_expansion_start = window.readFile(map_geo, 0x70, 4);
+    const dl_expansion_start = window.readFile(map_geo, 0x70 - window.geo_offset, 4);
 
     // Create Display Lists
     let raw_dl_data = map_geo.slice(dl_start, vert_start);

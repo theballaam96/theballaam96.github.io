@@ -8,7 +8,8 @@ function renderHandler(reset_camera) {
         const tris = window.getCollisionTris(map_id, bg_id);
         obj = trisToObj(tris);
     }
-    if (obj) {
+    console.log(obj)
+    if (obj !== null && obj.length > 0) {
         window.loadOBJ(obj, reset_camera);
     }
 }
