@@ -282,6 +282,9 @@ document.getElementById("wf_selector").addEventListener("click", () => {
 document.getElementById("trigger_selector").addEventListener("click", () => {
     window.renderHandler(false);
 });
+document.getElementById("lock_selector").addEventListener("click", () => {
+    window.renderHandler(false);
+});
 
 // File Upload
 document.getElementById("fileUploadButton").addEventListener("click", () => {

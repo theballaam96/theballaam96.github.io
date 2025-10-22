@@ -91,10 +91,45 @@ function parseTriggers(map_id) {
     return triggers;
 }
 
+function parseCamLocks(map_id) {
+    const cutscene_file = window.getFile(window.rom_bytes, window.rom_dv, 8, map_id, true);
+    let info_l = 0x30
+    let read_l = 0
+    for (let x = 0; x < 0x18; x++) {
+        const header_info_count = window.readFile(cutscene_file, read_l, 2);
+        read_l += 2;
+        info_l += (header_info_count * 0x12);
+    }
+    const base_count = window.readFile(cutscene_file, info_l, 2);
+    info_l += 2;
+    let lock_zones = [];
+    for (let x = 0; x < base_count; x++) {
+        const collision_type = window.readFile(cutscene_file, info_l + 0x1B, 1);
+        lock_zones.push({
+            coords: [
+                window.readFile(cutscene_file, info_l + 0x10, 2, true),
+                window.readFile(cutscene_file, info_l + 0x12, 2, true),
+                window.readFile(cutscene_file, info_l + 0x14, 2, true),
+            ],
+            radius: window.readFile(cutscene_file, info_l + 0x19, 1) * 4,
+            height: 300,
+            shape: [1, 2].includes(collision_type) ? "cylinder" : "sphere",
+            name: `Camera Lock ${x}`,
+            color: 0xFF00FF,
+        })
+        info_l += 0x1C;
+    }
+    console.log(lock_zones)
+    return lock_zones;
+}
+
 function allViews(map_id) {
     let collective = [];
     if (document.getElementById("trigger_selector").checked) {
         collective = collective.concat(parseTriggers(map_id));
+    }
+    if (document.getElementById("lock_selector").checked) {
+        collective = collective.concat(parseCamLocks(map_id));
     }
     collective.forEach(entry => {
         entry.coords[0] *= window.getScale(map_id);

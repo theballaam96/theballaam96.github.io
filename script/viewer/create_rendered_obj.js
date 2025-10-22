@@ -12,6 +12,16 @@ function parseViews(map_id) {
             const cyl = new THREE.Mesh(geometry, material);
             cyl.position.set(view.coords[0], view.coords[1] + (view.height / 2), view.coords[2]);
             output.push(cyl);
+        } else if (view.shape == "sphere") {
+            const geometry = new THREE.SphereGeometry(view.radius, 32, 32);
+            const material = new THREE.MeshStandardMaterial({
+                color: view.color,
+                transparent: true,
+                opacity: 0.5,
+            })
+            const sph = new THREE.Mesh(geometry, material);
+            sph.position.set(view.coords[0], view.coords[1], view.coords[2]);
+            output.push(sph);
         }
     })
     return output;
