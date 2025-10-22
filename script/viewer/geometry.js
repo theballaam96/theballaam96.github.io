@@ -622,7 +622,7 @@ function generateGeometry(map_id) {
     let tri_offset = 1;
 
     display_lists.forEach((dl, dl_num) => {
-        if (dl.is_branched) {
+        if (dl.isBranched) {
             return;
         }
         obj_data += `# Display List ${dl_num}, Offset: ${dl.offset}\n\n`
