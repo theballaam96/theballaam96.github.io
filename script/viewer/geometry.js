@@ -570,6 +570,8 @@ function createDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansion
                 let display_list = null;
                 if (!Object.keys(branched_dls).includes(dl_pointer)) {
                     display_list = new DisplayList(new Uint8Array(raw_data), new Uint8Array(dl_raw_vertex_data), vertex_pointer, dl_pointer, branches, branched);
+                } else {
+                    display_list = branched_dls[dl_pointer];
                 }
                 output.push(display_list);
                 display_list.branches.forEach(dl => {
@@ -623,6 +625,7 @@ function generateGeometry(map_id) {
 
     display_lists.forEach((dl, dl_num) => {
         if (dl.isBranched) {
+            console.log("Returning branch ", dl_num)
             return;
         }
         obj_data += `# Display List ${dl_num}, Offset: ${dl.offset}\n\n`
