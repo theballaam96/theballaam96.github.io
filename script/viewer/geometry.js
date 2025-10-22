@@ -307,7 +307,7 @@ const getCommand = (commandBytes) => {
 };
 
 function getDLChunkData(data) {
-    return {
+    const output = {
         r: window.readFile(data, 0, 1),
         g: window.readFile(data, 1, 1),
         b: window.readFile(data, 2, 1),
@@ -324,7 +324,13 @@ function getDLChunkData(data) {
         dl_4_size: window.readFile(data, 40, 4),
         vertex_start: window.readFile(data, 44, 4),
         vertex_end: window.readFile(data, 48, 4),
-    }
+        vertex_start_size: {},
+    };
+    output.vertex_start_size[output.dl_1_start] = [output.vertex_start, output.vertex_end];
+    output.vertex_start_size[output.dl_2_start] = [output.vertex_start, output.vertex_end];
+    output.vertex_start_size[output.dl_3_start] = [output.vertex_start, output.vertex_end];
+    output.vertex_start_size[output.dl_4_start] = [output.vertex_start, output.vertex_end];
+    return output;
 }
 
 function getVertexChunkData(fileBytes, chunkStart, chunkLength) {
@@ -512,89 +518,85 @@ class DisplayList {
     }
 }
 
-function readDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansions, dl_pointer = 0, branched = false, inherited_vertex_data = null) {
-    let output = [];
-    let branches = [];
-    let dl_vertex_starts = vertexChunkData.reduce((acc, chunk) => {
-        // Merges the current accumulation object (acc) with the 
-        // vertex_start_size object from the current chunk.
-        // If there are duplicate keys, the later chunk's value will overwrite the former.
-        return Object.assign(acc, chunk.vertex_start_size);
-    }, {});
-    let expansion_offsets = []
-    if (expansions) {
-        expansion_offsets = expansions.map(k => k.display_list_offset);
-    }
-    let raw_data = [];
-    let vertex_pointer = 0;
-    let old_vertex_start = 0;
-    let branched_dls = {};
-    let dl_raw_vertex_data = inherited_vertex_data ? inherited_vertex_data : rawVertexData;
 
-    let seg_ref = dl_pointer;
-    while (command_bytes = rawDLData.slice(seg_ref, seg_ref + 8)) {
-        if (command_bytes.length == 0) {
-            break;
-        }
-        if (seg_ref == 0x10) {
-            console.log(command_bytes)
-        }
-        cmd = getCommand(command_bytes);
-        raw_data = raw_data.concat(Array.from(command_bytes));
-        if (cmd.opcode == 0xDE) {
-            let addr = 0;
-            cmd.address.forEach(b => {
-                addr <<= 8;
-                addr += b;
-            })
-            branches = branches.concat(readDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansions, addr, true, dl_raw_vertex_data));
-            seg_ref += 8;
-            continue;
-        } else if (cmd.opcode == 0xDF) {
-            if (Object.keys(dl_vertex_starts).includes(dl_pointer)) {
-                vertex_start = dl_vertex_starts[dl_pointer][0]
-                vertex_size = dl_vertex_starts[dl_pointer][1]
-                if (vertex_start != old_vertex_start) {
-                    vertex_pointer = 0;
-                    old_vertex_start = vertex_start;
-                }
-                dl_raw_vertex_data = rawVertexData.slice(vertex_start, vertex_start + vertex_size);
-            }
-            if (expansion_offsets.includes(dl_pointer)) {
-                dl_raw_vertex_data = rawVertexData;
-                vertex_pointer = 0;
-            }
-            let display_list = null;
-            if (!Object.keys(branched_dls).includes(dl_pointer)) {
-                display_list = new DisplayList(new Uint8Array(raw_data), new Uint8Array(dl_raw_vertex_data), vertex_pointer, dl_pointer, branches, branched);
-            }
-            output.push(display_list);
-            display_list.branches.forEach(dl => {
-                branched_dls[dl.offset] = dl;
-            })
-            vertex_pointer += display_list.vertexCount * 16
-
-            branches.forEach(branch => {
-                branch._rawVertexData = dl_raw_vertex_data;
-            });
-
-            raw_data = [];
-            branches = [];
-            seg_ref += 8;
-            dl_pointer = seg_ref;
-
-            if (branched) {
-                break;
-            }
-        } else {
-            seg_ref += 8;
-        }
-    }
-    return output;
-}
 
 function createDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansions) {
-    return readDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansions);
+    function readDisplayLists(dl_pointer = 0, branched = false, inherited_vertex_data = null) {
+        let output = [];
+        let branches = [];
+        let dl_vertex_starts = vertexChunkData.reduce((acc, chunk) => {
+            // Merges the current accumulation object (acc) with the 
+            // vertex_start_size object from the current chunk.
+            // If there are duplicate keys, the later chunk's value will overwrite the former.
+            return Object.assign(acc, chunk.vertex_start_size);
+        }, {});
+        let expansion_offsets = []
+        if (expansions) {
+            expansion_offsets = expansions.map(k => k.display_list_offset);
+        }
+        let raw_data = [];
+        let vertex_pointer = 0;
+        let old_vertex_start = 0;
+        let branched_dls = {};
+        let dl_raw_vertex_data = inherited_vertex_data ? inherited_vertex_data : rawVertexData;
+
+        let seg_ref = dl_pointer;
+        while (command_bytes = rawDLData.slice(seg_ref, seg_ref + 8)) {
+            if (command_bytes.length == 0) {
+                break;
+            }
+            cmd = getCommand(command_bytes);
+            raw_data = raw_data.concat(Array.from(command_bytes));
+            console.log(seg_ref.toString(16), cmd.opcode.toString(16))
+            if (cmd.opcode == 0xDE) {
+                let addr = window.readFile(cmd.address, 0, 4);
+                branches = branches.concat(readDisplayLists(addr, true, dl_raw_vertex_data));
+                seg_ref += 8;
+                continue;
+            } else if (cmd.opcode == 0xDF) {
+                if (Object.keys(dl_vertex_starts).includes(dl_pointer)) {
+                    vertex_start = dl_vertex_starts[dl_pointer][0]
+                    vertex_size = dl_vertex_starts[dl_pointer][1]
+                    if (vertex_start != old_vertex_start) {
+                        vertex_pointer = 0;
+                        old_vertex_start = vertex_start;
+                    }
+                    dl_raw_vertex_data = rawVertexData.slice(vertex_start, vertex_start + vertex_size);
+                }
+                if (expansion_offsets.includes(dl_pointer)) {
+                    dl_raw_vertex_data = rawVertexData;
+                    vertex_pointer = 0;
+                }
+                let display_list = null;
+                if (!Object.keys(branched_dls).includes(dl_pointer)) {
+                    display_list = new DisplayList(new Uint8Array(raw_data), new Uint8Array(dl_raw_vertex_data), vertex_pointer, dl_pointer, branches, branched);
+                }
+                output.push(display_list);
+                display_list.branches.forEach(dl => {
+                    branched_dls[dl.offset] = dl;
+                })
+                vertex_pointer += display_list.vertexCount * 16
+
+                branches.forEach(branch => {
+                    branch._rawVertexData = dl_raw_vertex_data;
+                });
+
+                raw_data = [];
+                branches = [];
+                seg_ref += 8;
+                dl_pointer = seg_ref;
+
+                if (branched) {
+                    break;
+                }
+            } else {
+                seg_ref += 8;
+            }
+        }
+        return output;
+    }
+
+    return readDisplayLists();
 }
 
 function generateGeometry(map_id) {
