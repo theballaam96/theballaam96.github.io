@@ -123,6 +123,36 @@ function parseCamLocks(map_id) {
     return lock_zones;
 }
 
+function parsePaths(map_id) {
+    const path_file = window.getFile(window.rom_bytes, window.rom_dv, 15, map_id, false);
+    const path_count = window.readFile(path_file, 0, 2);
+    let paths = [];
+    let read_l = 2;
+    for (let i = 0; i < path_count; i++) {
+        let local_path = [];
+        //const path_id = window.readFile(path_file, read_l, 2);
+        const point_count = window.readFile(path_file, read_l + 2, 2);
+        read_l += 6;
+        for (let p = 0; p < point_count; p++) {
+            local_path.push({
+                coords: [
+                    window.readFile(path_file, read_l + 2, 2, true),
+                    window.readFile(path_file, read_l + 4, 2, true),
+                    window.readFile(path_file, read_l + 6, 2, true),
+                ]
+            })
+            read_l += 10;
+        }
+        paths.push({
+            path: local_path,
+            color: 0xFF0000,
+            thickness: 10,
+            shape: "path",
+        })
+    }
+    return paths;
+}
+
 function allViews(map_id) {
     let collective = [];
     if (document.getElementById("trigger_selector").checked) {
@@ -131,10 +161,22 @@ function allViews(map_id) {
     if (document.getElementById("lock_selector").checked) {
         collective = collective.concat(parseCamLocks(map_id));
     }
+    if (document.getElementById("path_selector").checked) {
+        collective = collective.concat(parsePaths(map_id));
+    }
     collective.forEach(entry => {
-        entry.coords[0] *= window.getScale(map_id);
-        entry.coords[1] *= window.getScale(map_id);
-        entry.coords[2] *= window.getScale(map_id);
+        if (Object.keys(entry).includes("coords")) {
+            entry.coords[0] *= window.getScale(map_id);
+            entry.coords[1] *= window.getScale(map_id);
+            entry.coords[2] *= window.getScale(map_id);
+        }
+        if (Object.keys(entry).includes("path")) {
+            entry.path.forEach(p => {
+                p.coords[0] *= window.getScale(map_id);
+                p.coords[1] *= window.getScale(map_id);
+                p.coords[2] *= window.getScale(map_id);
+            })
+        }
         if (Object.keys(entry).includes("radius")) {
             entry.radius *= window.getScale(map_id);
         }

@@ -285,6 +285,9 @@ document.getElementById("trigger_selector").addEventListener("click", () => {
 document.getElementById("lock_selector").addEventListener("click", () => {
     window.renderHandler(false);
 });
+document.getElementById("path_selector").addEventListener("click", () => {
+    window.renderHandler(false);
+});
 
 // File Upload
 document.getElementById("fileUploadButton").addEventListener("click", () => {

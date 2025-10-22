@@ -22,6 +22,18 @@ function parseViews(map_id) {
             const sph = new THREE.Mesh(geometry, material);
             sph.position.set(view.coords[0], view.coords[1], view.coords[2]);
             output.push(sph);
+        } else if (view.shape == "path") {
+            let points = [];
+            view.path.forEach(p => {
+                points.push(new THREE.Vector3(p.coords[0], p.coords[1], p.coords[2]));
+            })
+            const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.1); 
+            const geometry = new THREE.TubeGeometry(curve, 100, view.thickness, 8, false);
+            const material = new THREE.MeshStandardMaterial({
+                color: view.color,
+            })
+            const line = new THREE.Mesh(geometry, material);
+            output.push(line);
         }
     })
     return output;

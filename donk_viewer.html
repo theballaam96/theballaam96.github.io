@@ -28,16 +28,6 @@
     <style>
         body { margin: 0; overflow: hidden; font-family: sans-serif; }
         canvas { display: block; }
-        #info-panel {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.8);
-            color: #333;
-            border-radius: 5px;
-            z-index: 10;
-        }
         #versionFlag img {
             width: 24px;
             height: auto;
@@ -49,7 +39,16 @@
     </style>
 </head>
 <body>
-    <div id="info-panel">Click a mesh to highlight it.</div>
+    <div class="position-absolute bottom-0 start-0">
+        <div class="card p-2 mb-4 ms-4 me-2 mt-2">
+            <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
+                <div class="fw-bolder">DonkViewer</div>
+                <small>v1.0</small>
+            </div>
+            <div>Made by Ballaam</div>
+            <div style="font-size: 0.8rem">Contributions from ALinkToTheFuture</div>
+        </div>
+    </div>
     <div class="position-absolute top-0 end-0">
         <div class="card p-3 mt-4 me-4 ms-2 mb-2">
             <div class="mb-2">
@@ -82,6 +81,10 @@
                     <div class="form-check form-switch py-2">
                         <input class="form-check-input" type="checkbox" role="switch" id="lock_selector">
                         <label class="form-check-label" for="lock_selector">Show Cam Lock Zones</label>
+                    </div>
+                    <div class="form-check form-switch py-2">
+                        <input class="form-check-input" type="checkbox" role="switch" id="path_selector">
+                        <label class="form-check-label" for="path_selector">Show Object Paths</label>
                     </div>
                 </div>
             </div>
@@ -119,7 +122,6 @@
         let loadedObject = null;
         let loadedExtras = [];
         let intersected = null;
-        const INFO_PANEL = document.getElementById('info-panel');
         const { decompressSync } = fflate;
 
         // --- Core Functions ---
@@ -266,11 +268,9 @@
                 if (resetCamera) {
                     centerModel();
                 }
-                INFO_PANEL.textContent = "OBJ file loaded. Vertex colors are now hard-edged (per-face).";
 
             } catch (error) {
                 console.error("Error parsing OBJ file:", error);
-                INFO_PANEL.textContent = "Error loading OBJ: Check console.";
             }
         }
         window.loadOBJ = loadOBJ;
@@ -425,7 +425,6 @@
                 }
 
                 // Update info panel
-                INFO_PANEL.textContent = `Clicked Mesh: ${hitMesh.name || 'No Name'} | Triangles: ${triangleCount}`;
 
             } else {
                 // No object hit, deselect
@@ -433,7 +432,6 @@
                     intersected.material.emissive.setHex(0x000000);
                 }
                 intersected = null;
-                INFO_PANEL.textContent = "Click a mesh to highlight it.";
             }
         }
 
