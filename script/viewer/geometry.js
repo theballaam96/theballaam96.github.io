@@ -623,19 +623,16 @@ function generateGeometry(map_id) {
 
     display_lists.forEach((dl, dl_num) => {
         if (dl.isBranched) {
-            console.log("Returning branch ", dl_num)
+            console.log("Returning branch ", dl_num + 1)
             return;
         }
-        obj_data += `# Display List ${dl_num}, Offset: ${dl.offset}\n\n`
+        obj_data += `# Display List ${dl_num + 1}, Offset: ${dl.offset}\n\n`
         let vgroup = dl.verticies;
         let tgroup = dl.triangles;
 
         vgroup.forEach((verticies, group_num) => {
             triangles = tgroup[group_num];
-            if (triangles.length == 0) {
-                return;
-            }
-            obj_data += `# Vertex Group ${group_num}\n\n`
+            obj_data += `# Vertex Group ${group_num + 1}\n\n`
 
             // Write verticies to file
             verticies.forEach(vertex => {
@@ -643,7 +640,7 @@ function generateGeometry(map_id) {
             })
             obj_data += "\n"
 
-            obj_data += `# Triangle Group ${group_num}\n\n`
+            obj_data += `# Triangle Group ${group_num + 1}\n\n`
 
             // Write triangles/faces to file
             triangles.forEach(tri => {
@@ -656,6 +653,7 @@ function generateGeometry(map_id) {
             tri_offset += verticies.length;
         })
     })
+    console.log(obj_data)
     return obj_data;
 }
 window.generateGeometry = generateGeometry;

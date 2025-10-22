@@ -12,7 +12,15 @@ function getRatioString(red, green, blue, alpha = 0xFF) {
         alpha = 255;
     }
     channels = [red, green, blue, alpha]
-    return channels.map(c => (parseInt(c / 25.5) / 10).toString()).join(" ");
+    return channels.map(c => {
+        if (c == 0) {
+            return "0.0";
+        } else if (c == 255) {
+            return "1.0";
+        } else {
+            return (parseInt(c / 25.5) / 10).toString();
+        }
+    }).join(" ");
 }
 
 function getColorString(triangle) {

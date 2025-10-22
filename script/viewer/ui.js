@@ -258,7 +258,7 @@ const markers = [
 ]
 
 document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(group => {
-    return `<optgroup label="${group}">${Object.keys(map_ids[group]).map(map_name => {
+    return `<optgroup label="${group}">${Object.keys(map_ids[group]).sort().map(map_name => {
         return `<option value="${map_ids[group][map_name]}">${map_name}</option>`
     }).join("")}</optgroup>`
 }).join("");
