@@ -554,7 +554,7 @@ function createDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansion
                 seg_ref += 8;
                 continue;
             } else if (cmd.opcode == 0xDF) {
-                if (Object.keys(dl_vertex_starts).includes(dl_pointer)) {
+                if (dl_vertex_starts[dl_pointer]) { // Object.keys(dl_vertex_starts).includes(dl_pointer) always returns false because Object.keys() stringifies the keys
                     vertex_start = dl_vertex_starts[dl_pointer][0]
                     vertex_size = dl_vertex_starts[dl_pointer][1]
                     if (vertex_start != old_vertex_start) {

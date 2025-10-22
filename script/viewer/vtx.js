@@ -13,12 +13,13 @@ function getRatioString(red, green, blue, alpha = 0xFF) {
     }
     channels = [red, green, blue, alpha]
     return channels.map(c => {
-        if (c == 0) {
+        const res = (parseInt(c / 25.5) / 10).toString();
+        if (c === "0") {
             return "0.0";
-        } else if (c == 255) {
+        } else if (c === "1") {
             return "1.0";
         } else {
-            return (parseInt(c / 25.5) / 10).toString();
+            return res;
         }
     }).join(" ");
 }
