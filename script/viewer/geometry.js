@@ -567,11 +567,9 @@ function createDisplayLists(rawDLData, rawVertexData, vertexChunkData, expansion
                     dl_raw_vertex_data = rawVertexData;
                     vertex_pointer = 0;
                 }
-                let display_list = null;
-                if (!Object.keys(branched_dls).includes(dl_pointer)) {
+                let display_list = branched_dls[dl_pointer];
+                if (!display_list) {
                     display_list = new DisplayList(new Uint8Array(raw_data), new Uint8Array(dl_raw_vertex_data), vertex_pointer, dl_pointer, branches, branched);
-                } else {
-                    display_list = branched_dls[dl_pointer];
                 }
                 output.push(display_list);
                 display_list.branches.forEach(dl => {
