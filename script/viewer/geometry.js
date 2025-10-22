@@ -178,7 +178,7 @@ class G_VTX extends DL_Command {
         this.vertexCount = parseInt(vCountBits, 2);
 
         const bStartByte = command[3];
-        this.bufferStart = bStartByte >> 1 - this.vertexCount;
+        this.bufferStart = bStartByte - this.vertexCount * 2;
         this.segment = command[4]; 
         this.address = command.slice(5, 8);
     }
