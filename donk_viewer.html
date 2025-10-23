@@ -40,6 +40,15 @@
 </head>
 <body>
     <div class="position-absolute bottom-0 start-0">
+        <div class="card p-2 ms-4 mb-2 me-2 d-none" id="extra_data">
+            <div class="d-flex pb-1" style="border-bottom: 1px solid gray">
+                <div id="extra_data_name" class="flex-grow-1 fw-bold me-2"></div>
+                <button type="button" class="btn-close" id="extra_data_close" aria-label="Close"></button>
+            </div>
+            <div id="extra_data_info" class="p-2" style="font-size: 0.8rem">
+
+            </div>
+        </div>
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
@@ -65,25 +74,25 @@
             </div>
             <div class="mb-2">
                 <label for="map_id_selector">Map</label>
-                <select id="map_id_selector" class="form-select"></select>
+                <select id="map_id_selector" class="form-select change-reload double-reload force-camera"></select>
             </div>
             <div class="mb-2">
                 <label for="bg_selector">Backdrop</label>
-                <select id="bg_selector" class="form-select"></select>
+                <select id="bg_selector" class="form-select change-reload"></select>
             </div>
             <div class="mb-2">
                 <label for="trigger_grouping">Extra Objects</label>
                 <div class="d-flex flex-wrap" id="trigger_grouping">
                     <div class="form-check form-switch py-2">
-                        <input class="form-check-input" type="checkbox" role="switch" id="trigger_selector">
+                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="trigger_selector">
                         <label class="form-check-label" for="trigger_selector">Show Triggers</label>
                     </div>
                     <div class="form-check form-switch py-2">
-                        <input class="form-check-input" type="checkbox" role="switch" id="lock_selector">
+                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="lock_selector">
                         <label class="form-check-label" for="lock_selector">Show Cam Lock Zones</label>
                     </div>
                     <div class="form-check form-switch py-2">
-                        <input class="form-check-input" type="checkbox" role="switch" id="path_selector">
+                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="path_selector">
                         <label class="form-check-label" for="path_selector">Show Object Paths</label>
                     </div>
                 </div>
@@ -92,7 +101,7 @@
                 <label for="rendering_options">Rendering Options</label>
                 <div class="d-flex flex-wrap" id="rendering_options">
                     <div class="form-check form-switch py-2">
-                        <input class="form-check-input" type="checkbox" role="switch" id="wf_selector">
+                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="wf_selector">
                         <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
                     </div>
                 </div>
@@ -394,6 +403,27 @@
         }
 
         // --- Interaction (Clickable Meshes) ---
+        let selectedEdges = null;
+
+        function highlightEdges(ref_object) {
+            if (selectedEdges) {
+                scene.remove(selectedEdges);
+                selectedEdges = null;
+            }
+
+            if (!ref_object) {
+                return;
+            }
+
+            const edges = new THREE.EdgesGeometry(ref_object.geometry);
+            const line = new THREE.LineSegments(
+                edges,
+                new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 2 })
+            );
+            line.position.copy(ref_object.position);
+            selectedEdges = line;
+            scene.add(selectedEdges);
+        }
 
         function onMeshClick(event) {
             // Calculate mouse position in normalized device coordinates (-1 to +1)
@@ -404,34 +434,15 @@
             raycaster.setFromCamera(mouse, camera);
 
             // Determine objects to check (all children of the loaded object)
-            const intersects = raycaster.intersectObjects(loadedObject ? loadedObject.children : [], true);
+            const intersects = raycaster.intersectObjects(scene.children.filter(k => k != loadedObject), false);
 
             if (intersects.length > 0) {
                 const hitMesh = intersects[0].object;
-
-                // Reset previous selection and highlight new selection...
-                // ...
-
-                // CORRECTED CODE: Calculate triangle count safely
-                let triangleCount;
-                if (hitMesh.geometry.index) {
-                    // If the geometry is indexed (most common for complex models)
-                    triangleCount = hitMesh.geometry.index.count / 3;
-                } else if (hitMesh.geometry.attributes.position) {
-                    // If the geometry is not indexed, use the position attribute count
-                    triangleCount = hitMesh.geometry.attributes.position.count / 3;
-                } else {
-                    triangleCount = 'N/A';
-                }
-
-                // Update info panel
-
+                highlightEdges(hitMesh);
+                window.populateExtraData(hitMesh);
             } else {
                 // No object hit, deselect
-                if (intersected && intersected.material.emissive) {
-                    intersected.material.emissive.setHex(0x000000);
-                }
-                intersected = null;
+                highlightEdges(null);
             }
         }
 

@@ -267,29 +267,64 @@ document.getElementById("bg_selector").innerHTML = Object.keys(geometries).map(n
 }).join("");
 
 // Dropdowns
-document.getElementById("map_id_selector").addEventListener("change", () => {
-    window.renderHandler(true);
-    window.renderHandler(false);
-});
-document.getElementById("bg_selector").addEventListener("change", () => {
-    window.renderHandler(false);
-});
+const changeEls = document.getElementsByClassName("change-reload");
+for (let c = 0; c < changeEls.length; c++) {
+    changeEls[c].addEventListener("change", (e) => {
+        window.renderHandler(e.target.classList.contains("force-camera"));
+        if (e.target.classList.contains("double-reload")) {
+            window.renderHandler(false);
+        }
+    });
+}
 
 // Toggles
-document.getElementById("wf_selector").addEventListener("click", () => {
-    window.renderHandler(false);
-});
-document.getElementById("trigger_selector").addEventListener("click", () => {
-    window.renderHandler(false);
-});
-document.getElementById("lock_selector").addEventListener("click", () => {
-    window.renderHandler(false);
-});
-document.getElementById("path_selector").addEventListener("click", () => {
-    window.renderHandler(false);
-});
+const clickEls = document.getElementsByClassName("click-reload");
+for (let c = 0; c < clickEls.length; c++) {
+    clickEls[c].addEventListener("click", (e) => {
+        window.renderHandler(e.target.classList.contains("force-camera"));
+        if (e.target.classList.contains("double-reload")) {
+            window.renderHandler(false);
+        }
+    });
+}
 
 // File Upload
 document.getElementById("fileUploadButton").addEventListener("click", () => {
     document.getElementById("fileInput").click();
 })
+
+function fmtFloat(v) {
+    return parseInt(v * 10) / 10;
+}
+
+function populateExtraData(mesh) {
+    const extraData = mesh.extra;
+    const coord_names = ["X", "Y", "Z"];
+    document.getElementById("extra_data").classList.remove("d-none");
+    document.getElementById("extra_data_name").innerText = extraData.name;
+    const coord_section = extraData.shape != "path" ? `
+        ${extraData.coords.map((c, i) => {
+            return `<div><span class='fw-bold'>${coord_names[i]}: </span>${fmtFloat(c)}</div>`
+        }).join("")}
+    ` : `
+        <div class='fw-bold'>
+            Path Segments
+        </div>
+        <div class='ps-2'>
+            ${extraData.path.map((p, i) => {
+                return `<div>${fmtFloat(p[0])}, ${fmtFloat(p[1])}, ${fmtFloat(p[2])}</div>`;
+            }).join("")}
+        </div>
+    `;
+    document.getElementById("extra_data_info").innerHTML = `
+        <div>
+            ${coord_section}
+        </div>
+    `;
+    console.log(extraData);
+}
+document.getElementById("extra_data_close").addEventListener("click", () => {
+    document.getElementById("extra_data").classList.add("d-none");
+});
+
+window.populateExtraData = populateExtraData;

@@ -130,7 +130,7 @@ function parsePaths(map_id) {
     let read_l = 2;
     for (let i = 0; i < path_count; i++) {
         let local_path = [];
-        //const path_id = window.readFile(path_file, read_l, 2);
+        const path_id = window.readFile(path_file, read_l, 2);
         const point_count = window.readFile(path_file, read_l + 2, 2);
         read_l += 6;
         for (let p = 0; p < point_count; p++) {
@@ -143,12 +143,24 @@ function parsePaths(map_id) {
             })
             read_l += 10;
         }
-        paths.push({
-            path: local_path,
-            color: 0xFF0000,
-            thickness: 10,
-            shape: "path",
-        })
+        if (local_path.length == 1) {
+            paths.push({
+                coords: local_path[0].coords,
+                color: 0xFF0000,
+                radius: 10,
+                shape: "sphere",
+                name: `Path ${path_id}`,
+            })
+            console.log(local_path[0].coords)
+        } else if (local_path.length > 1) {
+            paths.push({
+                path: local_path,
+                color: 0xFF0000,
+                thickness: 10,
+                shape: "path",
+                name: `Path ${path_id}`,
+            })
+        }
     }
     return paths;
 }
