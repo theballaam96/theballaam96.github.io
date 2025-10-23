@@ -4,14 +4,20 @@ function parseViews(map_id) {
     const local_scale = window.getScale(map_id);
     views.forEach(view => {
         if (view.shape == "cylinder") {
-            const geometry = new THREE.CylinderGeometry(view.radius, view.radius, view.height, 32);
+            let height = view.height;
+            let y_offset = height / 2;
+            if (view.infinite_y) {
+                height = 2 * height;
+                y_offset = 0;
+            }
+            const geometry = new THREE.CylinderGeometry(view.radius, view.radius, height, 32);
             const material = new THREE.MeshStandardMaterial({
                 color: view.color,
                 transparent: true,
                 opacity: 0.5,
             })
             const cyl = new THREE.Mesh(geometry, material);
-            cyl.position.set(view.coords[0], view.coords[1] + (view.height / 2), view.coords[2]);
+            cyl.position.set(view.coords[0], view.coords[1] + y_offset, view.coords[2]);
             cyl.extra = {
                 name: view.name,
                 shape: view.shape,
@@ -20,6 +26,10 @@ function parseViews(map_id) {
                     view.coords[1] / local_scale,
                     view.coords[2] / local_scale,
                 ],
+                infinite_y: view.infinite_y,
+                infinite_h: view.infinite_h,
+                radius: view.radius / local_scale,
+                height: view.height / local_scale,
             };
             output.push(cyl);
         } else if (view.shape == "sphere") {
@@ -39,6 +49,7 @@ function parseViews(map_id) {
                     view.coords[1] / local_scale,
                     view.coords[2] / local_scale,
                 ],
+                radius: view.radius / local_scale,
             };
             output.push(sph);
         } else if (view.shape == "path") {
@@ -50,8 +61,7 @@ function parseViews(map_id) {
             view.path.forEach(p => {
                 points.push(new THREE.Vector3(p.coords[0], p.coords[1], p.coords[2]));
             })
-            const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.1); 
-            console.log(view.path, view.thickness, curve)
+            const curve = new THREE.CatmullRomCurve3(points, false, 'catmullrom', 0.1);
             const geometry = new THREE.TubeGeometry(curve, 100, view.thickness, 8, false);
             const material = new THREE.MeshStandardMaterial({
                 color: view.color,

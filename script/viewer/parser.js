@@ -62,8 +62,7 @@ function parseTriggers(map_id) {
         let height = window.readFile(trigger_file, trigger_start + 8, 2, true);
         let infinite_h = false;
         let infinite_y = false;
-        if (radius == -1) {
-            radius = 10;
+        if (radius == 32767) {
             infinite_h = true;
         }
         if (height == -1) {
@@ -115,6 +114,8 @@ function parseCamLocks(map_id) {
             height: 300,
             shape: [1, 2].includes(collision_type) ? "cylinder" : "sphere",
             name: `Camera Lock ${x}`,
+            infinite_h: false,
+            infinite_y: true,
             color: 0xFF00FF,
         })
         info_l += 0x1C;
@@ -151,7 +152,6 @@ function parsePaths(map_id) {
                 shape: "sphere",
                 name: `Path ${path_id}`,
             })
-            console.log(local_path[0].coords)
         } else if (local_path.length > 1) {
             paths.push({
                 path: local_path,
@@ -165,6 +165,87 @@ function parsePaths(map_id) {
     return paths;
 }
 
+function parseAutowalks(map_id) {
+    const autowalk_file = window.getFile(window.rom_bytes, window.rom_dv, 21, map_id, false);
+    let autowalks = [];
+    const count = window.readFile(autowalk_file, 0, 2);
+    let read_l = 2;
+    for (let x = 0; x < count; x++) {
+        const sub_count = window.readFile(autowalk_file, read_l, 2);
+        let path_points = [];
+        read_l += 2;
+        for (let y = 0; y < sub_count; y++) {
+            path_points.push({
+                coords: [
+                    window.readFile(autowalk_file, read_l + 0, 2, true),
+                    window.readFile(autowalk_file, read_l + 2, 2, true),
+                    window.readFile(autowalk_file, read_l + 4, 2, true),
+                ]
+            })
+            read_l += 0x12
+        }
+        if (path_points.length == 1) {
+            autowalks.push({
+                coords: path_points[0].coords,
+                color: 0x42A5B2,
+                radius: 10,
+                shape: "sphere",
+                name: `Autowalk Path ${x}`,
+            })
+        } else if (path_points.length > 1) {
+            autowalks.push({
+                path: path_points,
+                color: 0x42A5B2,
+                thickness: 10,
+                shape: "path",
+                name: `Autowalk Path ${x}`,
+            })
+        }
+    }
+    return autowalks;
+}
+
+function parseExits(map_id) {
+    const exit_file = window.getFile(window.rom_bytes, window.rom_dv, 23, map_id, false);
+    let exits = [];
+    const exit_count = parseInt(exit_file.length / 10);
+    for (let x = 0; x < exit_count; x++) {
+        const exit_start = x * 10;
+        const angle = window.readFile(exit_file, exit_start + 6, 1);
+        const local_data = {
+            coords: [
+                window.readFile(exit_file, exit_start + 0, 2, true),
+                window.readFile(exit_file, exit_start + 2, 2, true),
+                window.readFile(exit_file, exit_start + 4, 2, true),
+            ],
+            radius: 20,
+            color: 0x00FF00,
+            name: `Exit ${x}`,
+            shape: "sphere",
+        }
+        exits.push(local_data);
+        const has_autowalk = window.readFile(exit_file, exit_start + 8, 1) != 0;
+        if (has_autowalk) {
+            const angle_radians = (angle / 255) * Math.PI * 2;
+            exits.push({
+                coords: [
+                    local_data.coords[0] + (Math.sin(angle_radians) * 50),
+                    local_data.coords[1],
+                    local_data.coords[2] + (Math.cos(angle_radians) * 50),
+                ],
+                radius: Math.sqrt(100),
+                shape: "cylinder",
+                height: 300,
+                infinite_h: false,
+                infinite_y: true,
+                color: 0x42A5B2,
+                name: `Autowalk target for exit ${x}`
+            })
+        }
+    }
+    return exits;
+}
+
 function allViews(map_id) {
     let collective = [];
     if (document.getElementById("trigger_selector").checked) {
@@ -175,6 +256,12 @@ function allViews(map_id) {
     }
     if (document.getElementById("path_selector").checked) {
         collective = collective.concat(parsePaths(map_id));
+    }
+    if (document.getElementById("autowalk_selector").checked) {
+        collective = collective.concat(parseAutowalks(map_id));
+    }
+    if (document.getElementById("exit_selector").checked) {
+        collective = collective.concat(parseExits(map_id));
     }
     collective.forEach(entry => {
         if (Object.keys(entry).includes("coords")) {

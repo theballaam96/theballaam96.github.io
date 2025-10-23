@@ -52,68 +52,83 @@
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v1.2</small>
+                <small>v1.3</small>
             </div>
             <div>Made by Ballaam</div>
             <div style="font-size: 0.8rem">Contributions from ALinkToTheFuture</div>
         </div>
     </div>
     <div class="position-absolute top-0 end-0">
-        <div class="card p-3 mt-4 me-4 ms-2 mb-2">
-            <div class="mb-2">
-                <small>ROM File</small>
-                <div class="input-group flex-nowrap" id="fileUploadButton">
-                    <button class="btn btn-secondary">
-                        <i class="fa-solid fa-file-arrow-up"></i>
-                    </button>
-                    <span class="form-control" id="fileUploadText">Choose a file</span>
-                </div>
-                <div hidden>
-                    <input type="file" id="fileInput" accept=".z64" hidden>
-                </div>
-            </div>
-            <div class="mb-2">
-                <label for="map_id_selector">Map</label>
-                <select id="map_id_selector" class="form-select change-reload double-reload force-camera"></select>
-            </div>
-            <div class="mb-2">
-                <label for="bg_selector">Backdrop</label>
-                <select id="bg_selector" class="form-select change-reload"></select>
-            </div>
-            <div class="mb-2">
-                <label for="trigger_grouping">Extra Objects</label>
-                <div class="d-flex flex-wrap" id="trigger_grouping">
-                    <div class="form-check form-switch py-2">
-                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="trigger_selector">
-                        <label class="form-check-label" for="trigger_selector">Show Triggers</label>
-                    </div>
-                    <div class="form-check form-switch py-2">
-                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="lock_selector">
-                        <label class="form-check-label" for="lock_selector">Show Cam Lock Zones</label>
-                    </div>
-                    <div class="form-check form-switch py-2">
-                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="path_selector">
-                        <label class="form-check-label" for="path_selector">Show Object Paths</label>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-2">
-                <label for="rendering_options">Rendering Options</label>
-                <div class="d-flex flex-wrap" id="rendering_options">
-                    <div class="form-check form-switch py-2">
-                        <input class="form-check-input click-reload" type="checkbox" role="switch" id="wf_selector">
-                        <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
-                    </div>
-                </div>
-            </div>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Export Scene
+        <div class="card p-3 mt-4 me-4 ms-2 mb-2" style="max-width: 500px;">
+            <div class="ms-auto">
+                <button class="btn btn-sm" id="toggle_visibility" title="Maximize/Minimize">
+                    <i class="fa-solid fa-minimize"></i>
                 </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#" id="export_obj">To OBJ</a></li>
-                    <li><a class="dropdown-item" href="#" id="export_glb">To GLB</a></li>
-                </ul>
+            </div>
+            <div id="controls_content">
+                <div class="mb-2">
+                    <small>ROM File</small>
+                    <div class="input-group flex-nowrap" id="fileUploadButton">
+                        <button class="btn btn-secondary">
+                            <i class="fa-solid fa-file-arrow-up"></i>
+                        </button>
+                        <span class="form-control" id="fileUploadText">Choose a file</span>
+                    </div>
+                    <div hidden>
+                        <input type="file" id="fileInput" accept=".z64" hidden>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label for="map_id_selector">Map</label>
+                    <select id="map_id_selector" class="form-select change-reload double-reload force-camera"></select>
+                </div>
+                <div class="mb-2">
+                    <label for="bg_selector">Backdrop</label>
+                    <select id="bg_selector" class="form-select change-reload"></select>
+                </div>
+                <div class="mb-2">
+                    <label for="trigger_grouping">Extra Objects</label>
+                    <div class="d-flex flex-wrap" id="trigger_grouping">
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="trigger_selector">
+                            <label class="form-check-label" for="trigger_selector">Show Triggers</label>
+                        </div>
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="lock_selector">
+                            <label class="form-check-label" for="lock_selector">Show Cam Lock Zones</label>
+                        </div>
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="path_selector">
+                            <label class="form-check-label" for="path_selector">Show Object Paths</label>
+                        </div>
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="autowalk_selector">
+                            <label class="form-check-label" for="autowalk_selector">Show Autowalk Paths</label>
+                        </div>
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="exit_selector">
+                            <label class="form-check-label" for="exit_selector">Show Exits</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label for="rendering_options">Rendering Options</label>
+                    <div class="d-flex flex-wrap" id="rendering_options">
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="wf_selector">
+                            <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Export Scene
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" id="export_obj">To OBJ</a></li>
+                        <li><a class="dropdown-item" href="#" id="export_glb">To GLB</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>

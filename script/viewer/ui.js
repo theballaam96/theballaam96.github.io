@@ -316,9 +316,23 @@ function populateExtraData(mesh) {
             }).join("")}
         </div>
     `;
+    let dimensions_section = "";
+    if (["cylinder", "sphere"].includes(extraData.shape)) {
+        let radius = extraData.infinite_h ? "Infinite" : extraData.radius;
+        dimensions_section += `
+        <div><span class='fw-bold'>Radius: </span>${radius}</div>
+        `;
+        if (extraData.shape == "cylinder")  {
+            let height = extraData.infinite_y ? "Infinite" : extraData.height;
+            dimensions_section += `
+                <div><span class='fw-bold'>Height: </span>${height}</div>
+            `;
+        }
+    }
     document.getElementById("extra_data_info").innerHTML = `
         <div>
             ${coord_section}
+            ${dimensions_section}
         </div>
     `;
     console.log(extraData);
@@ -326,5 +340,17 @@ function populateExtraData(mesh) {
 document.getElementById("extra_data_close").addEventListener("click", () => {
     document.getElementById("extra_data").classList.add("d-none");
 });
+
+document.getElementById("toggle_visibility").addEventListener("click", () => {
+    const btn = document.getElementById("toggle_visibility");
+    btn.classList.toggle("minimized");
+    const minimized = btn.classList.contains("minimized");
+    if (minimized) {
+        btn.innerHTML = "<i class='fa-solid fa-maximize'></i>";
+    } else {
+        btn.innerHTML = "<i class='fa-solid fa-minimize'></i>";
+    }
+    document.getElementById("controls_content").classList.toggle("d-none");
+})
 
 window.populateExtraData = populateExtraData;
