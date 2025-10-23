@@ -52,7 +52,7 @@
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v1.1</small>
+                <small>v1.2</small>
             </div>
             <div>Made by Ballaam</div>
             <div style="font-size: 0.8rem">Contributions from ALinkToTheFuture</div>
@@ -106,6 +106,15 @@
                     </div>
                 </div>
             </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Export Scene
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" id="export_obj">To OBJ</a></li>
+                    <li><a class="dropdown-item" href="#" id="export_glb">To GLB</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -123,6 +132,8 @@
     <script src="script/viewer/geometry.js" type="text/javascript"></script>
     <script src="script/viewer/collision.js" type="text/javascript"></script>
     <script src="script/viewer/create_rendered_obj.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/OBJExporter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.min.js"></script>
 
     <script>
         // --- Global Variables ---
@@ -470,6 +481,28 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
+
+        document.getElementById('export_obj').onclick = () => {
+            const exporter = new THREE.OBJExporter();
+            const result = exporter.parse(scene);
+            const blob = new Blob([result], { type: 'text/plain' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'scene.obj';
+            link.click();
+        };
+
+            // === GLB Export ===
+        document.getElementById('export_glb').onclick = () => {
+            const exporter = new THREE.GLTFExporter();
+            exporter.parse(scene, (gltf) => {
+                const blob = new Blob([gltf], { type: 'model/gltf-binary' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = 'scene.glb';
+                link.click();
+            }, { binary: true }); // Use binary GLB format
+        };
 
         // Initialize the application
         init();
