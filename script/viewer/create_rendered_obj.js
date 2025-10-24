@@ -1,3 +1,13 @@
+const worker = new Worker('worker.js');
+
+worker.onmessage = (e) => {
+  if (e.data.progress !== undefined) {
+    window.regenProcess = e.data.progress;
+  } else if (e.data.done) {
+    renderHandlerInternalDone(e.data.result);
+  }
+};
+
 function parseViews(map_id) {
     const views = window.allViews(map_id);
     let output = [];
@@ -80,14 +90,38 @@ function parseViews(map_id) {
     return output;
 }
 
-function renderHandler(reset_camera) {
+let loaded_gaps = {};
+
+function resetGaps() {
+    loaded_gaps = {};
+}
+window.resetGaps = resetGaps;
+window.regenProcess = 0;
+
+async function renderHandlerInternal(reset_camera, regenInterval) {
     const map_id = parseInt(document.getElementById("map_id_selector").value);
     const bg_id = document.getElementById("bg_selector").value;
+    if (bg_id == "gaps") {
+        document.getElementById("gaps_fyi").classList.remove("d-none");
+    } else {
+        document.getElementById("gaps_fyi").classList.add("d-none");
+    }
     let obj = null;
+    let gaps = [];
     if (bg_id == "geo") {
         obj = window.generateGeometry(map_id);
     } else {
-        const tris = window.getCollisionTris(map_id, bg_id);
+        let tris = window.getCollisionTris(map_id, bg_id);
+        if (bg_id == "gaps") {
+            if (loaded_gaps[map_id]) {
+                gaps = loaded_gaps[map_id];
+            } else {
+                gaps = window.dumpGapTris(tris);
+                loaded_gaps[map_id] = gaps;
+            }
+            // tris = gaps;
+            tris = tris.concat(gaps);
+        }
         obj = trisToObj(tris);
     }
     if (obj !== null && obj.length > 0) {
@@ -95,6 +129,34 @@ function renderHandler(reset_camera) {
     }
     const additions = parseViews(map_id);
     window.addToScene(additions);
+    console.log(regenInterval)
+    window.regenProcess = 100;
+    if (regenInterval) {
+        clearInterval(regenInterval);
+        updateProgressText(true);
+        console.log("Cleared interval")
+        regenInterval = null;
+    }
+}
+
+function updateProgressText(force_clear) {
+    document.getElementById("progress_text").innerText = `${window.regenProcess}%`;
+    if (window.regenProcess == 100 || force_clear) {
+        document.getElementById("progress_text").classList.add("d-none");
+    }
+}
+
+function renderHandler(reset_camera) {
+    window.regenProcess = 0;
+    document.getElementById("progress_text").classList.remove("d-none");
+    updateProgressText();
+    let regenInterval = setInterval(() => {
+        console.log('interval firing');
+        updateProgressText();
+    }, 200);
+    setTimeout(() => {
+        renderHandlerInternal(reset_camera, regenInterval);
+    }, 201);
 }
 window.renderHandler = renderHandler;
 

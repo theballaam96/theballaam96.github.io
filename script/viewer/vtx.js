@@ -25,6 +25,9 @@ function getRatioString(red, green, blue, alpha = 0xFF) {
 }
 
 function getColorString(triangle) {
+    if (triangle.is_gap) {
+        return getRatioString(255, 0, 0);
+    }
     if (triangle.is_floor) {
         if (triangle.floor_dump_mode == "floors") {
             if (triangle.is_void) {

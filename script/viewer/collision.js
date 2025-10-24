@@ -15,6 +15,7 @@ const collision_info = {
 
 const files_to_load = {
     "collision": [2, 3],
+    "gaps": [2, 3],
     "walls": [2],
     "floors": [3],
     "slip": [3],

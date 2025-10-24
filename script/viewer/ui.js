@@ -247,6 +247,7 @@ const geometries = {
     "Collision (Floor Properties)": "floors",
     "Collision (Slippable Floors)": "slip",
     "Collision (Floor Special)": "enum_floors",
+    "Collision (Gaps) (WARNING: Expensive)": "gaps",
     "Level Geometry (Vertex Colors)": "geo",
 }
 
