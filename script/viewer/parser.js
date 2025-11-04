@@ -246,7 +246,7 @@ function parseCamPaths(map_id) {
         return getPathObject(action.point_arr, {
             color: used ? 0x60B100 : 0xB75400,
             thickness: 10,
-            name: `Cam Path ${action_index}${used ? '' : ' (Unused)'}`,
+            name: `Cam Path ${action_index}${used ? ` (${action.used_cutscenes.join(', ')})` : ' (Unused)'}`,
         })
     }).filter(k => k !== null);
 }
