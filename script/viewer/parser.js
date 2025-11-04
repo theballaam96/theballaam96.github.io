@@ -234,21 +234,20 @@ function parseCamPaths(map_id) {
     cutscenes.forEach((cutscene, cutscene_index) => {
         cutscene.point_sequence.forEach(point => {
             if (point < actions.length) {
-                actions[point].used_cutscenes.push(cutscene_index);
+                if (!actions[point].used_cutscenes.includes(cutscene_index)) {
+                    actions[point].used_cutscenes.push(cutscene_index);
+                }
             }
         })
     })
-    return actions.map((action, action_index) => {
-        if (!action.is_path) {
-            return null;
-        }
+    return actions.filter(k => k.is_path).map((action, action_index) => {
         const used = action.used_cutscenes.length > 0;
         return getPathObject(action.point_arr, {
             color: used ? 0x60B100 : 0xB75400,
             thickness: 10,
             name: `Cam Path ${action_index}${used ? ` (${action.used_cutscenes.join(', ')})` : ' (Unused)'}`,
         })
-    }).filter(k => k !== null);
+    });
 }
 
 function getPathObject(path, config) {
@@ -263,6 +262,7 @@ function getPathObject(path, config) {
         config.shape = "path";
         return config;
     }
+    return {}
 }
 
 function getPolyObject(verts, config) {
