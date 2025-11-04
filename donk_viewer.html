@@ -52,7 +52,7 @@
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v1.6</small>
+                <small>v1.7</small>
             </div>
             <div>Made by Ballaam</div>
             <div style="font-size: 0.8rem">Contributions from:
@@ -117,6 +117,10 @@
                             <input class="form-check-input click-reload" type="checkbox" role="switch" id="wf_selector">
                             <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
                         </div>
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input click-reload force-camera double-reload" type="checkbox" role="switch" id="ortho_camera">
+                            <label class="form-check-label" for="ortho_camera">Orthographic Camera</label>
+                        </div>
                     </div>
                 </div>
                 <div class="dropdown">
@@ -163,6 +167,7 @@
     <script>
         // --- Global Variables ---
         let scene, camera, renderer, controls;
+        let orthoCamera, perspectiveCamera;
         let raycaster, mouse;
         let loadedObject = null;
         let loadedExtras = [];
@@ -184,12 +189,23 @@
             // Scene setup
             scene = new THREE.Scene();
             scene.background = new THREE.Color(0x333333); 
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+            const aspect = window.innerWidth / window.innerHeight;
+            perspectiveCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 100000);
+            const frustumSize = 5;
+            orthoCamera = new THREE.OrthographicCamera(
+                (frustumSize * aspect) / -2,
+                (frustumSize * aspect) / 2,
+                frustumSize / 2,
+                -frustumSize / 2,
+                -100000,
+                100000
+            );
             renderer = new THREE.WebGLRenderer({ antialias: true });
             
             renderer.setSize(window.innerWidth, window.innerHeight);
             document.body.appendChild(renderer.domElement);
 
+            camera = perspectiveCamera;
             camera.position.set(0, 1, 3);
             
             controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -216,6 +232,24 @@
             
             animate();
         }
+
+        function toggleCamera() {
+            const ortho = document.getElementById("ortho_camera").checked;
+            // Save position & rotation so switching feels seamless
+            const pos = camera.position.clone();
+            const rot = camera.rotation.clone();
+
+            // Switch camera reference
+            camera = ortho ? orthoCamera : perspectiveCamera;
+            camera.position.copy(pos);
+            camera.rotation.copy(rot);
+
+            // Update controls to track new camera
+            controls.object = camera;
+            controls.update();
+            console.log(`Updating camera to ${ortho ? 'Orthographic' : 'Perspective'}`)
+        }
+        window.toggleCamera = toggleCamera;
 
         function animate() { // <-- The function is defined here
             requestAnimationFrame(animate);
@@ -503,8 +537,19 @@
         }
 
         function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
+            const aspect = window.innerWidth / window.innerHeight;
+
+            // Update both cameras
+            perspectiveCamera.aspect = aspect;
+            perspectiveCamera.updateProjectionMatrix();
+
+            const frustumSize = 5;
+            orthoCamera.left = (frustumSize * aspect) / -2;
+            orthoCamera.right = (frustumSize * aspect) / 2;
+            orthoCamera.top = frustumSize / 2;
+            orthoCamera.bottom = -frustumSize / 2;
+            orthoCamera.updateProjectionMatrix();
+
             renderer.setSize(window.innerWidth, window.innerHeight);
         }
 

@@ -192,12 +192,10 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     }
     const additions = parseViews(map_id);
     window.addToScene(additions);
-    console.log(regenInterval)
     window.regenProcess = 100;
     if (regenInterval) {
         clearInterval(regenInterval);
         updateProgressText(true);
-        console.log("Cleared interval")
         regenInterval = null;
     }
 }
@@ -214,7 +212,6 @@ function renderHandler(reset_camera) {
     document.getElementById("progress_text").classList.remove("d-none");
     updateProgressText();
     let regenInterval = setInterval(() => {
-        console.log('interval firing');
         updateProgressText();
     }, 200);
     setTimeout(() => {

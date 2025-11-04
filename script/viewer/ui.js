@@ -312,6 +312,7 @@ document.getElementById("markers_all").addEventListener("click", (e) => {
 document.getElementById("markers_none").addEventListener("click", (e) => {
     setMarkersStatus(false);
 });
+document.getElementById("ortho_camera").addEventListener("click", () => {window.toggleCamera()});
 
 document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(group => {
     return `<optgroup label="${group}">${Object.keys(map_ids[group]).sort().map(map_name => {
