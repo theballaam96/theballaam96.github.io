@@ -85,6 +85,69 @@ function parseViews(map_id) {
                 })
             };
             output.push(line);
+        } else if (view.shape == "poly") {
+            if (view.verts.length < 3) {
+                // ThreeJS can't handle verts with less than 3 points
+                return;
+            }
+            let vertices = view.verts.map(v =>
+                v.isVector3 ? v.coords.clone() : new THREE.Vector3(...v.coords)
+            );
+
+            // Ensure polygon is closed
+            if (!vertices[0].equals(vertices[vertices.length - 1])) {
+                vertices.push(vertices[0].clone());
+            }
+
+            // Compute plane basis from first three distinct points
+            const v0 = vertices[0];
+            let i = 1;
+            while (i < vertices.length && vertices[i].equals(v0)) i++;
+            const v1 = vertices[i];
+            let j = i + 1;
+            while (j < vertices.length && new THREE.Vector3().subVectors(vertices[j], v0)
+                .cross(new THREE.Vector3().subVectors(v1, v0)).lengthSq() < 1e-8) j++;
+            const v2 = vertices[j];
+
+            const xAxis = new THREE.Vector3().subVectors(v1, v0).normalize();
+            const normal = new THREE.Vector3()
+                .subVectors(v2, v0)
+                .cross(new THREE.Vector3().subVectors(v1, v0))
+                .normalize();
+            const yAxis = new THREE.Vector3().crossVectors(normal, xAxis).normalize();
+
+            // Project to 2D coordinates on the polygon's plane
+            const local2D = vertices.map(v => {
+                const rel = new THREE.Vector3().subVectors(v, v0);
+                return new THREE.Vector2(rel.dot(xAxis), rel.dot(yAxis));
+            });
+
+            // Build a Shape for triangulation
+            const shape = new THREE.Shape();
+            shape.moveTo(local2D[0].x, local2D[0].y);
+            for (let k = 1; k < local2D.length; k++) shape.lineTo(local2D[k].x, local2D[k].y);
+            shape.closePath();
+
+            // Triangulate and create geometry
+            const geometry = new THREE.ShapeGeometry(shape);
+
+            // Material and mesh
+            const material = new THREE.MeshStandardMaterial({
+                color: view.color,
+                side: THREE.DoubleSide,
+                transparent: true,
+                opacity: 0.5,
+                polygonOffset: true,
+                polygonOffsetFactor: -1,  // push slightly toward camera
+                polygonOffsetUnits: -1,
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+
+            // Transform the mesh from 2D plane space to 3D world space
+            const mat = new THREE.Matrix4().makeBasis(xAxis, yAxis, normal);
+            mat.setPosition(v0);
+            mesh.applyMatrix4(mat);
+            output.push(mesh);
         }
     })
     return output;
@@ -98,7 +161,7 @@ function resetGaps() {
 window.resetGaps = resetGaps;
 window.regenProcess = 0;
 
-async function renderHandlerInternal(reset_camera, regenInterval) {
+function renderHandlerInternal(reset_camera, regenInterval) {
     const map_id = parseInt(document.getElementById("map_id_selector").value);
     const bg_id = document.getElementById("bg_selector").value;
     if (bg_id == "gaps") {

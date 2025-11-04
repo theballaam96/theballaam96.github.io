@@ -52,10 +52,15 @@
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v1.5</small>
+                <small>v1.6</small>
             </div>
             <div>Made by Ballaam</div>
-            <div style="font-size: 0.8rem">Contributions from ALinkToTheFuture</div>
+            <div style="font-size: 0.8rem">Contributions from:
+                <ul class="mb-0 ps-3">
+                    <li>ALinkToTheFuture</li>
+                    <li>ZeldaBoy14</li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class="position-absolute top-0 end-0">
@@ -86,32 +91,23 @@
                     <label for="bg_selector">Backdrop</label>
                     <select id="bg_selector" class="form-select change-reload"></select>
                 </div>
-                <div id="progress_text">
+                <div id="progress_text" hidden>
 
                 </div>
                 <div class="mb-2">
-                    <label for="trigger_grouping">Extra Objects</label>
-                    <div class="d-flex flex-wrap" id="trigger_grouping">
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="trigger_selector">
-                            <label class="form-check-label" for="trigger_selector">Show Triggers</label>
-                        </div>
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="lock_selector">
-                            <label class="form-check-label" for="lock_selector">Show Cam Lock Zones</label>
-                        </div>
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="path_selector">
-                            <label class="form-check-label" for="path_selector">Show Object Paths</label>
-                        </div>
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="autowalk_selector">
-                            <label class="form-check-label" for="autowalk_selector">Show Autowalk Paths</label>
-                        </div>
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="exit_selector">
-                            <label class="form-check-label" for="exit_selector">Show Exits</label>
-                        </div>
+                    <label for="extra_marker_dropdown">Extra Objects</label>
+                    <div class="dropdown">
+                        <button 
+                            class="btn btn-secondary dropdown-toggle" 
+                            type="button" 
+                            id="multiSelectDropdown" 
+                            data-bs-toggle="dropdown"
+                            data-bs-auto-close="outside"
+                            aria-expanded="false">
+                            Select Options
+                        </button>
+                        <ul class="dropdown-menu p-2" aria-labelledby="multiSelectDropdown" style="width: 200px;" id="extra_marker_dropdown">
+                        </ul>
                     </div>
                 </div>
                 <div class="mb-2">

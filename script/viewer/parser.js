@@ -124,6 +124,28 @@ function parseCamLocks(map_id) {
     return lock_zones;
 }
 
+function getPathObject(path, config) {
+    if (path.length == 1) {
+        config.radius = config.thickness;
+        config.coords = path[0].coords;
+        config.shape = "sphere"
+        return config;
+    } else if (path.length > 1) {
+        config.path = path;
+        config.shape = "path";
+        return config;
+    }
+}
+
+function getPolyObject(verts, config) {
+    if (verts.length > 2) {
+        config.verts = verts;
+        config.shape = "poly";
+        return config;
+    }
+    return getPathObject(verts, config);
+}
+
 function parsePaths(map_id) {
     const path_file = window.getFile(window.rom_bytes, window.rom_dv, 15, map_id, false);
     const path_count = window.readFile(path_file, 0, 2);
@@ -144,23 +166,11 @@ function parsePaths(map_id) {
             })
             read_l += 10;
         }
-        if (local_path.length == 1) {
-            paths.push({
-                coords: local_path[0].coords,
-                color: 0xFF0000,
-                radius: 10,
-                shape: "sphere",
-                name: `Path ${path_id}`,
-            })
-        } else if (local_path.length > 1) {
-            paths.push({
-                path: local_path,
-                color: 0xFF0000,
-                thickness: 10,
-                shape: "path",
-                name: `Path ${path_id}`,
-            })
-        }
+        paths.push(getPathObject(local_path, {
+            color: 0xFF0000,
+            thickness: 10,
+            name: `Path ${path_id}`,
+        }));
     }
     return paths;
 }
@@ -184,23 +194,11 @@ function parseAutowalks(map_id) {
             })
             read_l += 0x12
         }
-        if (path_points.length == 1) {
-            autowalks.push({
-                coords: path_points[0].coords,
-                color: 0x42A5B2,
-                radius: 10,
-                shape: "sphere",
-                name: `Autowalk Path ${x}`,
-            })
-        } else if (path_points.length > 1) {
-            autowalks.push({
-                path: path_points,
-                color: 0x42A5B2,
-                thickness: 10,
-                shape: "path",
-                name: `Autowalk Path ${x}`,
-            })
-        }
+        autowalks.push(getPathObject(path_points, {
+            color: 0x42A5B2,
+            thickness: 10,
+            name: `Autowalk Path ${x}`,
+        }))
     }
     return autowalks;
 }
@@ -246,6 +244,67 @@ function parseExits(map_id) {
     return exits;
 }
 
+function parseCharSpawnerFile(map_id) {
+    const spawner_file = window.getFile(window.rom_bytes, window.rom_dv, 0x10, map_id, true);
+    let fences = [];
+    let paths = [];
+    const enemy_extra_data = window.readFile(spawner_file, 0, 2);
+    let read_l = 2;
+    for (let i = 0; i < enemy_extra_data; i++) {
+        console.log(i, read_l.toString(16), spawner_file.length.toString(16))
+        let fence = [];
+        const fence_vert_count = window.readFile(spawner_file, read_l, 2);
+        console.log("Fence has ", fence_vert_count, " verts");
+        read_l += 2;
+        for (let j = 0; j < fence_vert_count; j++) {
+            fence.push({
+                coords: [
+                    window.readFile(spawner_file, read_l + 0, 2, true),
+                    window.readFile(spawner_file, read_l + 2, 2, true),
+                    window.readFile(spawner_file, read_l + 4, 2, true),
+                ]
+            });
+            read_l += 6;
+        }
+        let path = [];
+        const path_vert_count = window.readFile(spawner_file, read_l, 2);
+        read_l += 2;
+        console.log("Path has ", path_vert_count, " verts");
+        for (let j = 0; j < path_vert_count; j++) {
+            path.push({
+                coords: [
+                    window.readFile(spawner_file, read_l + 0, 2, true),
+                    window.readFile(spawner_file, read_l + 2, 2, true),
+                    window.readFile(spawner_file, read_l + 4, 2, true),
+                ]
+            });
+            read_l += 10;
+        }
+        read_l += 4;
+        if (fence_vert_count > 0) {
+            fence_arr = fence.slice();
+            if (fence.length > 3) {
+                fence_arr = fence.filter((_, i) => i > 0);
+            }
+            fences.push(getPolyObject(fence_arr, {
+                color: 0x0000FF,
+                name: `Fence ${i}`,
+            }));
+        }
+        if (path_vert_count > 0) {
+            paths.push(getPathObject(path, {
+                color: 0x0000FF,
+                thickness: 10,
+                name: `Enemy Path ${i}`,
+            }));
+        }
+    }
+    return {
+        "fences": fences,
+        "paths": paths,
+    }
+}
+
 function allViews(map_id) {
     let collective = [];
     if (document.getElementById("trigger_selector").checked) {
@@ -263,6 +322,17 @@ function allViews(map_id) {
     if (document.getElementById("exit_selector").checked) {
         collective = collective.concat(parseExits(map_id));
     }
+    const enemy_fences = document.getElementById("e_fence_selector").checked;
+    const enemy_paths = document.getElementById("e_path_selector").checked;
+    if (enemy_fences || enemy_paths) {
+        const data = parseCharSpawnerFile(map_id);
+        if (enemy_fences) {
+            collective = collective.concat(data["fences"]);
+        }
+        if (enemy_paths) {
+            collective = collective.concat(data["paths"]);
+        }
+    }
     collective.forEach(entry => {
         if (Object.keys(entry).includes("coords")) {
             entry.coords[0] *= window.getScale(map_id);
@@ -271,6 +341,13 @@ function allViews(map_id) {
         }
         if (Object.keys(entry).includes("path")) {
             entry.path.forEach(p => {
+                p.coords[0] *= window.getScale(map_id);
+                p.coords[1] *= window.getScale(map_id);
+                p.coords[2] *= window.getScale(map_id);
+            })
+        }
+        if (Object.keys(entry).includes("verts")) {
+            entry.verts.forEach(p => {
                 p.coords[0] *= window.getScale(map_id);
                 p.coords[1] *= window.getScale(map_id);
                 p.coords[2] *= window.getScale(map_id);

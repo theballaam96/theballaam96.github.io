@@ -242,21 +242,76 @@ const map_ids = {
 }
 
 const geometries = {
+    "Level Geometry (Vertex Colors)": "geo",
     "Collision": "collision",
     "Collision (Walls)": "walls",
     "Collision (Floor Properties)": "floors",
     "Collision (Slippable Floors)": "slip",
     "Collision (Floor Special)": "enum_floors",
     "Collision (Gaps) (WARNING: Expensive)": "gaps",
-    "Level Geometry (Vertex Colors)": "geo",
 }
 
-const markers = [
-    "Triggers",
-    "Autowalks",
-    "Paths",
-    "Exits",
-]
+const markers = {
+    "trigger": { name: "Triggers", show: true },
+    "lock": { name: "Cam Lock Zones", show: true },
+    "path": { name: "Object Paths", show: true },
+    "autowalk": { name: "Autowalk Paths", show: true },
+    "exit": { name: "Exits", show: true },
+    "e_fence": { name: "Enemy Fences", show: true },
+    "e_path": { name: "Enemy Paths", show: false },
+};
+
+document.getElementById("extra_marker_dropdown").innerHTML = Object.keys(markers).map(internal => {
+    const marker_name = markers[internal].name;
+    const show = markers[internal].show;
+    const class_additions = show ? "click-reload marker" : "";
+    return `<li>
+        <div class="form-check ${show ? '' : 'd-none'}">
+            <input class="form-check-input ${class_additions}" type="checkbox" value="${marker_name}" id="${internal}_selector">
+            <label class="form-check-label" for="${internal}_selector">${marker_name}</label>
+        </div>
+    </li>`;
+}).join("") + `
+    <li><hr class="dropdown-divider"></li>
+    <li class="d-flex justify-content-between mt-2">
+        <button class="btn btn-sm btn-outline-success mx-2 rounded-pill flex-grow-1" id="markers_all">All</button>
+        <button class="btn btn-sm btn-outline-danger mx-2 rounded-pill flex-grow-1" id="markers_none">None</button>
+    </li>
+`;
+
+const dropdownButton = document.getElementById('multiSelectDropdown');
+const checkboxes = document.querySelectorAll('.dropdown-menu .form-check-input');
+
+function updateDDText() {
+    const selected = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
+    let text = "Select Options";
+    if (selected.length == 1) {
+        text = selected;
+    } else if (selected.length > 1) {
+        text = `${selected.length} selected`;
+    }
+    dropdownButton.textContent = text;
+}
+
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', updateDDText);
+});
+
+function setMarkersStatus(status) {
+    const marker_els = document.getElementsByClassName("marker");
+    for (let m = 0; m < marker_els.length; m++) {
+        marker_els[m].checked = status;
+    }
+    updateDDText();
+    reloadState(null);
+}
+
+document.getElementById("markers_all").addEventListener("click", (e) => {
+    setMarkersStatus(true);
+});
+document.getElementById("markers_none").addEventListener("click", (e) => {
+    setMarkersStatus(false);
+});
 
 document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(group => {
     return `<optgroup label="${group}">${Object.keys(map_ids[group]).sort().map(map_name => {
@@ -267,14 +322,24 @@ document.getElementById("bg_selector").innerHTML = Object.keys(geometries).map(n
     return `<option value="${geometries[name]}">${name}</option>`
 }).join("");
 
+function reloadState(el) {
+    let force_camera = false;
+    let double_reload = false;
+    if (el) {
+        force_camera = el.classList.contains("force-camera");
+        double_reload = el.classList.contains("double-reload");
+    }
+    window.renderHandler(force_camera);
+    if (double_reload) {
+        window.renderHandler(false);
+    }
+}
+
 // Dropdowns
 const changeEls = document.getElementsByClassName("change-reload");
 for (let c = 0; c < changeEls.length; c++) {
     changeEls[c].addEventListener("change", (e) => {
-        window.renderHandler(e.target.classList.contains("force-camera"));
-        if (e.target.classList.contains("double-reload")) {
-            window.renderHandler(false);
-        }
+        reloadState(e.target);
     });
 }
 
@@ -282,10 +347,7 @@ for (let c = 0; c < changeEls.length; c++) {
 const clickEls = document.getElementsByClassName("click-reload");
 for (let c = 0; c < clickEls.length; c++) {
     clickEls[c].addEventListener("click", (e) => {
-        window.renderHandler(e.target.classList.contains("force-camera"));
-        if (e.target.classList.contains("double-reload")) {
-            window.renderHandler(false);
-        }
+        reloadState(e.target);
     });
 }
 
