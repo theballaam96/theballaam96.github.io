@@ -259,6 +259,7 @@ const markers = {
     "exit": { name: "Exits", show: true },
     "e_fence": { name: "Enemy Fences", show: true },
     "e_path": { name: "Enemy Paths", show: false },
+    "cam_path": { name: "Camera Paths", show: true },
 };
 
 document.getElementById("extra_marker_dropdown").innerHTML = Object.keys(markers).map(internal => {

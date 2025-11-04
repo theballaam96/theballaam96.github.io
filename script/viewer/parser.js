@@ -120,17 +120,145 @@ function parseCamLocks(map_id) {
         })
         info_l += 0x1C;
     }
-    console.log(lock_zones)
     return lock_zones;
 }
 
+function parseCamPaths(map_id) {
+    const cutscene_file = window.getFile(window.rom_bytes, window.rom_dv, 8, map_id, true);
+    let info_l = 0x30
+    let read_l = 0
+    for (let x = 0; x < 0x18; x++) {
+        const header_info_count = window.readFile(cutscene_file, read_l, 2);
+        read_l += 2;
+        info_l += (header_info_count * 0x12);
+    }
+    const base_count = window.readFile(cutscene_file, info_l, 2);
+    info_l += (2 + (base_count * 0x1C));
+    const cutscene_count = window.readFile(cutscene_file, info_l, 2);
+    info_l += 2;
+    let cutscenes = [];
+    for (let i = 0; i < cutscene_count; i++) {
+        const sub_count = window.readFile(cutscene_file, info_l, 2);
+        info_l += 2;
+        let point_seq = [];
+        let point_dur = [];
+        for (let j = 0; j < sub_count; j++) {
+            point_seq.push(window.readFile(cutscene_file, info_l + 0, 2));
+            point_dur.push(window.readFile(cutscene_file, info_l + 2, 2));
+            info_l += 4;
+        }
+        cutscenes.push({
+            count: sub_count,
+            point_sequence: point_seq,
+            point_durations: point_dur,
+        })
+    }
+    const cutscene_point_count = window.readFile(cutscene_file, info_l, 2);
+    let count_copy = cutscene_point_count;
+    info_l += 2;
+    let actions = [];
+    while (count_copy != 0) {
+        const command = window.readFile(cutscene_file, info_l + 1, 1);
+        let action_data = {
+            command: command,
+            is_path: false,
+            used_cutscenes: [],
+        };
+        count_copy--;
+        switch (command) {
+            case 1:
+                info_l += 10;
+                break;
+            case 2:
+                info_l += 12;
+                break;
+            case 3:
+            case 13:
+                info_l += 16;
+                break;
+            case 4:
+                action_data.is_path = true;
+                action_data.point_arr = [];
+                const local_count_4 = window.readFile(cutscene_file, info_l + 4, 2);
+                info_l += 0x20;
+                for (let j = 0; j < local_count_4; j++) {
+                    action_data.point_arr.push({
+                        coords: [
+                            window.readFile(cutscene_file, info_l + 0, 2, true),
+                            window.readFile(cutscene_file, info_l + 2, 2, true),
+                            window.readFile(cutscene_file, info_l + 4, 2, true),
+                        ],
+                        rot: [
+                            window.readFile(cutscene_file, info_l + 6, 1),
+                            window.readFile(cutscene_file, info_l + 8, 1),
+                            window.readFile(cutscene_file, info_l + 10, 1),
+                        ],
+                        zoom: window.readFile(cutscene_file, info_l + 12, 1),
+                        roll: window.readFile(cutscene_file, info_l + 13, 1),
+                    })
+                    info_l += 0xE;
+                }
+                break;
+            case 5:
+                action_data.is_path = true;
+                action_data.point_arr = [];
+                const local_count_5 = window.readFile(cutscene_file, info_l + 4, 2);
+                info_l += 0x14;
+                for (let j = 0; j < local_count_5; j++) {
+                    action_data.point_arr.push({
+                        coords: [
+                            window.readFile(cutscene_file, info_l + 0, 2, true),
+                            window.readFile(cutscene_file, info_l + 2, 2, true),
+                            window.readFile(cutscene_file, info_l + 4, 2, true),
+                        ],
+                        zoom: window.readFile(cutscene_file, info_l + 6, 1),
+                        roll: window.readFile(cutscene_file, info_l + 7, 1),
+                    })
+                    info_l += 0x8;
+                }
+                break;
+            case 10:
+            case 15:
+            case 16:
+                info_l += 18;
+                break;
+            case 12:
+                info_l += 6;
+                break;
+            default:
+                count_copy++;
+                info_l += 4;
+        }
+        actions.push(action_data);
+    }
+    cutscenes.forEach((cutscene, cutscene_index) => {
+        cutscene.point_sequence.forEach(point => {
+            if (point < actions.length) {
+                actions[point].used_cutscenes.push(cutscene_index);
+            }
+        })
+    })
+    return actions.map((action, action_index) => {
+        if (!action.is_path) {
+            return null;
+        }
+        const used = action.used_cutscenes.length > 0;
+        return getPathObject(action.point_arr, {
+            color: used ? 0x60B100 : 0xB75400,
+            thickness: 10,
+            name: `Cam Path ${action_index}${used ? '' : ' (Unused)'}`,
+        })
+    }).filter(k => k !== null);
+}
+
 function getPathObject(path, config) {
-    if (path.length == 1) {
+    const unique_count = new Set(path.map(k => JSON.stringify(k.coords))).size;
+    if (unique_count == 1) {
         config.radius = config.thickness;
         config.coords = path[0].coords;
         config.shape = "sphere"
         return config;
-    } else if (path.length > 1) {
+    } else if (unique_count > 1) {
         config.path = path;
         config.shape = "path";
         return config;
@@ -321,6 +449,9 @@ function allViews(map_id) {
     }
     if (document.getElementById("exit_selector").checked) {
         collective = collective.concat(parseExits(map_id));
+    }
+    if (document.getElementById("cam_path_selector").checked) {
+        collective = collective.concat(parseCamPaths(map_id));
     }
     const enemy_fences = document.getElementById("e_fence_selector").checked;
     const enemy_paths = document.getElementById("e_path_selector").checked;

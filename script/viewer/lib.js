@@ -7,6 +7,7 @@ const misc_scales = {
     44: 1,  // Treasure Chest
     45: 1,  // Mermaid Palace
     54: 1,  // Galleon Blast
+    171: 1,  // DK's House
     188: 1,  // Fungi Blast
 };
 function getScale(map_id) {
