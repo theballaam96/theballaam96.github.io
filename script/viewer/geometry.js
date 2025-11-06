@@ -366,33 +366,35 @@ class DisplayList {
     get triangles() {
         const retList = [];
         let triList = [];
+        let currTexConfig = {};
 
         for (const cmd of this.commands) {
-            const opcode = cmd.opcode;
-
-            if (opcode === 0x01) {
-                triList = [];
-                retList.push(triList);
-                continue;
-            }
-
-            if (opcode === 0x05) {
-                const tri = Triangle.fromTri1(cmd);
-                triList.push(tri);
-                continue;
-            }
-
-            if (opcode === 0x06) {
-                const [tri1, tri2] = Triangle.fromTri2(cmd);
-                triList.push(tri1, tri2);
-                continue;
-            }
-
-            if (opcode === 0xDE) {
-                const addr = window.readFile(cmd.address, 0, 4);
-                const branched = this.getBranchByOffset(addr);
-                if (branched) retList.push(...branched.triangles);
-                continue;
+            switch (cmd.opcode) {
+                case 0x01:
+                    triList = [];
+                    retList.push(triList);
+                    break;
+                case 0x05:
+                    const tri = Triangle.fromTri1(cmd);
+                    triList.push({tri: tri});
+                    break;
+                case 0x06:
+                    const [tri1, tri2] = Triangle.fromTri2(cmd);
+                    triList.push({tri: tri1}, {tri: tri2});
+                    break;
+                case 0xDE:
+                    const addr = window.readFile(cmd.address, 0, 4);
+                    const branched = this.getBranchByOffset(addr);
+                    if (branched) retList.push(...branched.triangles);
+                    break;
+                case 0xFD:
+                    currTexConfig.texture = window.readFile(cmd._rawData, 5, 3);
+                    currTexConfig.dyn_bank = window.readFile(cmd._rawData, 4, 1);
+                    currTexConfig.texture_table = 25;
+                    break;
+                default:
+                    // console.log(cmd.opcode.toString(16))
+                    break;
             }
         }
 
@@ -567,7 +569,7 @@ function generateGeometryGeneric(config) {
 
             // Write triangles/faces to file
             triangles.forEach(tri => {
-                obj_data += `f ${tri.v1 + tri_offset} ${tri.v2 + tri_offset} ${tri.v3 + tri_offset}\n`
+                obj_data += `f ${tri.tri.v1 + tri_offset} ${tri.tri.v2 + tri_offset} ${tri.tri.v3 + tri_offset}\n`
             })
             obj_data += "\n"
 

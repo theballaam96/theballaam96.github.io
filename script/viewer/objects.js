@@ -70,46 +70,15 @@ function dumpObjCollision(prop_file, map_id, mode) {
     70 - 27 E0
 */
 
-function getTexture(tex_data, pal_data, width, height) {
-    const stream = new Uint8Array(4 * width * height);
-    let palette_colors = [];
+function getTexture(tex_data, pal_data) {
     if (pal_data !== null) {
-        for (y = 0; y < 16; y++) {
-            const px_data = window.readFile(pal_data, y * 2, 2);
-            palette_colors.push({
-                red: (((px_data >> 11) & 0x1F) << 3),
-                green: (((px_data >> 6) & 0x1F) << 3),
-                blue: (((px_data >> 1) & 0x1F) << 3),
-                alpha: (px_data & 1) == 1 ? 255 : 0,
-            })
-        }
+        const palette = window.texParserRGBA5551(pal_data, null);
+        return window.texParserCI4(tex_data, palette);
     }
-    for (let y = 0; y < (width * height); y++) {
-        if (pal_data === null) {
-            // RGBA5551
-            const px_data = window.readFile(tex_data, y * 2, 2);
-            const red = (((px_data >> 11) & 0x1F) << 3);
-            const green = (((px_data >> 6) & 0x1F) << 3);
-            const blue = (((px_data >> 1) & 0x1F) << 3);
-            const alpha = (px_data & 1) == 1 ? 255 : 0;
-            stream[(y * 4) + 0] = red;
-            stream[(y * 4) + 1] = green;
-            stream[(y * 4) + 2] = blue;
-            stream[(y * 4) + 3] = alpha;
-        } else {
-            let offset = Math.floor(y / 2);
-            let shift = 4 - ((y % 2) * 4);
-            let val = (window.readFile(tex_data, offset, 1) >> shift) & 0xF;
-            stream[(y * 4) + 0] = palette_colors[val].red;
-            stream[(y * 4) + 1] = palette_colors[val].green;
-            stream[(y * 4) + 2] = palette_colors[val].blue;
-            stream[(y * 4) + 3] = palette_colors[val].alpha;
-        }
-    }
-    return stream;
+    return window.texParserRGBA5551(tex_data, null);
 }
 
-function getFrames(prop_file, obj_id) {
+function getFrames(prop_file) {
     const images_start = window.readFile(prop_file, 0x6C, 4);
     const gif_data = window.readFile(prop_file, 0x70, 4);
     const dyn_tex_count = window.readFile(prop_file, images_start, 4);
@@ -188,7 +157,7 @@ function getFrames(prop_file, obj_id) {
             if (a.palette != 0xFFFF) {
                 pal_data = window.getFile(window.rom_bytes, window.rom_dv, 25, a.palette, true);
             }
-            const stream = getTexture(tex_data, pal_data, a.width, a.height);
+            const stream = getTexture(tex_data, pal_data);
             textures_global.push(stream);
         })
         frame_count = 1;
@@ -204,7 +173,7 @@ function getFrames(prop_file, obj_id) {
             }
             textures.forEach(tex => {
                 const tex_data = window.getFile(window.rom_bytes, window.rom_dv, 7, tex, false);
-                const stream = getTexture(tex_data, null, allotment_data[x].width, allotment_data[x].height);
+                const stream = getTexture(tex_data, null);
                 textures_global.push(stream);
             });
         }
@@ -266,7 +235,7 @@ function handleObject(obj_id, map_id, mode) {
         const obj_type = window.readFile(prop_file, 0x1C, 1);
         if (obj_type == 2) {
             // Billboarded Texture
-            const frames = getFrames(prop_file, obj_id);
+            const frames = getFrames(prop_file);
             return {
                 shape: "billboard",
                 images: frames.frames,
