@@ -242,13 +242,14 @@ const map_ids = {
 }
 
 const geometries = {
-    "Level Geometry (Vertex Colors)": "geo",
-    "Collision": "collision",
-    "Collision (Walls)": "walls",
-    "Collision (Floor Properties)": "floors",
-    "Collision (Slippable Floors)": "slip",
-    "Collision (Floor Special)": "enum_floors",
-    "Collision (Gaps) (WARNING: Expensive)": "gaps",
+    "Off": { internal: "off", hide_from: ["bg_selector"] },
+    "Level Geometry (Vertex Colors)": { internal: "geo", hide_from: [] },
+    "Collision": { internal: "collision", hide_from: [] },
+    "Collision (Walls)": { internal: "walls", hide_from: [] },
+    "Collision (Floor Properties)": { internal: "floors", hide_from: ["obj_selector"] },
+    "Collision (Slippable Floors)": { internal: "slip", hide_from: [] },
+    "Collision (Floor Special)": { internal: "enum_floors", hide_from: ["obj_selector"] },
+    "Collision (Gaps) (WARNING: Expensive)": { internal: "gaps", hide_from: ["obj_selector"] },
 }
 
 const markers = {
@@ -258,7 +259,7 @@ const markers = {
     "autowalk": { name: "Autowalk Paths", show: true },
     "exit": { name: "Exits", show: true },
     "e_fence": { name: "Enemy Fences", show: true },
-    "e_path": { name: "Enemy Paths", show: false },
+    "e_path": { name: "Enemy Paths (WIP)", show: true },
     "cam_path": { name: "Camera Paths", show: true },
 };
 
@@ -320,9 +321,11 @@ document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(
         return `<option value="${map_ids[group][map_name]}">${map_name}</option>`
     }).join("")}</optgroup>`
 }).join("");
-document.getElementById("bg_selector").innerHTML = Object.keys(geometries).map(name => {
-    return `<option value="${geometries[name]}">${name}</option>`
-}).join("");
+["bg_selector", "obj_selector"].forEach(id => {
+    document.getElementById(id).innerHTML = Object.keys(geometries).filter(n => !geometries[n].hide_from.includes(id)).map(name => {
+        return `<option value="${geometries[name].internal}">${name}</option>`
+    }).join("");
+})
 
 function reloadState(el) {
     let force_camera = false;
@@ -364,6 +367,9 @@ function fmtFloat(v) {
 
 function populateExtraData(mesh) {
     const extraData = mesh.extra;
+    if (!extraData) {
+        return;
+    }
     const coord_names = ["X", "Y", "Z"];
     document.getElementById("extra_data").classList.remove("d-none");
     document.getElementById("extra_data_name").innerText = extraData.name;

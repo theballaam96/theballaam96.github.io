@@ -93,6 +93,14 @@ function readFile(buffer, offset, size, signed = false) {
 }
 window.readFile = readFile;
 
+function readFloat(buffer, offset) {
+    const val = readFile(buffer, offset, 4);
+    const view = new DataView(new ArrayBuffer(4));
+    view.setUint32(0, val);
+    return view.getFloat32(0);
+}
+window.readFloat = readFloat;
+
 const version_details = {
     "NDOE": {
         name: "US",

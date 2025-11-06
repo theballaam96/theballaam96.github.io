@@ -432,7 +432,6 @@ function findMisalignmentGaps(floorTriangles, wallTriangles, gapTolerance = 0.05
     // Filter out those where all 3 edges are adjoined to another floor tri or wall tri
     validFloorData.forEach((floor, index) => {
         window.regenProcess = parseInt((index / validFloorData.length) * 990) / 10;
-        console.log(window.regenProcess)
         let edges = [
             {
                 start: [floor[0][0], floor[0][1], floor[0][2]],
@@ -718,18 +717,15 @@ const WALL_TOLERANCE = 0.05; // 5 cm gap tolerance
 function dumpGapTris(tris) {
     const floorTriangles = tris.filter(k => k.is_floor && !k.is_void && !k.is_nonsolid && !k.is_damage && !k.is_instadeath && !k.is_water).map(k => k.coords);
     const wallTriangles = tris.filter(k => k.is_wall).map(k => k.coords);
+    if (floorTriangles.length == 0 || wallTriangles.length == 0) {
+        return [];
+    }
     const gapsFound = findMisalignmentGaps(floorTriangles, wallTriangles, WALL_TOLERANCE);
 
     console.log('--- Array-based Gap Detector Results ---');
     console.log(`Tolerance used: ${WALL_TOLERANCE}`);
     console.log(`Total valid floor pieces processed: ${floorTriangles.length - 1} (one ceiling ignored)`);
     console.log(`Found ${gapsFound.length} gap triangles.`);
-    console.log('--- Gap Triangles (First 4) ---');
-
-    gapsFound.slice(0, 4).forEach((gap, index) => {
-        console.log(`Gap ${index + 1}:`);
-        console.log(gap);
-    });
     return gapsFound.map(k => {
         return {
             coords: k,

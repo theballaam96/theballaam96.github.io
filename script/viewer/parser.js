@@ -379,10 +379,8 @@ function parseCharSpawnerFile(map_id) {
     const enemy_extra_data = window.readFile(spawner_file, 0, 2);
     let read_l = 2;
     for (let i = 0; i < enemy_extra_data; i++) {
-        console.log(i, read_l.toString(16), spawner_file.length.toString(16))
         let fence = [];
         const fence_vert_count = window.readFile(spawner_file, read_l, 2);
-        console.log("Fence has ", fence_vert_count, " verts");
         read_l += 2;
         for (let j = 0; j < fence_vert_count; j++) {
             fence.push({
@@ -397,7 +395,6 @@ function parseCharSpawnerFile(map_id) {
         let path = [];
         const path_vert_count = window.readFile(spawner_file, read_l, 2);
         read_l += 2;
-        console.log("Path has ", path_vert_count, " verts");
         for (let j = 0; j < path_vert_count; j++) {
             path.push({
                 coords: [

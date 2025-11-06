@@ -52,7 +52,7 @@
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v1.8</small>
+                <small>v2.0</small>
             </div>
             <div>Made by Ballaam</div>
             <div style="font-size: 0.8rem">Contributions from:
@@ -91,11 +91,15 @@
                     <label for="bg_selector">Backdrop</label>
                     <select id="bg_selector" class="form-select change-reload"></select>
                 </div>
+                <div class="mb-2">
+                    <label for="obj_selector">Objects</label>
+                    <select id="obj_selector" class="form-select change-reload"></select>
+                </div>
                 <div id="progress_text" hidden>
 
                 </div>
                 <div class="mb-2">
-                    <label for="extra_marker_dropdown">Extra Objects</label>
+                    <label for="extra_marker_dropdown">Internal Markers</label>
                     <div class="dropdown">
                         <button 
                             class="btn btn-secondary dropdown-toggle" 
@@ -120,6 +124,10 @@
                         <div class="form-check form-switch py-2">
                             <input class="form-check-input click-reload force-camera double-reload" type="checkbox" role="switch" id="ortho_camera">
                             <label class="form-check-label" for="ortho_camera">Orthographic Camera</label>
+                        </div>
+                        <div class="form-check form-switch py-2">
+                            <input class="form-check-input" type="checkbox" role="switch" id="animate_sprites" checked>
+                            <label class="form-check-label" for="animate_sprites">Animate Sprites</label>
                         </div>
                     </div>
                 </div>
@@ -158,6 +166,7 @@
     <script src="script/viewer/rom_handler.js" type="text/javascript"></script>
     <script src="script/viewer/geometry.js" type="text/javascript"></script>
     <script src="script/viewer/collision.js" type="text/javascript"></script>
+    <script src="script/viewer/objects.js" type="text/javascript"></script>
     <script src="script/viewer/gap.js" type="text/javascript"></script>
     <script src="script/viewer/create_rendered_obj.js" type="text/javascript"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/OBJExporter.min.js"></script>
@@ -171,7 +180,10 @@
         let raycaster, mouse;
         let loadedObject = null;
         let loadedExtras = [];
+        let loadedBillboards = [];
         let intersected = null;
+        let loader;
+
         const { decompressSync } = fflate;
 
         // --- Core Functions ---
@@ -251,40 +263,21 @@
         }
         window.toggleCamera = toggleCamera;
 
-        function animate() { // <-- The function is defined here
+        function animate(time) { // <-- The function is defined here
             requestAnimationFrame(animate);
             controls.update();
+            const update_sprites = document.getElementById("animate_sprites").checked;
+            loadedBillboards.forEach(b => {
+                if (b.animated && update_sprites) {
+                    if (time - b.lastFrameTime > b.frameInterval) {
+                        b.currentFrame = (b.currentFrame + 1) % b.frames.length;
+                        b.material.map = b.frames[b.currentFrame];
+                        b.lastFrameTime = time;
+                    }
+                }
+                b.mesh.lookAt(camera.position);
+            })
             renderer.render(scene, camera);
-        }
-
-        // --- Demo Model (for immediate testing) ---
-
-        function createDemoCube() {
-            const geometry = new THREE.BoxGeometry(1, 1, 1);
-            
-            // 1. OPAQUE MESH
-            const opaqueMaterial = new THREE.MeshPhongMaterial({ color: 0x4488ff });
-            const opaqueMesh = new THREE.Mesh(geometry, opaqueMaterial);
-            opaqueMesh.position.x = 1.2;
-            opaqueMesh.name = "OpaqueCube";
-            
-            // 2. TRANSLUCENT MESH (Transparency enabled)
-            const translucentMaterial = new THREE.MeshPhongMaterial({ 
-                color: 0xff4444, 
-                opacity: 0.5,           // Set opacity value
-                transparent: true,      // ⬅️ MUST be true for transparency
-                side: THREE.DoubleSide  // Good practice for translucent objects
-            });
-            const translucentMesh = new THREE.Mesh(geometry, translucentMaterial);
-            translucentMesh.position.x = -1.2;
-            translucentMesh.name = "TranslucentCube";
-            
-            loadedObject = new THREE.Group();
-            loadedObject.add(opaqueMesh);
-            loadedObject.add(translucentMesh);
-            scene.add(loadedObject);
-            centerModel();
-            INFO_PANEL.textContent = "Demo cubes loaded. Click one!";
         }
 
         // --- OBJ File Loading ---
@@ -310,9 +303,10 @@
                 }
                 loadedExtras = [];
             }
+            loadedBillboards = [];
 
             try {
-                const loader = new THREE.OBJLoader();
+                loader = new THREE.OBJLoader();
                 loadedObject = loader.parse(objText);
 
                 // --- CORE FIX FOR VERTEX COLOR SHARING ---
@@ -361,6 +355,49 @@
             loadedExtras = loadedExtras.concat(list);
         }
         window.addToScene = addToScene;
+
+        function addToSceneBillboards(list) {
+            addToScene(list.map(b => b.mesh));
+            loadedBillboards = loadedBillboards.concat(list);
+        }
+        window.addToSceneBillboards = addToSceneBillboards;
+
+        function addObjects(list) {
+            list.forEach((obj_file, index) => {
+                //console.log(`Loading obj ${index} of size 0x${obj_file.length.toString(16)}`)
+                const loaded_f = loader.parse(obj_file);
+                loadedExtras.push(loaded_f);
+                scene.add(loaded_f);
+
+                // --- CORE FIX FOR VERTEX COLOR SHARING ---
+                loaded_f.traverse(function(child) {
+                    if (child.isMesh) {
+                        const geometry = child.geometry;
+
+                        // 1. Un-Index the Geometry
+                        // This forces every face to have its own unique set of vertices,
+                        // preventing the GPU from blending colors across the edges.
+                        if (geometry.index) {
+                            geometry.toNonIndexed(); // Duplicates vertices for hard edges
+                        }
+                        
+                        // 2. Compute Normals (essential after un-indexing for good shading)
+                        geometry.computeVertexNormals();
+
+                        // 3. Apply the Material
+                        child.material = new THREE.MeshPhongMaterial({ 
+                            color: 0xffffff,          // White base color
+                            vertexColors: true,       // ⬅️ Keep this, but now the vertices are unique per face
+                            transparent: true,        // Enable transparency support
+                            opacity: 1.0,             // Default opacity
+                            side: THREE.DoubleSide,    // Good for viewing translucent objects
+                        });
+                        child.name = `Object ${index}`;
+                    }
+                });
+            })
+        }
+        window.addObjects = addObjects;
         
         window.rom_bytes;
         window.rom_dv;

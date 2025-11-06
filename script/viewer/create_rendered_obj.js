@@ -153,6 +153,40 @@ function parseViews(map_id) {
     return output;
 }
 
+function generateBillboardMesh(obj_data, local_scale) {
+    const cobj = obj_data.cobj;
+    const width = cobj.width;
+    const height = cobj.height;
+    const frames = cobj.images.map(data => {
+        const texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat);
+        texture.needsUpdate = true;
+        texture.minFilter = THREE.LinearFilter;
+        texture.magFilter = THREE.LinearFilter;
+        texture.encoding = THREE.sRGBEncoding;
+        return texture;
+    });
+    const material = new THREE.MeshBasicMaterial({
+        map: frames[0],
+        transparent: true,
+    });
+    let scales = [cobj.x_size, cobj.y_size];
+    scales[0] *= (obj_data.scale * local_scale);
+    scales[1] *= (obj_data.scale * local_scale);
+    const geometry = new THREE.PlaneGeometry(scales[0], scales[1]);
+    const mesh = new THREE.Mesh(geometry, material);
+    const y = (obj_data.coords[1] * local_scale) + (scales[1] / 2);
+    mesh.position.set(obj_data.coords[0] * local_scale, y, obj_data.coords[2] * local_scale);
+    return {
+        currentFrame: 0,
+        lastFrameTime: 0,
+        frameInterval: cobj.speed,
+        animated: frames.length > 1,
+        material: material,
+        frames: frames,
+        mesh: mesh,
+    }
+}
+
 let loaded_gaps = {};
 
 function resetGaps() {
@@ -164,6 +198,7 @@ window.regenProcess = 0;
 function renderHandlerInternal(reset_camera, regenInterval) {
     const map_id = parseInt(document.getElementById("map_id_selector").value);
     const bg_id = document.getElementById("bg_selector").value;
+    const obj_mode_id = document.getElementById("obj_selector").value;
     if (bg_id == "gaps") {
         document.getElementById("gaps_fyi").classList.remove("d-none");
     } else {
@@ -190,6 +225,54 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     if (obj !== null && obj.length > 0) {
         window.loadOBJ(obj, reset_camera);
     }
+    // Objects
+    const objects = window.parseSetup(map_id, obj_mode_id);
+    const local_scale = window.getScale(map_id);
+    let billboards = [];
+    let objects_obj_files = objects.map(o => {
+        let local_tris = [];
+        if (obj_mode_id == "geo") {
+            if (o.cobj) {
+                // Billboard
+                billboards.push(generateBillboardMesh(o, local_scale));
+                return null;
+            } else {
+                // Standard Object
+                let lines = o.obj.split("\n");
+                lines.forEach((line, lindex) => {
+                    if (line.startsWith("v ")) {
+                        let segs = line.split(" ");
+                        let coords = [
+                            parseFloat(segs[1]),
+                            parseFloat(segs[2]),
+                            parseFloat(segs[3]),
+                        ];
+                        coords = window.rotateObject(coords, [0, o.rotation, 0]).slice();
+                        for (let j = 0; j < 3; j++) {
+                            segs[j + 1] = ((coords[j] * o.scale) + o.coords[j]) * local_scale;
+                        }
+                        lines[lindex] = segs.join(" ");
+                    }
+                })
+                return lines.join("\n");
+            }
+        }
+        o.tris.forEach(tri => {
+            for (let i = 0; i < 3; i++) {
+                tri.coords[i] = window.rotateObject(tri.coords[i], [0, o.rotation, 0]).slice();
+                for (let j = 0; j < 3; j++) {
+                    tri.coords[i][j] = ((tri.coords[i][j] * o.scale) + o.coords[j]) * local_scale;
+                }
+            }
+            local_tris.push(JSON.parse(JSON.stringify(tri)));
+        });
+        return trisToObj(local_tris);
+    }).filter(k => k !== null);
+    if (billboards.length > 0) {
+        window.addToSceneBillboards(billboards);
+    }
+    window.addObjects(objects_obj_files);
+    // Markers
     const additions = parseViews(map_id);
     window.addToScene(additions);
     window.regenProcess = 100;
@@ -220,7 +303,7 @@ function renderHandler(reset_camera) {
 }
 window.renderHandler = renderHandler;
 
-function trisToObj(tris) {
+function trisToObj(tris, obj_name="MyObject") {
     coordinate_order = [0, 1, 2]
     obj_file_text = ""
     tris.forEach(tri => {
@@ -228,7 +311,7 @@ function trisToObj(tris) {
             obj_file_text += `v ${tri.coords[x][0]} ${tri.coords[x][1]} ${tri.coords[x][2]} ${window.getColorString(tri)}\n`
         }
     })
-    obj_file_text += 'o MyObject\n';
+    obj_file_text += `o ${obj_name}\n`;
     
     for (let i = 1; i < ((tris.length * 3) + 1); i += 3) {
         obj_file_text += `f ${i} ${i + 1} ${i + 2}\n`

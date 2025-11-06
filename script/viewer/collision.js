@@ -13,7 +13,7 @@ const collision_info = {
     },
 }
 
-const files_to_load = {
+window.files_to_load = {
     "collision": [2, 3],
     "gaps": [2, 3],
     "walls": [2],
@@ -29,7 +29,7 @@ function getCollisionTris(map_id, mode) {
         return [];
     }
     let tris = [];
-    files_to_load[mode].forEach(file => {
+    window.files_to_load[mode].forEach(file => {
         const counts = collision_info[file].counts.map(count => {
             return window.readFile(map_geo, count, 2)
         })
@@ -286,6 +286,7 @@ function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, 
     }
     return data;
 }
+window.createTriangle = createTriangle;
 
 function dumpTris(buffer, count, table_index, mode, map_id) {
     let start = 8;
