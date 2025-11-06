@@ -243,7 +243,8 @@ const map_ids = {
 
 const geometries = {
     "Off": { internal: "off", hide_from: ["bg_selector"] },
-    "Level Geometry (Vertex Colors)": { internal: "geo", hide_from: [] },
+    "Level Geometry (Vertex Colors)": { internal: "geo", hide_from: ["obj_selector"] },
+    "Geometry (Vertex Colors)": { internal: "geo", hide_from: ["bg_selector"] },
     "Collision": { internal: "collision", hide_from: [] },
     "Collision (Walls)": { internal: "walls", hide_from: [] },
     "Collision (Floor Properties)": { internal: "floors", hide_from: ["obj_selector"] },
