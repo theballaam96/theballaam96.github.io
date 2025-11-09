@@ -7,6 +7,10 @@ function getPaletteColor(palette, index) {
     }
 }
 
+/*
+    RGBA 5551 Format
+*/
+
 function texParserRGBA5551(texture_bytes, palette) {
     const pixel_count = texture_bytes.length / 2;
     const stream = new Uint8Array(4 * pixel_count);
@@ -25,6 +29,26 @@ function texParserRGBA5551(texture_bytes, palette) {
 }
 window.texParserRGBA5551 = texParserRGBA5551;
 
+/*
+    RGBA 32 Format
+*/
+
+function texParserRGBA32(texture_bytes, palette) {
+    const pixel_count = texture_bytes.length / 2;
+    const stream = new Uint8Array(4 * pixel_count);
+    for (let i = 0; i < pixel_count; i++) {
+        for (let j = 0; j < 4; j++) {
+            stream[(i * 4) + j] = window.readFile(texture_bytes, (i * 4) + j, 1);
+        }
+    }
+    return stream;
+}
+window.texParserRGBA32 = texParserRGBA32;
+
+/*
+    CI4 Format
+*/
+
 function texParserCI4(texture_bytes, palette) {
     const pixel_count = texture_bytes.length * 2;
     const stream = new Uint8Array(4 * pixel_count);
@@ -40,3 +64,21 @@ function texParserCI4(texture_bytes, palette) {
     return stream;
 }
 window.texParserCI4 = texParserCI4;
+
+/*
+    CI8 Format
+*/
+
+function texParserCI8(texture_bytes, palette) {
+    const pixel_count = texture_bytes.length * 2;
+    const stream = new Uint8Array(4 * pixel_count);
+    for (let i = 0; i < pixel_count; i++) {
+        let val = window.readFile(texture_bytes, i, 1);
+        stream[(i * 4) + 0] = getPaletteColor(palette, val).red;
+        stream[(i * 4) + 1] = getPaletteColor(palette, val).green;
+        stream[(i * 4) + 2] = getPaletteColor(palette, val).blue;
+        stream[(i * 4) + 3] = getPaletteColor(palette, val).alpha;
+    }
+    return stream;
+}
+window.texParserCI8 = texParserCI8;
