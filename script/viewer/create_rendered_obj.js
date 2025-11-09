@@ -187,6 +187,70 @@ function generateBillboardMesh(obj_data, local_scale) {
     }
 }
 
+function generateFluid(fluid, local_scale) {
+    const fluid_tex_info = fluid.surface_info;
+    const width = fluid_tex_info.texture.width;
+    const height = fluid_tex_info.texture.height;
+    const tex = window.getFile(window.rom_bytes, window.rom_dv, fluid_tex_info.texture.table, fluid_tex_info.texture.index, fluid_tex_info.texture.table !== 7);
+    let palette = null;
+    if (fluid_tex_info.palette) {
+        const paltex = window.getFile(window.rom_bytes, window.rom_dv, fluid_tex_info.palette.table, fluid_tex_info.palette.index, fluid_tex_info.palette.table !== 7);
+        palette = window.texParserRGBA5551(paltex, null);
+    }
+    const data = fluid_tex_info.loader(tex, palette); // fill this with RGBA values
+    // 1. Create a DataTexture from the raw RGBA array
+    const texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat);
+    texture.needsUpdate = true;
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    const dx = Math.abs(fluid.coords[0][0] - fluid.coords[1][0]);
+    const dz = Math.abs(fluid.coords[0][2] - fluid.coords[1][2]);
+    const repeatX = Math.ceil(dx / width);
+    const repeatY = Math.ceil(dz / height);
+    texture.repeat.set(repeatX, repeatY);
+
+    // 2. Create a geometry for the quad
+    //    Define the 4 corners based on your two corner points.
+    const geometry = new THREE.BufferGeometry();
+
+    const vertices = new Float32Array([
+        fluid.coords[0][0] * local_scale, fluid.coords[0][1] * local_scale, fluid.coords[0][2] * local_scale,
+        fluid.coords[1][0] * local_scale, fluid.coords[0][1] * local_scale, fluid.coords[0][2] * local_scale,
+        fluid.coords[1][0] * local_scale, fluid.coords[1][1] * local_scale, fluid.coords[1][2] * local_scale,
+        fluid.coords[0][0] * local_scale, fluid.coords[1][1] * local_scale, fluid.coords[1][2] * local_scale,
+    ]);
+
+    // Texture coordinates (u, v)
+    const uvs = new Float32Array([
+        0, 0,
+        1, 0,
+        1, 1,
+        0, 1
+    ]);
+
+    // Two triangles (indices)
+    const indices = new Uint16Array([
+        0, 1, 2,
+        0, 2, 3
+    ]);
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
+    geometry.setAttribute('uv', new THREE.BufferAttribute(uvs, 2));
+    geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+
+    // 3. Create a material that uses the texture
+    const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        side: THREE.DoubleSide,
+        opacity: fluid.opacity / 255,
+        transparent: true,
+    });
+
+    // 4. Combine into a mesh
+    const quad = new THREE.Mesh(geometry, material);
+    return quad;
+}
+
 let loaded_gaps = {};
 
 function resetGaps() {
@@ -206,8 +270,10 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     }
     let obj = null;
     let gaps = [];
+    let fluids = [];
     if (bg_id == "geo") {
         obj = window.generateGeometry(map_id);
+        fluids = window.loadFluids(map_id);
     } else {
         let tris = window.getCollisionTris(map_id, bg_id);
         if (bg_id == "gaps") {
@@ -275,6 +341,7 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     // Markers
     const additions = parseViews(map_id);
     window.addToScene(additions);
+    window.addToScene(fluids.map(f => generateFluid(f, local_scale)));
     window.regenProcess = 100;
     if (regenInterval) {
         clearInterval(regenInterval);
