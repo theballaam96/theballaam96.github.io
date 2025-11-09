@@ -255,6 +255,7 @@ function handleObject(obj_id, map_id, mode) {
             dl_end: window.readFile(prop_file, 0x48, 4),  // Technically 44
             vert_start: vert_start,
             vert_length: vert_end - vert_start,
+            include_textures: mode == "geo_tex",
         });
     }
     return dumpObjCollision(prop_file, map_id, mode);
@@ -290,9 +291,9 @@ function parseSetup(map_id, mode) {
                 rotation: window.readFloat(setup_file, obj_start + 0x1C),
             };
             if (mode == "geo") {
-                if (typeof parsed_models[obj_type] === "string") {
+                if (Array.isArray(parsed_models[obj_type])) {
                     // Obj file
-                    data.obj = parsed_models[obj_type];
+                    data.obj = parsed_models[obj_type][0];
                 } else {
                     // Assume object
                     data.cobj = parsed_models[obj_type];

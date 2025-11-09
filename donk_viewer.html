@@ -156,6 +156,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/MTLLoader.js"></script>
     <script src="https://unpkg.com/fflate@0.8.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
@@ -183,7 +184,7 @@
         let loadedExtras = [];
         let loadedBillboards = [];
         let intersected = null;
-        let loader;
+        let loader, mtlLoader;
 
         const { decompressSync } = fflate;
 
@@ -283,13 +284,17 @@
 
         // --- OBJ File Loading ---
 
-        function loadOBJ(objText, resetCamera) {
+        function loadOBJ(objText, mtlText, textures, resetCamera) {
             // 1. Cleanup previous model (keep this section)
             if (loadedObject) {
                 scene.remove(loadedObject);
                 loadedObject.traverse(child => {
                     if (child.geometry) child.geometry.dispose();
-                    if (child.material) child.material.dispose();
+                    if (Array.isArray(child.material)) {
+                        child.material.forEach(mat => mat.dispose && mat.dispose());
+                    } else if (child.material && typeof child.material.dispose === "function") {
+                        child.material.dispose();
+                    }
                 });
             }
             if (loadedExtras) {
@@ -309,36 +314,101 @@
             try {
                 loader = new THREE.OBJLoader();
                 loadedObject = loader.parse(objText);
+                
+                if (mtlText && mtlText.trim() !== "") {
+                    mtlLoader = new THREE.MTLLoader();
+                    // Parse the MTL file normally
+                    const materials = mtlLoader.parse(mtlText, '');
 
-                // --- CORE FIX FOR VERTEX COLOR SHARING ---
-                loadedObject.traverse(function(child) {
+                    // --- Build DataTextures from raw RGBA Uint8Array data ---
+                    const dataTextures = {};
+                    for (const [filename, texInfo] of Object.entries(textures)) {
+                        // textures = { "filename": { data: Uint8Array, cfg: config } }
+                        const { data, cfg } = texInfo;
+
+                        const texture = new THREE.DataTexture(
+                            data,
+                            cfg.width,
+                            cfg.heightheight,
+                            THREE.RGBAFormat
+                        );
+                        texture.needsUpdate = true;
+                        texture.flipY = true; // Adjust if needed
+                        texture.name = filename;
+                        texture.wrapS = cfg.s_axis_wrap;
+                        texture.wrapT = cfg.t_axis_wrap;
+                        console.log("tex", filename);
+                        dataTextures[filename] = texture;
+                    }
+                    materials.loadTexture = function (url, mapping, onLoad, onProgress, onError) {
+                        const tex = dataTextures[url];
+                        console.log(tex)
+                        if (tex) {
+                            if (onLoad) onLoad(tex);
+                            return tex;
+                        } else {
+                            console.warn("Missing in-memory texture:", url);
+                            return new THREE.Texture(); // fallback empty texture
+                        }
+                    };
+
+                    materials.preload();
+
+                    // --- Replace MTL texture maps with our in-memory DataTextures ---
+                    for (const matName in materials.materials) {
+                        const mat = materials.materials[matName];
+
+                        // map_Kd, map_Ka, map_d, etc. could exist — handle whichever you use
+                        if (mat.map && dataTextures[mat.map.name]) {
+                            mat.map = dataTextures[mat.map.name];
+                            mat.map.needsUpdate = true;
+                        }
+                        if (mat.alphaMap && dataTextures[mat.alphaMap.name]) {
+                            mat.alphaMap = dataTextures[mat.alphaMap.name];
+                            mat.alphaMap.needsUpdate = true;
+                        }
+                    }
+
+                    loader.setMaterials(materials);
+                }
+
+                // --- APPLY GEOMETRY AND MATERIAL FIXES ---
+                loadedObject.traverse(function (child) {
                     if (child.isMesh) {
                         const geometry = child.geometry;
 
-                        // 1. Un-Index the Geometry
-                        // This forces every face to have its own unique set of vertices,
-                        // preventing the GPU from blending colors across the edges.
+                        // 1. Ensure each face has unique vertices (fix for vertex color bleeding)
                         if (geometry.index) {
-                            geometry.toNonIndexed(); // Duplicates vertices for hard edges
+                            geometry.toNonIndexed();
                         }
-                        
-                        // 2. Compute Normals (essential after un-indexing for good shading)
+
+                        // 2. Recalculate normals for proper lighting
                         geometry.computeVertexNormals();
 
-                        // 3. Apply the Material
-                        child.material = new THREE.MeshPhongMaterial({ 
-                            color: 0xffffff,          // White base color
-                            vertexColors: true,       // ⬅️ Keep this, but now the vertices are unique per face
-                            transparent: true,        // Enable transparency support
-                            opacity: 1.0,             // Default opacity
-                            side: THREE.DoubleSide,    // Good for viewing translucent objects
-                            wireframe: document.getElementById("wf_selector").checked,
-                        });
-                        child.name = 'LoadedMesh';
+                        // 4. Create and assign material
+                        if (!child.material || child.material === undefined) {
+                            child.material = new THREE.MeshPhongMaterial({
+                                color: 0xffffff,
+                                vertexColors: true,
+                                transparent: true,
+                                opacity: 1.0,
+                                side: THREE.DoubleSide,
+                                wireframe: document.getElementById("wf_selector").checked,
+                            });
+                        } else {
+                            // Still ensure wireframe / transparency behavior
+                            child.vertexColors = true;
+                            child.material.transparent = true;
+                            child.material.side = THREE.DoubleSide;
+                            child.material.wireframe = document.getElementById("wf_selector").checked;
+                        }
+
+                        child.name = "LoadedMesh";
                     }
                 });
-                // --- END CORE FIX ---
+
                 scene.add(loadedObject);
+
                 if (resetCamera) {
                     centerModel();
                 }

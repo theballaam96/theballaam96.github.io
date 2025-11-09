@@ -18,8 +18,8 @@ class Vertex {
         this.unk = window.readFile(vertexData, 6, 2);
         
         // Texture Coords (Unsigned 16-bit integers, Big-Endian)
-        this.texture_cord_u = window.readFile(vertexData, 8, 2);
-        this.texture_cord_v = window.readFile(vertexData, 10, 2); 
+        this.texture_coord_u = window.readFile(vertexData, 8, 2);
+        this.texture_coord_v = window.readFile(vertexData, 10, 2); 
 
         // R, G, B, Alpha (1 byte each)
         this.xr = vertexData[12]; 
@@ -288,6 +288,22 @@ function getDLExpansions(fileBytes, expStart) {
     return output;
 }
 
+const formats = ["RGBA", "YUV", "CI", "IA", "I"];
+const timg_parsers = {
+    "RGBA": {
+        16: window.texParserRGBA5551,
+        32: window.texParserRGBA32,
+    },
+    "YUV": {},
+    "CI": {
+        4: window.texParserCI4,
+        8: window.texParserCI8,
+        16: window.texParserCI4, // ? This shouldn't be the case, but it is
+    },
+    "IA": {},
+    "I": {},
+}
+
 class DisplayList {
     /**
      * @param {Uint8Array} rawData - Raw data of the display list
@@ -366,7 +382,33 @@ class DisplayList {
     get triangles() {
         const retList = [];
         let triList = [];
-        let currTexConfig = {};
+        let currTexConfig = {
+            geometry_mode: 0,
+            tiles: {},
+            tmem_upload_tracker: {},
+            state_changed: false,
+        };
+        for (let i = 0; i < 8; i++) {
+            currTexConfig.tiles[i] = {
+                cacheKey: 0,
+                format: 0,
+                size: 0,
+                line: 0,
+                tmem: 0,
+                palette: 0,
+                cmt: 0,
+                maskt: 0,
+                shiftt: 0,
+                cms: 0,
+                masks: 0,
+                shifts: 0,
+                uls: 0,
+                ult: 0,
+                lrs: 0,
+                lrt: 0,
+            }
+        }
+        let loadPalette = false;
 
         for (const cmd of this.commands) {
             switch (cmd.opcode) {
@@ -376,21 +418,105 @@ class DisplayList {
                     break;
                 case 0x05:
                     const tri = Triangle.fromTri1(cmd);
-                    triList.push({tri: tri});
+                    triList.push({
+                        tri: tri,
+                        cfg: { ... currTexConfig },
+                    });
                     break;
                 case 0x06:
                     const [tri1, tri2] = Triangle.fromTri2(cmd);
-                    triList.push({tri: tri1}, {tri: tri2});
+                    triList.push({
+                        tri: tri1,
+                        cfg: { ... currTexConfig },
+                    }, {
+                        tri: tri2,
+                        cfg: { ... currTexConfig },
+                    });
+                    break;
+                case 0xD9:
+                    {
+                        const clear_bits = ~(window.readFile(cmd._rawData, 0, 4) & 0x00FFFFFF);
+                        const set_bits = window.readFile(cmd._rawData, 4, 4);
+                        currTexConfig.geometry_mode &= ~clear_bits;
+                        currTexConfig.geometry_mode |= set_bits;
+                    }
                     break;
                 case 0xDE:
                     const addr = window.readFile(cmd.address, 0, 4);
                     const branched = this.getBranchByOffset(addr);
                     if (branched) retList.push(...branched.triangles);
                     break;
+                case 0xF0:
+                    {
+                        const tile = window.readFile(cmd._rawData, 4, 1) & 0xF;
+                        const pcc_val = (window.readFile(cmd._rawData, 5, 2) >> 4) & 0xFFF;
+                        currTexConfig.palette_color_count = (pcc_val >> 2) + 1;
+                        const tmem_destination = currTexConfig.tiles[tile].tmem;
+                        currTexConfig.tmem_upload_tracker[tmem_destination] = {
+                            addr: currTexConfig.texture,
+                            dxt: -1,
+                        }
+                    }
+                    break;
+                case 0xF2:
+                    {
+                        currTexConfig.tl_s_offset = (window.readFile(cmd._rawData, 1, 2) >> 4) & 0xFFF;
+                        currTexConfig.tl_t_offset = window.readFile(cmd._rawData, 2, 2) & 0xFFF;
+                        currTexConfig.width = (((window.readFile(cmd._rawData, 5, 2) >> 4) & 0xFFF) >> 2) + 1;
+                        currTexConfig.height = ((window.readFile(cmd._rawData, 6, 2) & 0xFFF) >> 2) + 1;
+                    }
+                    break;
+                case 0xF3:
+                    {
+                        const tex_ul_s = (window.readFile(cmd._rawData, 1, 2) >> 4) & 0xFFF;
+                        const tex_ul_t = window.readFile(cmd._rawData, 2, 2) & 0xFFF;
+                        const tile = window.readFile(cmd._rawData, 4, 1) & 0xF;
+                        const texels = ((window.readFile(cmd._rawData, 5, 2) >> 4) & 0xFFF) + 1;
+                        const dxt = window.readFile(cmd._rawData, 6, 2) & 0xFFF;
+                        assert(tex_ul_s === 0 && tex_ul_t === 0);
+                        assert(tile === 7);
+                        const tile_data = currTexConfig.tiles[tile];
+                        currTexConfig.tmem_upload_tracker[tile_data.tmem] = {
+                            addr: currTexConfig.texture,
+                            dxt: dxt,
+                        }
+                        currTexConfig.state_changed = true;
+                    }
+                    break;
+                case 0xF5:
+                    {
+                        // const format_byte = window.readFile(cmd._rawData, 1, 1);
+                        // currTexConfig.color_format = formats[(format_byte >> 5) & 7];
+                        // currTexConfig.bit_size = 4 << ((format_byte >> 3) & 3);
+                        currTexConfig.bit_64_per_row = (window.readFile(cmd._rawData, 1, 2) >> 1) & 0x1FF;
+                        currTexConfig.tmem_offset = window.readFile(cmd._rawData, 2, 2) & 0x1FF;
+                        currTexConfig.tile_descriptor = window.readFile(cmd._rawData, 4, 1) & 7;
+                        currTexConfig.color_palette = (window.readFile(cmd._rawData, 5, 1) >> 4) & 0xF;
+                        currTexConfig.t_clamp = (window.readFile(cmd._rawData, 5, 1) & 0x8) != 0;
+                        currTexConfig.t_mirror = (window.readFile(cmd._rawData, 5, 1) & 0x4) != 0;
+                        currTexConfig.t_axis_wrap = (window.readFile(cmd._rawData, 5, 2) >> 6) & 0xF;
+                        currTexConfig.t_axis_shift = (window.readFile(cmd._rawData, 6, 1) >> 2) & 0xF;
+                        currTexConfig.s_clamp = (window.readFile(cmd._rawData, 6, 1) & 0x2) != 0;
+                        currTexConfig.s_mirror = (window.readFile(cmd._rawData, 6, 1) & 0x1) != 0;
+                        currTexConfig.s_axis_wrap = (window.readFile(cmd._rawData, 7, 1) >> 4) & 0xF;
+                        currTexConfig.s_axis_shift = window.readFile(cmd._rawData, 7, 1)& 0xF;
+                    }
+                    break;
                 case 0xFD:
-                    currTexConfig.texture = window.readFile(cmd._rawData, 5, 3);
-                    currTexConfig.dyn_bank = window.readFile(cmd._rawData, 4, 1);
-                    currTexConfig.texture_table = 25;
+                    {
+                        const texture = window.readFile(cmd._rawData, 5, 3);
+                        const dyn_bank = window.readFile(cmd._rawData, 4, 1);
+                        const format_byte = window.readFile(cmd._rawData, 1, 1);
+                        currTexConfig.texture = texture;
+                        currTexConfig.dyn_bank = dyn_bank;
+                        currTexConfig.color_format = formats[(format_byte >> 5) & 7];
+                        currTexConfig.bit_size = 4 << ((format_byte >> 3) & 3);
+                        currTexConfig.tex_parser = timg_parsers[currTexConfig.color_format][currTexConfig.bit_size];
+                        if (!currTexConfig.tex_parser) {
+                            console.log(Array.from(cmd._rawData).map(k => k.toString(16)).join(" "), "|", currTexConfig.color_format, currTexConfig.bit_size)
+                        }
+                        currTexConfig.texture_table = 25;
+                    }
                     break;
                 default:
                     // console.log(cmd.opcode.toString(16))
@@ -543,9 +669,17 @@ function generateGeometryGeneric(config) {
     }
     let display_lists = createDisplayLists(raw_dl_data, raw_vertex_data, vertex_chunk_data, expansions);
 
+    const texture_cache = {};
+
     // Create OBJ File
     let obj_data = "";
+    let mtl_data = "";
     let tri_offset = 1;
+    let local_tri = 0;
+    let tex_data = {};
+
+    // Track unique materials to write once
+    const materialMap = new Map();
 
     display_lists.forEach((dl, dl_num) => {
         if (dl.isBranched) {
@@ -562,6 +696,9 @@ function generateGeometryGeneric(config) {
             // Write verticies to file
             verticies.forEach(vertex => {
                 obj_data += `v ${vertex.x} ${vertex.y} ${vertex.z} ${window.getRatioString(vertex.xr, vertex.yg, vertex.zb, vertex.alpha)}\n`
+                if (config.include_textures) {
+                    obj_data += `vt ${vertex.texture_coord_u} ${vertex.texture_coord_v}\n`      
+                }
             })
             obj_data += "\n"
 
@@ -569,8 +706,69 @@ function generateGeometryGeneric(config) {
 
             // Write triangles/faces to file
             triangles.forEach(tri => {
-                obj_data += `f ${tri.tri.v1 + tri_offset} ${tri.tri.v2 + tri_offset} ${tri.tri.v3 + tri_offset}\n`
-            })
+                if (config.include_textures) {
+                    // --- Determine material name and texture ---
+                    const materialName = `Material_${local_tri || 0}`;
+                    let textureFile = null;
+                    // console.log(tri.cfg);
+                    if (tri.cfg.texture && tri.cfg.width && tri.cfg.height) {
+                        textureFile = `t${tri.cfg.texture_table}f${tri.cfg.texture.toString(16)}.png`;
+                        let local_tex = null;
+                        if (texture_cache[tri.cfg.texture_table]) {
+                            if (texture_cache[tri.cfg.texture_table][tri.cfg.texture]) {
+                                local_tex = texture_cache[tri.cfg.texture_table][tri.cfg.texture];
+                            }
+                        } else {
+                            texture_cache[tri.cfg.texture_table] = {};
+                        }
+                        if (!local_tex) {
+                            console.log(tri.cfg.texture_table, tri.cfg.texture)
+                            local_tex = window.getFile(window.rom_bytes, window.rom_dv, tri.cfg.texture_table, tri.cfg.texture, tri.cfg.texture_table !== 7);
+                            texture_cache[tri.cfg.texture_table][tri.cfg.texture] = local_tex;
+                        }
+                        let palette = null;
+                        if (tri.cfg.color_format == "CI") {
+                            let local_pal = null;
+                            if (texture_cache[tri.cfg.palette_table]) {
+                                if (texture_cache[tri.cfg.palette_table][tri.cfg.palette]) {
+                                    local_pal = texture_cache[tri.cfg.palette_table][tri.cfg.palette];
+                                }
+                            } else {
+                                texture_cache[tri.cfg.palette_table] = {};
+                            }
+                            if (!local_pal) {
+                                local_pal = window.getFile(window.rom_bytes, window.rom_dv, tri.cfg.palette_table, tri.cfg.palette, tri.cfg.palette_table !== 7);
+                                texture_cache[tri.cfg.palette_table][tri.cfg.palette] = local_pal;
+                            }
+                            palette = tri.cfg.palette_parser(local_pal, null);
+                        }
+                        console.log(palette, tri.cfg)
+                        tex_data[textureFile] = {
+                            data: tri.cfg.tex_parser(local_tex, palette),
+                            cfg: tri.cfg,
+                        }
+                        // console.log("Loaded Texture");
+                    }
+                    local_tri++;
+
+                    // --- Record material info if not already written ---
+                    if (!materialMap.has(materialName)) {
+                        materialMap.set(materialName, {
+                            textureFile,
+                            combiner: tri.combiner || null, // store extra info if available
+                        });
+                    }
+
+                    // --- Reference material before the face ---
+                    obj_data += `usemtl ${materialName}\n`;
+                }
+                if (config.include_textures) {
+                    obj_data += `f v${tri.tri.v1 + tri_offset}/vt${tri.tri.v1 + tri_offset} v${tri.tri.v2 + tri_offset}/vt${tri.tri.v2 + tri_offset} v${tri.tri.v3 + tri_offset}/vt${tri.tri.v3 + tri_offset}\n`;
+
+                } else {
+                    obj_data += `f ${tri.tri.v1 + tri_offset} ${tri.tri.v2 + tri_offset} ${tri.tri.v3 + tri_offset}\n`;
+                }
+            });
             obj_data += "\n"
 
             // The triangle offset is used to globally identify the vertex due to
@@ -578,11 +776,31 @@ function generateGeometryGeneric(config) {
             tri_offset += verticies.length;
         })
     })
-    return obj_data;
+    if (config.include_textures) {
+        for (const [name, info] of materialMap.entries()) {
+            const { textureFile, combiner } = info;
+    
+            mtl_data += `newmtl ${name}\n`;
+            mtl_data += `Ka 1.000 1.000 1.000\n`; // Ambient
+            mtl_data += `Kd 1.000 1.000 1.000\n`; // Diffuse
+            mtl_data += `Ks 0.000 0.000 0.000\n`; // Specular
+            mtl_data += `d 1.0\n`;                // Opacity
+            mtl_data += `illum 2\n`;              // Lighting model
+            if (textureFile) mtl_data += `map_Kd ${textureFile}\n`;
+            console.log("mtl", textureFile)
+            if (combiner) mtl_data += `# Combiner: ${JSON.stringify(combiner)}\n`; // Optional comment
+            mtl_data += "\n";
+        }
+    
+        // --- Reference MTL file at the top of the OBJ ---
+        const mtlFilename = "model.mtl";
+        obj_data = `mtllib ${mtlFilename}\n\n` + obj_data;
+    }
+    return [obj_data, mtl_data, tex_data];
 }
 window.generateGeometryGeneric = generateGeometryGeneric;
 
-function generateGeometry(map_id) {
+function generateGeometry(map_id, mode) {
     const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
     if (map_geo.length == 0) {
         return "";
@@ -600,6 +818,7 @@ function generateGeometry(map_id) {
         vert_chunk_start: vert_chunk_start,
         vert_chunk_length: unk_start_0 - vert_chunk_start,
         dl_expansion_start: window.readFile(map_geo, 0x70 - window.geo_offset, 4),
+        include_textures: mode == "geo_tex",
     });
 }
 window.generateGeometry = generateGeometry;

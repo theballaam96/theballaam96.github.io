@@ -205,9 +205,11 @@ function renderHandlerInternal(reset_camera, regenInterval) {
         document.getElementById("gaps_fyi").classList.add("d-none");
     }
     let obj = null;
+    let mtl = null;
+    let tex = {};
     let gaps = [];
-    if (bg_id == "geo") {
-        obj = window.generateGeometry(map_id);
+    if (bg_id == "geo" || bg_id == "geo_tex") {
+        [obj, mtl, tex] = window.generateGeometry(map_id, bg_id);
     } else {
         let tris = window.getCollisionTris(map_id, bg_id);
         if (bg_id == "gaps") {
@@ -223,7 +225,7 @@ function renderHandlerInternal(reset_camera, regenInterval) {
         obj = trisToObj(tris);
     }
     if (obj !== null && obj.length > 0) {
-        window.loadOBJ(obj, reset_camera);
+        window.loadOBJ(obj, mtl, tex, reset_camera);
     }
     // Objects
     const objects = window.parseSetup(map_id, obj_mode_id);
