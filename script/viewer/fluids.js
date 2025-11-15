@@ -58,7 +58,6 @@ function loadFluids(map_id) {
             opacity: window.readFile(map_geo, fluid_header + 0x64, 1) + window.readFile(map_geo, fluid_header + 0x65, 1),
         })
     }
-    console.log(fluids)
     return fluids;
 }
 window.loadFluids = loadFluids;

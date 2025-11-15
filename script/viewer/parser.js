@@ -446,7 +446,6 @@ function parseChunks(map_id) {
         z[1] = window.readFile(map_geo, local_header + 0x0A, 2, true) / 6;
         const location0 = chunk_header + window.readFile(map_geo, local_header + 0xC, 4);
         const count = (location0 - location) / 0x14;
-        console.log(`Chunk ${i} - Count ${count}`);
         x = x.sort()
         z = z.sort()
         for (let j = 0; j < count; j++) {
