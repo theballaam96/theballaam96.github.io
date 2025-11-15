@@ -52,7 +52,7 @@
         <div class="card p-2 mb-4 ms-4 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v2.0</small>
+                <small>v2.1</small>
             </div>
             <div>Made by Ballaam</div>
             <div style="font-size: 0.8rem">Contributions from:
@@ -183,7 +183,9 @@
         let loadedObject = null;
         let loadedExtras = [];
         let loadedBillboards = [];
+        let loadedFluids = [];
         let intersected = null;
+        let lastFrame = null;
         let loader;
 
         const { decompressSync } = fflate;
@@ -279,6 +281,29 @@
                 }
                 b.mesh.lookAt(camera.position);
             })
+            const frame = Math.floor((time / 1000) * 30);
+            loadedFluids.forEach((f, index) => {
+                if (update_sprites && (frame !== lastFrame) && false) {
+                    f.userData.positions.array.forEach((v, i, arr) => {
+                        if (i % 3 === 1) {
+                            const [new_x, new_y, new_z] = window.animateFluidPoint(arr[i - 1], arr[i], arr[i + 1], f.userData);
+                            arr[i - 1] = new_x;
+                            arr[i] = new_y;
+                            arr[i + 1] = new_z;
+                        }
+                    });
+                    f.userData.positions.needsUpdate = true;
+                    f.userData.fluid_vars.timer_0 += f.userData.fluid_vars.diff_0;
+                    f.userData.fluid_vars.timer_1 += f.userData.fluid_vars.diff_1;
+                    f.userData.fluid_vars.counter_38 += f.userData.fluid_vars.counter_diff_x;
+                    f.userData.fluid_vars.counter_3c += f.userData.fluid_vars.counter_diff_z;
+                    /*if (index == 0) {
+                        console.log(f.userData.fluid_vars.timer_0);
+                        console.log(f.userData.fluid_vars.timer_1);
+                    }*/
+                }
+            })
+            lastFrame = frame;
             renderer.render(scene, camera);
         }
 
@@ -306,6 +331,7 @@
                 loadedExtras = [];
             }
             loadedBillboards = [];
+            loadedFluids = [];
 
             try {
                 loader = new THREE.OBJLoader();
@@ -363,6 +389,12 @@
             loadedBillboards = loadedBillboards.concat(list);
         }
         window.addToSceneBillboards = addToSceneBillboards;
+        
+        function addToSceneFluids(list) {
+            addToScene(list);
+            loadedFluids = loadedFluids.concat(list);
+        }
+        window.addToSceneFluids = addToSceneFluids;
 
         function addObjects(list) {
             list.forEach((obj_file, index) => {
