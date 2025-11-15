@@ -8,6 +8,10 @@ worker.onmessage = (e) => {
   }
 };
 
+function _vec(p) {
+  return (p instanceof THREE.Vector3) ? p.clone() : new THREE.Vector3(p[0], p[1], p[2]);
+}
+
 function parseViews(map_id) {
     const views = window.allViews(map_id);
     let output = [];
@@ -148,6 +152,29 @@ function parseViews(map_id) {
             mat.setPosition(v0);
             mesh.applyMatrix4(mat);
             output.push(mesh);
+        } else if (view.shape == "cube") {
+            const a = _vec(view.bounds[0]);
+            const b = _vec(view.bounds[1]);
+
+            const min = new THREE.Vector3(Math.min(a.x, b.x), Math.min(a.y, b.y), Math.min(a.z, b.z));
+            const max = new THREE.Vector3(Math.max(a.x, b.x), Math.max(a.y, b.y), Math.max(a.z, b.z));
+
+            const size = new THREE.Vector3().subVectors(max, min); // width, height, depth
+            const center = new THREE.Vector3().addVectors(min, max).multiplyScalar(0.5);
+
+            const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+            const material = new THREE.MeshStandardMaterial({
+                color: view.color,
+                transparent: true,
+                opacity: 0.5,
+            });
+
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.copy(center);
+            mesh.extra = {
+                name: view.name,
+            }
+            output.push(mesh);
         }
     })
     return output;
@@ -187,6 +214,67 @@ function generateBillboardMesh(obj_data, local_scale) {
     }
 }
 
+function generateFluid(fluid, local_scale) {
+    const fluid_tex_info = fluid.surface_info;
+    const width = fluid_tex_info.texture.width;
+    const height = fluid_tex_info.texture.height;
+    const tex = window.getFile(window.rom_bytes, window.rom_dv, fluid_tex_info.texture.table, fluid_tex_info.texture.index, fluid_tex_info.texture.table !== 7);
+    let palette = null;
+    if (fluid_tex_info.palette) {
+        const paltex = window.getFile(window.rom_bytes, window.rom_dv, fluid_tex_info.palette.table, fluid_tex_info.palette.index, fluid_tex_info.palette.table !== 7);
+        palette = window.texParserRGBA5551(paltex, null);
+    }
+    const data = fluid_tex_info.loader(tex, palette); // fill this with RGBA values
+    // 1. Create a DataTexture from the raw RGBA array
+    const texture = new THREE.DataTexture(data, width, height, THREE.RGBAFormat);
+    texture.needsUpdate = true;
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+    const dx = Math.abs(fluid.coords[0][0] - fluid.coords[1][0]);
+    const dz = Math.abs(fluid.coords[0][2] - fluid.coords[1][2]);
+    const base_y = fluid.coords[0][1] * local_scale;
+    const repeatX = Math.ceil(dx / width);
+    const repeatY = Math.ceil(dz / height);
+    texture.repeat.set(repeatX, repeatY);
+
+    // Calculate segments
+    const x0 = fluid.coords[0][0] * local_scale;
+    const x1 = fluid.coords[1][0] * local_scale;
+    const z0 = fluid.coords[0][2] * local_scale;
+    const z1 = fluid.coords[1][2] * local_scale;
+    const segment_size = fluid.dist_per_division * local_scale;
+    const sizeX = Math.abs(x1 - x0);
+    const sizeZ = Math.abs(z1 - z0);
+    const segmentsX = Math.ceil(sizeX / segment_size);
+    const segmentsZ = Math.ceil(sizeZ / segment_size);
+
+    const geometry = new THREE.PlaneGeometry(sizeX, sizeZ, segmentsX, segmentsZ);
+    geometry.rotateX(-Math.PI / 2);
+    geometry.translate((x0 + x1) / 2, fluid.coords[0][1] * local_scale, (z0 + z1) / 2);
+
+    // 3. Create a material that uses the texture
+    const material = new THREE.MeshBasicMaterial({
+        color: fluid.color,
+        map: texture,
+        side: THREE.DoubleSide,
+        opacity: fluid.opacity / 255,
+        transparent: true,
+    });
+
+    // 4. Combine into a mesh
+    const quad = new THREE.Mesh(geometry, material);
+    quad.userData = {
+        geometry: geometry,
+        positions: geometry.attributes.position,
+        base_y: base_y,
+        fluid_vars: fluid.fluid_vars,
+        min_x: Math.min(x0, x1),
+        min_z: Math.min(z0, z1),
+        local_scale: local_scale,
+    };
+    return quad;
+}
+
 let loaded_gaps = {};
 
 function resetGaps() {
@@ -206,8 +294,10 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     }
     let obj = null;
     let gaps = [];
+    let fluids = [];
     if (bg_id == "geo") {
         obj = window.generateGeometry(map_id);
+        fluids = window.loadFluids(map_id);
     } else {
         let tris = window.getCollisionTris(map_id, bg_id);
         if (bg_id == "gaps") {
@@ -275,6 +365,7 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     // Markers
     const additions = parseViews(map_id);
     window.addToScene(additions);
+    window.addToSceneFluids(fluids.map(f => generateFluid(f, local_scale)));
     window.regenProcess = 100;
     if (regenInterval) {
         clearInterval(regenInterval);

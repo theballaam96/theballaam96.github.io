@@ -262,6 +262,7 @@ const markers = {
     "e_fence": { name: "Enemy Fences", show: true },
     "e_path": { name: "Enemy Paths (WIP)", show: true },
     "cam_path": { name: "Camera Paths", show: true },
+    "chunk": { name: "Chunks", show: true },
 };
 
 document.getElementById("extra_marker_dropdown").innerHTML = Object.keys(markers).map(internal => {
@@ -374,7 +375,7 @@ function populateExtraData(mesh) {
     const coord_names = ["X", "Y", "Z"];
     document.getElementById("extra_data").classList.remove("d-none");
     document.getElementById("extra_data_name").innerText = extraData.name;
-    const coord_section = extraData.shape != "path" ? `
+    const coord_section = !["path", "cube"].includes(extraData.shape) ? `
         ${extraData.coords.map((c, i) => {
             return `<div><span class='fw-bold'>${coord_names[i]}: </span>${fmtFloat(c)}</div>`
         }).join("")}

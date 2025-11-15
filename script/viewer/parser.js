@@ -430,6 +430,75 @@ function parseCharSpawnerFile(map_id) {
     }
 }
 
+function parseChunks(map_id) {
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    const chunk_header = window.readFile(map_geo, 0x64 - window.geo_offset, 4);
+    const chunk_count = window.readFile(map_geo, chunk_header, 4);
+    let data = [];
+    for (let i = 0; i < chunk_count; i++) {
+        const local_header = chunk_header + 4 + (0xC * i);
+        const location = chunk_header + window.readFile(map_geo, local_header, 4);
+        let x = [];
+        let z = [];
+        x[0] = window.readFile(map_geo, local_header + 0x04, 2, true) / 6;
+        z[0] = window.readFile(map_geo, local_header + 0x06, 2, true) / 6;
+        x[1] = window.readFile(map_geo, local_header + 0x08, 2, true) / 6;
+        z[1] = window.readFile(map_geo, local_header + 0x0A, 2, true) / 6;
+        const location0 = chunk_header + window.readFile(map_geo, local_header + 0xC, 4);
+        const count = (location0 - location) / 0x14;
+        console.log(`Chunk ${i} - Count ${count}`);
+        x = x.sort()
+        z = z.sort()
+        for (let j = 0; j < count; j++) {
+            const local_header_0 = location + (j * 0x14);
+            const factor_y = (window.readFile(map_geo, local_header_0 + 0x12, 1) & 1) == 0;
+            const y_bound = window.readFile(map_geo, local_header_0 + 0x6, 2, true) / 6;
+            let x_bounds = [
+                window.readFile(map_geo, local_header_0 + 0x00, 2, true) / 6,
+                window.readFile(map_geo, local_header_0 + 0x02, 2, true) / 6,
+                window.readFile(map_geo, local_header_0 + 0x04, 2, true) / 6,
+            ];
+            let z_bounds = [
+                window.readFile(map_geo, local_header_0 + 0x0C, 2, true) / 6,
+                window.readFile(map_geo, local_header_0 + 0x0E, 2, true) / 6,
+                window.readFile(map_geo, local_header_0 + 0x10, 2, true) / 6,
+            ];
+            let y = [-1000, 1000];
+            if (factor_y) {
+                y[0] = y_bound - 10;
+                y[1] = y[0] + 1000;
+            }
+            /*
+            bvar1 = (last_y_bound - 6y) < 60
+            bvar2 = (curr_y_bound - 6y) < 60
+            p2 < 60 + 6y
+            6y > p2 - 60
+
+            a = abs(last_y_bound - 6y)
+            b = abs(curr_y_bound - 6y)
+
+            in_chunk = bvar2 && (!bvar1 || (b >= a))
+            */
+            const xmin = Math.max(x[0], Math.min(...x_bounds));
+            const zmin = Math.max(z[0], Math.min(...z_bounds));
+            const xmax = Math.min(x[1], Math.max(...x_bounds));
+            const zmax = Math.min(z[1], Math.max(...z_bounds));
+            data.push({
+                bounds: [
+                    [xmin, y[0], zmin],
+                    [xmax, y[1], zmax],
+                ],
+                shape: "cube",
+                color: 0xFF0000,
+                name: `Subchunk ${i} - ${j}`
+            })
+        }
+        
+    }
+    console.log(data)
+    return data;
+}
+
 function allViews(map_id) {
     let collective = [];
     if (document.getElementById("trigger_selector").checked) {
@@ -449,6 +518,9 @@ function allViews(map_id) {
     }
     if (document.getElementById("cam_path_selector").checked) {
         collective = collective.concat(parseCamPaths(map_id));
+    }
+    if (document.getElementById("chunk_selector").checked) {
+        collective = collective.concat(parseChunks(map_id));
     }
     const enemy_fences = document.getElementById("e_fence_selector").checked;
     const enemy_paths = document.getElementById("e_path_selector").checked;
@@ -479,6 +551,13 @@ function allViews(map_id) {
                 p.coords[0] *= window.getScale(map_id);
                 p.coords[1] *= window.getScale(map_id);
                 p.coords[2] *= window.getScale(map_id);
+            })
+        }
+        if (Object.keys(entry).includes("bounds")) {
+            entry.bounds.forEach(b => {
+                b[0] *= window.getScale(map_id);
+                b[1] *= window.getScale(map_id);
+                b[2] *= window.getScale(map_id);
             })
         }
         if (Object.keys(entry).includes("radius")) {

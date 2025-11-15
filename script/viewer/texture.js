@@ -34,7 +34,7 @@ window.texParserRGBA5551 = texParserRGBA5551;
 */
 
 function texParserRGBA32(texture_bytes, palette) {
-    const pixel_count = texture_bytes.length / 2;
+    const pixel_count = texture_bytes.length / 4;
     const stream = new Uint8Array(4 * pixel_count);
     for (let i = 0; i < pixel_count; i++) {
         for (let j = 0; j < 4; j++) {

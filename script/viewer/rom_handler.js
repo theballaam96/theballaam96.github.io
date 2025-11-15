@@ -1,6 +1,7 @@
 window.pointer_offset = 0x101C50;
 window.table_offset = 0;
 window.geo_offset = 0;
+window.fluid_data = [];
 
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
@@ -108,6 +109,113 @@ const version_details = {
         geo_offset: 0,
         pointer_offset: 0x101C50,
         emoji: "\u{1F1FA}\u{1F1F8}",
+        fluids: [
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0, // field_0x14[1]
+                name: "0: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x2EE,
+                    table: 25,
+                    width: 64,
+                    height: 64,
+                },
+                palette: {
+                    index: 0x2EF,
+                    table: 25,
+                    width: 4,
+                    height: 4,
+                },
+                ripple: 0,
+                name: "1: Deep Lava",
+                loader: window.texParserCI4,
+            },
+            {
+                texture: {
+                    index: 0xF0,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "2: Japes Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "3: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x75C,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 2,
+                name: "4: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3B9,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "5: Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3D2,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "6: Acid",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3BA, // Also loads 0x3DB?
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "7: Water Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0xAF4,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "8: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+        ]
     },
     "NDOJ": {
         name: "JP",
@@ -115,18 +223,328 @@ const version_details = {
         geo_offset: 0,
         pointer_offset: 0x1039C0,
         emoji: "\u{1F1EF}\u{1F1F5}",
+        fluids: [
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0, // field_0x14[1]
+                name: "0: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x2ED,
+                    table: 25,
+                    width: 64,
+                    height: 64,
+                },
+                palette: {
+                    index: 0x2EE,
+                    table: 25,
+                    width: 4,
+                    height: 4,
+                },
+                ripple: 0,
+                name: "1: Deep Lava",
+                loader: window.texParserCI4,
+            },
+            {
+                texture: {
+                    index: 0xEF,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "2: Japes Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "3: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x720,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 2,
+                name: "4: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3B9,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "5: Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3D2,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "6: Acid",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3BA, // Also loads 0x3DB?
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "7: Water Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0xAA8,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "8: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+        ]
     },
     "NDPE": {
         name: "Kiosk",
         table_offset: 1,
         geo_offset: 8,
         pointer_offset: 0x1A7C20,
+        fluids: [
+            {
+                texture: {
+                    index: 0x3E1,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0, // field_0x14[1]
+                name: "0: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x30D,
+                    table: 25,
+                    width: 64,
+                    height: 64,
+                },
+                palette: {
+                    index: 0x30E,
+                    table: 25,
+                    width: 4,
+                    height: 4,
+                },
+                ripple: 0,
+                name: "1: Deep Lava",
+                loader: window.texParserCI4,
+            },
+            {
+                texture: {
+                    index: 0x14F,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "2: Japes Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3E1,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "3: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x7C0,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 2,
+                name: "4: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3DD,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "5: Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3EE,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "6: Acid",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3EF, // Also loads 0x3DB?
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "7: Water Lava",
+                loader: window.texParserRGBA5551,
+            },
+        ]
     },
     "NDOG": {
         name: "Lodgenet",
         table_offset: 0,
         geo_offset: 0,
         pointer_offset: 0x1037C0,
+        fluids: [
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0, // field_0x14[1]
+                name: "0: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x2ED,
+                    table: 25,
+                    width: 64,
+                    height: 64,
+                },
+                palette: {
+                    index: 0x2EE,
+                    table: 25,
+                    width: 4,
+                    height: 4,
+                },
+                ripple: 0,
+                name: "1: Deep Lava",
+                loader: window.texParserCI4,
+            },
+            {
+                texture: {
+                    index: 0xEF,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "2: Japes Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "3: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x720,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 2,
+                name: "4: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3B9,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "5: Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3D2,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "6: Acid",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3BA, // Also loads 0x3DB?
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "7: Water Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0xAA8,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "8: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+        ]
     },
     "NDOP": {
         name: "PAL",
@@ -134,6 +552,113 @@ const version_details = {
         geo_offset: 0,
         pointer_offset: 0x1038D0,
         emoji: "\u{1F1EA}\u{1F1FA}",
+        fluids: [
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0, // field_0x14[1]
+                name: "0: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x2ED,
+                    table: 25,
+                    width: 64,
+                    height: 64,
+                },
+                palette: {
+                    index: 0x2EE,
+                    table: 25,
+                    width: 4,
+                    height: 4,
+                },
+                ripple: 0,
+                name: "1: Deep Lava",
+                loader: window.texParserCI4,
+            },
+            {
+                texture: {
+                    index: 0xEF,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "2: Japes Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3C5,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "3: Water",
+                loader: window.texParserRGBA32,
+            },
+            {
+                texture: {
+                    index: 0x74C,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 2,
+                name: "4: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3B9,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "5: Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3D2,
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "6: Acid",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0x3BA, // Also loads 0x3DB?
+                    table: 7,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 0,
+                name: "7: Water Lava",
+                loader: window.texParserRGBA5551,
+            },
+            {
+                texture: {
+                    index: 0xAE0,
+                    table: 25,
+                    width: 32,
+                    height: 32,
+                },
+                ripple: 1,
+                name: "8: Caves Dillo Ground",
+                loader: window.texParserRGBA5551,
+            },
+        ]
     },
 }
 
@@ -148,6 +673,7 @@ function detectVersion(buffer) {
         window.pointer_offset = vdata.pointer_offset;
         window.table_offset = vdata.table_offset;
         window.geo_offset = vdata.geo_offset;
+        window.fluid_data = vdata.fluids;
         if (vdata.emoji) {
             document.getElementById("fileUploadText").innerHTML = `<span id="versionFlag">${vdata.emoji}</span> loaded`;
             twemoji.parse(document.getElementById('versionFlag'), { folder: 'svg', ext: '.svg' });
