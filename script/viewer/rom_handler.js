@@ -680,8 +680,9 @@ function detectVersion(buffer) {
         } else {
             document.getElementById("fileUploadText").innerHTML = `${vdata.name} loaded`;
         }
-        return;
+        return true;
     }
     document.getElementById("fileUploadText").innerText = "Invalid ROM";
+    return false;
 }
 window.detectVersion = detectVersion;

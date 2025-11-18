@@ -253,69 +253,133 @@ const geometries = {
     "Collision (Gaps) (WARNING: Expensive)": { internal: "gaps", hide_from: ["obj_selector"] },
 }
 
-const markers = {
-    "trigger": { name: "Triggers", show: true },
-    "lock": { name: "Cam Lock Zones", show: true },
-    "path": { name: "Object Paths", show: true },
-    "autowalk": { name: "Autowalk Paths", show: true },
-    "exit": { name: "Exits", show: true },
-    "e_fence": { name: "Enemy Fences", show: true },
-    "e_path": { name: "Enemy Paths (WIP)", show: true },
-    "cam_path": { name: "Camera Paths", show: true },
-    "chunk": { name: "Chunks", show: true },
-};
+const marker_tree = [
+    { name: "Markers", sub: [
+        { name: "Triggers", sub: [
+            { name: "Loading Zone" },
+            { name: "Cutscene" },
+            { name: "Object Control" },
+            { name: "Weather" },
+            { name: "Detransform" },
+            { name: "Autowalk" },
+            { name: "Slide" },
+            { name: "State" },
+            { name: "Cheat" },
+            { name: "Unknown" },
+        ]},
+        { name: "Camera Lock Zones" },
+        { name: "Object Paths" },
+        { name: "Autowalk Paths" },
+        { name: "Exits", sub: [
+            { name: "Exit Nodes" },
+            { name: "Autowalk Destinations" },
+        ]},
+        { name: "Enemy Fences" },
+        { name: "Enemy Paths (WIP)" },
+        { name: "Camera Paths", sub: [
+            { name: "Used" },
+            { name: "Unused" },
+            { name: "Unassociated" },
+        ]},
+        { name: "Chunks" },
+    ]},
+]
 
-document.getElementById("extra_marker_dropdown").innerHTML = Object.keys(markers).map(internal => {
-    const marker_name = markers[internal].name;
-    const show = markers[internal].show;
-    const class_additions = show ? "click-reload marker" : "";
-    return `<li>
-        <div class="form-check ${show ? '' : 'd-none'}">
-            <input class="form-check-input ${class_additions}" type="checkbox" value="${marker_name}" id="${internal}_selector">
-            <label class="form-check-label" for="${internal}_selector">${marker_name}</label>
+function generateTreeId(node) {
+    return `tree_${node.name.toLowerCase().replaceAll(" ","_").replaceAll(",","")}`;
+}
+
+function getNodeFromName(name, tree) {
+    for (node of tree) {
+        if (node.name === name) {
+            return node;
+        }
+        if (node.sub) {
+            const test_node = getNodeFromName(name, node.sub);
+            if (test_node !== null) {
+                return test_node;
+            }
+        }
+    }
+    return null;
+}
+
+function getSelectFromNode(node) {
+    const id = generateTreeId(node);
+    if (document.getElementById(id).checked) {
+        return true;
+    }
+    if (node.sub) {
+        for (subnode of node.sub) {
+            const op = getSelectFromNode(subnode);
+            if (op) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+function isNodeOrSubSelected(name) {
+    const node = getNodeFromName(name, marker_tree);
+    console.log("Init Node for", name, ":", node);
+    if (node === null) {
+        return false;
+    }
+    return getSelectFromNode(node);
+}
+window.isNodeOrSubSelected = isNodeOrSubSelected;
+
+function generateControls(tree) {
+    return tree.map(node => {
+        const id = generateTreeId(node);
+        let ids = [id];
+        if (node.sub) {
+            ids = ids.concat(generateControls(node.sub));
+        }
+        return ids;
+    })
+}
+
+function generateTree(tree, expanded) {
+    return tree.map(node => {
+        const id = generateTreeId(node);
+        let ending = "";
+        let controls = [];
+        if (node.sub) {
+            controls = generateControls(node.sub);
+            ending = `<div class="ps-4 collapse ${expanded ? 'show' : ''}" id="collapse${id}">
+                ${generateTree(node.sub, false)}
+            </div>`;
+        }
+        return `<div class="d-flex">
+            ${node.sub ? `<a data-bs-toggle="collapse" href="#collapse${id}" role="button" aria-expanded="${expanded ? 'true' : 'false'}" aria-controls="collapse${id}" class="link-light me-2 marker-collapse" style="text-decoration: none">
+                <i class="fa-solid fa-angle-right"></i>
+            </a>` : `<div style="opacity: 0" class="me-2"><i class="fa-solid fa-angle-right"></i></div>`}
+            <div class="form-check">
+                <input class="form-check-input marker-check" type="checkbox" value="" id="${id}" tree-controls="${controls.join(",")}">
+                <label class="form-check-label" for="${id}">
+                    ${node.name}
+                </label>
+            </div>
         </div>
-    </li>`;
-}).join("") + `
-    <li><hr class="dropdown-divider"></li>
-    <li class="d-flex justify-content-between mt-2">
-        <button class="btn btn-sm btn-outline-success mx-2 rounded-pill flex-grow-1" id="markers_all">All</button>
-        <button class="btn btn-sm btn-outline-danger mx-2 rounded-pill flex-grow-1" id="markers_none">None</button>
-    </li>
-`;
-
-const dropdownButton = document.getElementById('multiSelectDropdown');
-const checkboxes = document.querySelectorAll('.dropdown-menu .form-check-input');
-
-function updateDDText() {
-    const selected = Array.from(checkboxes).filter(i => i.checked).map(i => i.value);
-    let text = "Select Options";
-    if (selected.length == 1) {
-        text = selected;
-    } else if (selected.length > 1) {
-        text = `${selected.length} selected`;
-    }
-    dropdownButton.textContent = text;
+        ${ending}`
+    }).join("");
 }
 
-checkboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', updateDDText);
-});
-
-function setMarkersStatus(status) {
-    const marker_els = document.getElementsByClassName("marker");
-    for (let m = 0; m < marker_els.length; m++) {
-        marker_els[m].checked = status;
-    }
-    updateDDText();
-    reloadState(null);
+document.getElementById("marker_tree").innerHTML = generateTree(marker_tree, true);
+const marker_checks = document.getElementsByClassName("marker-check");
+for (let m = 0; m < marker_checks.length; m++) {
+    marker_checks[m].addEventListener("click", (e) => {
+        const cbx = e.target.closest(".marker-check");
+        const tree_controls = cbx.getAttribute("tree-controls");
+        if (tree_controls && tree_controls.length > 0) {
+            tree_controls.split(",").forEach(id => document.getElementById(id).checked = cbx.checked);
+        }
+        reloadState(e.target);
+    })
 }
 
-document.getElementById("markers_all").addEventListener("click", (e) => {
-    setMarkersStatus(true);
-});
-document.getElementById("markers_none").addEventListener("click", (e) => {
-    setMarkersStatus(false);
-});
 document.getElementById("ortho_camera").addEventListener("click", () => {window.toggleCamera()});
 
 document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(group => {
@@ -414,16 +478,27 @@ document.getElementById("extra_data_close").addEventListener("click", () => {
     document.getElementById("extra_data").classList.add("d-none");
 });
 
-document.getElementById("toggle_visibility").addEventListener("click", () => {
-    const btn = document.getElementById("toggle_visibility");
-    btn.classList.toggle("minimized");
-    const minimized = btn.classList.contains("minimized");
-    if (minimized) {
-        btn.innerHTML = "<i class='fa-solid fa-maximize'></i>";
-    } else {
-        btn.innerHTML = "<i class='fa-solid fa-minimize'></i>";
-    }
-    document.getElementById("controls_content").classList.toggle("d-none");
+let latest_tab = null;
+const nav_links = document.getElementsByClassName("nav-link");
+for (let n = 0; n < nav_links.length; n++) {
+    nav_links[n].addEventListener("click", (e) => {
+        const nl = e.target.closest(".nav-link");
+        const id = nl.getAttribute("id");
+        if (latest_tab === id) {
+            document.getElementById("tabContent").setAttribute("hidden", "hidden");
+            nl.classList.remove("active");
+            const target = document.querySelector(nl.getAttribute("data-bs-target"));
+            target.classList.remove("active");
+            latest_tab = null;
+        } else {
+            document.getElementById("tabContent").removeAttribute("hidden");
+            latest_tab = id;
+        }
+    })
+}
+
+document.getElementById("upload_rom_ftt").addEventListener("click", () => {
+    document.getElementById("fileInput").click();
 })
 
 window.populateExtraData = populateExtraData;

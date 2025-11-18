@@ -375,15 +375,15 @@ function renderHandlerInternal(reset_camera, regenInterval) {
 }
 
 function updateProgressText(force_clear) {
-    document.getElementById("progress_text").innerText = `${window.regenProcess}%`;
+    // document.getElementById("progress_text").innerText = `${window.regenProcess}%`;
     if (window.regenProcess == 100 || force_clear) {
-        document.getElementById("progress_text").classList.add("d-none");
+        // document.getElementById("progress_text").classList.add("d-none");
     }
 }
 
 function renderHandler(reset_camera) {
     window.regenProcess = 0;
-    document.getElementById("progress_text").classList.remove("d-none");
+    // document.getElementById("progress_text").classList.remove("d-none");
     updateProgressText();
     let regenInterval = setInterval(() => {
         updateProgressText();

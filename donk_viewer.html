@@ -36,23 +36,85 @@
         #trigger_grouping div, #rendering_options div {
             width: 50%;
         }
+        .marker-collapse {
+            transition: 0.2s ease-in-out;
+        }
+        .marker-collapse[aria-expanded=true] {
+            transform: rotate(90deg);
+        }
+        input[type="color"] {
+            -webkit-appearance: none; /* Chrome/Safari */
+            appearance: none;         /* modern browsers */
+            border: 1px solid #777;             /* remove outer border */
+            padding: 0;
+            width: 40px;              /* change size as needed */
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            background: transparent;  /* ensure no extra bg */
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        /* Remove inner default swatch styling in WebKit */
+        input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+            border-radius: 50%;
+        }
+        input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        /* Firefox */
+        input[type="color"]::-moz-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        /* Optional: nicer keyboard focus (keep for accessibility) */
+        input[type="color"]:focus {
+            outline: none;
+        }
+        input[type="color"]:focus-visible {
+            box-shadow: 0 0 0 3px rgba(0,123,255,0.35);
+        }
     </style>
 </head>
 <body>
+    <div class="position-fixed" style="width: 100%; height: 100%; z-index: 2000; background-color: #222; transition: 0.5s ease-in-out;" id="ftt_splash">
+        <div class="position-relative" style="height: 100%;">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <div style="max-width: 600px" class="card p-4 text-center" id="ftt_warning" hidden>
+                    <h1>Welcome to DonkViewer</h1>
+                    <p class="mt-4">
+                        DonkViewer is a utility for viewing the maps and objects within Donkey Kong 64, allowing to view 
+                        hidden aspects of the game such as collision, the path for Beetle Races and invisible triggers. 
+                        This also supports all 5 known versions of the game.
+                    </p>
+                    <p>
+                        That being said, DonkViewer requires the user to supply their own ROM to generate the views. 
+                        DonkViewer will store this on your browser so you don't have to see this notice every time.
+                    </p>
+                    <button class="btn btn-primary mt-4" id="upload_rom_ftt">
+                        Upload your ROM
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="position-absolute bottom-0 start-0">
-        <div class="card p-2 ms-4 mb-2 me-2 d-none" id="extra_data">
+        <div class="card p-2 ms-2 mb-2 me-2 d-none" id="extra_data">
             <div class="d-flex pb-1" style="border-bottom: 1px solid gray">
                 <div id="extra_data_name" class="flex-grow-1 fw-bold me-2"></div>
                 <button type="button" class="btn-close" id="extra_data_close" aria-label="Close"></button>
             </div>
-            <div id="extra_data_info" class="p-2" style="font-size: 0.8rem">
-
-            </div>
+            <div id="extra_data_info" class="p-2" style="font-size: 0.8rem"></div>
         </div>
-        <div class="card p-2 mb-4 ms-4 me-2 mt-2">
+        <div class="card p-2 mb-2 ms-2 me-2 mt-2">
             <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                 <div class="fw-bolder">DonkViewer</div>
-                <small>v2.1</small>
+                <small>v2.2</small>
             </div>
             <div>Made by Ballaam</div>
             <div style="font-size: 0.8rem">Contributions from:
@@ -63,83 +125,114 @@
             </div>
         </div>
     </div>
-    <div class="position-absolute top-0 end-0">
-        <div class="card p-3 mt-4 me-4 ms-2 mb-2" style="max-width: 500px;">
-            <div class="ms-auto">
-                <button class="btn btn-sm" id="toggle_visibility" title="Maximize/Minimize">
-                    <i class="fa-solid fa-minimize"></i>
-                </button>
+    <div class="position-absolute top-0 start-0">
+        <div class="d-flex ms-2 mt-2">
+            <div class="card p-2 me-2">
+                <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="main-tab" data-bs-toggle="tab"
+                                title="Main Options"
+                                data-bs-target="#main-tab-pane" type="button" role="tab"
+                                aria-controls="main-tab-pane" aria-selected="true">
+                            <i class="fa-solid fa-map"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="markers-tab" data-bs-toggle="tab"
+                                title="Markers"
+                                data-bs-target="#markers-tab-pane" type="button" role="tab"
+                                aria-controls="markers-tab-pane" aria-selected="false">
+                            <i class="fa-solid fa-bezier-curve"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="rendering-tab" data-bs-toggle="tab"
+                                title="Rendering Options"
+                                data-bs-target="#rendering-tab-pane" type="button" role="tab"
+                                aria-controls="rendering-tab-pane" aria-selected="false">
+                            <i class="fa-solid fa-cube"></i>
+                        </button>
+                    </li>
+                </ul>
             </div>
-            <div id="controls_content">
-                <div class="mb-2">
-                    <small>ROM File</small>
-                    <div class="input-group flex-nowrap" id="fileUploadButton">
-                        <button class="btn btn-secondary">
-                            <i class="fa-solid fa-file-arrow-up"></i>
-                        </button>
-                        <span class="form-control" id="fileUploadText">Choose a file</span>
-                    </div>
-                    <div hidden>
-                        <input type="file" id="fileInput" accept=".z64" hidden>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <label for="map_id_selector">Map</label>
-                    <select id="map_id_selector" class="form-select change-reload double-reload force-camera"></select>
-                </div>
-                <div class="mb-2">
-                    <label for="bg_selector">Backdrop</label>
-                    <select id="bg_selector" class="form-select change-reload"></select>
-                </div>
-                <div class="mb-2">
-                    <label for="obj_selector">Objects</label>
-                    <select id="obj_selector" class="form-select change-reload"></select>
-                </div>
-                <div id="progress_text" hidden>
-
-                </div>
-                <div class="mb-2">
-                    <label for="extra_marker_dropdown">Internal Markers</label>
-                    <div class="dropdown">
-                        <button 
-                            class="btn btn-secondary dropdown-toggle" 
-                            type="button" 
-                            id="multiSelectDropdown" 
-                            data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside"
-                            aria-expanded="false">
-                            Select Options
-                        </button>
-                        <ul class="dropdown-menu p-2" aria-labelledby="multiSelectDropdown" style="width: 200px;" id="extra_marker_dropdown">
-                        </ul>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <label for="rendering_options">Rendering Options</label>
-                    <div class="d-flex flex-wrap" id="rendering_options">
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="wf_selector">
-                            <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
+            <div class="card p-3" style="max-width: 500px;" hidden id="tabContent">
+                <div class="tab-content">
+                    <div class="tab-pane fade" id="main-tab-pane" role="tabpanel" aria-labelledby="main-tab" tabindex="0">
+                        <h5>Initial Setup</h5>
+                        <hr />
+                        <div class="mb-2">
+                            <small>ROM File</small>
+                            <div class="input-group flex-nowrap" id="fileUploadButton">
+                                <button class="btn btn-secondary">
+                                    <i class="fa-solid fa-file-arrow-up"></i>
+                                </button>
+                                <span class="form-control" id="fileUploadText">Choose a file</span>
+                            </div>
+                            <div hidden>
+                                <input type="file" id="fileInput" accept=".z64" hidden>
+                            </div>
                         </div>
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input click-reload force-camera double-reload" type="checkbox" role="switch" id="ortho_camera">
-                            <label class="form-check-label" for="ortho_camera">Orthographic Camera</label>
+                        <div class="mb-2">
+                            <label for="map_id_selector">Map</label>
+                            <select id="map_id_selector" class="form-select change-reload double-reload force-camera"></select>
                         </div>
-                        <div class="form-check form-switch py-2">
-                            <input class="form-check-input" type="checkbox" role="switch" id="animate_sprites" checked>
-                            <label class="form-check-label" for="animate_sprites">Animate Sprites</label>
+                        <div class="mb-2">
+                            <label for="bg_selector">Backdrop</label>
+                            <select id="bg_selector" class="form-select change-reload"></select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="obj_selector">Objects</label>
+                            <select id="obj_selector" class="form-select change-reload"></select>
                         </div>
                     </div>
-                </div>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Export Scene
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="#" id="export_obj">To OBJ</a></li>
-						<li><a class="dropdown-item" href="#" id="export_dae">To DAE</a></li>
-                        <li><a class="dropdown-item" href="#" id="export_glb">To GLB/glTF</a></li>
-                    </ul>
+                    <div class="tab-pane fade" id="markers-tab-pane" role="tabpanel" aria-labelledby="markers-tab" tabindex="0">
+                        <h5>Markers</h5>
+                        <hr />
+                        <div class="mb-2">
+                            <div id="marker_tree"></div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="rendering-tab-pane" role="tabpanel" aria-labelledby="rendering-tab" tabindex="0">
+                        <h5>Rendering Options</h5>
+                        <hr />
+                        <div class="mb-2">
+                            <div>
+                                <div class="form-check form-switch py-2">
+                                    <input class="form-check-input click-reload" type="checkbox" role="switch" id="wf_selector">
+                                    <label class="form-check-label" for="wf_selector">Wireframe Mode</label>
+                                </div>
+                                <div class="form-check form-switch py-2">
+                                    <input class="form-check-input click-reload force-camera double-reload" type="checkbox" role="switch" id="ortho_camera">
+                                    <label class="form-check-label" for="ortho_camera">Orthographic Camera</label>
+                                </div>
+                                <div class="form-check form-switch py-2">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="animate_sprites" checked>
+                                    <label class="form-check-label" for="animate_sprites">Animate Sprites</label>
+                                </div>
+                                <div>
+                                    <div>Background Color:</div>
+                                    <div>
+                                        <input type="color" id="color_picker" value="#333333" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="dropdown me-2">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" title="Export Scene">
+                                    <i class="fa-solid fa-download"></i>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#" id="export_obj">To OBJ</a></li>
+                                    <li><a class="dropdown-item" href="#" id="export_dae">To DAE</a></li>
+                                    <li><a class="dropdown-item" href="#" id="export_glb">To GLB/glTF</a></li>
+                                </ul>
+                            </div>
+                            <button class="btn btn-secondary" title="Snapshot" id="snapshot_scene">
+                                <i class="fa-solid fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -152,6 +245,7 @@
             </p>
         </div>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -161,6 +255,7 @@
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
     <script src="script/viewer/lib.js" type="text/javascript"></script>
     <script src="script/viewer/texture.js" type="text/javascript"></script>
+    <script src="script/viewer/toast.js" type="text/javascript"></script>
     <script src="script/viewer/ui.js" type="text/javascript"></script>
     <script src="script/viewer/vtx.js" type="text/javascript"></script>
     <script src="script/viewer/parser.js" type="text/javascript"></script>
@@ -192,6 +287,76 @@
 
         // --- Core Functions ---
 
+        function hideFTTSplash() {
+            const splash = document.getElementById("ftt_splash");
+            if (splash) {
+                splash.style.opacity = 0;
+                setTimeout(() => {
+                    const splash = document.getElementById("ftt_splash");
+                    if (splash) {
+                        splash.remove();
+                    }
+                }, 500);
+            }
+        }
+
+        function showFTTWarning() {
+            document.getElementById("ftt_warning").removeAttribute("hidden");
+        }
+
+        async function copyThreeScreenshot(renderer, scene, camera) {
+            // 1. Render the scene
+            renderer.render(scene, camera);
+
+            // 2. Get the canvas
+            const sourceCanvas = renderer.domElement;
+
+            const w = sourceCanvas.width;
+            const h = sourceCanvas.height;
+
+            // 2. Create an offscreen canvas to draw screenshot + text
+            const canvas = document.createElement("canvas");
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d");
+
+            // 3. Draw the rendered Three.js canvas
+            ctx.drawImage(sourceCanvas, 0, 0, w, h);
+
+            // 4. Draw watermark (bottom-right)
+            const fontSize = Math.floor(h * 0.04);      // 4% of image height
+            ctx.font = `${fontSize}px sans-serif`;
+            ctx.fillStyle = "rgba(255, 255, 255, 0.85)"; // watermark color
+            ctx.textBaseline = "bottom";
+            ctx.textAlign = "right";
+
+            const padding = Math.floor(fontSize * 0.6);
+
+            ctx.fillText("Donk Viewer", w - padding, h - padding - 20);
+            const fontSize2 = Math.floor(h * 0.02);      // 2% of image height
+            ctx.font = `${fontSize2}px sans-serif`;
+            ctx.fillText("theballaam96.github.io/donk_viewer", w - padding, h - padding);
+
+
+            // 3. Convert canvas to Blob (PNG)
+            const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
+
+            if (!blob) {
+                console.error("Unable to capture screenshot blob.");
+                return;
+            }
+
+            try {
+                // 4. Write blob to clipboard as an image
+                await navigator.clipboard.write([
+                    new ClipboardItem({ "image/png": blob })
+                ]);
+                window.createToast("Screenshot copied to clipboard", "success-subtle");
+            } catch (err) {
+                console.error("Clipboard error:", err);
+            }
+        }
+
         async function init() {
             // ROM load
             const isLoaded = await loadStoredFile();
@@ -201,10 +366,12 @@
             } else {
                 // No stored file, prompt the user to load one
                 console.log("App ready, awaiting file selection.");
+                showFTTWarning();
             }
             // Scene setup
             scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x333333); 
+            scene.background = new THREE.Color(0x333333);
+            loadBackground();
             const aspect = window.innerWidth / window.innerHeight;
             perspectiveCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 100000);
             const frustumSize = 5;
@@ -244,6 +411,9 @@
             if (isLoaded) {
                 window.renderHandler(true);  // Temp
                 window.renderHandler(false);
+                setTimeout(() => {
+                    hideFTTSplash();
+                }, 500);
             }
             
             animate();
@@ -358,7 +528,7 @@
                             vertexColors: true,       // ⬅️ Keep this, but now the vertices are unique per face
                             transparent: true,        // Enable transparency support
                             opacity: 1.0,             // Default opacity
-                            side: THREE.DoubleSide,    // Good for viewing translucent objects
+                            side: document.getElementById("ortho_camera").checked ? THREE.FrontSide : THREE.DoubleSide,    // Good for viewing translucent objects
                             wireframe: document.getElementById("wf_selector").checked,
                         });
                         child.name = 'LoadedMesh';
@@ -537,11 +707,14 @@
             }
 
             window.rom_bytes = new Uint8Array(arrayBuffer);
-            window.detectVersion(window.rom_bytes);
+            const valid = window.detectVersion(window.rom_bytes);
             window.rom_dv = new DataView(arrayBuffer);
             window.resetGaps();
             window.renderHandler(false);
             window.renderHandler(false);
+            if (valid) {
+                hideFTTSplash();
+            }
         }
 
         // --- Interaction (Clickable Meshes) ---
@@ -588,24 +761,104 @@
             }
         }
 
+        function setCookie(name, value, days = 365) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = `${name}=${encodeURIComponent(value)}; ${expires}; path=/`;
+        }
+
+        function getCookie(name) {
+            const cookies = document.cookie.split(";").map(c => c.trim());
+            for (const c of cookies) {
+                if (c.startsWith(name + "=")) {
+                    return decodeURIComponent(c.substring(name.length + 1));
+                }
+            }
+            return null;
+        }
+
+        function loadBackground() {
+            const saved = getCookie("backgroundColor");
+            if (saved) {
+                document.getElementById("color_picker").value = saved;
+                scene.background = new THREE.Color(saved);
+            }
+        }
+
+        document.getElementById("color_picker")?.addEventListener("input", function () {
+            setCookie("backgroundColor", this.value);
+            scene.background = new THREE.Color(this.value);
+        });
+
+        document.getElementById("snapshot_scene").addEventListener("click", () => {
+            copyThreeScreenshot(renderer, scene, camera);
+        });
+
         // --- Utility Functions ---
         
         function centerModel() {
             if (!loadedObject) return;
-            
+
+            // Compute bounding box
             const box = new THREE.Box3().setFromObject(loadedObject);
             const size = box.getSize(new THREE.Vector3());
             const center = box.getCenter(new THREE.Vector3());
-            
-            // Center model and put it on the plane (Y=0)
-            loadedObject.position.sub(center).add(new THREE.Vector3(0, size.y / 2, 0));
-            
-            // Adjust camera to view the model
-            controls.target.copy(loadedObject.position);
-            const distance = Math.max(size.x, size.y, size.z) * 1.5;
-            camera.position.copy(loadedObject.position).add(new THREE.Vector3(0, size.y * 0.5, distance));
+
+            //
+            // 1. Center object on X/Z, place its base on Y=0
+            //
+            loadedObject.position.x -= center.x;
+            loadedObject.position.z -= center.z;
+            loadedObject.position.y -= box.min.y;
+
+            //
+            // 2. Update controls target
+            //
+            const objectCenter = new THREE.Vector3(0, size.y / 2, 0);
+            controls.target.copy(objectCenter);
+
+            //
+            // 3. Adjust camera based on type
+            //
+            const maxDim = Math.max(size.x, size.z, size.y);
+
+            if (camera.isOrthographicCamera) {
+                camera.position.set(0, maxDim * 2, 0);
+                camera.lookAt(objectCenter);
+
+                // Fit orthographic frustum to bounding box AND viewport
+                const aspect = renderer.domElement.clientWidth / renderer.domElement.clientHeight;
+                const half = maxDim * 0.5;
+
+                if (aspect >= 1) {
+                    // Wide viewport → widen left/right
+                    camera.left   = -half * aspect;
+                    camera.right  =  half * aspect;
+                    camera.top    =  half;
+                    camera.bottom = -half;
+                } else {
+                    // Tall viewport → increase top/bottom
+                    camera.left   = -half;
+                    camera.right  =  half;
+                    camera.top    =  half / aspect;
+                    camera.bottom = -half / aspect;
+                }
+
+                camera.updateProjectionMatrix();
+
+            } else {
+                //
+                // PERSPECTIVE CAMERA — standard angled view
+                //
+                const distance = maxDim * 1.5;
+                camera.position.set(0, size.y * 0.5, distance);
+                camera.lookAt(objectCenter);
+            }
+
             controls.update();
         }
+
 
         function onWindowResize() {
             const aspect = window.innerWidth / window.innerHeight;
@@ -644,7 +897,6 @@
             link.click();
         };
 
-            // === GLB Export ===
         document.getElementById('export_glb').onclick = () => {
             const exporter = new THREE.GLTFExporter();
             exporter.parse(scene, (gltf) => {

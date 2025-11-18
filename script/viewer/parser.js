@@ -1,52 +1,54 @@
 const trigger_colors = {
-    "LoadingZone": 0xFF0000,
+    "Loading Zone": 0xFF0000,
     "Cutscene": 0x00FF00,
     "Autowalk": 0x0000FF,
     "State": 0xFF00FF,
+    "Slide": 0xFF00FF,
+    "Detransform": 0xFF00FF,
     "Weather": 0x00FFFF,
-    "ObjectControl": 0xFFFF00,
+    "Object Control": 0xFFFF00,
     "Cheat": 0xFFFFFF,
-    "Undefined": 0x000000,
+    "Unknown": 0x000000,
 }
 
 const trigger_data = [
-    { index: 0,  type: "ObjectControl", name: "Spawn Trigger" }, // 0x00: Spawn Trigger (0x12 - Character Spawner "Spawn Trigger")
-    { index: 1,  type: "Undefined", name: "Unknown 0x1" }, // 0x01
-    { index: 2,  type: "ObjectControl", name: "Despawn Trigger" }, // 0x02: Despawn Trigger (0x12 - Character Spawner "Spawn Trigger")
-    { index: 3,  type: "ObjectControl", name: "Boss Door Trigger" }, // 0x03: Boss Door Trigger
-    { index: 4,  type: "ObjectControl", name: "Update Actor Trigger" }, // 0x04: Update Actor Trigger (0x14 - Actor Spawner ID. Makes Rock fall in Fungi Minecart)
+    { index: 0,  type: "Object Control", name: "Spawn Trigger" }, // 0x00: Spawn Trigger (0x12 - Character Spawner "Spawn Trigger")
+    { index: 1,  type: "Unknown", name: "Unknown 0x1" }, // 0x01
+    { index: 2,  type: "Object Control", name: "Despawn Trigger" }, // 0x02: Despawn Trigger (0x12 - Character Spawner "Spawn Trigger")
+    { index: 3,  type: "Object Control", name: "Boss Door Trigger" }, // 0x03: Boss Door Trigger
+    { index: 4,  type: "Object Control", name: "Update Actor Trigger" }, // 0x04: Update Actor Trigger (0x14 - Actor Spawner ID. Makes Rock fall in Fungi Minecart)
     { index: 5,  type: "Cutscene", name: "Cutscene Trigger 0x5" }, // 0x05: Cutscene Trigger
     { index: 6,  type: "Weather", name: "Weather Overlay Force Trigger" }, // 0x06: Weather Overlay Force Trigger (Spawns DK in treehouse?)
     { index: 7,  type: "Weather", name: "Weather Overlay Set Trigger" }, // 0x07: Weather Overlay Set Trigger
     { index: 8,  type: "Weather", name: "Weather Overlay Remove Trigger" }, // 0x08: Weather Overlay Remove Trigger
-    { index: 9,  type: "LoadingZone", name: "Loading Zone 0x9" }, // 0x09: Loading Zone
+    { index: 9,  type: "Loading Zone", name: "Loading Zone 0x9" }, // 0x09: Loading Zone
     { index: 10, type: "Cutscene", name: "Cutscene Trigger 0xA" }, // 0x0A: Cutscene Trigger
-    { index: 11, type: "ObjectControl", name: "Init TNT Minecart (Minecart Mayhem)" }, // 0x0B: Init TNT Minecart (Minecart Mayhem)
-    { index: 12, type: "LoadingZone", name: "Loading Zone + Objects" }, // 0x0C: Loading Zone + Objects
-    { index: 13, type: "LoadingZone", name: "Loading Zone 0xD" }, // 0x0D: Loading Zone
-    { index: 14, type: "Undefined", name: "Unknown 0xE" }, // 0x0E
-    { index: 15, type: "LoadingZone", name: "Warp Trigger" }, // 0x0F: Warp Trigger
-    { index: 16, type: "LoadingZone", name: "Loading Zone 0x10" }, // 0x10: Loading Zone
-    { index: 17, type: "LoadingZone", name: "Parent Map Loading Zone" }, // 0x11: Parent Map Loading Zone
+    { index: 11, type: "Object Control", name: "Init TNT Minecart (Minecart Mayhem)" }, // 0x0B: Init TNT Minecart (Minecart Mayhem)
+    { index: 12, type: "Loading Zone", name: "Loading Zone + Objects" }, // 0x0C: Loading Zone + Objects
+    { index: 13, type: "Loading Zone", name: "Loading Zone 0xD" }, // 0x0D: Loading Zone
+    { index: 14, type: "Unknown", name: "Unknown 0xE" }, // 0x0E
+    { index: 15, type: "Loading Zone", name: "Warp Trigger" }, // 0x0F: Warp Trigger
+    { index: 16, type: "Loading Zone", name: "Loading Zone 0x10" }, // 0x10: Loading Zone
+    { index: 17, type: "Loading Zone", name: "Parent Map Loading Zone" }, // 0x11: Parent Map Loading Zone
     { index: 18, type: "State", name: "Coin Shower Trigger" }, // 0x12: Coin Shower Trigger
-    { index: 19, type: "State", name: "Detransform Trigger" }, // 0x13: Detransform Trigger
-    { index: 20, type: "LoadingZone", name: "Boss Door LZ" }, // 0x14: Boss Door LZ
+    { index: 19, type: "Detransform", name: "Detransform Trigger" }, // 0x13: Detransform Trigger
+    { index: 20, type: "Loading Zone", name: "Boss Door LZ" }, // 0x14: Boss Door LZ
     { index: 21, type: "Autowalk", name: "Autowalk Trigger" }, // 0x15: Autowalk Trigger
     { index: 22, type: "State", name: "Sound Trigger" }, // 0x16: Sound Trigger
     { index: 23, type: "Cutscene", name: "Cutscene Trigger 0x17" }, // 0x17: Cutscene Trigger
-    { index: 24, type: "Undefined", name: "Unknown 0x18" }, // 0x18: In Fungi Minecart? Unsure on function
-    { index: 25, type: "Undefined", name: "Unknown 0x19" }, // 0x19: Everywhere in Seal Race. Unsure on function?
+    { index: 24, type: "Unknown", name: "Unknown 0x18" }, // 0x18: In Fungi Minecart? Unsure on function
+    { index: 25, type: "Unknown", name: "Unknown 0x19" }, // 0x19: Everywhere in Seal Race. Unsure on function?
     { index: 26, type: "State", name: "Gravity Trigger" }, // 0x1A: Gravity Trigger
-    { index: 27, type: "State", name: "Slide Trigger" }, // 0x1B: Slide Trigger
-    { index: 28, type: "State", name: "Unslide Trigger" }, // 0x1C: Unslide Trigger
-    { index: 29, type: "LoadingZone", name: "Zipper Trigger" }, // 0x1D: Zipper Trigger
+    { index: 27, type: "Slide", name: "Slide Trigger" }, // 0x1B: Slide Trigger
+    { index: 28, type: "Slide", name: "Unslide Trigger" }, // 0x1C: Unslide Trigger
+    { index: 29, type: "Loading Zone", name: "Zipper Trigger" }, // 0x1D: Zipper Trigger
     { index: 30, type: "State", name: "Song Trigger" }, // 0x1E: Song Trigger
-    { index: 31, type: "Undefined", name: "Unknown 0x1F" }, // 0x1F
+    { index: 31, type: "Unknown", name: "Unknown 0x1F" }, // 0x1F
     { index: 32, type: "Cutscene", name: "Cutscene Trigger 0x20" }, // 0x20: Cutscene Trigger
-    { index: 33, type: "Undefined", name: "Unknown 0x21" }, // 0x21
-    { index: 34, type: "Undefined", name: "Unknown 0x22" }, // 0x22
-    { index: 35, type: "Undefined", name: "Unknown 0x23" }, // 0x23
-    { index: 36, type: "State", name: "Detransform Trigger" }, // 0x24: Detransform Trigger
+    { index: 33, type: "Unknown", name: "Unknown 0x21" }, // 0x21
+    { index: 34, type: "Unknown", name: "Unknown 0x22" }, // 0x22
+    { index: 35, type: "Unknown", name: "Unknown 0x23" }, // 0x23
+    { index: 36, type: "Detransform", name: "Detransform Trigger" }, // 0x24: Detransform Trigger
     { index: 37, type: "State", name: "Load Chunk Textures Trigger" }, // 0x25: Load Chunk Textures Trigger
     { index: 38, type: "Cheat", name: "K. Lumsy Cheat Trigger" }, // 0x26: K. Lumsy Cheat Trigger
     { index: 39, type: "State", name: "Destroy Object Trigger" }, // 0x27: Destroy Object Trigger
@@ -56,6 +58,7 @@ function parseTriggers(map_id) {
     const trigger_file = window.getFile(window.rom_bytes, window.rom_dv, 18, map_id, true);
     const trigger_count = window.readFile(trigger_file, 0, 2);
     let triggers = [];
+    let enabled_cache = {};
     for (let i = 0; i < trigger_count; i++) {
         let trigger_start = 2 + (0x38 * i);
         let radius = window.readFile(trigger_file, trigger_start + 6, 2, true);
@@ -71,23 +74,53 @@ function parseTriggers(map_id) {
         }
         let trigger_type = window.readFile(trigger_file, trigger_start + 0x10, 2);
         let local_trigger_data = trigger_data[trigger_type];
-
-        triggers.push({
-            coords: [
-                window.readFile(trigger_file, trigger_start + 0, 2, true),
-                window.readFile(trigger_file, trigger_start + 2, 2, true),
-                window.readFile(trigger_file, trigger_start + 4, 2, true),
-            ],
-            infinite_h: infinite_h,
-            infinite_y: infinite_y,
-            radius: radius,
-            height: height,
-            color: trigger_colors[local_trigger_data.type],
-            name: `Trigger ${i}: ${local_trigger_data.name}`,
-            shape: "cylinder"
-        })
+        const general_type = local_trigger_data.type;
+        if (!Object.keys(enabled_cache).includes(general_type)) {
+            enabled_cache[general_type] = window.isNodeOrSubSelected(general_type);
+        }
+        if (enabled_cache[general_type]) {
+            triggers.push({
+                coords: [
+                    window.readFile(trigger_file, trigger_start + 0, 2, true),
+                    window.readFile(trigger_file, trigger_start + 2, 2, true),
+                    window.readFile(trigger_file, trigger_start + 4, 2, true),
+                ],
+                infinite_h: infinite_h,
+                infinite_y: infinite_y,
+                radius: radius,
+                height: height,
+                color: trigger_colors[general_type],
+                name: `Trigger ${i}: ${local_trigger_data.name}`,
+                shape: "cylinder"
+            })
+        }
     }
     return triggers;
+}
+
+const unused_cutscenes = {
+    0xBD: [2, 3, 4],  // BFI
+    0xAD: [6],  // Aztec Lobby
+    0xC2: [3, 4, 5, 6, 7, 8],  // Caves Lobby
+    0xB2: [2],  // Fungi Lobby
+    0xC1: [2],  // Castle Lobby
+    0xAB: [1],  // DK's House
+    0x07: [1, 12, 21, 23, 24, 30, 31, 32, 33],  // Japes
+    0x15: [0],  // Diddy 5DT
+    0x1A: [6, 9, 29, 30, 47], // Factory
+    0x1E: [16], // Galleon
+    0x30: [13], // Fungi
+    0x3C: [5], // Spider Boss
+    0x48: [17, 26], // Caves
+    0xA3: [4], // Dungeon
+    0xC7: [47], // KKO
+    0xCB: [3], // DK Phase
+    0xCD: [2, 3], // Lanky Phase
+    0xCE: [0], // Tiny Phase
+    0xCF: [3, 12], // Chunky Phase
+    0xD0: [1], // Bloopers
+    0xAC: [2], // Rock Intro Story
+    0x50: [7, 8], // Main Menu
 }
 
 function parseCamLocks(map_id) {
@@ -240,14 +273,43 @@ function parseCamPaths(map_id) {
             }
         })
     })
+    const show_used = window.isNodeOrSubSelected("Used");
+    const show_unused = window.isNodeOrSubSelected("Unused");
+    const show_v_unused = window.isNodeOrSubSelected("Unassociated");
     return actions.filter(k => k.is_path).map((action, action_index) => {
         const used = action.used_cutscenes.length > 0;
-        return getPathObject(action.point_arr, {
-            color: used ? 0x60B100 : 0xB75400,
-            thickness: 10,
-            name: `Cam Path ${action_index}${used ? ` (${action.used_cutscenes.join(', ')})` : ' (Unused)'}`,
-        })
-    });
+        let show = false;
+        let color = 0;
+        if (used) {
+            let is_unused = false;
+            if (unused_cutscenes[map_id]) {
+                is_unused = true;
+                action.used_cutscenes.forEach(cs => {
+                    if (!unused_cutscenes[map_id].includes(cs)) {
+                        is_unused = false;
+                    }
+                })
+            }
+            if (is_unused) {
+                show = show_unused;
+                color = 0x00526F;
+            } else {
+                show = show_used;
+                color = 0x60B100;
+            }
+        } else {
+            color = 0xB75400;
+            show = show_v_unused;
+        }
+        if (show) {
+            return getPathObject(action.point_arr, {
+                color: color,
+                thickness: 10,
+                name: `Cam Path ${action_index}${used ? ` (${action.used_cutscenes.join(', ')})` : ' (Unused)'}`,
+            })
+        }
+        return null;
+    }).filter(k => k !== null);
 }
 
 function getPathObject(path, config) {
@@ -335,6 +397,8 @@ function parseExits(map_id) {
     const exit_file = window.getFile(window.rom_bytes, window.rom_dv, 23, map_id, false);
     let exits = [];
     const exit_count = parseInt(exit_file.length / 10);
+    const show_exit_nodes = window.isNodeOrSubSelected("Exit Nodes");
+    const show_exit_awalk = window.isNodeOrSubSelected("Autowalk Destinations");
     for (let x = 0; x < exit_count; x++) {
         const exit_start = x * 10;
         const angle = window.readFile(exit_file, exit_start + 6, 1);
@@ -349,24 +413,28 @@ function parseExits(map_id) {
             name: `Exit ${x}`,
             shape: "sphere",
         }
-        exits.push(local_data);
-        const has_autowalk = window.readFile(exit_file, exit_start + 8, 1) != 0;
-        if (has_autowalk) {
-            const angle_radians = (angle / 255) * Math.PI * 2;
-            exits.push({
-                coords: [
-                    local_data.coords[0] + (Math.sin(angle_radians) * 50),
-                    local_data.coords[1],
-                    local_data.coords[2] + (Math.cos(angle_radians) * 50),
-                ],
-                radius: Math.sqrt(100),
-                shape: "cylinder",
-                height: 300,
-                infinite_h: false,
-                infinite_y: true,
-                color: 0x42A5B2,
-                name: `Autowalk target for exit ${x}`
-            })
+        if (show_exit_nodes) {
+            exits.push(local_data);
+        }
+        if (show_exit_awalk) {
+            const has_autowalk = window.readFile(exit_file, exit_start + 8, 1) != 0;
+            if (has_autowalk) {
+                const angle_radians = (angle / 255) * Math.PI * 2;
+                exits.push({
+                    coords: [
+                        local_data.coords[0] + (Math.sin(angle_radians) * 50),
+                        local_data.coords[1],
+                        local_data.coords[2] + (Math.cos(angle_radians) * 50),
+                    ],
+                    radius: Math.sqrt(100),
+                    shape: "cylinder",
+                    height: 300,
+                    infinite_h: false,
+                    infinite_y: true,
+                    color: 0x42A5B2,
+                    name: `Autowalk target for exit ${x}`
+                })
+            }
         }
     }
     return exits;
@@ -500,29 +568,29 @@ function parseChunks(map_id) {
 
 function allViews(map_id) {
     let collective = [];
-    if (document.getElementById("trigger_selector").checked) {
+    if (window.isNodeOrSubSelected("Triggers")) {
         collective = collective.concat(parseTriggers(map_id));
     }
-    if (document.getElementById("lock_selector").checked) {
+    if (window.isNodeOrSubSelected("Camera Lock Zones")) {
         collective = collective.concat(parseCamLocks(map_id));
     }
-    if (document.getElementById("path_selector").checked) {
+    if (window.isNodeOrSubSelected("Object Paths")) {
         collective = collective.concat(parsePaths(map_id));
     }
-    if (document.getElementById("autowalk_selector").checked) {
+    if (window.isNodeOrSubSelected("Autowalk Paths")) {
         collective = collective.concat(parseAutowalks(map_id));
     }
-    if (document.getElementById("exit_selector").checked) {
+    if (window.isNodeOrSubSelected("Exits")) {
         collective = collective.concat(parseExits(map_id));
     }
-    if (document.getElementById("cam_path_selector").checked) {
+    if (window.isNodeOrSubSelected("Camera Paths")) {
         collective = collective.concat(parseCamPaths(map_id));
     }
-    if (document.getElementById("chunk_selector").checked) {
+    if (window.isNodeOrSubSelected("Chunks")) {
         collective = collective.concat(parseChunks(map_id));
     }
-    const enemy_fences = document.getElementById("e_fence_selector").checked;
-    const enemy_paths = document.getElementById("e_path_selector").checked;
+    const enemy_fences = window.isNodeOrSubSelected("Enemy Fences");
+    const enemy_paths = window.isNodeOrSubSelected("Enemy Paths (WIP)");
     if (enemy_fences || enemy_paths) {
         const data = parseCharSpawnerFile(map_id);
         if (enemy_fences) {
