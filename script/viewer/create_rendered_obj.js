@@ -287,6 +287,7 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     const map_id = parseInt(document.getElementById("map_id_selector").value);
     const bg_id = document.getElementById("bg_selector").value;
     const obj_mode_id = document.getElementById("obj_selector").value;
+    const actor_mode_id = document.getElementById("actor_selector").checked;
     if (bg_id == "gaps") {
         document.getElementById("gaps_fyi").classList.remove("d-none");
     } else {
@@ -295,9 +296,11 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     let obj = null;
     let gaps = [];
     let fluids = [];
+    if (document.getElementById("fluid_selector").checked) {
+        fluids = window.loadFluids(map_id);
+    }
     if (bg_id == "geo") {
         obj = window.generateGeometry(map_id);
-        fluids = window.loadFluids(map_id);
     } else {
         let tris = window.getCollisionTris(map_id, bg_id);
         if (bg_id == "gaps") {
@@ -316,12 +319,12 @@ function renderHandlerInternal(reset_camera, regenInterval) {
         window.loadOBJ(obj, reset_camera);
     }
     // Objects
-    const objects = window.parseSetup(map_id, obj_mode_id);
+    const objects = window.parseSetup(map_id, obj_mode_id, actor_mode_id);
     const local_scale = window.getScale(map_id);
     let billboards = [];
     let objects_obj_files = objects.map(o => {
         let local_tris = [];
-        if (obj_mode_id == "geo") {
+        if (o.mode == "geo") {
             if (o.cobj) {
                 // Billboard
                 billboards.push(generateBillboardMesh(o, local_scale));
@@ -337,7 +340,7 @@ function renderHandlerInternal(reset_camera, regenInterval) {
                             parseFloat(segs[2]),
                             parseFloat(segs[3]),
                         ];
-                        coords = window.rotateObject(coords, [0, o.rotation, 0]).slice();
+                        coords = window.rotateObject(coords, o.rotation).slice();
                         for (let j = 0; j < 3; j++) {
                             segs[j + 1] = ((coords[j] * o.scale) + o.coords[j]) * local_scale;
                         }
@@ -349,7 +352,7 @@ function renderHandlerInternal(reset_camera, regenInterval) {
         }
         o.tris.forEach(tri => {
             for (let i = 0; i < 3; i++) {
-                tri.coords[i] = window.rotateObject(tri.coords[i], [0, o.rotation, 0]).slice();
+                tri.coords[i] = window.rotateObject(tri.coords[i], o.rotation).slice();
                 for (let j = 0; j < 3; j++) {
                     tri.coords[i][j] = ((tri.coords[i][j] * o.scale) + o.coords[j]) * local_scale;
                 }

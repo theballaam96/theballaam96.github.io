@@ -1,7 +1,14 @@
 window.pointer_offset = 0x101C50;
 window.table_offset = 0;
 window.geo_offset = 0;
+window.actor_spawner_offset = 0;
 window.fluid_data = [];
+window.overlay_data = [];
+window.actor_models = {};
+window.char_data = [];
+window.cutscene_models = [];
+window.actor_sprites = {};
+window.balloons = [];
 
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
@@ -80,7 +87,12 @@ function readFile(buffer, offset, size, signed = false) {
         size = buffer.length - offset;
     }
     for (let i = 0; i < size; i++) {
-        val <<= 8;
+        if (signed) {
+            val <<= 8;
+        } else {
+            // Ensures it doesn't get converted to a signed (js lol)
+            val = (val << 8) >>> 0;
+        }
         val += (buffer[offset + i]);
     }
     if (signed) {
@@ -94,6 +106,28 @@ function readFile(buffer, offset, size, signed = false) {
 }
 window.readFile = readFile;
 
+function writeFile(buffer, value, offset, size) {
+    let val_bytes = [];
+    for (let i = 0; i < size; i++) {
+        val_bytes.push(0);
+    }
+    let val = value;
+    if (value < 0) {
+        val += (1 << (8 * size));
+    }
+    for (let i = 0; i < size; i++) {
+        val_bytes[(size - 1) - i] = val & 0xFF;
+        val >>= 8;
+        if (val == 0) {
+            break;
+        }
+    }
+    val_bytes.forEach((v, i) => {
+        buffer[offset + i] = v;
+    });
+}
+window.writeFile = writeFile;
+
 function readFloat(buffer, offset) {
     const val = readFile(buffer, offset, 4);
     const view = new DataView(new ArrayBuffer(4));
@@ -102,565 +136,15 @@ function readFloat(buffer, offset) {
 }
 window.readFloat = readFloat;
 
-const version_details = {
-    "NDOE": {
-        name: "US",
-        table_offset: 0,
-        geo_offset: 0,
-        pointer_offset: 0x101C50,
-        emoji: "\u{1F1FA}\u{1F1F8}",
-        fluids: [
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0, // field_0x14[1]
-                name: "0: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x2EE,
-                    table: 25,
-                    width: 64,
-                    height: 64,
-                },
-                palette: {
-                    index: 0x2EF,
-                    table: 25,
-                    width: 4,
-                    height: 4,
-                },
-                ripple: 0,
-                name: "1: Deep Lava",
-                loader: window.texParserCI4,
-            },
-            {
-                texture: {
-                    index: 0xF0,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "2: Japes Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "3: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x75C,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 2,
-                name: "4: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3B9,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "5: Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3D2,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "6: Acid",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3BA, // Also loads 0x3DB?
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "7: Water Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0xAF4,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "8: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-        ]
-    },
-    "NDOJ": {
-        name: "JP",
-        table_offset: 0,
-        geo_offset: 0,
-        pointer_offset: 0x1039C0,
-        emoji: "\u{1F1EF}\u{1F1F5}",
-        fluids: [
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0, // field_0x14[1]
-                name: "0: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x2ED,
-                    table: 25,
-                    width: 64,
-                    height: 64,
-                },
-                palette: {
-                    index: 0x2EE,
-                    table: 25,
-                    width: 4,
-                    height: 4,
-                },
-                ripple: 0,
-                name: "1: Deep Lava",
-                loader: window.texParserCI4,
-            },
-            {
-                texture: {
-                    index: 0xEF,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "2: Japes Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "3: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x720,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 2,
-                name: "4: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3B9,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "5: Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3D2,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "6: Acid",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3BA, // Also loads 0x3DB?
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "7: Water Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0xAA8,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "8: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-        ]
-    },
-    "NDPE": {
-        name: "Kiosk",
-        table_offset: 1,
-        geo_offset: 8,
-        pointer_offset: 0x1A7C20,
-        fluids: [
-            {
-                texture: {
-                    index: 0x3E1,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0, // field_0x14[1]
-                name: "0: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x30D,
-                    table: 25,
-                    width: 64,
-                    height: 64,
-                },
-                palette: {
-                    index: 0x30E,
-                    table: 25,
-                    width: 4,
-                    height: 4,
-                },
-                ripple: 0,
-                name: "1: Deep Lava",
-                loader: window.texParserCI4,
-            },
-            {
-                texture: {
-                    index: 0x14F,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "2: Japes Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3E1,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "3: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x7C0,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 2,
-                name: "4: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3DD,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "5: Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3EE,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "6: Acid",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3EF, // Also loads 0x3DB?
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "7: Water Lava",
-                loader: window.texParserRGBA5551,
-            },
-        ]
-    },
-    "NDOG": {
-        name: "Lodgenet",
-        table_offset: 0,
-        geo_offset: 0,
-        pointer_offset: 0x1037C0,
-        fluids: [
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0, // field_0x14[1]
-                name: "0: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x2ED,
-                    table: 25,
-                    width: 64,
-                    height: 64,
-                },
-                palette: {
-                    index: 0x2EE,
-                    table: 25,
-                    width: 4,
-                    height: 4,
-                },
-                ripple: 0,
-                name: "1: Deep Lava",
-                loader: window.texParserCI4,
-            },
-            {
-                texture: {
-                    index: 0xEF,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "2: Japes Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "3: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x720,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 2,
-                name: "4: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3B9,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "5: Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3D2,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "6: Acid",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3BA, // Also loads 0x3DB?
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "7: Water Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0xAA8,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "8: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-        ]
-    },
-    "NDOP": {
-        name: "PAL",
-        table_offset: 0,
-        geo_offset: 0,
-        pointer_offset: 0x1038D0,
-        emoji: "\u{1F1EA}\u{1F1FA}",
-        fluids: [
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0, // field_0x14[1]
-                name: "0: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x2ED,
-                    table: 25,
-                    width: 64,
-                    height: 64,
-                },
-                palette: {
-                    index: 0x2EE,
-                    table: 25,
-                    width: 4,
-                    height: 4,
-                },
-                ripple: 0,
-                name: "1: Deep Lava",
-                loader: window.texParserCI4,
-            },
-            {
-                texture: {
-                    index: 0xEF,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "2: Japes Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3C5,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "3: Water",
-                loader: window.texParserRGBA32,
-            },
-            {
-                texture: {
-                    index: 0x74C,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 2,
-                name: "4: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3B9,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "5: Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3D2,
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "6: Acid",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0x3BA, // Also loads 0x3DB?
-                    table: 7,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 0,
-                name: "7: Water Lava",
-                loader: window.texParserRGBA5551,
-            },
-            {
-                texture: {
-                    index: 0xAE0,
-                    table: 25,
-                    width: 32,
-                    height: 32,
-                },
-                ripple: 1,
-                name: "8: Caves Dillo Ground",
-                loader: window.texParserRGBA5551,
-            },
-        ]
-    },
-}
+let version_details = {};
+const versions = [
+    window.version_us,
+    window.version_pal,
+    window.version_jp,
+    window.version_kiosk,
+    window.version_lodgenet,
+];
+versions.forEach(v => version_details[v.region] = v);
 
 function detectVersion(buffer) {
     let indicator = "";
@@ -674,15 +158,150 @@ function detectVersion(buffer) {
         window.table_offset = vdata.table_offset;
         window.geo_offset = vdata.geo_offset;
         window.fluid_data = vdata.fluids;
+        window.overlay_data = vdata.overlay_data;
+        window.actor_spawner_offset = vdata.actor_spawner_offset;
+        window.balloons = vdata.balloons.slice();
+        window.overlay_data.forEach(ovl => {
+            ovl.data = null;
+        })
         if (vdata.emoji) {
             document.getElementById("fileUploadText").innerHTML = `<span id="versionFlag">${vdata.emoji}</span> loaded`;
             twemoji.parse(document.getElementById('versionFlag'), { folder: 'svg', ext: '.svg' });
         } else {
             document.getElementById("fileUploadText").innerHTML = `${vdata.name} loaded`;
         }
+        // Actor Models
+        window.char_models = [];
+        window.actor_models = {};
+        window.cutscene_models = [];
+        window.actor_sprites = {};
+        for (let i = 0; i < vdata.actor_behav_count; i++) {
+            const head = vdata.actor_behav_rdram + (i * 0x30);
+            const actor = readOverlay(1, head + 0, 2);
+            const model = readOverlay(1, head + 2, 2) - 1;
+            if (model == -1 && actor > 0) {
+                // Usually sprites
+            }
+            if (actor == 0 || model == -1) {
+                continue;
+            }
+            window.actor_models[actor] = model;
+        }
+        for (let i = 0; i < vdata.char_spawner_count; i++) {
+            const head = vdata.char_spawner_rdram + (i * vdata.char_spawner_size);
+            const actor = readOverlay(1, head + 0, 2);
+            const model = readOverlay(1, head + 2, 2) - 1;
+            if (actor == 0 || model == -1) {
+                window.char_models.push(null);
+                continue;
+            }
+            window.actor_models[actor] = model;
+            window.char_models.push({
+                actor: actor,
+                model: model,
+            })
+        }
+        for (let i = 0; i < vdata.cutscene_model_count; i++) {
+            window.cutscene_models.push(readOverlay(1, vdata.cutscene_model_rdram + (2 * i), 2) - 1);
+        }
+        // Actor Sprites
+        vdata.actor_sprites.forEach(spr => {
+            const addr = readOverlay(1, vdata.sprite_table + (spr.sprite_index * 4), 4);
+            const codec = readOverlay(1, addr + 0x7, 1);
+            const table = readOverlay(1, addr + 0xD, 1) == 1 ? 25 : 7;
+            const frame_count = readOverlay(1, addr + 0x12, 2);
+            const width = readOverlay(1, addr + 0xE, 2);
+            const height = readOverlay(1, addr + 0x10, 2);
+            let frames = [];
+            for (let i = 0; i < frame_count; i++) {
+                frames.push(readOverlay(1, addr + 0x14 + (2 * i), 2));
+            }
+            const parsers = [
+                window.texParserIA4,
+                window.texParserIA8,
+                window.texParserRGBA5551,
+                window.texParserRGBA32,
+            ]
+            window.actor_sprites[spr.actor] = {
+                parser: parsers[codec],
+                table: table,
+                frames: frames,
+                width: width,
+                height: height,
+            };
+        })
+        console.log(window.actor_sprites)
         return true;
     }
     document.getElementById("fileUploadText").innerText = "Invalid ROM";
     return false;
 }
 window.detectVersion = detectVersion;
+
+function concatUint8(a, b) {
+    const out = new Uint8Array(a.length + b.length);
+    out.set(a, 0);
+    out.set(b, a.length);
+    return out;
+}
+
+function readOverlay(overlay_index, rdram_address, size) {
+    const ovl = window.overlay_data[overlay_index];
+    if (ovl.data === null) {
+        const start = ovl.rom_code_start;
+        const end = ovl.rom_data_end;
+        const ovl_size = end - start;
+        if (ovl_size == 0) {
+            throw new Error("Invalid overlay");
+        }
+        let output = window.rom_bytes.slice(start, end);
+        output = output.slice(); // forces a copy, zero offset
+
+        if (ovl.compressed) {
+            // const compressed_sizes = getFileBoundaries(dv, 26, table_index);
+            // let decomp_size_bytes = bytes.slice(compressed_sizes.start + (file_index * 4), compressed_sizes.start + ((file_index + 1) * 4));
+            // let decomp_size_val = 0;
+            // decomp_size_bytes.forEach(val => {
+            //     decomp_size_val <<= 8;
+            //     decomp_size_val += val;
+            // })
+            let decomp_size_val = ovl.rdram_code_end - ovl.rdram_start;
+            let temp_items = [];
+            let offset = 0;
+            let initial_pass = false;
+            let target_bytes = [0x1F, 0x8B, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00];
+            let target_progress = 0;
+            output.forEach((b, i) => {
+                if (!initial_pass) {
+                    initial_pass = true;
+                    return;
+                }
+                if (b == target_bytes[target_progress]) {
+                    target_progress++;
+                    if (target_progress == target_bytes.length) {
+                        temp_items.push(output.slice(offset, i - target_bytes.length));
+                        offset = i - target_bytes.length + 1;
+                        target_progress = 0;
+                    }
+                } else {
+                    target_progress = 0;
+                }
+            });
+            let u8arr = null;
+            temp_items.forEach(item => {
+                let output_copy = addFakeGzipFooter(item, decomp_size_val);
+                const temp1 = decompressSync(output_copy);
+                if (u8arr == null) {
+                    u8arr = temp1;
+                } else {
+                    u8arr = concatUint8(u8arr, temp1);
+                }
+            })
+            output = u8arr;
+        }
+        ovl.data = output;
+        console.log(output.length.toString(16))
+    }
+    return window.readFile(ovl.data, rdram_address - ovl.rdram_start, size);
+}
+window.readOverlay = readOverlay;

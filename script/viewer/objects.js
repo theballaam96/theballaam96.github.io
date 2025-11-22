@@ -260,11 +260,216 @@ function handleObject(obj_id, map_id, mode) {
     return dumpObjCollision(prop_file, map_id, mode);
 }
 
+function genActorObj(triangles, verts) {
+    let mesh_indexes = [];
+    let output = "";
+    triangles.forEach(triangle => {
+        if (!mesh_indexes.includes(triangle.bone_index)) {
+            mesh_indexes.push(triangle.bone_index);
+        }
+    })
+    mesh_indexes = mesh_indexes.sort((a, b) => a - b);
+    let mesh_triangles = {};
+    verts.forEach(vert => {
+        selected_vert = vert.coords;
+        output += `v ${selected_vert[0]} ${selected_vert[1]} ${selected_vert[2]} ${window.getRatioString(...vert.rgba)}\n`;
+    });
+    triangles.forEach(triangle => {
+        if (!mesh_triangles[triangle.bone_index]) {
+            mesh_triangles[triangle.bone_index] = [];
+        }
+        mesh_triangles[triangle.bone_index].push([
+            triangle.verts[0].index + 1,
+            triangle.verts[1].index + 1,
+            triangle.verts[2].index + 1,
+        ])
+    })
+    Object.keys(mesh_triangles).forEach(mesh_index => {
+        output += `\no ${mesh_index}\ng ${mesh_index}\n`;
+        mesh_triangles[mesh_index].forEach(tri => {
+            output += `f ${tri[0]} ${tri[1]} ${tri[2]}\n`;
+        })
+    })
+    return output;
+}
+
+function handleActor(model_id, map_id, mode, sprite_data) {
+    if (model_id !== null && model_id !== undefined) {
+        console.log("Parsing model", model_id.toString(16))
+        const actor_file = window.getFile(window.rom_bytes, window.rom_dv, 5, model_id, true);
+        const file_offset = window.readFile(actor_file, 0, 4);
+        const dl_end_offset = window.readFile(actor_file, 4, 4);
+        const bone_start_offset = window.readFile(actor_file, 8, 4);
+        const dl_end_pointer = (dl_end_offset - file_offset) + 0x28;
+        const bone_start_pointer = (bone_start_offset - file_offset) + 0x28;
+        const vert_end_offset = window.readFile(actor_file, dl_end_pointer, 4);
+        const vert_end_pointer = (vert_end_offset - file_offset) + 0x28;
+        const bone_count = window.readFile(actor_file, 0x20, 1);
+        let bone_offsets = [];
+        let bone_bases = [];
+        let bone_master = [];
+        let vert_bones = [];
+        let vert_cache = [];
+        for (let b = 0; b < bone_count; b++) {
+            bone_offsets.push([0, 0, 0]);
+            bone_bases.push([0, 0, 0]);
+            bone_master.push(0);
+            vert_bones.push([]);
+        }
+        for (let i = 0; i < 32; i++) {
+            vert_cache.push(null);
+        }
+        let bone_index = 0;
+        let verts = [];
+        const vert_count = parseInt((vert_end_pointer - 0x28) / 0x10);
+        for (let v = 0; v < vert_count; v++) {
+            const vert_start = 0x28 +  (v * 0x10);
+            verts.push({
+                coords: [
+                    window.readFile(actor_file, vert_start + 0x0, 2, true),
+                    window.readFile(actor_file, vert_start + 0x2, 2, true),
+                    window.readFile(actor_file, vert_start + 0x4, 2, true),
+                ],
+                u: window.readFile(actor_file, vert_start + 0x8, 2),
+                v: window.readFile(actor_file, vert_start + 0xA, 2),
+                rgba: [
+                    window.readFile(actor_file, vert_start + 0xC, 1),
+                    window.readFile(actor_file, vert_start + 0xD, 1),
+                    window.readFile(actor_file, vert_start + 0xE, 1),
+                    window.readFile(actor_file, vert_start + 0xF, 1),
+                ],
+                index: v,
+            })
+        }
+        const dl_count = parseInt((dl_end_pointer - vert_end_pointer) / 8);
+        let mesh = [];
+        for (let d = 0; d < dl_count; d++) {
+            const dl_header = vert_end_pointer + (d * 8);
+            const instruction = window.readFile(actor_file, dl_header, 1);
+            const i_hi = window.readFile(actor_file, dl_header, 4);
+            const i_lo = window.readFile(actor_file, dl_header + 4, 4);
+            if (instruction == 0xDA) {
+                const data = window.readFile(actor_file, dl_header + 6, 2);
+                bone_index = parseInt(data / 0x40);
+            } else if (instruction == 1) {
+                const data_0 = window.readFile(actor_file, dl_header + 1, 2);
+                const loaded_vert_count = data_0 >> 4;
+                const data_1 = window.readFile(actor_file, dl_header + 6, 2);
+                const loaded_vert_start = parseInt(data_1 / 0x10);
+                for (let v = 0; v < loaded_vert_count; v++) {
+                    const focused_vert = loaded_vert_start + v;
+                    if (bone_index < bone_count) {
+                        vert_bones[bone_index].push(focused_vert);
+                    }
+                }
+                const i_vert_count = (i_hi >> 12) & 0xFF;
+                const i_vert_buffer_end = i_hi & 0xFF;
+                const i_vert_buffer_start = (i_vert_buffer_end >> 1) - i_vert_count;
+                const i_load_position = i_lo & 0xFFFFFF;
+                let offset = 0
+                let vert_cap = 0xFFFFFFFF;
+                const i_load_vert = (i_load_position + offset) >> 4
+                const i_load_vert_end = Math.min(i_load_vert + i_vert_count, vert_cap);
+                const verts_loaded = verts.slice(i_load_vert, i_load_vert_end);
+                verts_loaded.forEach((v, i) => {
+                    if ((i_vert_buffer_start + i) < 32) {
+                        vert_cache[i_vert_buffer_start + i] = v;
+                    } else {
+                        console.log(i_hi.toString(16), i_lo.toString(16));
+                    }
+                })
+            } else if (instruction == 5) {
+                const tri_buffer_positions = [
+                    ((i_hi >> 16) & 0xFF) >> 1,
+                    ((i_hi >> 8) & 0xFF) >> 1,
+                    ((i_hi >> 0) & 0xFF) >> 1,
+                ]
+                mesh.push({
+                    verts: [
+                        vert_cache[tri_buffer_positions[0]],
+                        vert_cache[tri_buffer_positions[1]],
+                        vert_cache[tri_buffer_positions[2]],
+                    ],
+                    bone_index: bone_index,
+                })
+            } else if ((instruction == 6) || (instruction == 7)) {
+                const tri_buffer_positions = [
+                    ((i_hi >> 16) & 0xFF) >> 1,
+                    ((i_hi >> 8) & 0xFF) >> 1,
+                    ((i_hi >> 0) & 0xFF) >> 1,
+                    ((i_lo >> 16) & 0xFF) >> 1,
+                    ((i_lo >> 8) & 0xFF) >> 1,
+                    ((i_lo >> 0) & 0xFF) >> 1,
+                ]
+                mesh.push({
+                    verts: [
+                        vert_cache[tri_buffer_positions[0]],
+                        vert_cache[tri_buffer_positions[1]],
+                        vert_cache[tri_buffer_positions[2]],
+                    ],
+                    bone_index: bone_index,
+                })
+                mesh.push({
+                    verts: [
+                        vert_cache[tri_buffer_positions[3]],
+                        vert_cache[tri_buffer_positions[4]],
+                        vert_cache[tri_buffer_positions[5]],
+                    ],
+                    bone_index: bone_index,
+                })
+            }
+        }
+        for (let b = 0; b < bone_count; b++) {
+            const bone_header = bone_start_pointer + (b * 0x10);
+            const base_bone = window.readFile(actor_file, bone_header + 0, 1);
+            const local_bone = window.readFile(actor_file, bone_header + 1, 1);
+            const master_bone = window.readFile(actor_file, bone_header + 2, 1);
+            let coords = [0, 0, 0];
+            if (base_bone != 0xFF) {
+                coords = bone_offsets[base_bone].slice();
+            }
+            for (let c = 0; c < 3; c++) {
+                coords[c] += window.readFloat(actor_file, bone_header + 0x4 + (c * 4));
+            }
+            bone_offsets[local_bone] = coords.slice();
+            if (master_bone < bone_count) {
+                bone_bases[master_bone] = bone_offsets[local_bone].slice()
+            } else {
+                bone_bases.push(bone_offsets[local_bone].slice())
+            }
+            bone_master[local_bone] = master_bone
+        }
+        vert_bones.forEach((bone, i) => {
+            bone.forEach(vert => {
+                for (let c = 0; c < 3; c++) {
+                    verts[vert].coords[c] += bone_offsets[i][c];
+                }
+            })
+        })
+        return genActorObj(mesh, verts);
+    } else if (sprite_data !== null && sprite_data !== undefined) {
+        console.log("Parsing sprite", sprite_data)
+        return {
+            shape: "billboard",
+            images: sprite_data.frames.map(f => {
+                return sprite_data.parser(window.getFile(window.rom_bytes, window.rom_dv, sprite_data.table, f, sprite_data.table !== 7))
+            }),
+            frame_count: sprite_data.frames.length,
+            width: sprite_data.width,
+            height: sprite_data.height,
+            x_size: sprite_data.width * 7,
+            y_size: sprite_data.height * 7,
+            speed: 40,
+        }
+    }
+    return null;
+}
+
 function isObject(value) {
     return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
-function parseSetup(map_id, mode) {
+function parseSetup(map_id, mode, actor_mode) {
     let objects = [];
     const setup_file = window.getFile(window.rom_bytes, window.rom_dv, 9, map_id, true);
     const prop_count = window.readFile(setup_file, 0, 4);
@@ -287,7 +492,13 @@ function parseSetup(map_id, mode) {
                     window.readFloat(setup_file, obj_start + 8),
                 ],
                 scale: window.readFloat(setup_file, obj_start + 12),
-                rotation: window.readFloat(setup_file, obj_start + 0x1C),
+                rotation: [
+                    window.readFloat(setup_file, obj_start + 0x18),
+                    window.readFloat(setup_file, obj_start + 0x1C),
+                    window.readFloat(setup_file, obj_start + 0x20),
+                ],
+                is_prop: true,
+                mode: mode,
             };
             if (mode == "geo") {
                 if (typeof parsed_models[obj_type] === "string") {
@@ -301,6 +512,98 @@ function parseSetup(map_id, mode) {
                 data.tris = JSON.parse(JSON.stringify(parsed_models[obj_type]));
             }
             objects.push(data);
+        }
+    }
+    if (actor_mode) {
+        let parsed_actors = {};
+        const mys_count = window.readFile(setup_file, 4 + (prop_count * 0x30), 4);
+        const actor_block_start = 8 + (prop_count * 0x30) + (mys_count * 0x24);
+        const actor_count = window.readFile(setup_file, actor_block_start, 4);
+        for (let a = 0; a < actor_count; a++) {
+            const actor_header = actor_block_start + 4 + (a * 0x38);
+            const actor_type = window.readFile(setup_file, actor_header + 0x32, 2) + window.actor_spawner_offset;
+            if (window.actor_models[actor_type] || window.actor_sprites[actor_type]) {
+                let model_type = window.actor_models[actor_type];
+                let sprite = window.actor_sprites[actor_type];
+                if (!parsed_actors[actor_type]) {
+                    parsed_actors[actor_type] = handleActor(model_type, map_id, mode, sprite);
+                }
+                let data = {
+                    coords: [
+                        window.readFloat(setup_file, actor_header + 0),
+                        window.readFloat(setup_file, actor_header + 4),
+                        window.readFloat(setup_file, actor_header + 8),
+                    ],
+                    scale: 0.15 * window.readFloat(setup_file, actor_header + 0xC),
+                    rotation: [0, (window.readFile(setup_file, actor_header + 0x30, 2) / 4096) * 360, 0],
+                    is_prop: false,
+                    mode: "geo",
+                };
+                if (typeof parsed_actors[actor_type] === "string") {
+                    // Obj file
+                    data.obj = parsed_actors[actor_type];
+                } else {
+                    // Assume object
+                    data.cobj = parsed_actors[actor_type];
+                }
+                objects.push(data);
+            } else {
+                console.log("No model or sprite for actor", actor_type)
+            }
+        }
+        // Parse character spawner file
+        const spawner_file = window.getFile(window.rom_bytes, window.rom_dv, 0x10, map_id, true);
+        const fence_count = window.readFile(spawner_file, 0, 2);
+        let read_l = 2;
+        for (let i = 0; i < fence_count; i++) {
+            const point_0_count = window.readFile(spawner_file, read_l, 2);
+            read_l += 2 + (6 * point_0_count);
+            const point_1_count = window.readFile(spawner_file, read_l, 2);
+            read_l += 6 + (10 * point_1_count);
+        }
+        const spawner_count = window.readFile(spawner_file, read_l, 2);
+        read_l += 2;
+        for (let i = 0; i < spawner_count; i++) {
+            const enemy_id = window.readFile(spawner_file, read_l, 1);
+            const extra_count = window.readFile(spawner_file, read_l + 0x11, 1);
+            const cutscene_model = window.readFile(spawner_file, read_l + 0xA, 1);
+            const scale = window.readFile(spawner_file, read_l + 0xF, 1);
+            const actor_data = window.char_models[enemy_id];
+            let ref_data = actor_data;
+            if (enemy_id == 0x50) {
+                ref_data = {
+                    actor: 0xFE,
+                    model: window.cutscene_models[cutscene_model],
+                }
+            }
+            if (ref_data !== null) {
+                let model_type = ref_data.model;
+                if (!parsed_actors[ref_data.actor]) {
+                    parsed_actors[ref_data.actor] = handleActor(model_type, map_id, mode, null);
+                }
+                let data = {
+                    coords: [
+                        window.readFile(spawner_file, read_l + 4, 2, true),
+                        window.readFile(spawner_file, read_l + 6, 2, true),
+                        window.readFile(spawner_file, read_l + 8, 2, true),
+                    ],
+                    scale: 0.15 * 5 * (scale / 255),
+                    rotation: [0, (window.readFile(spawner_file, read_l + 2, 2, true) / 4096) * 360, 0],
+                    is_prop: false,
+                    mode: "geo",
+                };
+                if (typeof parsed_actors[ref_data.actor] === "string") {
+                    // Obj file
+                    data.obj = parsed_actors[ref_data.actor];
+                } else {
+                    // Assume object
+                    data.cobj = parsed_actors[ref_data.actor];
+                }
+                objects.push(data);
+            } else {
+                console.log("No model for actor", enemy_id)
+            }
+            read_l += 0x16 + (extra_count * 2);
         }
     }
     return objects;

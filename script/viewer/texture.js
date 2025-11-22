@@ -82,3 +82,52 @@ function texParserCI8(texture_bytes, palette) {
     return stream;
 }
 window.texParserCI8 = texParserCI8;
+
+/*
+    IA4 Format
+*/
+
+function texParserIA4(texture_bytes, palette) {
+    const pixel_count = texture_bytes.length * 2;
+    const stream = new Uint8Array(4 * pixel_count);
+    for (let i = 0; i < pixel_count; i++) {
+        let offset = Math.floor(i / 2);
+        let shift = 4 - ((i % 2) * 4);
+        let val = (window.readFile(texture_bytes, offset, 1) >> shift) & 0xF;
+        const intensity = (val >> 1) & 7;
+        const chan = Math.round((intensity * 255) / 7);
+        stream[(i * 4) + 0] = chan;
+        stream[(i * 4) + 1] = chan;
+        stream[(i * 4) + 2] = chan;
+        stream[(i * 4) + 3] = val & 1 ? 255 : 0;
+    }
+    return stream;
+}
+window.texParserIA4 = texParserIA4;
+
+/*
+    IA8 Format
+*/
+
+function texParserIA8(texture_bytes, palette) {
+    const pixel_count = texture_bytes.length;
+    const stream = new Uint8Array(4 * pixel_count);
+    for (let i = 0; i < pixel_count; i++) {
+        let offset = Math.floor(i / 2);
+        let shift = 4 - ((i % 2) * 4);
+        let val = (window.readFile(texture_bytes, offset, 1) >> shift) & 0xF;
+        let portions = [
+            (val >> 4) & 0xF,
+            val & 0xF,
+        ]
+        portions.forEach(p => {
+            p = Math.round((p * 255) / 15);
+        })
+        stream[(i * 4) + 0] = portions[0];
+        stream[(i * 4) + 1] = portions[0];
+        stream[(i * 4) + 2] = portions[0];
+        stream[(i * 4) + 3] = portions[1];
+    }
+    return stream;
+}
+window.texParserIA8 = texParserIA8;

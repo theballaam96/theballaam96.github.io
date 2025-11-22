@@ -111,17 +111,28 @@
             </div>
             <div id="extra_data_info" class="p-2" style="font-size: 0.8rem"></div>
         </div>
-        <div class="card p-2 mb-2 ms-2 me-2 mt-2">
-            <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
-                <div class="fw-bolder">DonkViewer</div>
-                <small>v2.2</small>
+        <div class="d-flex">
+            <div class="card p-2 mb-2 ms-2 me-2 mt-2">
+                <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
+                    <div class="fw-bolder">DonkViewer</div>
+                    <small>v2.3</small>
+                </div>
+                <div>Made by Ballaam</div>
+                <div style="font-size: 0.8rem">Contributions from:
+                    <ul class="mb-0 ps-3">
+                        <li>ALinkToTheFuture</li>
+                        <li>ZeldaBoy14</li>
+                    </ul>
+                </div>
             </div>
-            <div>Made by Ballaam</div>
-            <div style="font-size: 0.8rem">Contributions from:
-                <ul class="mb-0 ps-3">
-                    <li>ALinkToTheFuture</li>
-                    <li>ZeldaBoy14</li>
-                </ul>
+            <div class="card p-1 position-absolute mb-2" style="width: 200px; right: -200px; bottom: 0; opacity: 0; transition: 0.5s ease-in-out;" id="scroll_container">
+                <div class="d-flex" style="height: 25px">
+                    <div style="width: 25%; opacity: 0.6" class="bg-warning" id="scroll_fill"></div>
+                    <div style="width: 75%" id="scroll_empty"></div>
+                </div>
+                <div class="position-absolute fw-bold text-light text-center" style="width: calc(100% - 0.5rem);" id="scroll_text">
+                    Camera Speed: 5
+                </div>
             </div>
         </div>
     </div>
@@ -130,7 +141,7 @@
             <div class="card p-2 me-2">
                 <ul class="nav nav-pills flex-column" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="main-tab" data-bs-toggle="tab"
+                        <button class="nav-link mx-auto" id="main-tab" data-bs-toggle="tab"
                                 title="Main Options"
                                 data-bs-target="#main-tab-pane" type="button" role="tab"
                                 aria-controls="main-tab-pane" aria-selected="true">
@@ -138,16 +149,24 @@
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="markers-tab" data-bs-toggle="tab"
-                                title="Markers"
-                                data-bs-target="#markers-tab-pane" type="button" role="tab"
-                                aria-controls="markers-tab-pane" aria-selected="false">
-                            <i class="fa-solid fa-bezier-curve"></i>
+                        <button class="nav-link mx-auto" id="world-tab" data-bs-toggle="tab"
+                                title="World Elements"
+                                data-bs-target="#world-tab-pane" type="button" role="tab"
+                                aria-controls="world-tab-pane" aria-selected="true">
+                            <i class="fa-solid fa-earth-europe"></i>
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
-                        <button class="nav-link" id="rendering-tab" data-bs-toggle="tab"
-                                title="Rendering Options"
+                        <button class="nav-link mx-auto" id="markers-tab" data-bs-toggle="tab"
+                                title="Markers"
+                                data-bs-target="#markers-tab-pane" type="button" role="tab"
+                                aria-controls="markers-tab-pane" aria-selected="false">
+                            <i class="fa-solid fa-location-dot"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link mx-auto" id="rendering-tab" data-bs-toggle="tab"
+                                title="Rendering & Control Options"
                                 data-bs-target="#rendering-tab-pane" type="button" role="tab"
                                 aria-controls="rendering-tab-pane" aria-selected="false">
                             <i class="fa-solid fa-cube"></i>
@@ -176,13 +195,24 @@
                             <label for="map_id_selector">Map</label>
                             <select id="map_id_selector" class="form-select change-reload double-reload force-camera"></select>
                         </div>
+                    </div>
+                    <div class="tab-pane fade" id="world-tab-pane" role="tabpanel" aria-labelledby="world-tab" tabindex="0">
+                        <h5>World Elements</h5>
                         <div class="mb-2">
                             <label for="bg_selector">Backdrop</label>
                             <select id="bg_selector" class="form-select change-reload"></select>
                         </div>
                         <div class="mb-2">
-                            <label for="obj_selector">Objects</label>
+                            <label for="obj_selector">Props</label>
                             <select id="obj_selector" class="form-select change-reload"></select>
+                        </div>
+                        <div class="mb-2">
+                            <label for="actor_selector">Actors: </label>
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="actor_selector" />
+                        </div>
+                        <div class="mb-2">
+                            <label for="fluid_selector">Fluids: </label>
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="fluid_selector" checked />
                         </div>
                     </div>
                     <div class="tab-pane fade" id="markers-tab-pane" role="tabpanel" aria-labelledby="markers-tab" tabindex="0">
@@ -193,7 +223,7 @@
                         </div>
                     </div>
                     <div class="tab-pane fade" id="rendering-tab-pane" role="tabpanel" aria-labelledby="rendering-tab" tabindex="0">
-                        <h5>Rendering Options</h5>
+                        <h5>Rendering & Controls</h5>
                         <hr />
                         <div class="mb-2">
                             <div>
@@ -208,6 +238,10 @@
                                 <div class="form-check form-switch py-2">
                                     <input class="form-check-input" type="checkbox" role="switch" id="animate_sprites" checked>
                                     <label class="form-check-label" for="animate_sprites">Animate Sprites</label>
+                                </div>
+                                <div class="form-check form-switch py-2">
+                                    <input class="form-check-input" type="checkbox" role="switch" id="wasd_controls">
+                                    <label class="form-check-label" for="wasd_controls">WASD Controls</label>
                                 </div>
                                 <div>
                                     <div>Background Color:</div>
@@ -253,9 +287,18 @@
     <script src="https://unpkg.com/fflate@0.8.2"></script>
     <script src="https://cdn.jsdelivr.net/npm/fflate@0.8.2/umd/index.js"></script>
     <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js"></script>
-    <script src="script/viewer/lib.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/OBJExporter.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/ColladaExporter.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.min.js"></script>
     <script src="script/viewer/texture.js" type="text/javascript"></script>
+    <script src="script/viewer/versions/us.js" type="text/javascript"></script>
+    <script src="script/viewer/versions/pal.js" type="text/javascript"></script>
+    <script src="script/viewer/versions/jp.js" type="text/javascript"></script>
+    <script src="script/viewer/versions/kiosk.js" type="text/javascript"></script>
+    <script src="script/viewer/versions/lodgenet.js" type="text/javascript"></script>
+    <script src="script/viewer/lib.js" type="text/javascript"></script>
     <script src="script/viewer/toast.js" type="text/javascript"></script>
+    <script src="script/viewer/camera.js" type="text/javascript"></script>
     <script src="script/viewer/ui.js" type="text/javascript"></script>
     <script src="script/viewer/vtx.js" type="text/javascript"></script>
     <script src="script/viewer/parser.js" type="text/javascript"></script>
@@ -266,9 +309,6 @@
     <script src="script/viewer/objects.js" type="text/javascript"></script>
     <script src="script/viewer/gap.js" type="text/javascript"></script>
     <script src="script/viewer/create_rendered_obj.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/OBJExporter.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/ColladaExporter.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/exporters/GLTFExporter.min.js"></script>
 
     <script>
         // --- Global Variables ---
@@ -419,27 +459,13 @@
             animate();
         }
 
-        function toggleCamera() {
-            const ortho = document.getElementById("ortho_camera").checked;
-            // Save position & rotation so switching feels seamless
-            const pos = camera.position.clone();
-            const rot = camera.rotation.clone();
-
-            // Switch camera reference
-            camera = ortho ? orthoCamera : perspectiveCamera;
-            camera.position.copy(pos);
-            camera.rotation.copy(rot);
-
-            // Update controls to track new camera
-            controls.object = camera;
-            controls.update();
-            console.log(`Updating camera to ${ortho ? 'Orthographic' : 'Perspective'}`)
-        }
-        window.toggleCamera = toggleCamera;
-
         function animate(time) { // <-- The function is defined here
             requestAnimationFrame(animate);
-            controls.update();
+            if (document.getElementById("wasd_controls").checked) {
+                window.updateWASD();
+            } else {
+                controls.update();
+            }
             const update_sprites = document.getElementById("animate_sprites").checked;
             loadedBillboards.forEach(b => {
                 if (b.animated && update_sprites) {

@@ -322,7 +322,6 @@ function getSelectFromNode(node) {
 
 function isNodeOrSubSelected(name) {
     const node = getNodeFromName(name, marker_tree);
-    console.log("Init Node for", name, ":", node);
     if (node === null) {
         return false;
     }
@@ -502,3 +501,7 @@ document.getElementById("upload_rom_ftt").addEventListener("click", () => {
 })
 
 window.populateExtraData = populateExtraData;
+
+document.getElementById("wasd_controls").addEventListener("click", () => {
+    window.setControls(document.getElementById("wasd_controls").checked);
+});
