@@ -166,4 +166,5 @@ window.version_kiosk = {
         { actor: 110, sprite_index: 140 },
     ],
     balloons: [113, 90, 112, 111, 110],
+    has_box_void: false,
 }

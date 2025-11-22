@@ -566,6 +566,68 @@ function parseChunks(map_id) {
     return data;
 }
 
+function parseVoids(map_id) {
+    let data = [];
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length === 0) {
+        return [];
+    }
+    const ymin = 0;
+    const ymax = 1000;
+    if (window.has_box_void) {
+        const xmin = window.readFile(map_geo, 0x26, 2, true);
+        const zmin = window.readFile(map_geo, 0x28, 2, true);
+        const xmax = window.readFile(map_geo, 0x2A, 2, true);
+        const zmax = window.readFile(map_geo, 0x2C, 2, true);
+        const hbuffer = 1000;
+        data.push({
+            bounds: [
+                [xmin - hbuffer, ymin, zmin],
+                [xmin, ymax, zmax],
+            ],
+            shape: "cube",
+            color: 0x000000
+        });
+        data.push({
+            bounds: [
+                [xmin - hbuffer, ymin, zmin - hbuffer],
+                [xmax + hbuffer, ymax, zmin],
+            ],
+            shape: "cube",
+            color: 0x000000
+        });
+        data.push({
+            bounds: [
+                [xmax, ymin, zmin],
+                [xmax + hbuffer, ymax, zmax],
+            ],
+            shape: "cube",
+            color: 0x000000
+        });
+        data.push({
+            bounds: [
+                [xmin - hbuffer, ymin, zmax],
+                [xmax + hbuffer, ymax, zmax + hbuffer],
+            ],
+            shape: "cube",
+            color: 0x000000
+        });
+    }
+    const void_tris = window.getCollisionTris(map_id, "voids");
+    void_tris.forEach(tri => {
+        data.push({
+            tri: tri.coords,
+            y: [
+                ymin * window.getScale(map_id),
+                ymax * window.getScale(map_id),
+            ],
+            color: 0x000000,
+            shape: "tprism",
+        })
+    })
+    return data;
+}
+
 function allViews(map_id) {
     let collective = [];
     if (window.isNodeOrSubSelected("Triggers")) {
@@ -588,6 +650,9 @@ function allViews(map_id) {
     }
     if (window.isNodeOrSubSelected("Chunks")) {
         collective = collective.concat(parseChunks(map_id));
+    }
+    if (window.isNodeOrSubSelected("Voids")) {
+        collective = collective.concat(parseVoids(map_id));
     }
     const enemy_fences = window.isNodeOrSubSelected("Enemy Fences");
     const enemy_paths = window.isNodeOrSubSelected("Enemy Paths (WIP)");

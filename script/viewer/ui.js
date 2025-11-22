@@ -282,6 +282,7 @@ const marker_tree = [
             { name: "Unassociated" },
         ]},
         { name: "Chunks" },
+        { name: "Voids" },
     ]},
 ]
 
@@ -433,6 +434,9 @@ function fmtFloat(v) {
 function populateExtraData(mesh) {
     const extraData = mesh.extra;
     if (!extraData) {
+        return;
+    }
+    if (!extraData.name) {
         return;
     }
     const coord_names = ["X", "Y", "Z"];

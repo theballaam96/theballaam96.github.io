@@ -175,6 +175,71 @@ function parseViews(map_id) {
                 name: view.name,
             }
             output.push(mesh);
+        } else if (view.shape == "tprism") {
+            // Create bottom/top versions of each vertex
+            const p0b = new THREE.Vector3(view.tri[0][0], view.y[0], view.tri[0][2]);
+            const p1b = new THREE.Vector3(view.tri[1][0], view.y[0], view.tri[1][2]);
+            const p2b = new THREE.Vector3(view.tri[2][0], view.y[0], view.tri[2][2]);
+
+            const p0t = new THREE.Vector3(view.tri[0][0], view.y[1], view.tri[0][2]);
+            const p1t = new THREE.Vector3(view.tri[1][0], view.y[1], view.tri[1][2]);
+            const p2t = new THREE.Vector3(view.tri[2][0], view.y[1], view.tri[2][2]);
+
+            const vertices = [
+                p0b, p1b, p2b,   // bottom
+                p0t, p1t, p2t    // top
+            ];
+
+            const pos = new Float32Array([
+                // bottom triangle
+                p0b.x, p0b.y, p0b.z,
+                p1b.x, p1b.y, p1b.z,
+                p2b.x, p2b.y, p2b.z,
+
+                // top triangle (flipped for correct normal)
+                p0t.x, p0t.y, p0t.z,
+                p2t.x, p2t.y, p2t.z,
+                p1t.x, p1t.y, p1t.z,
+
+                // side 1
+                p0b.x, p0b.y, p0b.z,
+                p0t.x, p0t.y, p0t.z,
+                p1t.x, p1t.y, p1t.z,
+
+                p0b.x, p0b.y, p0b.z,
+                p1t.x, p1t.y, p1t.z,
+                p1b.x, p1b.y, p1b.z,
+
+                // side 2
+                p1b.x, p1b.y, p1b.z,
+                p1t.x, p1t.y, p1t.z,
+                p2t.x, p2t.y, p2t.z,
+
+                p1b.x, p1b.y, p1b.z,
+                p2t.x, p2t.y, p2t.z,
+                p2b.x, p2b.y, p2b.z,
+
+                // side 3
+                p2b.x, p2b.y, p2b.z,
+                p2t.x, p2t.y, p2t.z,
+                p0t.x, p0t.y, p0t.z,
+
+                p2b.x, p2b.y, p2b.z,
+                p0t.x, p0t.y, p0t.z,
+                p0b.x, p0b.y, p0b.z,
+            ]);
+
+            const geometry = new THREE.BufferGeometry();
+            geometry.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+            geometry.computeVertexNormals();
+
+            const mat = new THREE.MeshStandardMaterial({
+                color: view.color,
+                transparent: true,
+                opacity: 0.5,
+                side: THREE.DoubleSide,
+            });
+            output.push(new THREE.Mesh(geometry, mat));
         }
     })
     return output;
@@ -368,7 +433,9 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     // Markers
     const additions = parseViews(map_id);
     window.addToScene(additions);
-    window.addToSceneFluids(fluids.map(f => generateFluid(f, local_scale)));
+    if (fluids.length > 0) {
+        window.addToSceneFluids(fluids.map(f => generateFluid(f, local_scale)));
+    }
     window.regenProcess = 100;
     if (regenInterval) {
         clearInterval(regenInterval);

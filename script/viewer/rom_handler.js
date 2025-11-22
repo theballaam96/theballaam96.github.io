@@ -9,6 +9,7 @@ window.char_data = [];
 window.cutscene_models = [];
 window.actor_sprites = {};
 window.balloons = [];
+window.has_box_void = false;
 
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
@@ -160,6 +161,7 @@ function detectVersion(buffer) {
         window.fluid_data = vdata.fluids;
         window.overlay_data = vdata.overlay_data;
         window.actor_spawner_offset = vdata.actor_spawner_offset;
+        window.has_box_void = vdata.has_box_void;
         window.balloons = vdata.balloons.slice();
         window.overlay_data.forEach(ovl => {
             ovl.data = null;

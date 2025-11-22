@@ -19,7 +19,8 @@ window.files_to_load = {
     "walls": [2],
     "floors": [3],
     "slip": [3],
-    "enum_floors": [3]
+    "enum_floors": [3],
+    "voids": [3],
 };
 
 function getCollisionTris(map_id, mode) {
@@ -269,6 +270,8 @@ function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, 
             data.ostand_slip = willSlip(data.coords, sfx >> 8, dump_mode == "slip") == "Slippery";
         } else if (dump_mode == "enum_floors") {
             data.enumerable_type = sfx >> 8
+        } else if (dump_mode == "voids") {
+            data.is_void = (properties & 0x4000) != 0
         }
         if ((properties & 0xB7AE) != 0) {
             data.has_unused_floor = true;
@@ -364,7 +367,10 @@ function dumpTris(buffer, count, table_index, mode, map_id) {
                         coord_set[ci][cj] *= window.getScale(map_id);
                     }
                 }
-                mesh.push(createTriangle(coord_set[0], coord_set[1], coord_set[2], properties, sfx, brightness, unk17, table_index, applied_mode))
+                const tri = createTriangle(coord_set[0], coord_set[1], coord_set[2], properties, sfx, brightness, unk17, table_index, applied_mode);
+                if ((mode !== "voids") || (tri.is_void)) {
+                    mesh.push(tri);
+                }
             }
         }
         meshes.push(mesh)

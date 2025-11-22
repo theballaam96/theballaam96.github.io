@@ -232,4 +232,5 @@ window.version_pal = {
         { actor: 111, sprite_index: 130 },
     ],
     balloons: [114, 91, 113, 112, 111],
+    has_box_void: true,
 };
