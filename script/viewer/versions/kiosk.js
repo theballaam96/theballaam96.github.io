@@ -167,4 +167,16 @@ window.version_kiosk = {
     ],
     balloons: [113, 90, 112, 111, 110],
     has_box_void: false,
+    music_triggers: [
+        { map_id: 0x07, count: 7, addr: 0x806F31A0 },
+        { map_id: 0x26, count: 4, addr: 0x806F3204 },
+        { map_id: 0x1E, count: 4, addr: 0x806F323C },
+        { map_id: 0x27, count: 4, addr: 0x806F3274 },
+        { map_id: 0x1A, count: 3, addr: 0x806F32AC },
+        { map_id: 0x0E, count: 4, addr: 0x806F32D8 },
+        { map_id: 0x1B, count: 10, addr: 0x806F3310 },
+        { map_id: 0x30, count: 1, addr: 0x806F339C },
+        { map_id: 0x37, count: 7, addr: 0x806F33AC },
+        { map_id: 0x99, count: 4, addr: 0x806F3410 },
+    ]
 }

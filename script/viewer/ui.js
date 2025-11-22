@@ -266,6 +266,7 @@ const marker_tree = [
             { name: "State" },
             { name: "Cheat" },
             { name: "Unknown" },
+            { name: "Music Triggers" },
         ]},
         { name: "Camera Lock Zones" },
         { name: "Object Paths" },

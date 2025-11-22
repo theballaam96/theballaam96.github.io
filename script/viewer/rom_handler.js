@@ -10,6 +10,7 @@ window.cutscene_models = [];
 window.actor_sprites = {};
 window.balloons = [];
 window.has_box_void = false;
+window.music_triggers = [];
 
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
@@ -232,7 +233,7 @@ function detectVersion(buffer) {
                 height: height,
             };
         })
-        console.log(window.actor_sprites)
+        window.music_triggers = window.loadMusicTriggers(vdata.music_triggers);
         return true;
     }
     document.getElementById("fileUploadText").innerText = "Invalid ROM";
@@ -247,7 +248,7 @@ function concatUint8(a, b) {
     return out;
 }
 
-function readOverlay(overlay_index, rdram_address, size) {
+function readOverlay(overlay_index, rdram_address, size, signed=false) {
     const ovl = window.overlay_data[overlay_index];
     if (ovl.data === null) {
         const start = ovl.rom_code_start;
@@ -304,6 +305,6 @@ function readOverlay(overlay_index, rdram_address, size) {
         ovl.data = output;
         console.log(output.length.toString(16))
     }
-    return window.readFile(ovl.data, rdram_address - ovl.rdram_start, size);
+    return window.readFile(ovl.data, rdram_address - ovl.rdram_start, size, signed);
 }
 window.readOverlay = readOverlay;

@@ -628,6 +628,59 @@ function parseVoids(map_id) {
     return data;
 }
 
+function loadMusicTriggers(vdata) {
+    console.log(vdata)
+    return vdata.map(map_data => {
+        let data = [];
+        for (let i = 0; i < map_data.count; i++) {
+            const head = map_data.addr + (i * 0xE);
+            data.push({
+                coords: [
+                    window.readOverlay(1, head + 0x0, 2, true),
+                    window.readOverlay(1, head + 0x2, 2, true),
+                    window.readOverlay(1, head + 0x4, 2, true),
+                ],
+                radius: window.readOverlay(1, head + 0x8, 2, true),
+            })
+        }
+        return {
+            map_id: map_data.map_id,
+            triggers: data
+        };
+    })
+}
+window.loadMusicTriggers = loadMusicTriggers;
+
+function parseMusicTriggers(map_id) {
+    let trigger_set = null;
+    window.music_triggers.forEach(map_data => {
+        if (map_data.map_id === map_id) {
+            trigger_set = map_data.triggers;
+        }
+    })
+    if (!trigger_set) {
+        return [];
+    }
+    return trigger_set.map(trig => {
+        const local_data = [
+            { height: 300, inset: 0, color: 0x00DFFF, y_offset: 0 },
+            { height: 310, inset: 20, color: 0xB28700, y_offset: -5 },
+        ]
+        return local_data.map(k => {
+            return {
+                coords: trig.coords.map((c, i) => i == 1 ? c + k.y_offset : c),
+                infinite_h: false,
+                infinite_y: true,
+                radius: trig.radius - k.inset,
+                height: k.height,
+                color: k.color,
+                name: "Music Trigger",
+                shape: "cylinder"
+            };
+        }).slice();
+    }).flat().slice();
+}
+
 function allViews(map_id) {
     let collective = [];
     if (window.isNodeOrSubSelected("Triggers")) {
@@ -653,6 +706,9 @@ function allViews(map_id) {
     }
     if (window.isNodeOrSubSelected("Voids")) {
         collective = collective.concat(parseVoids(map_id));
+    }
+    if (window.isNodeOrSubSelected("Music Triggers")) {
+        collective = collective.concat(parseMusicTriggers(map_id));
     }
     const enemy_fences = window.isNodeOrSubSelected("Enemy Fences");
     const enemy_paths = window.isNodeOrSubSelected("Enemy Paths (WIP)");
