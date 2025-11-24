@@ -85,9 +85,10 @@ async function handlePack(data) {
             if (file_path_array.length >= 2 && file_path_array[0] === "textures") {
                 const texture_category = file_path_array[1];
                 
-                // Check for arcade_sprites with subcategories
-                if (texture_category === "arcade_sprites" && file_path_array.length >= 3) {
+                // Check for arcade_sprites with subcategories (now with extra folder level)
+                if (texture_category === "arcade_sprites" && file_path_array.length >= 4) {
                     const subcategory = file_path_array[2];
+                    // file_path_array[3] should be the duplicate subcategory folder name
                     if (arcade_subcategories.includes(subcategory)) {
                         // This is an arcade sprite subcategory file
                         const blob = new Blob([fileData]);

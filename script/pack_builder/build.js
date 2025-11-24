@@ -165,7 +165,7 @@ async function buildPack() {
         texture_categories.forEach(category => {
             if (window.texture_data && window.texture_data[category]) {
                 if (category === "arcade_sprites") {
-                    // Handle arcade_sprites with subcategories
+                    // Handle arcade_sprites with subcategories (extra folder level)
                     const arcade_folder = texture_folder.folder(category);
                     const arcade_subcategories = ["jumpman", "dk", "pauline", "items", "pie", "orange_barrel", "blue_barrel", 
                                                    "orange_flame", "blue_flame", "orange_duck", "blue_duck", "spring", 
@@ -174,8 +174,10 @@ async function buildPack() {
                     arcade_subcategories.forEach(subcategory => {
                         if (window.texture_data[category][subcategory] && window.texture_data[category][subcategory].length > 0) {
                             const subcat_folder = arcade_folder.folder(subcategory);
+                            // Add an extra folder level named after the subcategory
+                            const inner_folder = subcat_folder.folder(subcategory);
                             window.texture_data[category][subcategory].forEach(texture => {
-                                subcat_folder.file(texture.name, texture.data);
+                                inner_folder.file(texture.name, texture.data);
                             });
                         }
                     });
