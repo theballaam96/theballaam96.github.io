@@ -163,11 +163,29 @@ async function buildPack() {
         const texture_categories = ["paintings", "reels", "items", "tns_portal", "transitions", "arcade_sprites"];
         
         texture_categories.forEach(category => {
-            if (window.texture_data && window.texture_data[category] && window.texture_data[category].length > 0) {
-                const category_folder = texture_folder.folder(category);
-                window.texture_data[category].forEach(texture => {
-                    category_folder.file(texture.name, texture.data);
-                });
+            if (window.texture_data && window.texture_data[category]) {
+                if (category === "arcade_sprites") {
+                    // Handle arcade_sprites with subcategories
+                    const arcade_folder = texture_folder.folder(category);
+                    const arcade_subcategories = ["jumpman", "dk", "pauline", "items", "pie", "orange_barrel", "blue_barrel", 
+                                                   "orange_flame", "blue_flame", "orange_duck", "blue_duck", "spring", 
+                                                   "ui", "particles", "stage", "hammer"];
+                    
+                    arcade_subcategories.forEach(subcategory => {
+                        if (window.texture_data[category][subcategory] && window.texture_data[category][subcategory].length > 0) {
+                            const subcat_folder = arcade_folder.folder(subcategory);
+                            window.texture_data[category][subcategory].forEach(texture => {
+                                subcat_folder.file(texture.name, texture.data);
+                            });
+                        }
+                    });
+                } else if (window.texture_data[category].length > 0) {
+                    // Handle regular categories
+                    const category_folder = texture_folder.folder(category);
+                    window.texture_data[category].forEach(texture => {
+                        category_folder.file(texture.name, texture.data);
+                    });
+                }
             }
         });
     }

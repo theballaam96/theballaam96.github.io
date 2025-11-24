@@ -57,21 +57,163 @@ async function handlePack(data) {
             }
         }
     }
+    
+    // Clear existing textures
+    if (window.clearAllTextures) {
+        window.clearAllTextures();
+    }
+    
     // console.log(site_data)
     // Load uploaded zip file
     window.uploaded_zip = new JSZip();
     let compressed_data = {}
     let renames = {}
     const zip_store = await window.uploaded_zip.loadAsync(data);
+    const texture_categories = ["paintings", "reels", "items", "tns_portal", "transitions", "arcade_sprites"];
+    const arcade_subcategories = ["jumpman", "dk", "pauline", "items", "pie", "orange_barrel", "blue_barrel", 
+                                    "orange_flame", "blue_flame", "orange_duck", "blue_duck", "spring", 
+                                    "ui", "particles", "stage", "hammer"];
+    
     for (let [filename_0, file_0] of Object.entries(zip_store.files)) {
         if (!file_0.dir) {
             let parsed_filename = filename_0;
             const fileData = await zip_store.files[filename_0].async("Uint8Array");
-            // File Extension checking
+            const file_path_array = filename_0.split("/");
+            const filename_local = file_path_array[file_path_array.length - 1];
+            
+            // Check if this is a texture file
+            if (file_path_array.length >= 2 && file_path_array[0] === "textures") {
+                const texture_category = file_path_array[1];
+                
+                // Check for arcade_sprites with subcategories
+                if (texture_category === "arcade_sprites" && file_path_array.length >= 3) {
+                    const subcategory = file_path_array[2];
+                    if (arcade_subcategories.includes(subcategory)) {
+                        // This is an arcade sprite subcategory file
+                        const blob = new Blob([fileData]);
+                        const file = new File([blob], filename_local, { type: 'image/png' });
+                        
+                        // Determine file type from extension
+                        const ext = filename_local.split('.').pop().toLowerCase();
+                        let mimeType = 'image/png';
+                        if (ext === 'jpg' || ext === 'jpeg') {
+                            mimeType = 'image/jpeg';
+                        }
+                        
+                        // Add to texture_data arcade_sprites subcategory
+                        if (window.texture_data && window.texture_data.arcade_sprites && window.texture_data.arcade_sprites[subcategory]) {
+                            const textureItem = {
+                                file: file,
+                                data: fileData.buffer,
+                                name: filename_local,
+                                size: fileData.length,
+                                type: mimeType,
+                                id: `texture_arcade_sprites_${subcategory}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+                            };
+                            window.texture_data.arcade_sprites[subcategory].push(textureItem);
+                            
+                            // Render preview
+                            if (window.renderTexturePreview) {
+                                setTimeout(() => {
+                                    const previewContainer = document.getElementById(`texture-preview-arcade_sprites_${subcategory}`);
+                                    if (previewContainer) {
+                                        const previewDiv = document.createElement('div');
+                                        previewDiv.className = 'texture-preview-item';
+                                        previewDiv.id = textureItem.id;
+
+                                        const img = document.createElement('img');
+                                        const imgBlob = new Blob([textureItem.data], { type: textureItem.type });
+                                        const url = URL.createObjectURL(imgBlob);
+                                        img.src = url;
+                                        img.className = 'texture-preview-img';
+
+                                        const nameDiv = document.createElement('div');
+                                        nameDiv.className = 'texture-preview-name';
+                                        nameDiv.textContent = textureItem.name;
+                                        nameDiv.title = textureItem.name;
+
+                                        const removeBtn = document.createElement('button');
+                                        removeBtn.className = 'btn btn-sm btn-danger texture-remove-btn';
+                                        removeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
+                                        removeBtn.onclick = () => window.removeTexture(textureItem.id, `arcade_sprites_${subcategory}`);
+
+                                        previewDiv.appendChild(img);
+                                        previewDiv.appendChild(nameDiv);
+                                        previewDiv.appendChild(removeBtn);
+
+                                        previewContainer.appendChild(previewDiv);
+                                    }
+                                }, 100);
+                            }
+                        }
+                        continue; // Skip adding to compressed_data
+                    }
+                } else if (texture_categories.includes(texture_category)) {
+                    // This is a regular texture file, load it
+                    const blob = new Blob([fileData]);
+                    const file = new File([blob], filename_local, { type: 'image/png' });
+                    
+                    // Determine file type from extension
+                    const ext = filename_local.split('.').pop().toLowerCase();
+                    let mimeType = 'image/png';
+                    if (ext === 'jpg' || ext === 'jpeg') {
+                        mimeType = 'image/jpeg';
+                    }
+                    
+                    // Add to texture_data
+                    if (window.texture_data && window.texture_data[texture_category]) {
+                        const textureItem = {
+                            file: file,
+                            data: fileData.buffer,
+                            name: filename_local,
+                            size: fileData.length,
+                            type: mimeType,
+                            id: `texture_${texture_category}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+                        };
+                        window.texture_data[texture_category].push(textureItem);
+                        
+                        // Render preview
+                        if (window.renderTexturePreview) {
+                            setTimeout(() => {
+                                const previewContainer = document.getElementById(`texture-preview-${texture_category}`);
+                                if (previewContainer) {
+                                    const previewDiv = document.createElement('div');
+                                    previewDiv.className = 'texture-preview-item';
+                                    previewDiv.id = textureItem.id;
+
+                                    const img = document.createElement('img');
+                                    const imgBlob = new Blob([textureItem.data], { type: textureItem.type });
+                                    const url = URL.createObjectURL(imgBlob);
+                                    img.src = url;
+                                    img.className = 'texture-preview-img';
+
+                                    const nameDiv = document.createElement('div');
+                                    nameDiv.className = 'texture-preview-name';
+                                    nameDiv.textContent = textureItem.name;
+                                    nameDiv.title = textureItem.name;
+
+                                    const removeBtn = document.createElement('button');
+                                    removeBtn.className = 'btn btn-sm btn-danger texture-remove-btn';
+                                    removeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
+                                    removeBtn.onclick = () => window.removeTexture(textureItem.id, texture_category);
+
+                                    previewDiv.appendChild(img);
+                                    previewDiv.appendChild(nameDiv);
+                                    previewDiv.appendChild(removeBtn);
+
+                                    previewContainer.appendChild(previewDiv);
+                                }
+                            }, 100);
+                        }
+                    }
+                    continue; // Skip adding to compressed_data
+                }
+            }
+            
+            // File Extension checking for songs
             const fileExtArr = filename_0.split(".");
             const fileExt = fileExtArr[fileExtArr.length - 1];
             const preFileExtName = fileExtArr.filter((item, index) => (index != (fileExtArr.length - 1))).join(".");
-            const filename_local = filename_0.split("/")[filename_0.split("/").length - 1];
             if (["candy", "bin"].includes(fileExt)) {
                 // Is song file
                 if (fileData[0] == 80) {
@@ -94,7 +236,6 @@ async function handlePack(data) {
                 metadata = JSON.parse(metadata)
                 window.uploaded_date = metadata.creation;
             }
-            const file_path_array = filename_0.split("/")
             const file_group = file_path_array[file_path_array.length - 2];
             compressed_data[parsed_filename] = {
                 "group": file_group,
@@ -203,6 +344,14 @@ async function handlePack(data) {
             }
         }
     })
+    
+    // Update texture counts after loading
+    if (window.updateTextureCount) {
+        setTimeout(() => {
+            window.updateTextureCount();
+        }, 200);
+    }
+    
     window.updateMaster();
 }
 

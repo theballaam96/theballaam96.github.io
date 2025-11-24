@@ -6,7 +6,24 @@ window.texture_data = {
     items: [],
     tns_portal: [],
     transitions: [],
-    arcade_sprites: []
+    arcade_sprites: {
+        jumpman: [],
+        dk: [],
+        pauline: [],
+        items: [],
+        pie: [],
+        orange_barrel: [],
+        blue_barrel: [],
+        orange_flame: [],
+        blue_flame: [],
+        orange_duck: [],
+        blue_duck: [],
+        spring: [],
+        ui: [],
+        particles: [],
+        stage: [],
+        hammer: []
+    }
 };
 
 const TEXTURE_CATEGORIES = {
@@ -15,36 +32,67 @@ const TEXTURE_CATEGORIES = {
     items: { name: "Items", icon: "fa-cube", accept: ".png" },
     tns_portal: { name: "T&S Portals", icon: "fa-door-open", accept: ".png" },
     transitions: { name: "Transitions", icon: "fa-shuffle", accept: ".png" },
-    arcade_sprites: { name: "Arcade Sprites", icon: "fa-gamepad", accept: ".png" }
+    arcade_sprites: { name: "Arcade Sprites", icon: "fa-gamepad", accept: ".png", hasSubcategories: true }
+};
+
+const ARCADE_SPRITE_SUBCATEGORIES = {
+    jumpman: { name: "Jumpman" },
+    dk: { name: "DK" },
+    pauline: { name: "Pauline" },
+    items: { name: "Items" },
+    pie: { name: "Pie" },
+    orange_barrel: { name: "Orange Barrel" },
+    blue_barrel: { name: "Blue Barrel" },
+    orange_flame: { name: "Orange Flame" },
+    blue_flame: { name: "Blue Flame" },
+    orange_duck: { name: "Orange Duck" },
+    blue_duck: { name: "Blue Duck" },
+    spring: { name: "Spring" },
+    ui: { name: "UI" },
+    particles: { name: "Particles" },
+    stage: { name: "Stage" },
+    hammer: { name: "Hammer" }
 };
 
 function initTextureUpload() {
     Object.keys(TEXTURE_CATEGORIES).forEach(category => {
-        const dropZone = document.getElementById(`texture-drop-${category}`);
-        const fileInput = document.getElementById(`texture-input-${category}`);
-        const browseBtn = document.getElementById(`texture-browse-${category}`);
-
-        if (!dropZone || !fileInput || !browseBtn) return;
-
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-            document.body.addEventListener(eventName, preventDefaults, false);
-        });
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => highlight(dropZone), false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, () => unhighlight(dropZone), false);
-        });
-
-        dropZone.addEventListener('drop', (e) => handleDrop(e, category), false);
-
-        browseBtn.addEventListener('click', () => fileInput.click());
-
-        fileInput.addEventListener('change', (e) => handleFiles(e.target.files, category));
+        if (TEXTURE_CATEGORIES[category].hasSubcategories) {
+            // Handle arcade_sprites subcategories
+            Object.keys(ARCADE_SPRITE_SUBCATEGORIES).forEach(subcategory => {
+                setupDropZone(`arcade_sprites_${subcategory}`, `arcade_sprites.${subcategory}`);
+            });
+        } else {
+            // Handle regular categories
+            setupDropZone(category, category);
+        }
     });
+}
+
+function setupDropZone(elementId, dataPath) {
+    const dropZone = document.getElementById(`texture-drop-${elementId}`);
+    const fileInput = document.getElementById(`texture-input-${elementId}`);
+    const browseBtn = document.getElementById(`texture-browse-${elementId}`);
+
+    if (!dropZone || !fileInput || !browseBtn) return;
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, preventDefaults, false);
+        document.body.addEventListener(eventName, preventDefaults, false);
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => highlight(dropZone), false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+        dropZone.addEventListener(eventName, () => unhighlight(dropZone), false);
+    });
+
+    dropZone.addEventListener('drop', (e) => handleDrop(e, dataPath), false);
+
+    browseBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => handleFiles(e.target.files, dataPath));
 }
 
 function preventDefaults(e) {
@@ -76,7 +124,7 @@ function handleFiles(files, category) {
     });
 }
 
-function addTextureFile(file, category) {
+function addTextureFile(file, categoryPath) {
     const reader = new FileReader();
     reader.onload = function(e) {
         const textureItem = {
@@ -85,18 +133,27 @@ function addTextureFile(file, category) {
             name: file.name,
             size: file.size,
             type: file.type,
-            id: `texture_${category}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+            id: `texture_${categoryPath.replace('.', '_')}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
         };
 
-        window.texture_data[category].push(textureItem);
-        renderTexturePreview(textureItem, category);
+        // Handle nested path (e.g., "arcade_sprites.jumpman")
+        const pathParts = categoryPath.split('.');
+        if (pathParts.length > 1) {
+            const [mainCat, subCat] = pathParts;
+            window.texture_data[mainCat][subCat].push(textureItem);
+        } else {
+            window.texture_data[categoryPath].push(textureItem);
+        }
+        
+        renderTexturePreview(textureItem, categoryPath);
         updateTextureCount();
     };
     reader.readAsArrayBuffer(file);
 }
 
-function renderTexturePreview(textureItem, category) {
-    const previewContainer = document.getElementById(`texture-preview-${category}`);
+function renderTexturePreview(textureItem, categoryPath) {
+    const elementId = categoryPath.replace('.', '_');
+    const previewContainer = document.getElementById(`texture-preview-${elementId}`);
     if (!previewContainer) return;
 
     const previewDiv = document.createElement('div');
@@ -117,7 +174,7 @@ function renderTexturePreview(textureItem, category) {
     const removeBtn = document.createElement('button');
     removeBtn.className = 'btn btn-sm btn-danger texture-remove-btn';
     removeBtn.innerHTML = '<i class="fa-solid fa-times"></i>';
-    removeBtn.onclick = () => removeTexture(textureItem.id, category);
+    removeBtn.onclick = () => removeTexture(textureItem.id, categoryPath);
 
     previewDiv.appendChild(img);
     previewDiv.appendChild(nameDiv);
@@ -126,8 +183,14 @@ function renderTexturePreview(textureItem, category) {
     previewContainer.appendChild(previewDiv);
 }
 
-function removeTexture(id, category) {
-    window.texture_data[category] = window.texture_data[category].filter(item => item.id !== id);
+function removeTexture(id, categoryPath) {
+    const pathParts = categoryPath.split('.');
+    if (pathParts.length > 1) {
+        const [mainCat, subCat] = pathParts;
+        window.texture_data[mainCat][subCat] = window.texture_data[mainCat][subCat].filter(item => item.id !== id);
+    } else {
+        window.texture_data[categoryPath] = window.texture_data[categoryPath].filter(item => item.id !== id);
+    }
     const previewElement = document.getElementById(id);
     if (previewElement) {
         previewElement.remove();
@@ -138,7 +201,20 @@ function removeTexture(id, category) {
 function updateTextureCount() {
     let totalCount = 0;
     Object.keys(TEXTURE_CATEGORIES).forEach(category => {
-        const count = window.texture_data[category].length;
+        let count = 0;
+        if (TEXTURE_CATEGORIES[category].hasSubcategories) {
+            // Count arcade sprites subcategories
+            Object.keys(ARCADE_SPRITE_SUBCATEGORIES).forEach(subcategory => {
+                const subCount = window.texture_data[category][subcategory].length;
+                count += subCount;
+                const countElement = document.getElementById(`texture-count-arcade_sprites_${subcategory}`);
+                if (countElement) {
+                    countElement.textContent = subCount;
+                }
+            });
+        } else {
+            count = window.texture_data[category].length;
+        }
         totalCount += count;
         const countElement = document.getElementById(`texture-count-${category}`);
         if (countElement) {
@@ -164,21 +240,53 @@ function updateTextureCount() {
 
 function clearAllTextures() {
     Object.keys(TEXTURE_CATEGORIES).forEach(category => {
-        window.texture_data[category] = [];
-        const previewContainer = document.getElementById(`texture-preview-${category}`);
-        if (previewContainer) {
-            previewContainer.innerHTML = '';
+        if (TEXTURE_CATEGORIES[category].hasSubcategories) {
+            Object.keys(ARCADE_SPRITE_SUBCATEGORIES).forEach(subcategory => {
+                window.texture_data[category][subcategory] = [];
+                const previewContainer = document.getElementById(`texture-preview-arcade_sprites_${subcategory}`);
+                if (previewContainer) {
+                    previewContainer.innerHTML = '';
+                }
+            });
+        } else {
+            window.texture_data[category] = [];
+            const previewContainer = document.getElementById(`texture-preview-${category}`);
+            if (previewContainer) {
+                previewContainer.innerHTML = '';
+            }
         }
     });
     updateTextureCount();
 }
 
 function hasTextures() {
-    return Object.values(window.texture_data).some(arr => arr.length > 0);
+    let hasAny = false;
+    Object.keys(window.texture_data).forEach(key => {
+        if (Array.isArray(window.texture_data[key])) {
+            if (window.texture_data[key].length > 0) hasAny = true;
+        } else if (typeof window.texture_data[key] === 'object') {
+            // Check nested object (arcade_sprites)
+            if (Object.values(window.texture_data[key]).some(arr => arr.length > 0)) {
+                hasAny = true;
+            }
+        }
+    });
+    return hasAny;
 }
 
 function getTextureCount() {
-    return Object.values(window.texture_data).reduce((sum, arr) => sum + arr.length, 0);
+    let total = 0;
+    Object.keys(window.texture_data).forEach(key => {
+        if (Array.isArray(window.texture_data[key])) {
+            total += window.texture_data[key].length;
+        } else if (typeof window.texture_data[key] === 'object') {
+            // Count nested object (arcade_sprites)
+            Object.values(window.texture_data[key]).forEach(arr => {
+                total += arr.length;
+            });
+        }
+    });
+    return total;
 }
 
 window.initTextureUpload = initTextureUpload;
@@ -186,3 +294,5 @@ window.clearAllTextures = clearAllTextures;
 window.hasTextures = hasTextures;
 window.getTextureCount = getTextureCount;
 window.removeTexture = removeTexture;
+window.renderTexturePreview = renderTexturePreview;
+window.updateTextureCount = updateTextureCount;
