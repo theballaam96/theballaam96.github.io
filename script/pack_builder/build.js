@@ -8,15 +8,26 @@ function filterFilename(unsafe_filename) {
 
 async function buildPack() {
     const ss_count = window.getSongSelectedCount();
-    if ((ss_count < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
-        window.generateToast("Cannot generate pack, no songs selected", true);
+    const texture_count = window.getTextureCount ? window.getTextureCount() : 0;
+    // Allow user to generate a pack with only textures selected
+    if ((ss_count < 1) && (texture_count < 1) && (Object.keys(uploaded_pack_data).length == 0)) {
+        window.generateToast("Cannot generate pack, no songs or textures selected", true);
         return;
     }
     if (pack_zip_data == null) {
         window.generateToast("Something went wrong", true);
         return;
     }
-    window.generateToast(`Generating pack with ${ss_count} song${ss_count != 1 ? 's' : ''}`);
+    
+    let message = '';
+    if (ss_count > 0 && texture_count > 0) {
+        message = `Generating pack with ${ss_count} song${ss_count != 1 ? 's' : ''} and ${texture_count} texture${texture_count != 1 ? 's' : ''}`;
+    } else if (ss_count > 0) {
+        message = `Generating pack with ${ss_count} song${ss_count != 1 ? 's' : ''}`;
+    } else if (texture_count > 0) {
+        message = `Generating pack with ${texture_count} texture${texture_count != 1 ? 's' : ''}`;
+    }
+    window.generateToast(message);
     const checkboxes = document.getElementsByClassName("song-item");
     folder_data = {...uploaded_pack_data}
     let data_array = []
@@ -146,6 +157,41 @@ async function buildPack() {
             }
         })
     })
+    // Add textures to the pack
+    if (window.hasTextures && window.hasTextures()) {
+        const texture_folder = zip.folder("textures");
+        const texture_categories = ["paintings", "reels", "items", "tns_portal", "transitions", "arcade_sprites"];
+        
+        texture_categories.forEach(category => {
+            if (window.texture_data && window.texture_data[category]) {
+                if (category === "arcade_sprites") {
+                    // Handle arcade_sprites with subcategories (extra folder level)
+                    const arcade_folder = texture_folder.folder(category);
+                    const arcade_subcategories = ["jumpman", "dk", "pauline", "items", "pie", "orange_barrel", "blue_barrel", 
+                                                   "orange_flame", "blue_flame", "orange_duck", "blue_duck", "spring", 
+                                                   "ui", "particles", "stage", "hammer"];
+                    
+                    arcade_subcategories.forEach(subcategory => {
+                        if (window.texture_data[category][subcategory] && window.texture_data[category][subcategory].length > 0) {
+                            const subcat_folder = arcade_folder.folder(subcategory);
+                            // Add an extra folder level named after the subcategory
+                            const inner_folder = subcat_folder.folder(subcategory);
+                            window.texture_data[category][subcategory].forEach(texture => {
+                                inner_folder.file(texture.name, texture.data);
+                            });
+                        }
+                    });
+                } else if (window.texture_data[category].length > 0) {
+                    // Handle regular categories
+                    const category_folder = texture_folder.folder(category);
+                    window.texture_data[category].forEach(texture => {
+                        category_folder.file(texture.name, texture.data);
+                    });
+                }
+            }
+        });
+    }
+
     metadata = {
         "creation": new Date().toISOString(),
     }

@@ -515,6 +515,138 @@
             #game_list li.filter-invalidated, .song-item.filter-invalidated {
                 display: none;
             }
+
+            .texture-tabs-container {
+                gap: 20px;
+                min-height: 400px;
+            }
+            .texture-nav-tabs {
+                min-width: 250px;
+                max-width: 250px;
+                border-right: 1px solid #444;
+                padding-right: 10px;
+            }
+            .texture-nav-tabs .nav-link {
+                text-align: left;
+                border-radius: 8px;
+                margin-bottom: 5px;
+                padding: 10px 15px;
+                color: #aaa;
+                transition: 0.2s ease-in-out;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .texture-nav-tabs .nav-link:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+                color: #fff;
+            }
+            .texture-nav-tabs .nav-link.active {
+                background-color: #0d6efd;
+                color: #fff;
+            }
+            .texture-nav-tabs .nav-link i {
+                width: 20px;
+                margin-right: 8px;
+            }
+            .texture-tab-content {
+                padding-left: 20px;
+                position: relative;
+                z-index: 1;
+            }
+            #arcade-sub-nav {
+                position: relative;
+                z-index: 10;
+            }
+            .texture-drop-zone {
+                border: 3px dashed #555;
+                border-radius: 10px;
+                padding: 30px;
+                text-align: center;
+                background-color: rgba(0,0,0,0.2);
+                transition: 0.3s ease-in-out;
+                cursor: pointer;
+                min-height: 200px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            .texture-drop-zone:hover {
+                background-color: rgba(0,0,0,0.4);
+                border-color: #777;
+            }
+            .texture-drop-highlight {
+                background-color: rgba(13, 110, 253, 0.2) !important;
+                border-color: #0d6efd !important;
+            }
+            .texture-preview-container {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                gap: 10px;
+                margin-top: 15px;
+                max-height: 300px;
+                overflow-y: auto;
+                padding: 5px;
+            }
+            .texture-preview-item {
+                position: relative;
+                border: 2px solid #444;
+                border-radius: 8px;
+                padding: 5px;
+                background-color: rgba(0,0,0,0.3);
+                transition: 0.2s ease-in-out;
+            }
+            .texture-preview-item:hover {
+                border-color: #0d6efd;
+                transform: translateY(-2px);
+            }
+            .texture-preview-img {
+                width: 100%;
+                height: 80px;
+                object-fit: contain;
+                border-radius: 4px;
+                background-color: rgba(255,255,255,0.05);
+            }
+            .texture-preview-name {
+                font-size: 0.75rem;
+                margin-top: 5px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-align: center;
+            }
+            .texture-remove-btn {
+                position: absolute;
+                top: 2px;
+                right: 2px;
+                width: 24px;
+                height: 24px;
+                padding: 0;
+                border-radius: 50%;
+                opacity: 0.7;
+            }
+            .texture-remove-btn:hover {
+                opacity: 1;
+            }
+            .texture-category {
+                border-bottom: 1px solid #444;
+                padding-bottom: 20px;
+            }
+            .texture-category:last-child {
+                border-bottom: none;
+            }
+            #texture-badge {
+                margin-left: 5px;
+            }
+            .arcade-sub-tabs {
+                gap: 5px;
+            }
+            .arcade-sub-tabs .nav-link {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                border-radius: 5px;
+            }
         </style>
     </head>
     <body class="overflow-y-hidden">
@@ -542,6 +674,9 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link excluded_link" href="#" onclick="produceSelectAllSongsWarning()"><i id="select-all-songs-fa" class="fa-solid fa-square-check"></i> <span id="select-all-songs">Select all Songs</span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link excluded_link" href="#" data-bs-toggle="modal" data-bs-target="#textureModal"><i class="fa-solid fa-image"></i> Manage Textures <span id="texture-badge" class="badge bg-primary" style="display:none;">0</span></a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle excluded_link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -691,6 +826,515 @@
                     </div>
                 </div>
             </div>
+            <!-- Texture Manager Modal -->
+            <div class="modal fade" id="textureModal" tabindex="-1" aria-labelledby="textureModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="textureModalLabel">Texture Manager</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <p>Upload custom textures to include in your pack. Select a category and drag & drop or browse for images.</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span id="texture-total-count" class="badge bg-info">0 textures total</span>
+                                    <button type="button" class="btn btn-sm btn-warning" onclick="window.clearAllTextures()">
+                                        <i class="fa-solid fa-trash"></i> Clear All
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-start texture-tabs-container">
+                                <!-- Vertical Tabs -->
+                                <div class="nav flex-column nav-pills texture-nav-tabs" id="texture-tabs" role="tablist" aria-orientation="vertical">
+                                    <button class="nav-link active" id="paintings-tab" data-bs-toggle="pill" data-bs-target="#paintings" type="button" role="tab" aria-controls="paintings" aria-selected="true">
+                                        <i class="fa-solid fa-image"></i> Paintings 
+                                        <span id="texture-count-paintings" class="badge bg-secondary ms-2">0</span>
+                                    </button>
+                                    <button class="nav-link" id="reels-tab" data-bs-toggle="pill" data-bs-target="#reels" type="button" role="tab" aria-controls="reels" aria-selected="false">
+                                        <i class="fa-solid fa-film"></i> Reels 
+                                        <span id="texture-count-reels" class="badge bg-secondary ms-2">0</span>
+                                    </button>
+                                    <button class="nav-link" id="items-tab" data-bs-toggle="pill" data-bs-target="#items" type="button" role="tab" aria-controls="items" aria-selected="false">
+                                        <i class="fa-solid fa-cube"></i> Items 
+                                        <span id="texture-count-items" class="badge bg-secondary ms-2">0</span>
+                                    </button>
+                                    <button class="nav-link" id="tns_portal-tab" data-bs-toggle="pill" data-bs-target="#tns_portal" type="button" role="tab" aria-controls="tns_portal" aria-selected="false">
+                                        <i class="fa-solid fa-door-open"></i> T&S Portals 
+                                        <span id="texture-count-tns_portal" class="badge bg-secondary ms-2">0</span>
+                                    </button>
+                                    <button class="nav-link" id="transitions-tab" data-bs-toggle="pill" data-bs-target="#transitions" type="button" role="tab" aria-controls="transitions" aria-selected="false">
+                                        <i class="fa-solid fa-shuffle"></i> Transitions 
+                                        <span id="texture-count-transitions" class="badge bg-secondary ms-2">0</span>
+                                    </button>
+                                    <button class="nav-link" id="arcade_sprites-tab" data-bs-toggle="pill" data-bs-target="#arcade_sprites" type="button" role="tab" aria-controls="arcade_sprites" aria-selected="false">
+                                        <i class="fa-solid fa-gamepad"></i> Arcade Sprites 
+                                        <span id="texture-count-arcade_sprites" class="badge bg-secondary ms-2">0</span>
+                                    </button>
+                                    <button class="btn btn-link text-white p-0 ms-2" id="arcade-sprites-toggle" data-bs-toggle="collapse" data-bs-target="#arcade-sprites-collapse" type="button" aria-expanded="false" aria-controls="arcade-sprites-collapse" style="text-decoration: none;">
+                                        <i class="fa-solid fa-chevron-down"></i>
+                                    </button>
+                                    <div class="collapse" id="arcade-sprites-collapse">
+                                        <div class="nav flex-column ms-3" style="font-size: 0.9em;">
+                                            <button class="nav-link active" id="arcade-jumpman-nav" data-bs-toggle="pill" data-bs-target="#arcade-jumpman" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Jumpman
+                                                <span id="texture-count-arcade_sprites_jumpman" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-dk-nav" data-bs-toggle="pill" data-bs-target="#arcade-dk" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                DK
+                                                <span id="texture-count-arcade_sprites_dk" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-pauline-nav" data-bs-toggle="pill" data-bs-target="#arcade-pauline" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Pauline
+                                                <span id="texture-count-arcade_sprites_pauline" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-items-nav" data-bs-toggle="pill" data-bs-target="#arcade-items" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Items
+                                                <span id="texture-count-arcade_sprites_items" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-pie-nav" data-bs-toggle="pill" data-bs-target="#arcade-pie" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Pie
+                                                <span id="texture-count-arcade_sprites_pie" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-orange-barrel-nav" data-bs-toggle="pill" data-bs-target="#arcade-orange-barrel" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Orange Barrel
+                                                <span id="texture-count-arcade_sprites_orange_barrel" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-blue-barrel-nav" data-bs-toggle="pill" data-bs-target="#arcade-blue-barrel" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Blue Barrel
+                                                <span id="texture-count-arcade_sprites_blue_barrel" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-orange-flame-nav" data-bs-toggle="pill" data-bs-target="#arcade-orange-flame" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Orange Flame
+                                                <span id="texture-count-arcade_sprites_orange_flame" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-blue-flame-nav" data-bs-toggle="pill" data-bs-target="#arcade-blue-flame" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Blue Flame
+                                                <span id="texture-count-arcade_sprites_blue_flame" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-orange-duck-nav" data-bs-toggle="pill" data-bs-target="#arcade-orange-duck" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Orange Duck
+                                                <span id="texture-count-arcade_sprites_orange_duck" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-blue-duck-nav" data-bs-toggle="pill" data-bs-target="#arcade-blue-duck" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Blue Duck
+                                                <span id="texture-count-arcade_sprites_blue_duck" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-spring-nav" data-bs-toggle="pill" data-bs-target="#arcade-spring" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Spring
+                                                <span id="texture-count-arcade_sprites_spring" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-ui-nav" data-bs-toggle="pill" data-bs-target="#arcade-ui" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                UI
+                                                <span id="texture-count-arcade_sprites_ui" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-particles-nav" data-bs-toggle="pill" data-bs-target="#arcade-particles" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Particles
+                                                <span id="texture-count-arcade_sprites_particles" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-stage-nav" data-bs-toggle="pill" data-bs-target="#arcade-stage" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Stage
+                                                <span id="texture-count-arcade_sprites_stage" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                            <button class="nav-link" id="arcade-hammer-nav" data-bs-toggle="pill" data-bs-target="#arcade-hammer" type="button" role="tab" onclick="event.stopPropagation(); document.getElementById('arcade_sprites-tab').click()">
+                                                Hammer
+                                                <span id="texture-count-arcade_sprites_hammer" class="badge bg-secondary ms-2">0</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tab Content -->
+                                <div class="tab-content flex-grow-1 texture-tab-content" id="texture-tabContent">
+                                    <!-- Paintings -->
+                                    <div class="tab-pane fade show active" id="paintings" role="tabpanel" aria-labelledby="paintings-tab">
+                                        <div class="texture-drop-zone" id="texture-drop-paintings">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-paintings">Browse Files</button>
+                                            <input type="file" id="texture-input-paintings" accept=".png,.jpg,.jpeg" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-paintings"></div>
+                                    </div>
+
+                                    <!-- Reels -->
+                                    <div class="tab-pane fade" id="reels" role="tabpanel" aria-labelledby="reels-tab">
+                                        <div class="texture-drop-zone" id="texture-drop-reels">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-reels">Browse Files</button>
+                                            <input type="file" id="texture-input-reels" accept=".png,.jpg,.jpeg" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-reels"></div>
+                                    </div>
+
+                                    <!-- Items -->
+                                    <div class="tab-pane fade" id="items" role="tabpanel" aria-labelledby="items-tab">
+                                        <div class="texture-drop-zone" id="texture-drop-items">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-items">Browse Files</button>
+                                            <input type="file" id="texture-input-items" accept=".png,.jpg,.jpeg" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-items"></div>
+                                    </div>
+
+                                    <!-- T&S Portals -->
+                                    <div class="tab-pane fade" id="tns_portal" role="tabpanel" aria-labelledby="tns_portal-tab">
+                                        <div class="texture-drop-zone" id="texture-drop-tns_portal">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-tns_portal">Browse Files</button>
+                                            <input type="file" id="texture-input-tns_portal" accept=".png,.jpg,.jpeg" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-tns_portal"></div>
+                                    </div>
+
+                                    <!-- Transitions -->
+                                    <div class="tab-pane fade" id="transitions" role="tabpanel" aria-labelledby="transitions-tab">
+                                        <div class="alert alert-info d-flex align-items-center mb-3" role="alert">
+                                            <i class="fa-solid fa-circle-info me-2"></i>
+                                            <div class="flex-grow-1">Need to create a transition?</div>
+                                            <a href="https://theballaam96.github.io/transition_editor.html" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-info">
+                                                <i class="fa-solid fa-paintbrush"></i> Open Transition Editor
+                                            </a>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-transitions">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-transitions">Browse Files</button>
+                                            <input type="file" id="texture-input-transitions" accept=".png,.jpg,.jpeg" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-transitions"></div>
+                                    </div>
+
+                                    <!-- Arcade Sprites -->
+                                    <div class="tab-pane fade" id="arcade_sprites" role="tabpanel" aria-labelledby="arcade_sprites-tab">
+                                        <div class="alert alert-info mb-3" role="alert">
+                                            <i class="fa-solid fa-info-circle me-2"></i>
+                                            Select a sprite category from the subtabs below to upload arcade sprites.
+                                        </div>
+                                    </div>
+
+                                    <!-- Arcade Sprites - Jumpman -->
+                                    <div class="tab-pane fade" id="arcade-jumpman" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>run_0, run_1, run_2 (16×18 px)</li>
+                                                <li>climb_0, climb_1, climb_2, climb_3 (16×18 px)</li>
+                                                <li>hammer_0, hammer_1, hammer_2, hammer_3, hammer_4, hammer_5 (16×18 px)</li>
+                                                <li>death_0, death_1, death_2 (16×18 px)</li>
+                                                <li>jump_0, jump_1 (16×18 px)</li>
+                                                <li>lives_counter (8×8 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_jumpman">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_jumpman">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_jumpman" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_jumpman"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - DK -->
+                                    <div class="tab-pane fade" id="arcade-dk" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>barrel_left, rage, climb (48×42 px)</li>
+                                                <li>dead_0, dead_1, dead_2 (48×42 px)</li>
+                                                <li>idle, idle_teeth (48×42 px)</li>
+                                                <li>hench (48×48 px)</li>
+                                                <li>climb_with_pauline_0, climb_with_pauline_1 (48×48 px)</li>
+                                                <li>how_high (46×32 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_dk">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_dk">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_dk" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_dk"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Pauline -->
+                                    <div class="tab-pane fade" id="arcade-pauline" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>bottom, top (16×18 px)</li>
+                                                <li>bottom_actions (16×55 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_pauline">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_pauline">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_pauline" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_pauline"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Items -->
+                                    <div class="tab-pane fade" id="arcade-items" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>dress (16×16 px)</li>
+                                                <li>purse (16×16 px)</li>
+                                                <li>umbrella (16×16 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_items">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_items">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_items" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_items"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Pie -->
+                                    <div class="tab-pane fade" id="arcade-pie" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>pie (16×16 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_pie">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_pie">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_pie" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_pie"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Orange Barrel -->
+                                    <div class="tab-pane fade" id="arcade-orange-barrel" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>roll_0, roll_1, roll_2, roll_3 (16×16 px)</li>
+                                                <li>fall_0, fall_1 (16×16 px)</li>
+                                                <li>stack (16×16 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_orange_barrel">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_orange_barrel">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_orange_barrel" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_orange_barrel"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Blue Barrel -->
+                                    <div class="tab-pane fade" id="arcade-blue-barrel" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>roll_0, roll_1, roll_2, roll_3 (16×16 px)</li>
+                                                <li>fall_0, fall_1 (16×16 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_blue_barrel">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_blue_barrel">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_blue_barrel" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_blue_barrel"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Orange Flame -->
+                                    <div class="tab-pane fade" id="arcade-orange-flame" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>roam_0, roam_1 (16×18 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_orange_flame">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_orange_flame">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_orange_flame" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_orange_flame"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Blue Flame -->
+                                    <div class="tab-pane fade" id="arcade-blue-flame" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>roam_0, roam_1 (16×18 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_blue_flame">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_blue_flame">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_blue_flame" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_blue_flame"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Orange Duck -->
+                                    <div class="tab-pane fade" id="arcade-orange-duck" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>roam_0, roam_1 (16×18 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_orange_duck">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_orange_duck">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_orange_duck" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_orange_duck"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Blue Duck -->
+                                    <div class="tab-pane fade" id="arcade-blue-duck" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>roam_0, roam_1 (16×18 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_blue_duck">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_blue_duck">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_blue_duck" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_blue_duck"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Spring -->
+                                    <div class="tab-pane fade" id="arcade-spring" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>bounce_0, bounce_1 (16×16 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_spring">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_spring">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_spring" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_spring"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - UI -->
+                                    <div class="tab-pane fade" id="arcade-ui" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>highscore_character_selector (16×16 px)</li>
+                                                <li>black (16×16 px)</li>
+                                                <li>bonus_osd_25m (43×43 px) - Also used for 75m</li>
+                                                <li>bonus_osd_50m (43×20 px)</li>
+                                                <li>bonus_osd_100m (43×20 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_ui">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_ui">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_ui" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_ui"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Particles -->
+                                    <div class="tab-pane fade" id="arcade-particles" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>sparks (16×16 px)</li>
+                                                <li>point_spark_0, point_spark_1 (16×18 px)</li>
+                                                <li>heart, heart_broken (16×16 px)</li>
+                                                <li>help_aqua, help_midnight_blue (24×10 px)</li>
+                                                <li>hammer_particle_0, hammer_particle_1 (16×18 px)</li>
+                                                <li>points_100, points_300, points_500, points_800 (16×16 px)</li>
+                                                <li>orange_spark (8×10 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_particles">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_particles">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_particles" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_particles"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Stage -->
+                                    <div class="tab-pane fade" id="arcade-stage" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>pulley_horizontal_0, pulley_horizontal_1, pulley_horizontal_2 (16×16 px)</li>
+                                                <li>pulley_vertical (16×16 px)</li>
+                                                <li>oil_fire_0, oil_fire_1, oil_fire_2, oil_fire_3 (16×18 px)</li>
+                                                <li>oil_drum (16×18 px)</li>
+                                                <li>elevator_cord (8×2 px)</li>
+                                                <li>girder_red (16×5 px)</li>
+                                                <li>girder_8px_orange (8×10 px)</li>
+                                                <li>girder_8px_red (8×8 px)</li>
+                                                <li>rivet (8×9 px) - 100m</li>
+                                                <li>100m_segment (8×8 px)</li>
+                                                <li>conveyor_segment (16×5 px)</li>
+                                                <li>blue (8×2 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_stage">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_stage">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_stage" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_stage"></div>
+                                    </div>
+                                    
+                                    <!-- Arcade Sprites - Hammer -->
+                                    <div class="tab-pane fade" id="arcade-hammer" role="tabpanel">
+                                        <div class="alert alert-info mb-3">
+                                            <strong>Available Sprites:</strong>
+                                            <ul class="mb-0 mt-2" style="font-size: 0.9em;">
+                                                <li>burgundy_0, burgundy_1 (16×18 px)</li>
+                                                <li>gold_0, gold_1 (16×18 px)</li>
+                                            </ul>
+                                        </div>
+                                        <div class="texture-drop-zone" id="texture-drop-arcade_sprites_hammer">
+                                            <i class="fa-solid fa-cloud-arrow-up fa-3x mb-2"></i>
+                                            <p>Drag images here or</p>
+                                            <button type="button" class="btn btn-primary btn-sm" id="texture-browse-arcade_sprites_hammer">Browse Files</button>
+                                            <input type="file" id="texture-input-arcade_sprites_hammer" accept=".png" multiple hidden />
+                                        </div>
+                                        <div class="texture-preview-container" id="texture-preview-arcade_sprites_hammer"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- Toasts -->
             <div id="toasts">
                 <div class="toast-container position-fixed bottom-0 end-0 p-3"></div>
@@ -834,6 +1478,51 @@
         <script src="script/pack_builder/filters.js" type="text/javascript"></script>
         <script src="script/pack_builder/toast.js" type="text/javascript"></script>
         <script src="script/pack_builder/sharing.js" type="text/javascript"></script>
+        <script src="script/pack_builder/textures.js" type="text/javascript"></script>
+        <script>
+            // Deactivate arcade sprite subtabs when clicking on main tabs (except arcade_sprites itself)
+            document.addEventListener('DOMContentLoaded', function() {
+                const mainTabs = ['paintings-tab', 'reels-tab', 'items-tab', 'tns_portal-tab', 'transitions-tab'];
+                const arcadeSubtabs = [
+                    'arcade-jumpman-nav', 'arcade-dk-nav', 'arcade-pauline-nav', 'arcade-items-nav',
+                    'arcade-pie-nav', 'arcade-orange-barrel-nav', 'arcade-blue-barrel-nav',
+                    'arcade-orange-flame-nav', 'arcade-blue-flame-nav', 'arcade-orange-duck-nav',
+                    'arcade-blue-duck-nav', 'arcade-spring-nav', 'arcade-ui-nav',
+                    'arcade-particles-nav', 'arcade-stage-nav', 'arcade-hammer-nav'
+                ];
+                
+                mainTabs.forEach(tabId => {
+                    const tab = document.getElementById(tabId);
+                    if (tab) {
+                        tab.addEventListener('click', function() {
+                            // Deactivate all arcade subtabs
+                            arcadeSubtabs.forEach(subtabId => {
+                                const subtab = document.getElementById(subtabId);
+                                if (subtab) {
+                                    subtab.classList.remove('active');
+                                    subtab.setAttribute('aria-selected', 'false');
+                                }
+                            });
+                            
+                            // Hide all arcade subtab panes
+                            const arcadeTabPanes = [
+                                'arcade-jumpman', 'arcade-dk', 'arcade-pauline', 'arcade-items',
+                                'arcade-pie', 'arcade-orange-barrel', 'arcade-blue-barrel',
+                                'arcade-orange-flame', 'arcade-blue-flame', 'arcade-orange-duck',
+                                'arcade-blue-duck', 'arcade-spring', 'arcade-ui',
+                                'arcade-particles', 'arcade-stage', 'arcade-hammer'
+                            ];
+                            arcadeTabPanes.forEach(paneId => {
+                                const pane = document.getElementById(paneId);
+                                if (pane) {
+                                    pane.classList.remove('show', 'active');
+                                }
+                            });
+                        });
+                    }
+                });
+            });
+        </script>
         <script src="script/pack_builder/build.js" type="text/javascript"></script>
         <script src="script/pack_builder/upload.js" type="text/javascript"></script>
         <script src="script/pack_builder/audio.js" type="text/javascript"></script>
@@ -1084,6 +1773,12 @@
                     console.log("No errors found")
                 }
             }
+
+            document.addEventListener('DOMContentLoaded', function() {
+                if (typeof window.initTextureUpload === 'function') {
+                    window.initTextureUpload();
+                }
+            });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     </body>
