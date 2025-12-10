@@ -113,15 +113,13 @@ function texParserIA8(texture_bytes, palette) {
     const pixel_count = texture_bytes.length;
     const stream = new Uint8Array(4 * pixel_count);
     for (let i = 0; i < pixel_count; i++) {
-        let offset = Math.floor(i / 2);
-        let shift = 4 - ((i % 2) * 4);
-        let val = (window.readFile(texture_bytes, offset, 1) >> shift) & 0xF;
+        let val = window.readFile(texture_bytes, i, 1);
         let portions = [
             (val >> 4) & 0xF,
             val & 0xF,
         ]
-        portions.forEach(p => {
-            p = Math.round((p * 255) / 15);
+        portions.forEach((p, j) => {
+            portions[j] = Math.round((p * 255) / 15);
         })
         stream[(i * 4) + 0] = portions[0];
         stream[(i * 4) + 1] = portions[0];

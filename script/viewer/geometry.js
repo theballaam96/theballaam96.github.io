@@ -588,7 +588,7 @@ function generateGeometry(map_id) {
         return "";
     }
     const vert_start = window.readFile(map_geo, 0x38 - window.geo_offset, 4);
-    const unk_start = window.readFile(map_geo, 0x40 - window.geo_offset, 4);
+    const track_start = window.readFile(map_geo, 0x40 - window.geo_offset, 4);
     const unk_start_0 = window.readFile(map_geo, 0x6C - window.geo_offset, 4);
     const vert_chunk_start = window.readFile(map_geo, 0x68 - window.geo_offset, 4);
     return generateGeometryGeneric({
@@ -596,10 +596,100 @@ function generateGeometry(map_id) {
         dl_start: window.readFile(map_geo, 0x34 - window.geo_offset, 4),
         dl_end: vert_start,
         vert_start: vert_start,
-        vert_length: unk_start - vert_start,
+        vert_length: track_start - vert_start,
         vert_chunk_start: vert_chunk_start,
         vert_chunk_length: unk_start_0 - vert_chunk_start,
         dl_expansion_start: window.readFile(map_geo, 0x70 - window.geo_offset, 4),
     });
 }
 window.generateGeometry = generateGeometry;
+
+function getFog() {
+    const render_fog = document.getElementById("show_fog").checked;
+    if (!render_fog) {
+        return null;
+    }
+    const map_id = document.getElementById("map_id_selector").value;
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length == 0) {
+        return null;
+    }
+    const enabled = (window.readFile(map_geo, 8, 1) & 1) !== 0;
+    if (!enabled) {
+        return null;
+    }
+    const local_scale = window.getScale(map_id);
+    const color = map_id == 0x26 ? 0x8A5216 : 0x000000;
+    return new THREE.Fog(color, 990 * local_scale, (990 + 999) * local_scale);
+}
+window.getFog = getFog;
+
+function getDistantScreens(map_id) {
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length == 0) {
+        return null;
+    }
+    const header = window.readFile(map_geo, 0x50 - window.geo_offset, 4);
+    const count = window.readFile(map_geo, header, 4);
+    let screens = [];
+    for (let i = 0; i < count; i++) {
+        const screen_head = header + 4 + (i * 0x40);
+        const verts = [
+            {
+                coords: [
+                    window.readFile(map_geo, screen_head + 0x20, 2, true),
+                    window.readFile(map_geo, screen_head + 0x28, 2, true),
+                    window.readFile(map_geo, screen_head + 0x30, 2, true),
+                ],
+                uv: [
+                    parseInt(window.readFloat(map_geo, screen_head + 0x00) * 50) << 5,
+                    parseInt(window.readFloat(map_geo, screen_head + 0x04) * 50) << 5,
+                ],
+            },
+            {
+                coords: [
+                    window.readFile(map_geo, screen_head + 0x22, 2, true),
+                    window.readFile(map_geo, screen_head + 0x2A, 2, true),
+                    window.readFile(map_geo, screen_head + 0x32, 2, true),
+                ],
+                uv: [
+                    parseInt(window.readFloat(map_geo, screen_head + 0x08) * 50) << 5,
+                    parseInt(window.readFloat(map_geo, screen_head + 0x0C) * 50) << 5,
+                ],
+            },
+            {
+                coords: [
+                    window.readFile(map_geo, screen_head + 0x24, 2, true),
+                    window.readFile(map_geo, screen_head + 0x2C, 2, true),
+                    window.readFile(map_geo, screen_head + 0x34, 2, true),
+                ],
+                uv: [
+                    parseInt(window.readFloat(map_geo, screen_head + 0x10) * 50) << 5,
+                    parseInt(window.readFloat(map_geo, screen_head + 0x14) * 50) << 5,
+                ],
+            },
+            {
+                coords: [
+                    window.readFile(map_geo, screen_head + 0x26, 2, true),
+                    window.readFile(map_geo, screen_head + 0x2E, 2, true),
+                    window.readFile(map_geo, screen_head + 0x36, 2, true),
+                ],
+                uv: [
+                    parseInt(window.readFloat(map_geo, screen_head + 0x18) * 50) << 5,
+                    parseInt(window.readFloat(map_geo, screen_head + 0x1C) * 50) << 5,
+                ],
+            },
+        ];
+        let avg = [];
+        for (let j = 0; j < 3; j++) {
+            let local_total = 0;
+            verts.forEach(vert => {
+                local_total += vert.coords[j];
+            })
+            avg.push(local_total / verts.length);
+        }
+        screens.push(verts);
+    }
+    return screens;
+}
+window.getDistantScreens = getDistantScreens;

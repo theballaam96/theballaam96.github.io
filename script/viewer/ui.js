@@ -242,15 +242,49 @@ const map_ids = {
 }
 
 const geometries = {
-    "Off": { internal: "off", hide_from: ["bg_selector"] },
-    "Level Geometry (Vertex Colors)": { internal: "geo", hide_from: ["obj_selector"] },
-    "Geometry (Vertex Colors)": { internal: "geo", hide_from: ["bg_selector"] },
-    "Collision": { internal: "collision", hide_from: [] },
-    "Collision (Walls)": { internal: "walls", hide_from: [] },
-    "Collision (Floor Properties)": { internal: "floors", hide_from: ["obj_selector"] },
-    "Collision (Slippable Floors)": { internal: "slip", hide_from: [] },
-    "Collision (Floor Special)": { internal: "enum_floors", hide_from: ["obj_selector"] },
-    "Collision (Gaps) (WARNING: Expensive)": { internal: "gaps", hide_from: ["obj_selector"] },
+    "Off": { internal: "off", hide_from: ["bg_selector"], key: null },
+    "Level Geometry (Vertex Colors)": { internal: "geo", hide_from: ["obj_selector"], key: null },
+    "Geometry (Vertex Colors)": { internal: "geo", hide_from: ["bg_selector"], key: null },
+    "Collision": { internal: "collision", hide_from: [], key: [
+        { color: "rgb(255, 255, 255)", description: "Floor Tris" },
+        { color: "rgb(52, 235, 174)", description: "Wall Tris" },
+    ] },
+    "Collision (Walls)": { internal: "walls", hide_from: [], key: [
+        { color: "rgb(52, 235, 174)", description: "Wall Tri" },
+    ] },
+    "Collision (Phase Walls - WIP)": { internal: "phase", hide_from: ["obj_selector"], key: [
+        { color: "rgb(0, 255, 0)", description: "Wall can be phased through." },
+        { color: "rgb(0, 30, 0)", description: "Wall can be phased through, but you might have issues getting a sharp enough angle." },
+        { color: "rgb(255, 0, 0)", description: "Wall can't be phased through." },
+    ] },
+    "Collision (Floor Properties)": { internal: "floors", hide_from: ["obj_selector"], key: [
+        { color: "rgb(0, 0, 0)", description: "Void" },
+        { color: "rgb(122, 16, 19)", description: "Inflicts damage" },
+        { color: "rgb(52, 168, 235)", description: "Water" },
+        { color: "rgb(112, 16, 122)", description: "Instadeath" },
+        { color: "rgb(255, 255, 255)", description: "Unclassified" },
+    ] },
+    "Collision (Slippable Floors)": { internal: "slip", hide_from: [], key: [
+        { color: "rgb(33, 181, 184)", description: "Non-slippery with Orangstand" },
+        { color: "rgb(255, 0, 0)", description: "Slippery" },
+        { color: "rgb(137, 50, 168)", description: "Persists slipperyness" },
+        { color: "rgb(255, 255, 255)", description: "Non-slippery" },
+    ] },
+    "Collision (Floor Special)": { internal: "enum_floors", hide_from: ["obj_selector"], key: [
+        { color: "rgb(240, 128, 128)", description: "Used for proximity detection (Dungeon chair, Tree pineapple switch)" },
+        { color: "rgb(34, 139, 34)", description: "Unknown" },
+        { color: "rgb(50, 205, 50)", description: "Higher traction surface" },
+        { color: "rgb(240, 230, 140)", description: "Kong reflection surface" },
+        { color: "rgb(127, 255, 212)", description: "Slippery banana" },
+        { color: "rgb(255, 140, 0)", description: "Unknown" },
+        { color: "rgb(255, 0, 0)", description: "Unknown" },
+        { color: "rgb(255, 255, 255)", description: "Default floor" },
+    ] },
+    "Collision (Gaps) (WARNING: Expensive)": { internal: "gaps", hide_from: ["obj_selector"], key: [
+        { color: "rgb(255, 255, 255)", description: "Floor Tris" },
+        { color: "rgb(52, 235, 174)", description: "Wall Tris" },
+        { color: "rgb(255, 0, 0)", description: "Gap between a floor and wall tri" },
+    ] },
 }
 
 const marker_tree = [
@@ -284,6 +318,9 @@ const marker_tree = [
         ]},
         { name: "Chunks" },
         { name: "Voids" },
+        { name: "Tracks" },
+        { name: "Kong Mirror Bounds" },
+        { name: "Ambient SFX" },
     ]},
 ]
 
@@ -395,6 +432,7 @@ document.getElementById("map_id_selector").innerHTML = Object.keys(map_ids).map(
 })
 
 function reloadState(el) {
+    generateKeyText();
     let force_camera = false;
     let double_reload = false;
     if (el) {
@@ -406,6 +444,45 @@ function reloadState(el) {
         window.renderHandler(false);
     }
 }
+
+function generateKeyText() {
+    let categories = [];
+    console.log(geometries)
+    const bg_id = document.getElementById("bg_selector").value;
+    const obj_id = document.getElementById("obj_selector").value;
+    Object.values(geometries).forEach(data => {
+        let name = null;
+        if (data.internal == bg_id) {
+            name = "Map";
+        } else if (data.internal == obj_id) {
+            name = "Props";
+        }
+        if (name === null || data.key === null) {
+            return;
+        }
+        categories.push({
+            name: name,
+            key: data.key,
+        })
+    })
+    if (categories.length == 0) {
+        document.getElementById("key_text").innerHTML = "No keys to generate";
+        return;
+    }
+    document.getElementById("key_text").innerHTML = categories.map(cat => {
+        return `<div>
+            <strong>${cat.name}</strong>
+            ${cat.key.map(k => {
+                return `<div class="d-flex">
+                    <span style="background-color: ${k.color}; width: 10px; height: 10px;" class="rounded-circle m-2">&nbsp;</span><span>${k.description}</span>
+                </div>`
+            }).join("")}
+            
+        </div>`
+    }).join("")
+    console.log(categories)
+}
+generateKeyText();
 
 // Dropdowns
 const changeEls = document.getElementsByClassName("change-reload");
@@ -476,7 +553,6 @@ function populateExtraData(mesh) {
             ${dimensions_section}
         </div>
     `;
-    console.log(extraData);
 }
 document.getElementById("extra_data_close").addEventListener("click", () => {
     document.getElementById("extra_data").classList.add("d-none");

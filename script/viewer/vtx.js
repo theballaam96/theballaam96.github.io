@@ -70,6 +70,16 @@ function getColorString(triangle) {
         }
     }
     if (triangle.is_wall) {
+        if (triangle.wall_dump_mode == "phase") {
+            // return getRatioString(parseInt((triangle.h_angle / 360) * 255), 0, 0);
+            if (triangle.phase_strength == 2) {
+                return getRatioString(0, 255, 0);
+            } else if (triangle.phase_strength == 1) {
+                return getRatioString(0, 30, 0);
+            } else {
+                return getRatioString(255, 0, 0);
+            }
+        }
         if (triangle.is_solid) {
             return getRatioString(52, 235, 174);
         }

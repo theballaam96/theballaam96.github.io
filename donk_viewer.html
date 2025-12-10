@@ -115,7 +115,7 @@
             <div class="card p-2 mb-2 ms-2 me-2 mt-2">
                 <div class="d-flex justify-content-between mb-2 pb-1" style="border-bottom: 1px solid gray">
                     <div class="fw-bolder">DonkViewer</div>
-                    <small>v2.5</small>
+                    <small>v2.6</small>
                 </div>
                 <div>Made by Ballaam</div>
                 <div style="font-size: 0.8rem">Contributions from:
@@ -144,7 +144,7 @@
                         <button class="nav-link mx-auto" id="main-tab" data-bs-toggle="tab"
                                 title="Main Options"
                                 data-bs-target="#main-tab-pane" type="button" role="tab"
-                                aria-controls="main-tab-pane" aria-selected="true">
+                                aria-controls="main-tab-pane" aria-selected="false">
                             <i class="fa-solid fa-map"></i>
                         </button>
                     </li>
@@ -152,7 +152,7 @@
                         <button class="nav-link mx-auto" id="world-tab" data-bs-toggle="tab"
                                 title="World Elements"
                                 data-bs-target="#world-tab-pane" type="button" role="tab"
-                                aria-controls="world-tab-pane" aria-selected="true">
+                                aria-controls="world-tab-pane" aria-selected="false">
                             <i class="fa-solid fa-earth-europe"></i>
                         </button>
                     </li>
@@ -170,6 +170,14 @@
                                 data-bs-target="#rendering-tab-pane" type="button" role="tab"
                                 aria-controls="rendering-tab-pane" aria-selected="false">
                             <i class="fa-solid fa-cube"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link mx-auto" id="key-tab" data-bs-toggle="tab"
+                                title="Key"
+                                data-bs-target="#key-tab-pane" type="button" role="tab"
+                                aria-controls="key-tab-pane" aria-selected="false">
+                            <i class="fa-solid fa-key"></i>
                         </button>
                     </li>
                 </ul>
@@ -213,6 +221,14 @@
                         <div class="mb-2">
                             <label for="fluid_selector">Fluids: </label>
                             <input class="form-check-input click-reload" type="checkbox" role="switch" id="fluid_selector" checked />
+                        </div>
+                        <div class="mb-2">
+                            <label for="screen_selector">Distant Screens: </label>
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="screen_selector" checked />
+                        </div>
+                        <div class="mb-2">
+                            <label for="show_fog">Show Fog: </label>
+                            <input class="form-check-input click-reload" type="checkbox" role="switch" id="show_fog" />
                         </div>
                     </div>
                     <div class="tab-pane fade" id="markers-tab-pane" role="tabpanel" aria-labelledby="markers-tab" tabindex="0">
@@ -267,6 +283,11 @@
                             </button>
                         </div>
                     </div>
+                    <div class="tab-pane fade" id="key-tab-pane" role="tabpanel" aria-labelledby="key-tab" tabindex="0">
+                        <h5>Key</h5>
+                        <hr />
+                        <div id="key_text"></div> 
+                    </div>
                 </div>
             </div>
         </div>
@@ -319,6 +340,7 @@
         let loadedExtras = [];
         let loadedBillboards = [];
         let loadedFluids = [];
+        let loadedScreens = [];
         let intersected = null;
         let lastFrame = null;
         let loader;
@@ -528,6 +550,7 @@
             }
             loadedBillboards = [];
             loadedFluids = [];
+            loadedScreens = [];
 
             try {
                 loader = new THREE.OBJLoader();
@@ -562,6 +585,7 @@
                 });
                 // --- END CORE FIX ---
                 scene.add(loadedObject);
+                scene.fog = window.getFog();
                 if (resetCamera) {
                     centerModel();
                 }
@@ -591,6 +615,12 @@
             loadedFluids = loadedFluids.concat(list);
         }
         window.addToSceneFluids = addToSceneFluids;
+        
+        function addToSceneScreens(list) {
+            addToScene(list);
+            loadedScreens = loadedScreens.concat(list);
+        }
+        window.addToSceneScreens = addToSceneScreens;
 
         function addObjects(list) {
             list.forEach((obj_file, index) => {

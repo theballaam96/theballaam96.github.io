@@ -178,5 +178,11 @@ window.version_kiosk = {
         { map_id: 0x30, count: 1, addr: 0x806F339C },
         { map_id: 0x37, count: 7, addr: 0x806F33AC },
         { map_id: 0x99, count: 4, addr: 0x806F3410 },
-    ]
+    ],
+    distant_screen_texture: 0x3E3,
+    amb_sfx: {
+        offset: 0x806F2E48,
+        count: 7,
+        size: 0x8,
+    }
 }

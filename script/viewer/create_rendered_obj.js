@@ -185,11 +185,6 @@ function parseViews(map_id) {
             const p1t = new THREE.Vector3(view.tri[1][0], view.y[1], view.tri[1][2]);
             const p2t = new THREE.Vector3(view.tri[2][0], view.y[1], view.tri[2][2]);
 
-            const vertices = [
-                p0b, p1b, p2b,   // bottom
-                p0t, p1t, p2t    // top
-            ];
-
             const pos = new Float32Array([
                 // bottom triangle
                 p0b.x, p0b.y, p0b.z,
@@ -240,6 +235,28 @@ function parseViews(map_id) {
                 side: THREE.DoubleSide,
             });
             output.push(new THREE.Mesh(geometry, mat));
+        } else if (view.shape == "plane") {
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array([
+                // Triangle 1
+                view.bounds[0][0], view.bounds[0][1], view.bounds[0][2],
+                view.bounds[1][0], view.bounds[1][1], view.bounds[1][2],
+                view.bounds[2][0], view.bounds[2][1], view.bounds[2][2],
+
+                // Triangle 2
+                view.bounds[2][0], view.bounds[2][1], view.bounds[2][2],
+                view.bounds[3][0], view.bounds[3][1], view.bounds[3][2],
+                view.bounds[0][0], view.bounds[0][1], view.bounds[0][2],
+            ]);
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const material = new THREE.MeshBasicMaterial({
+                transparent: true,
+                color: view.color,
+                opacity: 0.5,
+                side: THREE.DoubleSide,
+            });
+            output.push(new THREE.Mesh(geometry, material));
         }
     })
     return output;
@@ -277,6 +294,57 @@ function generateBillboardMesh(obj_data, local_scale) {
         frames: frames,
         mesh: mesh,
     }
+}
+
+function generateScreen(screen, local_scale) {
+    const geometry = new THREE.BufferGeometry();
+
+    const positions = new Float32Array([
+        // Triangle 1
+        screen[0].coords[0] * local_scale, screen[0].coords[1] * local_scale, screen[0].coords[2] * local_scale,
+        screen[1].coords[0] * local_scale, screen[1].coords[1] * local_scale, screen[1].coords[2] * local_scale,
+        screen[2].coords[0] * local_scale, screen[2].coords[1] * local_scale, screen[2].coords[2] * local_scale,
+
+        // Triangle 2
+        screen[2].coords[0] * local_scale, screen[2].coords[1] * local_scale, screen[2].coords[2] * local_scale,
+        screen[3].coords[0] * local_scale, screen[3].coords[1] * local_scale, screen[3].coords[2] * local_scale,
+        screen[0].coords[0] * local_scale, screen[0].coords[1] * local_scale, screen[0].coords[2] * local_scale,
+    ]);
+
+    // UVs must match quad corners (0–1 texture space)
+    const uvs_raw = [
+        (screen[0].uv[0] / 32) / 64, 1 - ((screen[0].uv[1] / 32) / 64),
+        (screen[1].uv[0] / 32) / 64, 1 - ((screen[1].uv[1] / 32) / 64),
+        (screen[2].uv[0] / 32) / 64, 1 - ((screen[2].uv[1] / 32) / 64),
+
+        (screen[2].uv[0] / 32) / 64, 1 - ((screen[2].uv[1] / 32) / 64),
+        (screen[3].uv[0] / 32) / 64, 1 - ((screen[3].uv[1] / 32) / 64),
+        (screen[0].uv[0] / 32) / 64, 1 - ((screen[0].uv[1] / 32) / 64),
+    ];
+    const uvs = new Float32Array(uvs_raw);
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('uv',       new THREE.BufferAttribute(uvs, 2));
+
+    const tex_data = window.texParserIA8(window.getFile(window.rom_bytes, window.rom_dv, 7, window.distant_screen_texture, false));
+    const texture = new THREE.DataTexture(
+        tex_data,
+        64,
+        64,
+        THREE.RGBAFormat,
+        THREE.UnsignedByteType
+    );
+    texture.needsUpdate = true;
+    // texture.colorSpace = THREE.SRGBColorSpace;
+
+    const material = new THREE.MeshBasicMaterial({
+        map: texture,
+        transparent: true,
+        color: 0x646464,
+        side: THREE.DoubleSide,
+    });
+
+    return new THREE.Mesh(geometry, material);
 }
 
 function generateFluid(fluid, local_scale) {
@@ -361,8 +429,12 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     let obj = null;
     let gaps = [];
     let fluids = [];
+    let screens = [];
     if (document.getElementById("fluid_selector").checked) {
         fluids = window.loadFluids(map_id);
+    }
+    if (document.getElementById("screen_selector").checked) {
+        screens = window.getDistantScreens(map_id);
     }
     if (bg_id == "geo") {
         obj = window.generateGeometry(map_id);
@@ -435,6 +507,9 @@ function renderHandlerInternal(reset_camera, regenInterval) {
     window.addToScene(additions);
     if (fluids.length > 0) {
         window.addToSceneFluids(fluids.map(f => generateFluid(f, local_scale)));
+    }
+    if (screens.length > 0) {
+        window.addToSceneScreens(screens.map(f => generateScreen(f, local_scale)));
     }
     window.regenProcess = 100;
     if (regenInterval) {

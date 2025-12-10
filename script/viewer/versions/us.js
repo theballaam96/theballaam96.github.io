@@ -245,5 +245,11 @@ window.version_us = {
         { map_id: 0x37, count: 7, addr: 0x807461E0 },
         { map_id: 0x22, count: 4, addr: 0x80746244 },
         { map_id: 0xB0, count: 3, addr: 0x8074627C },
-    ]
+    ],
+    distant_screen_texture: 0x3C7,
+    amb_sfx: {
+        offset: 0x80745B28,
+        count: 15,
+        size: 0xC,
+    }
 };

@@ -562,7 +562,6 @@ function parseChunks(map_id) {
         }
         
     }
-    console.log(data)
     return data;
 }
 
@@ -629,7 +628,6 @@ function parseVoids(map_id) {
 }
 
 function loadMusicTriggers(vdata) {
-    console.log(vdata)
     return vdata.map(map_data => {
         let data = [];
         for (let i = 0; i < map_data.count; i++) {
@@ -681,6 +679,108 @@ function parseMusicTriggers(map_id) {
     }).flat().slice();
 }
 
+function parseTracks(map_id) {
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length === 0) {
+        return [];
+    }
+    const points_start = window.readFile(map_geo, 0x40 - window.geo_offset, 4);
+    const block_count = window.readFile(map_geo, points_start, 4, true) + 1;
+    let segments = [];
+    for (let i = 0; i < block_count; i++) {
+        const block_start = window.readFile(map_geo, points_start + 0x4 + (4 * i), 4);
+        const block_end = window.readFile(map_geo, points_start + 0x8 + (4 * i), 4);
+        let points = [];
+        const point_count = parseInt((block_end - block_start) / 0xC);
+        for (let j = 0; j < point_count; j++) {
+            const head = points_start + block_start + (0xC * j);
+            points.push({
+                coords: [
+                    window.readFloat(map_geo, head + 0x0),
+                    window.readFloat(map_geo, head + 0x4),
+                    window.readFloat(map_geo, head + 0x8),
+                ]
+            })
+        }
+        segments.push(getPathObject(points, {
+            color: 0xFB542B,
+            thickness: 10,
+            name: `Track ${i}`,
+        }))
+    }
+    return segments;
+}
+
+function parseKongMirrorBoxes(map_id) {
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length === 0) {
+        return [];
+    }
+    const box_start = window.readFile(map_geo, 0x54 - window.geo_offset, 4);
+    const box_count = window.readFile(map_geo, box_start, 4);
+    let boxes = [];
+    for (let i = 0; i < box_count; i++) {
+        const plane_head = box_start + 4 + (0x10 * i);
+        boxes.push({
+            bounds: [
+                [
+                    window.readFile(map_geo, plane_head + 0x0, 2, true),
+                    window.readFile(map_geo, plane_head + 0x2, 2, true),
+                    window.readFile(map_geo, plane_head + 0x4, 2, true),
+                ],
+                [
+                    window.readFile(map_geo, plane_head + 0x6, 2, true),
+                    window.readFile(map_geo, plane_head + 0x8, 2, true),
+                    window.readFile(map_geo, plane_head + 0xA, 2, true),
+                ],
+            ],
+            color: 0x9BFB2B,
+            shape: "cube",
+            name: `Mirror Plane ${i}`
+        });
+    }
+    return boxes;
+}
+
+function parseAmbientSFX(map_id) {
+    const map_geo = window.getFile(window.rom_bytes, window.rom_dv, 1, map_id, true);
+    if (map_geo.length === 0) {
+        return [];
+    }
+    const sfx_start = window.readFile(map_geo, 0x44 - window.geo_offset, 4);
+    const sfx_count = window.readFile(map_geo, sfx_start, 4);
+    let points = [];
+    for (let i = 0; i < sfx_count; i++) {
+        const sfx_head = sfx_start + 4 + (i * 8);
+        const rom_data = window.ambient_sfx_data[window.readFile(map_geo, sfx_head + 0x7, 1) - 1];
+        points.push({
+            coords: [
+                window.readFile(map_geo, sfx_head + 0x0, 2, true),
+                window.readFile(map_geo, sfx_head + 0x2, 2, true),
+                window.readFile(map_geo, sfx_head + 0x4, 2, true),
+            ],
+            shape: "sphere",
+            radius: (rom_data.mult * window.readFile(map_geo, sfx_head + 0x6, 1)) / 255,
+            color: 0x2BFBB7,
+            name: `Ambient SFX ${i}: ${rom_data.sfx}`,
+        });
+    }
+    return points;
+}
+
+function loadAmbSFXData(vdata) {
+    let output = [];
+    for (let i = 0; i < vdata.count; i++) {
+        const head = vdata.offset + (i * vdata.size);
+        output.push({
+            sfx: window.readOverlay(1, head + 0x0, 2),
+            mult: window.readOverlay(1, head + 0x2, 1),
+        })
+    }
+    return output;
+}
+window.loadAmbSFXData = loadAmbSFXData;
+
 function allViews(map_id) {
     let collective = [];
     if (window.isNodeOrSubSelected("Triggers")) {
@@ -709,6 +809,15 @@ function allViews(map_id) {
     }
     if (window.isNodeOrSubSelected("Music Triggers")) {
         collective = collective.concat(parseMusicTriggers(map_id));
+    }
+    if (window.isNodeOrSubSelected("Tracks")) {
+        collective = collective.concat(parseTracks(map_id));
+    }
+    if (window.isNodeOrSubSelected("Kong Mirror Bounds")) {
+        collective = collective.concat(parseKongMirrorBoxes(map_id));
+    }
+    if (window.isNodeOrSubSelected("Ambient SFX")) {
+        collective = collective.concat(parseAmbientSFX(map_id));
     }
     const enemy_fences = window.isNodeOrSubSelected("Enemy Fences");
     const enemy_paths = window.isNodeOrSubSelected("Enemy Paths (WIP)");

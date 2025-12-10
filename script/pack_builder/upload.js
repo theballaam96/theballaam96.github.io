@@ -326,10 +326,6 @@ async function handlePack(data) {
                 // Not in pack
                 const init_date = new Date(item.initial_timestamp);
                 const pack_date = new Date(window.uploaded_date);
-                if (item.game == "Adibou 2") {
-                    console.log(init_date)
-                    console.log(pack_date)
-                }
                 if (init_date > pack_date) {
                     const id = item.index;
                     for (c = 0; c < song_items.length; c++) {

@@ -295,7 +295,6 @@ function genActorObj(triangles, verts) {
 
 function handleActor(model_id, map_id, mode, sprite_data) {
     if (model_id !== null && model_id !== undefined) {
-        console.log("Parsing model", model_id.toString(16))
         const actor_file = window.getFile(window.rom_bytes, window.rom_dv, 5, model_id, true);
         const file_offset = window.readFile(actor_file, 0, 4);
         const dl_end_offset = window.readFile(actor_file, 4, 4);
@@ -448,7 +447,6 @@ function handleActor(model_id, map_id, mode, sprite_data) {
         })
         return genActorObj(mesh, verts);
     } else if (sprite_data !== null && sprite_data !== undefined) {
-        console.log("Parsing sprite", sprite_data)
         return {
             shape: "billboard",
             images: sprite_data.frames.map(f => {

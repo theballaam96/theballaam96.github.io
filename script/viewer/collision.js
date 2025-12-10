@@ -21,6 +21,7 @@ window.files_to_load = {
     "slip": [3],
     "enum_floors": [3],
     "voids": [3],
+    "phase": [2],
 };
 
 function getCollisionTris(map_id, mode) {
@@ -242,7 +243,65 @@ function willSlip(coord_set, floor_type = 1, is_ostanding = false) {
     return "NonSlippery";
 }
 
-function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, brightness, unk17, table, dump_mode, rgba = null) {
+function sub(a, b) {
+    return [
+        a[0] - b[0],
+        a[1] - b[1],
+        a[2] - b[2],
+    ];
+}
+
+function cross(a, b) {
+    return [
+        a[1]*b[2] - a[2]*b[1],
+        a[2]*b[0] - a[0]*b[2],
+        a[0]*b[1] - a[1]*b[0]
+    ];
+}
+
+function length(v) {
+    return Math.hypot(v[0], v[1], v[2]);
+}
+
+function normalize(v) {
+    const len = length(v);
+    return [v[0]/len, v[1]/len, v[2]/len];
+}
+
+
+function wallYaw(v1, v2, v3) {
+    // Compute all three edges
+    const e1 = sub(v2, v1);
+    const e2 = sub(v3, v1);
+    const n = cross(e1, e2);
+    const normal = normalize(n);
+    const angle = Math.atan2(normal[2], normal[0]) * (180 / Math.PI);
+    return 180 - angle; // radians
+}
+
+function willPhaseInternal(angle0, angle1, test_angle) {
+    if (angle1 < angle0) {
+        if ((angle0 < test_angle) || (test_angle <= angle1)) {
+            return true;
+        }
+    } else {
+        if ((angle0 < test_angle) && (test_angle <= angle1)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function willPhase(wall_angle, test_angle, flip) {
+    angle0 = wall_angle - 0x400;
+    angle1 = wall_angle + 0x400;
+    if (flip) {
+        return willPhaseInternal(angle1, angle0, test_angle);
+    }
+    return willPhaseInternal(angle0, angle1, test_angle);
+}
+
+function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, brightness, unk17, table, dump_mode, rgba = null, angle=null, is_fake_wall_0=null) {
     let data = {
         coords: [coord_set_0, coord_set_1, coord_set_2],
         properties: properties.toString(16),
@@ -283,8 +342,67 @@ function createTriangle(coord_set_0, coord_set_1, coord_set_2, properties, sfx, 
         //     self.is_solid = (properties & 0xC0) == 0xC0
         // else:
         data.is_solid = (properties & 0x418) != 0;
+        data.wall_dump_mode = dump_mode;
         if (((properties & 0xFFEF) == 0) && [0x418, 0x8].includes(properties)) {
             data.has_unused_wall = true;
+        }
+        if (dump_mode == "phase") {
+            data.h_angle = wallYaw(coord_set_0, coord_set_1, coord_set_2);
+            data.phase_strength = 0;
+            if (data.h_angle > 0) {
+                if (data.h_angle <= 135) {
+                    data.phase_strength = 2;
+                } else if (data.h_angle < 150) {
+                    data.phase_strength = 1;
+                }
+            }
+            /*
+            data.phase_strength = 0;
+            if (angle !== null) {
+                // 0
+                ivar1 = coord_set_0[1] - coord_set_1[1];
+                ivar2 = coord_set_0[2] - coord_set_2[2];
+                ivar4 = coord_set_0[0] - coord_set_2[0];
+                ivar6 = coord_set_0[0] - coord_set_1[0];
+                ivar7 = coord_set_0[2] - coord_set_1[2];
+                ivar3 = coord_set_0[1] - coord_set_2[1];
+                unk0 = (ivar1 * ivar2) - (ivar7 * ivar3);
+                // 8
+                unk8 = (ivar7 * ivar4) - (ivar6 * ivar2);
+                // 10
+                unk10 = (ivar6 * ivar3) - (ivar1 * ivar4);
+                // Final
+                uvar9 = unk8 * coord_set_1[1];
+                uvar11 = unk0 * coord_set_1[0];
+                uvar12 = unk10 * coord_set_1[2];
+                uvar5 = uvar12 + uvar11 + uvar9
+                unk18 = ~uvar5;
+                temp0 = unk0;
+                temp8 = unk8;
+                temp10 = unk10;
+                ivar4 = (unk0 * coord_set_2[0]) + (unk8 * coord_set_2[1]) + (unk10 * coord_set_2[2]) + unk18;
+                console.log(angle, is_fake_wall_0, unk18, ivar4)
+                let flip = false;
+                if (unk18 >= 1) {
+                    if (ivar4 <= -1) {
+                        flip = true;
+                    }
+                } else if (ivar4 >= 1) {
+                    flip = true;
+                }
+                if (is_fake_wall_0) {
+                    flip = !flip;
+                }
+                if (flip) {
+                    console.log("Treating as flipped")
+                }
+                for (let i = 0; i < 2047; i++) {
+                    if (willPhase(angle, 4096 + i, flip)) {
+                        data.phase_strength = 2;
+                    }
+                }
+            }
+            */
         }
     }
     return data;
@@ -328,6 +446,8 @@ function dumpTris(buffer, count, table_index, mode, map_id) {
                     }
                 }
             }
+            angle = null;
+            is_fake_wall_0 = null;
             if (table_index == 3) {
                 properties = window.readFile(buffer, ref, 2);
                 ref += 2;
@@ -367,7 +487,7 @@ function dumpTris(buffer, count, table_index, mode, map_id) {
                         coord_set[ci][cj] *= window.getScale(map_id);
                     }
                 }
-                const tri = createTriangle(coord_set[0], coord_set[1], coord_set[2], properties, sfx, brightness, unk17, table_index, applied_mode);
+                const tri = createTriangle(coord_set[0], coord_set[1], coord_set[2], properties, sfx, brightness, unk17, table_index, applied_mode, null, angle, is_fake_wall_0);
                 if ((mode !== "voids") || (tri.is_void)) {
                     mesh.push(tri);
                 }

@@ -11,6 +11,8 @@ window.actor_sprites = {};
 window.balloons = [];
 window.has_box_void = false;
 window.music_triggers = [];
+window.distant_screen_texture = 0;
+window.ambient_sfx_data = [];
 
 function getFileBoundaries(dv, table_index, file_index) {
     table_index -= window.table_offset;
@@ -98,7 +100,7 @@ function readFile(buffer, offset, size, signed = false) {
         val += (buffer[offset + i]);
     }
     if (signed) {
-        const limit = 1 << ((size * 8) - 1);
+        const limit = 1 << ((size << 3 >>> 0) - 1) >>> 0;
         const offset = 1 << (size * 8);
         if (val >= limit) {
             val -= offset;
@@ -164,6 +166,7 @@ function detectVersion(buffer) {
         window.actor_spawner_offset = vdata.actor_spawner_offset;
         window.has_box_void = vdata.has_box_void;
         window.balloons = vdata.balloons.slice();
+        window.distant_screen_texture = vdata.distant_screen_texture;
         window.overlay_data.forEach(ovl => {
             ovl.data = null;
         })
@@ -234,6 +237,7 @@ function detectVersion(buffer) {
             };
         })
         window.music_triggers = window.loadMusicTriggers(vdata.music_triggers);
+        window.ambient_sfx_data = window.loadAmbSFXData((vdata.amb_sfx))
         return true;
     }
     document.getElementById("fileUploadText").innerText = "Invalid ROM";
@@ -303,7 +307,6 @@ function readOverlay(overlay_index, rdram_address, size, signed=false) {
             output = u8arr;
         }
         ovl.data = output;
-        console.log(output.length.toString(16))
     }
     return window.readFile(ovl.data, rdram_address - ovl.rdram_start, size, signed);
 }
