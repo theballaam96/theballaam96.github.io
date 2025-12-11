@@ -3,8 +3,8 @@ const trigger_colors = {
     "Cutscene": 0x00FF00,
     "Autowalk": 0x0000FF,
     "State": 0xFF00FF,
-    "Slide": 0xFF00FF,
-    "Detransform": 0xFF00FF,
+    "Slide": 0x91C238,
+    "Detransform": 0xFB2B63,
     "Weather": 0x00FFFF,
     "Object Control": 0xFFFF00,
     "Cheat": 0xFFFFFF,
@@ -149,7 +149,7 @@ function parseCamLocks(map_id) {
             name: `Camera Lock ${x}`,
             infinite_h: false,
             infinite_y: true,
-            color: 0xFF00FF,
+            color: 0x3895C2,
         })
         info_l += 0x1C;
     }

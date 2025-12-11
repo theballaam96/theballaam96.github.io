@@ -246,81 +246,136 @@ const geometries = {
     "Level Geometry (Vertex Colors)": { internal: "geo", hide_from: ["obj_selector"], key: null },
     "Geometry (Vertex Colors)": { internal: "geo", hide_from: ["bg_selector"], key: null },
     "Collision": { internal: "collision", hide_from: [], key: [
-        { color: "rgb(255, 255, 255)", description: "Floor Tris" },
-        { color: "rgb(52, 235, 174)", description: "Wall Tris" },
+        { color: "rgb(255, 255, 255)", description: "Floor Tris", shape: "tri" },
+        { color: "rgb(52, 235, 174)", description: "Wall Tris", shape: "tri" },
     ] },
     "Collision (Walls)": { internal: "walls", hide_from: [], key: [
-        { color: "rgb(52, 235, 174)", description: "Wall Tri" },
+        { color: "rgb(52, 235, 174)", description: "Wall Tri", shape: "tri" },
     ] },
     "Collision (Phase Walls - WIP)": { internal: "phase", hide_from: ["obj_selector"], key: [
-        { color: "rgb(0, 255, 0)", description: "Wall can be phased through." },
-        { color: "rgb(0, 30, 0)", description: "Wall can be phased through, but you might have issues getting a sharp enough angle." },
-        { color: "rgb(255, 0, 0)", description: "Wall can't be phased through." },
+        { color: "rgb(0, 255, 0)", description: "Wall can be phased through.", shape: "tri" },
+        { color: "rgb(0, 30, 0)", description: "Wall can be phased through, but you might have issues getting a sharp enough angle.", shape: "tri" },
+        { color: "rgb(255, 0, 0)", description: "Wall can't be phased through.", shape: "tri" },
     ] },
     "Collision (Floor Properties)": { internal: "floors", hide_from: ["obj_selector"], key: [
-        { color: "rgb(0, 0, 0)", description: "Void" },
-        { color: "rgb(122, 16, 19)", description: "Inflicts damage" },
-        { color: "rgb(52, 168, 235)", description: "Water" },
-        { color: "rgb(112, 16, 122)", description: "Instadeath" },
-        { color: "rgb(255, 255, 255)", description: "Unclassified" },
+        { color: "rgb(0, 0, 0)", description: "Void", shape: "tri" },
+        { color: "rgb(122, 16, 19)", description: "Inflicts damage", shape: "tri" },
+        { color: "rgb(52, 168, 235)", description: "Water", shape: "tri" },
+        { color: "rgb(112, 16, 122)", description: "Instadeath", shape: "tri" },
+        { color: "rgb(255, 255, 255)", description: "Unclassified", shape: "tri" },
     ] },
     "Collision (Slippable Floors)": { internal: "slip", hide_from: [], key: [
-        { color: "rgb(33, 181, 184)", description: "Non-slippery with Orangstand" },
-        { color: "rgb(255, 0, 0)", description: "Slippery" },
-        { color: "rgb(137, 50, 168)", description: "Persists slipperyness" },
-        { color: "rgb(255, 255, 255)", description: "Non-slippery" },
+        { color: "rgb(33, 181, 184)", description: "Non-slippery with Orangstand", shape: "tri" },
+        { color: "rgb(255, 0, 0)", description: "Slippery", shape: "tri" },
+        { color: "rgb(137, 50, 168)", description: "Persists slipperyness", shape: "tri" },
+        { color: "rgb(255, 255, 255)", description: "Non-slippery", shape: "tri" },
     ] },
     "Collision (Floor Special)": { internal: "enum_floors", hide_from: ["obj_selector"], key: [
-        { color: "rgb(240, 128, 128)", description: "Used for proximity detection (Dungeon chair, Tree pineapple switch)" },
-        { color: "rgb(34, 139, 34)", description: "Unknown" },
-        { color: "rgb(50, 205, 50)", description: "Higher traction surface" },
-        { color: "rgb(240, 230, 140)", description: "Kong reflection surface" },
-        { color: "rgb(127, 255, 212)", description: "Slippery banana" },
-        { color: "rgb(255, 140, 0)", description: "Unknown" },
-        { color: "rgb(255, 0, 0)", description: "Unknown" },
-        { color: "rgb(255, 255, 255)", description: "Default floor" },
+        { color: "rgb(240, 128, 128)", description: "Used for proximity detection (Dungeon chair, Tree pineapple switch)", shape: "tri" },
+        { color: "rgb(34, 139, 34)", description: "Unknown", shape: "tri" },
+        { color: "rgb(50, 205, 50)", description: "Higher traction surface", shape: "tri" },
+        { color: "rgb(240, 230, 140)", description: "Kong reflection surface", shape: "tri" },
+        { color: "rgb(127, 255, 212)", description: "Slippery banana", shape: "tri" },
+        { color: "rgb(255, 140, 0)", description: "Unknown", shape: "tri" },
+        { color: "rgb(255, 0, 0)", description: "Unknown", shape: "tri" },
+        { color: "rgb(255, 255, 255)", description: "Default floor", shape: "tri" },
     ] },
     "Collision (Gaps) (WARNING: Expensive)": { internal: "gaps", hide_from: ["obj_selector"], key: [
-        { color: "rgb(255, 255, 255)", description: "Floor Tris" },
-        { color: "rgb(52, 235, 174)", description: "Wall Tris" },
-        { color: "rgb(255, 0, 0)", description: "Gap between a floor and wall tri" },
+        { color: "rgb(255, 255, 255)", description: "Floor Tris", shape: "tri" },
+        { color: "rgb(52, 235, 174)", description: "Wall Tris", shape: "tri" },
+        { color: "rgb(255, 0, 0)", description: "Gap between a floor and wall tri", shape: "tri" },
     ] },
 }
 
 const marker_tree = [
     { name: "Markers", sub: [
         { name: "Triggers", sub: [
-            { name: "Loading Zone" },
-            { name: "Cutscene" },
-            { name: "Object Control" },
-            { name: "Weather" },
-            { name: "Detransform" },
-            { name: "Autowalk" },
-            { name: "Slide" },
-            { name: "State" },
-            { name: "Cheat" },
-            { name: "Unknown" },
-            { name: "Music Triggers" },
+            { name: "Loading Zone", key: [
+                { color: "rgb(255, 0, 0)", description: "Loading Zones", shape: "cylinder" },
+            ] },
+            { name: "Cutscene", key: [
+                { color: "rgb(0, 255, 0)", description: "Cutscene Triggers", shape: "cylinder" },
+            ] },
+            { name: "Object Control", key: [
+                { color: "rgb(255, 255, 0)", description: "Object Control Triggers", shape: "cylinder" },
+            ] },
+            { name: "Weather", key: [
+                { color: "rgb(0, 255, 255)", description: "Weather Triggers", shape: "cylinder" },
+            ] },
+            { name: "Detransform", key: [
+                { color: "rgb(251, 43, 99)", description: "Detransform Zones", shape: "cylinder" },
+            ] },
+            { name: "Autowalk", key: [
+                { color: "rgb(0, 0, 255)", description: "Autowalk Zones", shape: "cylinder" },
+            ] },
+            { name: "Slide", key: [
+                { color: "rgb(145, 194, 56)", description: "Slide Triggers", shape: "cylinder" },
+            ] },
+            { name: "State", key: [
+                { color: "rgb(255, 0, 255)", description: "State Triggers", shape: "cylinder" },
+            ] },
+            { name: "Cheat", key: [
+                { color: "rgb(255, 255, 255)", description: "Cheat Activator Triggers", shape: "cylinder" },
+            ] },
+            { name: "Unknown", key: [
+                { color: "rgb(0, 0, 0)", description: "Unknown Triggers", shape: "cylinder" },
+            ] },
+            { name: "Music Triggers", key: [
+                { color: "rgb(0, 223, 255)", description: "Music Deactivator", shape: "cylinder" },
+                { color: "rgb(178, 135, 0)", description: "Music Activator", shape: "cylinder" },
+            ] },
         ]},
-        { name: "Camera Lock Zones" },
-        { name: "Object Paths" },
-        { name: "Autowalk Paths" },
+        { name: "Camera Lock Zones", key: [
+            { color: "rgb(56, 149, 194)", description: "Camera Lock Zones", shape: "cylinder" },
+            { color: "rgb(56, 149, 194)", description: "Camera Lock Zones", shape: "sphere" },
+        ] },
+        { name: "Object Paths", key: [
+            { color: "rgb(255, 0, 0)", description: "Object Paths", shape: "path" },
+        ] },
+        { name: "Autowalk Paths", key: [
+            { color: "rgb(66, 165, 178)", description: "Autowalk Paths", shape: "path" },
+        ] },
         { name: "Exits", sub: [
-            { name: "Exit Nodes" },
-            { name: "Autowalk Destinations" },
+            { name: "Exit Nodes", key: [
+                { color: "rgb(0, 255, 0)", description: "Exit Nodes", shape: "sphere" },
+            ] },
+            { name: "Autowalk Destinations", key: [
+                { color: "rgb(66, 165, 178)", description: "Exit Autowalk Destinations", shape: "cylinder" },
+            ] },
         ]},
-        { name: "Enemy Fences" },
-        { name: "Enemy Paths (WIP)" },
+        { name: "Enemy Fences", key: [
+            { color: "rgb(0, 0, 255)", description: "Enemy Fences", shape: "tri" },
+        ] },
+        { name: "Enemy Paths (WIP)", key: [
+            { color: "rgb(0, 0, 255)", description: "Enemy Paths", shape: "path" },
+        ] },
         { name: "Camera Paths", sub: [
-            { name: "Used" },
-            { name: "Unused" },
-            { name: "Unassociated" },
+            { name: "Used", key: [
+                { color: "rgb(96, 177, 0)", description: "Used Camera Paths", shape: "path" },
+            ] },
+            { name: "Unused", key: [
+                { color: "rgb(0, 82, 111)", description: "Unused Camera Paths", shape: "path" },
+            ] },
+            { name: "Unassociated", key: [
+                { color: "rgb(183, 84, 0)", description: "Unassociated Camera Paths", shape: "path" },
+            ] },
         ]},
-        { name: "Chunks" },
-        { name: "Voids" },
-        { name: "Tracks" },
-        { name: "Kong Mirror Bounds" },
-        { name: "Ambient SFX" },
+        { name: "Chunks", key: [
+            { color: "rgb(255, 0, 0)", description: "Chunks", shape: "cube" },
+        ] },
+        { name: "Voids", key: [
+            { color: "rgb(0, 0, 0)", description: "Outer Void", shape: "cube" },
+            { color: "rgb(0, 0, 0)", description: "Complex Void", shape: "tri" },
+        ] },
+        { name: "Tracks", key: [
+            { color: "rgb(251, 84, 43)", description: "Tracks", shape: "path" },
+        ] },
+        { name: "Kong Mirror Bounds", key: [
+            { color: "rgb(155, 251, 43)", description: "Kong Mirror Bounds", shape: "cube" },
+        ] },
+        { name: "Ambient SFX", key: [
+            { color: "rgb(43, 251, 183)", description: "Ambient SFX Bubbles", shape: "sphere" },
+        ] },
     ]},
 ]
 
@@ -445,9 +500,23 @@ function reloadState(el) {
     }
 }
 
+function flattenMarkers(data, parent) {
+    let arr = [];
+    data.forEach(entry => {
+        if (entry.sub) {
+            arr = arr.concat(flattenMarkers(entry.sub, entry.name));
+        } else {
+            if (parent !== null && parent !== "Markers") {
+                entry.parent = parent;
+            }
+            arr.push(entry)
+        }
+    })
+    return arr;
+}
+
 function generateKeyText() {
-    let categories = [];
-    console.log(geometries)
+    let categories = {};
     const bg_id = document.getElementById("bg_selector").value;
     const obj_id = document.getElementById("obj_selector").value;
     Object.values(geometries).forEach(data => {
@@ -460,21 +529,61 @@ function generateKeyText() {
         if (name === null || data.key === null) {
             return;
         }
-        categories.push({
-            name: name,
-            key: data.key,
-        })
+        categories[name] = data.key;
     })
-    if (categories.length == 0) {
+    const marker_flat = flattenMarkers(marker_tree, null);
+    marker_flat.forEach(marker => {
+        let name = null;
+        if (isNodeOrSubSelected(marker.name)) {
+            name = marker.parent;
+            if (!name) {
+                name = "Marker";
+            }
+            if (!marker.key) {
+                return;
+            }
+            if (!categories[name]) {
+                categories[name] = [];
+            }
+            categories[name] = categories[name].concat(marker.key);
+        }
+    })
+    if (Object.keys(categories).length == 0) {
         document.getElementById("key_text").innerHTML = "No keys to generate";
         return;
     }
-    document.getElementById("key_text").innerHTML = categories.map(cat => {
+    const shape_map = {
+        "tri": {
+            fa: "fa-solid fa-play",
+            desc: "Triangles",
+        },
+        "sphere": {
+            fa: "fa-solid fa-circle",
+            desc: "Spheres",
+        },
+        "plane": {
+            fa: "fa-solid fa-square",
+            desc: "Planes",
+        },
+        "cylinder": {
+            fa: "fa-solid fa-database",
+            desc: "Cylinders",
+        },
+        "path": {
+            fa: "fa-solid fa-bezier-curve",
+            desc: "Paths",
+        },
+        "cube": {
+            fa: "fa-solid fa-cube",
+            desc: "Cubes",
+        },
+    }
+    document.getElementById("key_text").innerHTML = Object.keys(categories).map(name => {
         return `<div>
-            <strong>${cat.name}</strong>
-            ${cat.key.map(k => {
+            <strong>${name}</strong>
+            ${categories[name].map(k => {
                 return `<div class="d-flex">
-                    <span style="background-color: ${k.color}; width: 10px; height: 10px;" class="rounded-circle m-2">&nbsp;</span><span>${k.description}</span>
+                    <span style="color: ${k.color};" class="me-2" title="${shape_map[k.shape].desc}"><i class="${shape_map[k.shape].fa}"></i></span><span>${k.description}</span>
                 </div>`
             }).join("")}
             
