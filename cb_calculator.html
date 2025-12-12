@@ -249,6 +249,11 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
+                        <select class="form-select recalculate" aria-label="Select Spawn" id="medal-portal">
+                            <option selected value="default" disabled="disabled">DK Portal</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
                         <select class="form-select recalculate" aria-label="Select Kong" id="medal-kong">
                             <option selected value="default" disabled="disabled">Kong</option>
                             <option value="DK">DK</option>
@@ -297,6 +302,17 @@
                 static Fungi = new Level("Fungi");
                 static Caves = new Level("Caves");
                 static Castle = new Level("Castle");
+
+                constructor (name) {
+                    this.name = name;
+                }
+            }
+
+            class Portal {
+                static JapesBehindRambiDoor = new Portal("Behind Rambi Door");
+                static JapesHiveArea = new Portal("Hive");
+                static FactoryTopOfProduction = new Portal("Top of Production");
+                static GalleonPastVines = new Portal("Past Vines");
 
                 constructor (name) {
                     this.name = name;
@@ -360,6 +376,9 @@
                 static W3Bonus = new Moves("Caves Warp 3 Bonus");
                 static AnyGun = new Moves("Any Gun");
                 static FreeDiddyGun = new Moves("Free Diddy Gun");
+                static SaxOrOranges = new Moves("Sax or Oranges"); // for shellhive
+                // Climbing
+                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true);
                 // Barriers
                 static JapesCoconut = new Moves("Japes Coconut Gates", true, [Moves.FreeDiddyGun, Moves.ClimbingCheck], true); // No logic determined yet for this
                 static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
@@ -382,14 +401,17 @@
                 static TinyTempleIce = new Moves("Tiny Temple Ice Melted", true, [Moves.Guitar, Moves.LevelSlam, Moves.Peanut], true);
                 static GalleonTreasure = new Moves("Treasure Room Open", true, [Moves.Enguarde, Moves.RaisedWater], true);
                 static CavesIceWalls = new Moves("Caves Ice Walls", true, [Moves.Punch], true);
+                // Logic Regions
+                static JapesBehindRambiDoor = new Moves("Japes Behind Rambi Door", true, [Moves.JapesCoconut, Moves.Coconut], true);
+                static JapesHiveArea = new Moves("Japes Shellhive Area", true, [Moves.JapesCoconut, Moves.JapesShellhive], true); // disambiguate with JapesShellhive?
+                static FactoryTopOfProduction = new Moves("Factory Top of Production", true, [Moves.FactoryProduction, Moves.ClimbingCheck], true);
+                static GalleonPastVines = new Moves("Galleon Past Vines", true, [Moves.Vines], true);
                 // Crypt Entry
                 static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
                 static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
                 static CryptLankyEntry = new Moves("Castle Crypt Doors", true, [Moves.Grape], true);
                 static CryptTinyEntry = new Moves("Castle Crypt Doors", true, [Moves.Feather], true);
                 static CryptChunkyEntry = new Moves("Castle Crypt Doors", true, [Moves.Pineapple], true);
-                // Climbing
-                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true);
                 
 
                 constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
@@ -847,6 +869,15 @@
                         opened_barriers = opened_barriers.concat(barrier_data[id]);
                     }
                 });
+                portal_data = {};
+                portal_data[Portal.JapesBehindRambiDoor.name] = [Moves.JapesBehindRambiDoor];
+                portal_data[Portal.JapesHiveArea.name] = [Moves.JapesHiveArea];
+                portal_data[Portal.FactoryTopOfProduction.name] = [Moves.FactoryTopOfProduction];
+                portal_data[Portal.GalleonPastVines.name] = [Moves.GalleonPastVines];
+                const portal_location = document.getElementById("medal-portal").value;
+                if (Object.keys(portal_data).includes(portal_location)){
+                    opened_barriers = opened_barriers.concat(portal_data[portal_location]);
+                }
             }
             updateBarriers()
 
@@ -877,58 +908,64 @@
             const requirement_data = {
                 "Japes": {
                     "DK": [
-                        new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.Coconut, Moves.ClimbingCheck]]),
-                        new Requirement(21, [[Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Coconut]]),
-                        new Requirement(9, [[Moves.JapesCoconut]]),
-                        new Requirement(20, [[Moves.JapesCoconut, Moves.Coconut]]),
-                        new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck, Moves.Blast]]),
+                        new Requirement(10, [[Moves.Moveless]]), // bunches on warp 3
+                        new Requirement(10, [[Moves.Coconut, Moves.ClimbingCheck]]), // balloon by snide
+                        new Requirement(21, [[Moves.ClimbingCheck]]), // 15 on trees and 6 singles on upper hillside
+                        new Requirement(10, [[Moves.Coconut]]), // balloon by blast course
+                        new Requirement(9, [[Moves.JapesCoconut]]), // singles in stormy tunnel
+                        new Requirement(20, [[Moves.JapesCoconut, Moves.Coconut]]), // balloon by cranky and bunches with rambi
+                        new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck]]), // singles near entrance and bunch in front of alcove TnS
+                        new Requirement(10, [[Moves.Vines, Moves.ClimbingCheck, Moves.Blast]]), // blast course
                     ],
                     "Diddy": [
-                        new Requirement(5, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.Diving]]),
-                        new Requirement(27, [[Moves.ClimbingCheck]]),
-                        new Requirement(30, [[Moves.Peanut, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Peanut, Moves.LevelSlam, Moves.ClimbingCheck]]),
-                        new Requirement(3, [[Moves.JapesCoconut]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]),
+                        new Requirement(5, [[Moves.Moveless]]), // singles by entrance
+                        new Requirement(10, [[Moves.Diving]]), // two bunches underwater
+                        new Requirement(27, [[Moves.ClimbingCheck]]), // four bunches on trees, 7 singles on upper hillside
+                        new Requirement(10, [[Moves.Peanut]]), // balloon in peanut tunnel
+                        new Requirement(20, [[Moves.Peanut, Moves.ClimbingCheck]]), // balloon atop mountain, 5 singles inside mountain, bunch by peanut switch
+                        new Requirement(15, [[Moves.Peanut, Moves.LevelSlam, Moves.ClimbingCheck]]), // balloon and bunch beyond gate in mountain
+                        new Requirement(5, [[Moves.Peanut, Moves.LevelSlam, Moves.ClimbingCheck, Moves.Charge]]), // bunch on minecart
+                        new Requirement(3, [[Moves.JapesCoconut]]), // singles in stromy tunnel
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]), // bunch in destructible hut
                     ],
                     "Lanky": [
-                        new Requirement(1, [[Moves.Moveless]]),
-                        new Requirement(3, [[Moves.JapesCoconut]]),
-                        new Requirement(10, [[Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.JapesCoconut, Moves.Grape]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]),
-                        new Requirement(2, [[Moves.Orangstand]]),
+                        new Requirement(1, [[Moves.Moveless]]), // bottom of painting hill
+                        new Requirement(3, [[Moves.JapesCoconut]]), // bottom of slopes in stormy tunnel area
+                        new Requirement(10, [[Moves.ClimbingCheck]]), // bunch by snide and bunch on tree by snide
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]), // tree in stormy tunnel
+                        new Requirement(20, [[Moves.JapesCoconut, Moves.Grape]]), // balloons in stormy tunnel
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]), // bunch in destructible hut
+                        new Requirement(5, [[Moves.JapesBehindRambiDoor]]), // Singles in rambi area
+                        new Requirement(2, [[Moves.Orangstand]]), // painting hill
                         new Requirement(9, [[Moves.JapesCoconut, Moves.Orangstand]]),
-                        new Requirement(5, [[Moves.Diving]]),
-                        new Requirement(20, [[Moves.Orangstand, Moves.Peanut]]),
-                        new Requirement(10, [[Moves.Orangstand, Moves.Peanut, Moves.Grape]]),
-                        new Requirement(5, [[Moves.Peanut, Moves.Grape]]),
+                        new Requirement(5, [[Moves.Diving]]), // underwater 
+                        new Requirement(20, [[Moves.Orangstand, Moves.Peanut]]), // bunches in painting room
+                        new Requirement(10, [[Moves.Orangstand, Moves.Peanut, Moves.Grape]]), // balloon in painting room
+                        new Requirement(5, [[Moves.Peanut, Moves.Grape]]), // bunch in grape cage
                     ],
                     "Tiny": [
-                        new Requirement(5, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(2, [[Moves.JapesCoconut]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Feather]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.Coconut, Moves.Feather]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.JapesShellhive]]),
-                        new Requirement(38, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini]]),
-                        new Requirement(10, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Mini, Moves.Feather]]),
-                        new Requirement(5, [[Moves.Peanut, Moves.Feather]]),
+                        new Requirement(5, [[Moves.Moveless]]), // singles near entrance
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]), // tree in stormy tunnel
+                        new Requirement(2, [[Moves.JapesCoconut]]), // singles before rambi door
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut]]), // bunch inside destructible hut
+                        new Requirement(5, [[Moves.JapesBehindRambiDoor]]), // singles before rambi door
+                        new Requirement(10, [[Moves.JapesCoconut, Moves.Feather]]), // balloon in stormy tunnel area
+                        new Requirement(10, [[Moves.JapesBehindRambiDoor, Moves.Feather]]), // balloon in rambi area
+                        new Requirement(5, [[Moves.JapesHiveArea]]), // bunch in front of hive
+                        new Requirement(30, [[Moves.JapesHiveArea, Moves.Mini]]), // bunches inside logs
+                        new Requirement(8, [[Moves.JapesHiveArea, Moves.Mini, Moves.LevelSlam, Moves.SaxOrOranges]]), // 8 singles around gb in shellhive
+                        new Requirement(10, [[Moves.JapesHiveArea, Moves.Mini, Moves.Feather]]), // balloon in shellhive
+                        new Requirement(5, [[Moves.Peanut, Moves.Feather]]), // bunch in feather cage
                     ],
                     "Chunky": [
-                        new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(10, [[Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]),
-                        new Requirement(30, [[Moves.JapesCoconut, Moves.Coconut, Moves.Pineapple]]),
-                        new Requirement(5, [[Moves.JapesCoconut, Moves.Coconut, Moves.Barrels]]),
-                        new Requirement(20, [[Moves.JapesCoconut, Moves.JapesShellhive, Moves.Hunky, Moves.ClimbingCheck]]),
-                        new Requirement(15, [[Moves.Barrels]]),
+                        new Requirement(5, [[Moves.Moveless]]), // singles around Chunky underground
+                        new Requirement(10, [[Moves.JapesCoconut]]), // singles in Hive tunnel
+                        new Requirement(10, [[Moves.ClimbingCheck]]), // on top of funky's hut
+                        new Requirement(5, [[Moves.JapesCoconut, Moves.ClimbingCheck]]), // on top of cranky's hut
+                        new Requirement(30, [[Moves.JapesBehindRambiDoor, Moves.Pineapple]]), // balloons in rambi area
+                        new Requirement(5, [[Moves.JapesBehindRambiDoor, Moves.Barrels]]), // under rock in rambi area
+                        new Requirement(20, [[Moves.JapesHiveArea, Moves.Hunky, Moves.ClimbingCheck]]), // bunches on trees in hive area
+                        new Requirement(15, [[Moves.Barrels]]), // 5 singles and two bunches in underground
                     ]
                 },
                 "Aztec": {
@@ -983,49 +1020,50 @@
                 },
                 "Factory": {
                     "DK": [
-                        new Requirement(15, [[Moves.Moveless]]),
-                        new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Blast]]),
-                        new Requirement(15, [[Moves.Strong, Moves.FactoryProduction]]),
-                        new Requirement(35, [[Moves.Coconut, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Coconut]]),
+                        new Requirement(15, [[Moves.Moveless]]), // 5 upper lobby to prod, 6 lower to prod, 4 prod to storage
+                        new Requirement(5, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // singles to numbers game
+                        new Requirement(20, [[Moves.Blast]]), // in blast
+                        new Requirement(15, [[Moves.Strong, Moves.FactoryProduction]]), // crushers
+                        new Requirement(35, [[Moves.Coconut, Moves.FactoryTesting, Moves.ClimbingCheck]]), // balloon by numbers, balloon in rnd, 3 bunches in power hut
+                        new Requirement(10, [[Moves.Coconut]]), // balloon by shops
                     ],
                     "Diddy": [
-                        new Requirement(12, [[Moves.Moveless]]),
-                        new Requirement(8, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.ClimbingCheck]]),
-                        new Requirement(15, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(25, [[Moves.Spring, Moves.ClimbingCheck, Moves.FactoryTesting]]),
-                        new Requirement(30, [[Moves.Guitar, Moves.Peanut, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(12, [[Moves.Moveless]]), // lower prod singles
+                        new Requirement(8, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // by funky
+                        new Requirement(10, [[Moves.ClimbingCheck]]), // by arcade
+                        new Requirement(15, [[Moves.FactoryTopOfProduction]]), // 3 bunches at top of production
+                        new Requirement(25, [[Moves.Spring, Moves.ClimbingCheck, Moves.FactoryTesting]]), // 5 blocktower bunches
+                        new Requirement(30, [[Moves.Guitar, Moves.Peanut, Moves.FactoryTesting, Moves.ClimbingCheck]]), // rnd balloons
                     ],
                     "Lanky": [
-                        new Requirement(10, [[Moves.Moveless]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.Orangstand]]),
-                        new Requirement(15, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.Grape, Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.FactoryTesting, Moves.ClimbingCheck, Moves.Trombone, Moves.Grape]]),
+                        new Requirement(11, [[Moves.Moveless]]), // w2 bunch and singles by shops
+                        new Requirement(20, [[Moves.FactoryTopOfProduction]]), // 3 bunches on steps and 1 bunch at base of production pipe
+                        new Requirement(20, [[Moves.Orangstand, Moves.FactoryTopOfProduction]]), // 4 bunches on production pipe
+                        new Requirement(4, [[Moves.Orangstand]]), // storage pipe
+                        new Requirement(15, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // 10 singles and a bunch in rnd
+                        new Requirement(10, [[Moves.Grape, Moves.FactoryTopOfProduction]]), // balloon at top of prod
+                        new Requirement(10, [[Moves.Grape, Moves.FactoryProduction]]), // balloon in crushers
+                        new Requirement(10, [[Moves.FactoryTesting, Moves.ClimbingCheck, Moves.Trombone, Moves.Grape]]), // piano balloon
                     ],
                     "Tiny": [
-                        new Requirement(10, [[Moves.Moveless]]), // 2 Bunches on Mid Hatch, Maybe Move to Climb?
-                        new Requirement(5, [[Moves.ClimbingCheck]]),
-                        new Requirement(25, [[Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.Twirl, Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(5, [[Moves.Mini, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(20, [[Moves.FactoryTesting, Moves.Feather, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Feather, Moves.FactoryProduction]]),
+                        new Requirement(13, [[Moves.Moveless]]), // 3 singles to testing and 2 Bunches on Mid Hatch, Maybe Move to Climb? climb depends on portal
+                        new Requirement(5, [[Moves.ClimbingCheck]]), // bunch in arcade
+                        new Requirement(22, [[Moves.FactoryTesting, Moves.ClimbingCheck]]), // 7 singles to testing, bunch before dartboard, singles to car race
+                        new Requirement(20, [[Moves.FactoryTopOfProduction]]), // 4 bunches at top of prod
+                        new Requirement(5, [[Moves.Twirl, Moves.FactoryTopOfProduction]]), // bunch at top of prod past barrel
+                        new Requirement(5, [[Moves.Mini, Moves.FactoryTesting, Moves.ClimbingCheck]]), // bunch by dartboard
+                        new Requirement(20, [[Moves.FactoryTesting, Moves.Feather, Moves.ClimbingCheck]]), // balloon by snide, balloon by funky
+                        new Requirement(10, [[Moves.Feather, Moves.FactoryProduction], [Moves.Feather, Moves.FactoryTopOfProduction]]), // balloon in prod, dont need climb
                     ],
                     "Chunky": [
-                        new Requirement(20, [[Moves.Moveless]]), // Same as Factory Tiny's Moveless
-                        new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]),
-                        new Requirement(20, [[Moves.FactoryProduction, Moves.ClimbingCheck]]),
-                        new Requirement(15, [[Moves.Punch]]),
-                        new Requirement(10, [[Moves.Pineapple]]),
-                        new Requirement(10, [[Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.FactoryTesting, Moves.ClimbingCheck]]),
-                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]),
+                        new Requirement(20, [[Moves.Moveless]]), // Same as Factory Tiny's Moveless, 10 singles on pole, 2 bunches on w1
+                        new Requirement(5, [[Moves.ClimbingCheck, Moves.FactoryTesting]]), // bunch by snide
+                        new Requirement(20, [[Moves.FactoryTopOfProduction]]), // 4 bunches in prod
+                        new Requirement(15, [[Moves.Punch]]), // 3 bunches in dark room
+                        new Requirement(10, [[Moves.Pineapple]]), // balloon by hatch
+                        new Requirement(10, [[Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]), // balloon above snide
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.FactoryTesting, Moves.ClimbingCheck]]), // 10 singles by toy monster
+                        new Requirement(10, [[Moves.Punch, Moves.Triangle, Moves.Pineapple, Moves.FactoryTesting, Moves.ClimbingCheck]]), // balloon by toy monster
                     ],
                 },
                 "Galleon": {
@@ -1063,7 +1101,7 @@
                     "Tiny": [
                         new Requirement(9, [[Moves.Moveless]]),
                         new Requirement(10, [[Moves.LevelSlam, Moves.Diving, Moves.GalleonPeanut]]),
-                        new Requirement(8, [[Moves.Vines]]),
+                        new Requirement(8, [[Moves.GalleonPastVines]]), // bunch and 3 singles past vines
                         new Requirement(5, [[Moves.GalleonLighthouse, Moves.RaisedWater]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.LoweredWater]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Feather, Moves.RaisedWater]]),
@@ -1074,7 +1112,7 @@
                     ],
                     "Chunky": [
                         new Requirement(12, [[Moves.Moveless]]),
-                        new Requirement(3, [[Moves.Vines]]),
+                        new Requirement(3, [[Moves.GalleonPastVines]]), // 3 singles past vines
                         new Requirement(20, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.GalleonShipSpawned]]),
                         new Requirement(10, [[Moves.GalleonLighthouse, Moves.Diving]]),
                         new Requirement(5, [[Moves.GalleonLighthouse, Moves.RaisedWater, Moves.GalleonShipSpawned, Moves.Punch]]),
@@ -1467,6 +1505,34 @@
                     getRequiredMoves();
                 });
             }
+
+            const portal_levels = {
+                "Japes": [Portal.JapesBehindRambiDoor, Portal.JapesHiveArea],
+                "Aztec": [],
+                "Factory": [Portal.FactoryTopOfProduction],
+                "Galleon": [Portal.GalleonPastVines],
+                "Fungi": [],
+                "Caves": [],
+                "Castle": [],
+            };
+
+            const level_dropdown = document.getElementById("medal-level");
+            const portal_dropdown = document.getElementById("medal-portal");
+            level_dropdown.addEventListener('change', () => {
+                portal_dropdown.innerHTML = '<option selected value="Vanilla">Vanilla Spawn</option>';
+                const level_name = level_dropdown.value;
+                portal_levels[level_name].forEach(item => {
+                    const new_option = document.createElement('option');
+                    new_option.value = item.name;
+                    new_option.text = item.name;
+                    portal_dropdown.appendChild(new_option);
+                })
+            });
+
+            portal_dropdown.addEventListener('change', () => {
+                updateBarriers();
+                getRequiredMoves();
+            })
 
             applySpecificPreset(Preset.Season4);
         </script>
