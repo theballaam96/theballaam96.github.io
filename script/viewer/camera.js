@@ -146,3 +146,44 @@ function toggleCamera() {
     controls.update();
 }
 window.toggleCamera = toggleCamera;
+
+let focused_coord_inputs = [];
+let update_coordinates = false;
+window.focused_on_coord = false;
+const coord_inputs = document.getElementById("coord-container").getElementsByTagName("input");
+for (let i = 0; i < coord_inputs.length; i++) {
+    coord_inputs[i].addEventListener("focusin", (e) => {
+        focused_coord_inputs.push(e.target.getAttribute("id"));
+        window.focused_on_coord = true;
+    });
+    coord_inputs[i].addEventListener("focusout", (e) => {
+        const coord_index = e.target.getAttribute("id");
+        focused_coord_inputs = focused_coord_inputs.filter(k => k != coord_index);
+        window.focused_on_coord = focused_coord_inputs.length > 0;
+    })
+    coord_inputs[i].addEventListener("input", () => {
+        window.focused_on_coord = true;
+        update_coordinates = true;
+    });
+}
+
+function updateUICoords(cam) {
+    const local_scale = window.getScale(document.getElementById("map_id_selector").value);
+    if (window.focused_on_coord) {
+        if (update_coordinates) {
+            update_coordinates = false;
+            let coords = [];
+            for (let i = 0; i < 3; i++) {
+                coords.push(coord_inputs[i].value * local_scale);
+            }
+            cam.position.set(...coords);
+        }
+        return;
+    }
+    const coords = cam.position.toArray();
+    for (let i = 0; i < 3; i++) {
+        coord_inputs[i].value = coords[i] / local_scale;
+        coord_inputs[i].value = parseInt(coord_inputs[i].value * 100) / 100;
+    }
+}
+window.updateUICoords = updateUICoords;
