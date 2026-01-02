@@ -309,22 +309,19 @@
 			});
 			var hook = document.getElementById("numeric_editor")
 			var children = hook.childNodes
-			var current_num_indent = 0;
+			const indents = HSectorToRaw(true);
+			let indent_index = 0;
 			var indent = document.getElementById("indent_num").checked
 			//console.log(indent)
 			for (let c = 0; c < children.length; c++) {
 				var focused_child = hook.childNodes[c];
-				if (focused_child) {
-					var pad = current_num_indent * 30;
+				if (focused_child && focused_child.innerText.length > 0) {
+					const pad = indents[indent_index] * 30;
+					indent_index++;
 					if (indent) {
 						focused_child.style["padding-left"] = pad.toString() + "px"
 					} else {
 						focused_child.style["padding-left"] = 0
-					}
-					if (focused_child.innerText.substring(0,4).toLowerCase() == "cond") {
-						current_num_indent++;
-					} else if (focused_child.innerText.toLowerCase() == "endblock") {
-						current_num_indent = 0;
 					}
 					focused_child.removeAttribute("class")
 					focused_child.classList.add("line" + c.toString())
@@ -337,37 +334,13 @@
 		}
 
 		function convertScriptLine(json) {
-			string = "";
-			var has_params = false;
-			if (json.type == "condition") {
-				if (json.func & 0x8000) {
-					string += "CONDINV "
-				} else {
-					string += "COND "
-				}
-				string += (json.func & 0x7FFF) + " | "
-				has_params = true;
-			} else if (json.type == "execution") {
-				string += "EXEC " + json.func + " | "
-				has_params = true;
-			} else if (json.type == "endblock") {
-				string += "ENDBLOCK"
+			switch(json.type) {
+				case "condition":
+					return `${grabHConditional(json.func, json.params)}\n`;
+				case "execution":
+					return `${grabHExecution(json.func, json.params)}\n`;
 			}
-			
-			if (has_params) {
-				json.params.forEach((item, index) => {
-					string += item
-					if (index < 2) {
-						string += " "
-					}
-				})
-			}
-			if (json.comment) {
-				string += (json.comment.length > 0 ? `${json.type == "comment" ? "" : " "}${COMMENT_TAG} ${json.comment}` : "")
-			}
-
-			string += "\n"
-			return string
+			return "\n"
 		}
 
 		function intToArr(val,size) {
@@ -454,7 +427,7 @@
 
 		function liveUpdate() {
 			var text = document.getElementById("numeric_editor").innerText
-			var lines = text.split("\n").filter(item => item != "")
+			var lines = HSectorToRaw()
 			var success = true;
 			var can_update = true;
 			var errors = []
@@ -605,8 +578,7 @@
 			var success = liveUpdate();
 			if (success) {
 				var hook = document.getElementById("numeric_editor")
-				var text = hook.innerText;
-				var lines = text.split("\n").filter(item => item != "").slice()
+				var lines = HSectorToRaw().slice()
 				var existing_data = scripts.filter(item => item.id == viewed_file)
 				var is_new = true;
 				var behav = 0;
@@ -861,6 +833,10 @@
 			saveJSON(data,'output.json')
 		}
 
+		function exportScriptToH() {
+
+		}
+
 		function exportScript() {
 			numericToJSON();
 			export_item = scripts.find(item => item.id == viewed_file)
@@ -923,13 +899,13 @@
 		var current_numeric_line = 0;
 		function numericCommandsToC() {
 			num_hook = document.getElementById("numeric_editor")
-			lines = num_hook.childNodes
+			lines = HSectorToRaw()
 			current_numeric_line = 0
 			document.getElementById("c_comparison").innerHTML = "";
 			//lines = num_hook.innerText.split("\n").filter(item => item != "")
 			tab_indentation = 0;
 			for (let l = 0; l < lines.length; l++) {
-				item = lines[l].innerText;
+				item = lines[l];
 				if (item) {
 					if (item != "") {
 						// Filter
@@ -1195,6 +1171,1121 @@
 				"details": "Checks if player ihas a specific control state & progress",
 			},
 		]
+
+		class HStatement {
+			constructor(index, fn_name, parameter_count, is_condition, params = [], param_names = [], condition = null) {
+				this.index = index;
+				this.fn_name = fn_name;
+				this.parameter_count = parameter_count;
+				this.is_condition = is_condition;
+				this.params = params;
+				this.param_names = param_names;
+				this.condition = condition;
+				if (this.params.length != this.parameter_count) {
+					console.log(`Parameter count mismatch for ${this.is_condition ? 'cond' : 'exec'} ${this.index}: ${this.parameter_count} != ${this.params.length}`)
+				}
+				if (this.param_names.length != this.parameter_count) {
+					console.log(`Parameter name count mismatch for ${this.is_condition ? 'cond' : 'exec'} ${this.index}: ${this.parameter_count} != ${this.param_names.length}`)
+				}
+			}
+
+			get_function_print(p) {
+				return `${this.fn_name}(${this.params.map(k => p[k]).join(", ")})`;
+			}
+		}
+
+		const statements = [
+			new HStatement(0, "TRUE", 0, true),
+			new HStatement(1, "IS_STATE", 2, true, [0, 1], ["TARGET_STATE", "STATE_CONTROLLER_INDEX"]),
+			new HStatement(2, "IS_PLAYER_STANDING_ON_LOCKED_1", 0, true),
+			new HStatement(3, "FALSE", 0, true),
+			new HStatement(4, "IS_STATE_TIMER", 2, true, [0, 1], ["TARGET_TIMER", "STATE_TIMER_CONTROLLER_INDEX"]),
+			new HStatement(5, "UNK_COND_5", 2, true, [0, 1], ["ARG_0", "ARG_1"]),
+			/*
+				case 6:
+					display(file, 
+						"if (*(code *)(%s)(behaviour,this->id,%s,%s) %s== 0) {", [hex(0x80748048 + (params[0] * 4)), str(params[1]), str(params[2]), inverseFlagInvertedChar])
+					break;
+					*/
+			new HStatement(7, "UNK_COND_7", 2, true, [0, 1], ["ARG_1", "ARG_2"]),
+			/*
+				case 8:
+					display(file, "if (*(byte *)(behaviour + 0x51) %s== 0) {", [inverseFlagInvertedChar])
+					break;
+				case 9:
+					display(file, "if (*(byte *)(behaviour + 0x52) %s== 0) {", [inverseFlagInvertedChar])
+					break;
+					*/
+			new HStatement(10, "IS_PLAYER_STANDING_ON_LOCKED_2", 0, true),
+			new HStatement(11, "IS_PLAYER_STANDING_ON_LOCKED_3", 0, true),
+			/*
+				case 12:
+					display(file, "if (%s(((((FLOAT_807F621C == FLOAT_807F61FC) && (FLOAT_807F6220 == 1729.11706543)) && ((FLOAT_807F6224 == 3433.54956055 && ((FLOAT_807F6228 == 330 && (FLOAT_807F622C == 170)))))) && (FLOAT_807F6230 == 0)) && (FLOAT_807F6234 == 1))) {", [inverseFlagInvertedChar])
+					break;
+					*/
+			new HStatement(13, "IS_PLAYER_STANDING_ON_SUBPART", 1, true, [0], ["SUBPART_INDEX"]),
+			new HStatement(14, "IS_OBJECT_OFFSCREEN", 1, true, [0], ["DISTANCE_LIMIT"]),
+			/*
+				case 15:
+					display(file, "if (FUN_80723C98(*(word *) (behaviour + 0x38)) %s== 0) {", [inverseFlagInvertedChar])
+					break;
+				case 16:
+					x10_conditional = "";
+					x10_conditional_2 = "";
+					if (params[1] != -1) {
+						x10_conditional = "(*(byte *)(behaviour + 0x5C) != " + str(params[1]) + ") || "
+					}
+					if( params[0] != 0) {
+						x10_conditional_2 = "(FUN_8067ACC0(*(ushort *)(behaviour + 0x5E)) & " + str(params[0]) + ")"
+						display(file, "if ((((*(byte *)(behaviour + 0x5C) == 0) || %s%s)) || (canHitSwitch() == 0)) {", [x10_conditional, x10_conditional_2])
+						display(file, "x10_uvar9 = 0",[])
+						display(file, "} else {",[])
+						display(file, "FUN_80641724(ObjectModel2ArrayPointer[id2index(this->id)].object_type)",[])
+						display(file, "x10_uvar9 = 1",[])
+						display(file, "}",[])
+						display(file, "if (x10_uvar9 %s== 1) {", [inverseFlagChar])
+					} else {
+						if (inverseFlag == 1) {
+							display(file, "if (true) {",[])
+						} else {
+							display(file, "if (1 == 0) {",[])
+						}
+					}
+					break;
+					*/
+			new HStatement(17, "IS_ACTOR_ON_OBJECT", 1, true, [0], ["ACTOR"]),
+			new HStatement(18, "IS_ACTOR_ON_OBJECT_SUBPART", 2, true, [0, 1], ["ACTOR", "SUBPART_INDEX"]),
+			/*
+				case 19:
+					display(file, "if (isPlayerWithinDistanceOfObject(%s) %s== 0) {", [str(params[0]), inverseFlagInvertedChar])
+					break;
+				case 20:
+					display(file, "x14_successful_count = 0",[])
+					display(file, "x14_focusedArraySlot = &loadedActorArray",[])
+					display(file, "if (loadedActorCount != 0) {",[])
+					display(file, "x14_focusedActor = loadedActorArray",[])
+					display(file, "while (true) {",[])
+					display(file, "x14_focusedArraySlot = x14_focusedArraySlot + 8",[])
+					display(file, "if ((*(uint *)(x14_focusedActor->object_properties_bitfield) & 0x2000) == 0) {",[])
+					display(file, "if (*(int *)(x14_focusedActor->actor_type) == %s) {", [str(params[0])])
+					display(file, "if (x14_focusedActor->locked_to_pad == 1) {",[])
+					display(file, "if (this->id == *(short *)(x14_focusedActor->standingOnObjectM2Index)) {",[])
+					display(file, "if (*(short *)(x14_focusedActor->unk10E) == %s) {", [str(params[1])])
+					display(file, "x14_successful_count = true",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "if ((&loadedActorArray + (loadedActorCount * 8) <= x14_focusedArraySlot)) break;",[])
+					display(file, "x14_focusedActor = *x14_focusedArraySlot",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "if (x14_successful_count %s== %s) {", [inverseFlagChar, str(params[2])])
+					break;
+				case 21:
+					display(file, "if (FUN_80650D04(this->id,%s) %s== 0) {", [str(params[0]), inverseFlagInvertedChar])
+					break;
+				case 22:
+					display(file, "if ((LevelStateBitfield & %s) != 0) {", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 23:
+					display(file, "x17_successful = 0",[])
+					display(file, "x17_focusedPlayerNumber = 0",[])
+					display(file, "if (player_count != 0) {",[])
+					display(file, "do {",[])
+					display(file, "x17_focusedPlayerNumber_ = x17_focusedPlayerNumber",[])
+					display(file, "x17_focusedPlayerNumber = (x17_focusedPlayerNumber_ + 1) & 0xFF",[])
+					display(file, "if (*(byte *)(character_change_pointer[x17_focusedPlayerNumber_]->does_player_exist) != 0) {",[])
+					display(file, "x17_focusedPlayerPointer = *(int *)(character_change_pointer[x17_focusedPlayerNumber_]->character_pointer)",[])
+					display(file, "if (*(byte *)(x17_focusedPlayerPointer->control_state) == %s) {", [str(params[0])])
+					if (params[1] == 0) {
+						display(file, "x17_successful = 1",[])
+					} else {
+						display(file, "if (x17_focusedPlayerPointer->control_state_progress == %s) {", [str(params[1])])
+						display(file, "x17_successful = 1",[])
+						display(file, "}",[])
+					}
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "} while (x17_focusedPlayerNumber < player_count)",[])
+					display(file, "}",[])
+					display(file, "if (x17_successful %s== 1) {", [inverseFlagChar])
+					break;
+				case 24:
+					display(file, "x18_successful = 0",[])
+					display(file, "if (*(byte *)(behaviour + 0x5C) != 0) {",[])
+					if (params[1] != -1) {
+						display(file, "if (*(byte *)(behaviour + 0x5C) == %s){", [str(params[1])])
+					}
+					display(file, "if ((*(ushort *)(behaviour + 0x5E) == %s) && canHitSwitch() != 0) {", [str(params[0])])
+					display(file, "FUN_80641724(ObjectModel2Array[id2index(this->id)].object_type)",[])
+					display(file, "x18_successful = 1",[])
+					display(file, "}",[])
+					if (params[1] != -1) {
+						display(file, "}",[])
+					}
+					display(file, "}",[])
+					display(file, "if (x18_successful %s== 1) {", [inverseFlagChar])
+					break;
+				case 25:
+					display(file, "if (*(int *)(PlayerPointer->ActorType) %s== %s) {", [inverseFlagChar, str(params[0])])
+					break;
+				case 26:
+					display(file, "if (*(byte *)(character_change_pointer->unk0x2C0) %s== %s) {", [inverseFlagChar, str(params[0])])
+					break;
+				case 27:
+					display(file, "if (*(byte *)(character_change_pointer->unk0x2C1) %s== 0){", [inverseFlagInvertedChar])
+					break;
+				case 28:
+					display(file, "x1C_svar6 = 80650a70(this->id, %s)",[str(params[0])])
+					if (params[1] == 0) {
+						if (inverseFlag == 0) {
+							display(file, "if (x1C_svar6 < %s) {", [str(params[2])])
+						} else {
+							display(file, "if (x1C_svar6 >= %s) {", [str(params[2])])
+						}
+					} else if (params[1] == 1) {
+						if (inverseFlag == 0) {
+							display(file, "if (x1C_svar6 >= %s) {", [str(params[2])])
+						} else {
+							display(file, "if (x1C_svar6 < %s) {", [str(params[2])])
+						}
+					} else {
+						display(file, "if (1 == 0) {",[])
+					}
+					break;
+				case 29:
+					if (params[0] == 0) {
+						if (inverseFlag == 0) {
+							display(file, "if (*(byte *)(behaviour + %s) < %s) {", [hex(0x48 + params[2]), str(params[1])])
+						} else {
+							display(file, "if (*(byte *)(behaviour + %s) >= %s) {", [hex(0x48 + params[2]), str(params[1])])
+						}
+					} else if (params[0] == 1) {
+						if (inverseFlag == 0) {
+							display(file, "if (*(byte *)(behaviour + %s) >= %s) {", [hex(0x48 + params[2]), str(params[1])])
+						} else {
+							display(file, "if (*(byte *)(behaviour + %s) < %s) {", [hex(0x48 + params[2]), str(params[1])])
+						}
+					} else {
+						display(file, "if (1 == 0) {",[])
+					}
+					break;
+				case 30:
+					display(file, "if ((isEnemySpawnedFromSpawnerTrigger(%s) & 0xFF) %s== 0){", [str(params[0]),inverseFlagInvertedChar])
+					break;
+				case 31:
+					if (inverseFlag == 0) {
+						display(file, "if (1 == 0) {",[])
+					} else {
+						display(file, "if (true) {",[])
+					}
+					break;
+				case 32:
+					display(file, "if ((isPlayerWithinDistance(%s) & 0xFF) %s== 0){", [str(params[0]), inverseFlagInvertedChar])
+					break;
+				case 33:
+					display(file, "x21_successful = 0",[])
+					display(file, "x21_focusedPlayerNumber = 0",[])
+					display(file, "if (player_count != 0) {",[])
+					display(file, "do {",[])
+					display(file, "x21_focusedPlayerNumber_ = x21_focusedPlayerNumber",[])
+					display(file, "x21_focusedPlayerNumber = (x21_focusedPlayerNumber_ + 1) & 0xFF",[])
+					display(file, "if (*(byte *)(character_change_pointer[x21_focusedPlayerNumber_]->does_player_exist) != 0) {",[])
+					display(file, "x21_focusedPlayerPointer = *(int *)(character_change_pointer[x21_focusedPlayerNumber_]->character_pointer)",[])
+					display(file, "if (*(byte *)(x21_focusedPlayerPointer->control_state_progress) == %s) {", [str(params[0])])
+					display(file, "x21_successful = 1",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "if (x21_successful %s== 1) {", [inverseFlagChar])
+					break;
+				case 34:
+					display(file, "if (touchingModelTwoById(%s) %s== 0) {", [hex(params[0]), inverseFlagInvertedChar])
+					break;
+				case 35:
+					display(file, "if (CutsceneActive %s== 1) {", [inverseFlagChar])
+					break;
+				case 36:
+					display(file, "x24_focusedActor = getSpawnerTiedActor(%s,0)", [str(params[0])])
+					display(file, "if (*(byte *)(x24_focusedActor->control_state) %s== %s) {", [inverseFlagChar, str(params[1])])
+					break;
+				case 37:					
+					display(file, "if (%s(*(byte *)CurrentCollectableBase->SlamLvl => %s)) {", [inverseFlagChar, str(params[0])])
+					break;
+				case 38:
+					display(file, "if ((*(uint *)(PlayerPointer->unk0x368) & %s) %s== 0) {", [hex((params[0] * 0x10000) + params[1]), inverseFlagInvertedChar])
+					break;
+				case 39:
+					display(file, "if ((*(uint *)(PlayerPointer->effectBitfield) & %s) %s== 0) {", [hex((params[0] * 0x10000) + params[1]), inverseFlagInvertedChar])
+					break;
+				case 40:
+					display(file, "if ((*(byte *)(behaviour + 0x9A) & 1) %s== 0) {", [inverseFlagChar])
+					break;
+				case 41:
+					display(file, "if (notTouchingActorSpawnerWithinRan(%s,%s,%s) %s== 0) {", [str(params[0]), str(params[1]), str(params[2]), inverseFlagInvertedChar])
+					break;
+				case 42:
+					if (inverseFlag == 0) {
+						display(file, "if (BYTE_807F61F8 != 0 || *(byte *)(PTR_0x807F61F0->control_state) == 5) {",[])
+					} else {
+						display(file, "if (BYTE_807F61F8 == 0 && *(byte *)(PTR_0x807F61F0->control_state) != 5) {",[])
+					}
+					break;
+				case 43:
+					display(file, "if (BYTE_807F61F8 %s== 0) {", [inverseFlagInvertedChar])
+					break;
+				case 44:
+					display(file, "if (FUN_80689BAC(%s) %s== 0) {", [str(params[0]), inverseFlagInvertedChar])
+					break;
+					*/
+			new HStatement(45, "IS_FLAG_SET_PERMANENT", 1, true, [0], ["FLAG_INDEX"]),
+					/*
+				case 46:
+					display(file, "if (getAndSetActorSpawnerControlStateFromActorSpawnerID(%s,0,'%s') %s== %s) {", [str(params[0]), getSetOrNot(0), inverseFlagChar, str(params[1])])
+					break;
+				case 47:
+					display(file, "if ((isCharacterSpawnerInState7(%s) & 0xFF) %s== 0) {", [str(params[0] & 0xFF), inverseFlagInvertedChar])
+					break;
+				case 48:
+					display(file, "if (*(byte *)(PlayerPointer->unk0xD1) %s== %s) {", [inverseFlagChar, str(params[0])])
+					break;
+				case 49:
+					display(file, "x31_ivar10_4 = id2index(&ModelTwoIDs[%s])", [str(params[0])])
+					display(file, "if (ObjectModel2ArrayPointer[x31_ivar10_4]->behaviour_pointer[%s] %s== %s) {", [hex(0x48 + params[2]), inverseFlagChar, str(params[1])])
+					break;
+					*/
+			new HStatement(50, "IS_PREVIOUS_MAP", 1, true, [0], ["PREVIOUS_MAP_INDEX"]),
+					/*
+				case 51:
+					if (params[0] == 0) {
+						if (inverseFlag == 0) {
+							display(file, "if (%s < getAnimationTimer(PlayerPointer)) {", [str(params[1])])
+						} else {
+							display(file, "if (%s >= getAnimationTimer(PlayerPointer)) {", [str(params[1])])
+						}
+					} else if (params[0] == 1) {
+						if (inverseFlag == 0) {
+							display(file, "if (%s >= getAnimationTimer(PlayerPointer)) {", [str(params[1])])
+						} else {
+							display(file, "if (%s < getAnimationTimer(PlayerPointer)) {", [str(params[1])])
+						}
+					} else {
+						display(file, "if (1 == 0) {",[])
+					}
+					break;
+				case 52:
+					display(file, "x34_uvar4 == FUN_806C8D2C(%s)", [str(params[0])])
+					if (inverseFlag == 0) {
+						display(file, "if (%s <= &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {", [str(params[1])])
+					} else {
+						display(file, "if (%s > &character_collectable_base[(BYTE_807FC929 * 0x5E) + (0x306 * x34_uvar4)] {", [str(params[1])])
+					}
+					break;
+				case 53:
+					display(file, "if (*(byte *)PlayerPointer->0xD0 %s== %s) {", [inverseFlagChar, str(params[0])])
+					break;
+					*/
+			new HStatement(54, "IS_FLAG_SET_TEMPORARY", 1, true, [0], ["FLAG_INDEX"]),
+					/*
+				case 55:
+					display(file, "FUN_80650D8C(this->id,%s,austack30,austack36)", [str(params[0])])
+					display(file, "if (austack30[0] %s== %s) {", [inverseFlagChar, str(params[1])])
+					break;
+				case 56:
+					display(file, "if (%s(*(byte *)Character < 5)) {", [inverseFlagChar])
+					break;
+				case 57:
+					display(file, "if ((%s& *(ushort *)PlayerPointer->CollisionQueue->TypeBitfield) %s== 0) {", [str(params[0]), inverseFlagInvertedChar])
+					break;
+				case 58:
+					display(file, "if (((1 << %s) & BYTE_807F693E) %s== 0) {", [str(params[0]), inverseFlagInvertedChar])
+					break;
+					*/
+			new HStatement(59, "IS_FLAG_SET_GLOBAL", 1, true, [0], ["FLAG_INDEX"]),
+			new HStatement(60, "IS_PLAYER_CHUNK_EQUAL", 1, true, [0], ["CHUNK_INDEX"]),
+					/*
+				case 61:
+					display(file, "if (BYTE_807F6903 %s== 0) {", [inverseFlagInvertedChar])
+					break;
+				default:
+					display(file, "if ([%s,%s,%s,%s]) {", [str(functionType), str(params[0]), str(params[1]), str(params[2])])
+					break;
+					*/
+			/*
+				case 0:
+					display(file, "FUN_80642748(%s,%s,%s)", [str(params[0]),str(params[1]),str(behaviour)])
+					break;
+					*/
+			new HStatement(1, "SET_NEXT_STATE", 2, false, [0, 1], ["TARGET_STATE", "STATE_CONTROLLER_INDEX"]),
+			new HStatement(2, "SET_PATH_SPEED", 1, false, [0], ["TARGET_SPEED"]),
+			/*
+				case 3:
+					if (params[0] == 0) {
+						display(file, "*(short *)(behaviour + %s) = %s", [hex((params[2] * 2) + 0x44), str(params[1])])
+					} else {
+						display(file, "*(short *)(behaviour + %s) = *(float *)(behaviour + %s)", [hex((params[2] * 2) + 0x44), hex((params[1] * 4) + 0x14)])
+					}
+					break;
+				case 4:
+					display(file, "FUN_80723484(*(int *)(behaviour + 0x38))",[])
+					display(file, "FUN_807238D4(*(int *)(behaviour + 0x38),0x807F621C,0x807F6220,0x807F6224)",[])
+					break;
+					*/
+			new HStatement(5, "SET_OTHER_OBJECT_STATE", 3, false, [0, 1, 2], ["OTHER_OBJECT_ID", "TARGET_STATE", "STATE_CONTROLLER_INDEX"]),
+					/*
+				case 6:
+					display(file, "*(float *)(behaviour + %s) = %s", [hex((params[0] * 4) + 0x14), str(params[1] / 10)])
+					break;
+				case 7:
+					switch(params[0]) {
+						case 16:
+							display(file, "spawn4Slices()", [])
+							break;
+						case 68:
+							display(file, "controlGiantKoshaTimer(behaviour,this->id,%s)", [str(params[1])])
+							break;
+						case 104:
+							display(file, "showAztecSandstorm(behaviour,this->id",[])
+							break;
+						case 105:
+							display(file, "spawnWrinkly(behaviour,this->id,%s)", [str(params[1])])
+							break;
+						case 113:
+							display(file, "updateMushCannonsProgress(behaviour)", [])
+							break;
+						case 122:
+							display(file, "isNotArcadeRound2()", [])
+							break;
+						case 124:
+							display(file, "doesBLockerStay()", [])
+							break;
+						case 133:
+							display(file, "hasKey()", [])
+							break;
+						default:
+							display(file, "*(code *)(%s)(behaviour,this->id,%s,%s)", [hex(0x80747E70 + (params[0] * 4)), str(params[1]), str(params[2])])
+						break;
+					}
+					break;
+				case 8:
+					display(file, "FUN_80642844(%s,%s,behaviour)", [str(params[0]), str(params[1])])
+					break;
+				case 9:
+					display(file, "if ((FLOAT_807F621C != FLOAT_807F61FC) || (FLOAT_807F6224 != 3433.54956055)) {",[])
+					display(file, "FUN_80642480(%s)", [str(params[0])])
+					display(file, "}",[])
+					break;
+				case 0xA:
+					display(file, "*(byte *)(behaviour + 0x50) = %s", [str(params[0])])
+					display(file, "*(float *)(behaviour + 0x78) = %s", [str(params[1] / 100)])
+					display(file, "*(float *)(behaviour + 0x7C) = %s", [str(params[2] / 100)])
+					break;
+				case 0xB:
+					display(file, "*(short *)(behaviour + 0x80) = %s", [str(params[0])])
+					display(file, "*(short *)(behaviour + 0x82) = %s", [str(params[1])])
+					break;
+				case 0xC:
+					display(file, "*(short *)(behaviour + 0x84) = %s", [str(params[0])])
+					display(file, "*(short *)(behaviour + 0x86) = %s", [str(params[1])])
+					break;
+				case 0xD:
+					display(file, "*(short *)(behaviour + 0x88) = %s", [str(params[0])])
+					display(file, "*(short *)(behaviour + 0x8A) = %s", [str(params[1])])
+					break;
+				case 0xE:
+					p1copy = params[1]
+					if (params[1] < 0) {
+						p1copy += 0x7F;
+					}
+					p1copy = (p1copy >> 7) & 0xFF;
+					p2copy = params[2]
+					if (params[2] < 0) {
+						p2copy += 0x7F;
+					}
+					p2copy = (p2copy >> 7) & 0xFF;
+					if (p1copy == 0) {
+						p1copy = 0x7F;
+					}
+					if (p2copy == 0) {
+						p2copy = 0xFF;
+					}
+					display(file, "if (*(short *)(behaviour + %s) < 0) {", [hex(((params[0] & 1) * 2) + 0x10)])
+					display(file, "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s,%s,%s,0)", [
+						hex(((params[0] & 1) * 2) + 0x10),
+						str(params[0]), 
+						str(params[2] & 0x7F), 
+						str(params[1] & 2),
+						str(p2copy),
+						str(p1copy / 127)
+					])
+					display(file, "}",[])
+					break;
+				case 0xF:
+					xF_ivar5 = params[1]
+					if (params[1] < 0) {
+						xF_ivar5 = xF_ivar5 + 0x7F
+					}
+					xF_uvar9 = (xF_ivar5 >> 7) & 0xFF
+					xF_bvar15 = xF_uvar9
+					xF_ivar5 = params[2]
+					if (params[2] < 0) {
+						xF_ivar5 = xF_ivar5 + 0x7F
+					}
+					xF_uvar14 = (xF_ivar5 >> 7) & 0xFF
+					if (xF_uvar9 == 0) {
+						xF_bvar15 = 0x7F
+					}
+					if (xF_uvar14 == 0) {
+						xF_uvar14 = 0xFF
+					}
+					display(file, "playSFXFromObject(this->id,%s,%s,%s,%s,%s,0.3)", [str(params[0]), str(xF_uvar14), str(xF_bvar15), str(params[1]&0x7F), str(params[2]&0x7F)])
+					break;
+				case 0x10:
+					display(file, "x10_temp = *(short *)(behaviour + %s)", [hex((params[1] * 2) + 0x10)])
+					display(file, "if (-1 < x10_temp) {",[])
+					display(file, "FUN_80605380(x10_temp)",[])
+					display(file, "*(short *)(behaviour + %s) = 0xFFFF", [hex((params[1] * 2) + 0x10)])
+					display(file, "}",[])
+					break;
+				case 0x11:
+					display(file, "FUN_806508B4(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x12:
+					display(file, "FUN_8065092C(this->id,%s)", [str(params[0])])
+					break;
+				case 0x13:
+					display(file, "FUN_80650998(this->id,%s)", [str(params[0])])
+					break;
+				case 0x14:
+					display(file, "FUN_80650A04(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x15:
+					display(file, "FUN_80650b50(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x16:
+					display(file, "FUN_80650BBC(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x17:
+					display(file, "FUN_80650C28(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x18:
+					display(file, "FUN_80650C98(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+					*/
+			new HStatement(0x19, "SET_ACTION", 1, false, [0], ["ACTION_INDEX"]),
+				/*
+				case 0x1A:
+					display(file, "FUN_80650AD8(this->id,%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
+					break;
+				*/
+			new HStatement(0x1B, "SET_OBJECT_POSITION", 2, false, [0, 1], ["OBJECT_ID", "POSITION_INDEX"]),
+			new HStatement(0x1C, "INCREMENT_OBJECT_STATE", 3, false, [0, 1, 2], ["OBJECT_ID", "STATE_CONTROLLER_INDEX", "INCREMENT"]),
+					/*
+				case 0x1D:
+					display(file, "FUN_80642844(%s,%s,behaviour)", [str(params[0]), str(params[1])])
+					break;
+				case 0x1E:
+					display(file, "FUN_80642748(%s,%s,behaviour)", [str(params[0]), str(params[1])])
+					break;
+				case 0x1F:
+					display(file, "FUN_807232EC(*(int *)(behaviour + 0x38),%s)", [str(params[0])])
+					break;
+				case 0x20:
+					display(file, "FUN_80723380(*(int *)(behaviour + 0x38),%s)", [str(params[0])])
+					break;
+				case 0x21:
+					display(file, "FUN_80723320(*(int *)(behaviour + 0x38),%s)", [str(params[0])])
+					break;
+					*/
+			new HStatement(0x22, "SET_OBJECT_PATH", 2, false, [0, 1], ["PATH_INDEX", "STARTING_POINT"]),
+			new HStatement(0x23, "DESTROY_OBJECT_PATH", 0, false),
+					/*
+				case 0x24:
+					display(file, "FUN_8072334C(*(int *)(behaviour + 0x38),%s)", [str(params[0])])
+					break;
+					*/
+			new HStatement(0x25, "PLAY_CUTSCENE_DEFAULT_TARGET", 1, false, [0], ["CUTSCENE_INDEX"], (p) => {
+				return p[1] === 0;
+			}),
+			new HStatement(0x25, "PLAY_CUTSCENE_NO_TARGET", 1, false, [0], ["CUTSCENE_INDEX"], (p) => {
+				return p[1] === 1;
+			}),
+			new HStatement(0x25, "PLAY_CUTSCENE_CUSTOM_TARGET", 2, false, [0, 2], ["CUTSCENE_INDEX", "ACTOR_SPAWNER_ID"], (p) => {
+				return p[1] === 2;
+			}),
+			new HStatement(0x26, "SET_SCRIPT_RUN_STATE", 2, false, [0, 1], ["TARGET_STATE", "DISTANCE_CAP"]),
+					/*
+				case 0x27:
+					display(file, "FUN_80634EA4(this->id,%s,%s)", [str(params[0]), str(params[1] & 0xFF)])
+					break;
+				case 0x28:
+					display(file, "FUN_80635018(this->id,%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x29:
+					display(file, "FUN_8061EF4C(0x29,PlayerPointer->unk0x27C,%s,%s,FLOAT_807F621C)", [str(params[0] & 0xFF), str(params[1])])
+					break;
+				case 0x2A:
+					display(file, "ObjectModel2ArrayPointer[id2Index(this->id)]->unk0x3C = %s", [str(params[0])])
+					break;
+				case 0x2B:
+					display(file, "FUN_80636014(this->id,1)",[])
+					break;
+				case 0x2C:
+					display(file, "FUN_806335B0(this->id,1,%s", [str(params[0])])
+					display(file, "FUN_8067A9F0(0,PlayerPointer)",[])
+					break;
+				case 0x2D:
+					display(file, "x2d_counter = 0",[])
+					display(file, "x2d_PTR_focusedLoadedActor = &PTR_DAT_807FB930",[])
+					display(file, "if (loadedActorCount != 0) {",[])
+					display(file, "do {",[])
+					display(file, "x2d_ADDR_focusedLoadedActor = *x2d_PTR_focusedLoadedActor",[])
+					display(file, "x2d_counter = x2d_counter + 1",[])
+					display(file, "if ((*(uint *)(x2d_ADDR_focusedLoadedActor->object_properties_bitfield_1) & 0x2000) == 0) {",[])
+					display(file, "if (x2d_ADDR_focusedLoadedActor->locked_to_pad == 0x1) {",[])
+					display(file, "if (this->id == *(word *)(x2d_ADDR_focusedLoadedActor->unk0x10C)) {",[])
+					if (params[0] == 0) {
+						display(file, "*(ushort *)(x2d_ADDR_focusedLoadedActor->unk0x68) = *(ushort *)(x2d_ADDR_focusedLoadedActor->unk0x68) & 0xFFFB",[])
+					} else {
+						display(file, "*(ushort *)(x2d_ADDR_focusedLoadedActor->unk0x68) = *(ushort *)(x2d_ADDR_focusedLoadedActor->unk0x68) | 4",[])
+					}
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "x2d_PTR_focusedLoadedActor = x2d_PTR_focusedLoadedActor + 8",[])
+					display(file, "x2d_finishedArray = x2d_counter < loadedActorCount",[])
+					display(file, "} while(x2d_finishedArray)",[])
+					display(file, "}",[])
+					break;
+				case 0x2E:
+					display(file, "FUN_80651BC0(%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x2F:
+					display(file, "FUN_8060B49C(PlayerPointer,%s)", [str(params[0])])
+					break;
+				case 0x30:
+					display(file, "InitMapChange(%s,0)", [str(params[0])])
+					break;
+				case 0x31:
+					if ((params[2] & 0x100) != 0) {
+						display(file, "SetIntroStoryPlaying(2)",[])
+						display(file, "setNextTransitionType('Fade (Wrong Cutscene)')",[])
+					}
+					if ((params[2] & 0xFF) == 0) {
+						display(file, "InitMapChange_TransferredActor(%s,%s,0,0)", [str(params[0]), str(params[1])])
+					} else {
+						if ((params[2] & 0xFF) == 1) {
+							display(file, "InitMapChange_TransferredActor(%s,%s,0,1)", [str(params[0]), str(params[1])])
+						} else if ((params[2] & 0xFF) == 2) {
+							display(file, "InitMapChange_TransferredActor(%s,%s,0,3)", [str(params[0]), str(params[1])])
+						} else {
+							display(file, "InitMapChange_TransferredActor(%s,%s,0,0)", [str(params[0]), str(params[1])])
+						}
+					}
+					break;
+				case 0x32:
+					display(file, "InitMapChange_ParentMap(%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x33:
+					display(file, "FUN_8062B86C(%s,(float)%s,(float)%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
+					break;
+				case 0x34:
+					display(file, "FUN_8062B8A4(%s,(float)%s,(float)%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
+					break;
+				case 0x35:
+					display(file, "FUN_80641C98(%s,%s,this->id)", [str(params[0]), str(params[1])])
+					break;
+				case 0x36:
+					display(file, "FUN_80641BCC(%s,%s,this->id)", [str(params[0]), str(params[1])])
+					break;
+				case 0x37:
+					display(file, "FUN_80679200(PlayerPointer,0,0x400000,%s)", [str(params[0] & 0xFF)])
+					break;
+				case 0x38:
+					display(file, "FUN_80651be0(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x39:
+					display(file, "*(byte *)(behaviour + 0x4F) = %s", [str(params[0])])
+					break;
+				case 0x3A:
+					display(file, "// Execution Type 0x3A stripped from final. Parameters: %s, %s, %s", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x3B:
+					display(file, "*(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) & ~%s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x3C:
+					display(file, "if (*(int *)(behaviour + 0x94) != 0) {",[])
+					display(file, "deleteActorContainer(*(int *)(behaviour + 0x94))",[])
+					display(file, "*(int *)(behaviour + 0x94) = 0",[])
+					display(file, "}",[])
+					break;
+				case 0x3D:
+					display(file, "*(byte *)(behaviour + 0x67) = %s", [str(params[0])])
+					break;
+				case 0x3E:
+					display(file, "*(byte *)(behaviour + 0x6F) = %s", [str(params[0])])
+					break;
+				case 0x3F:
+					display(file, "*(byte *)(behaviour + 0x6E) = %s", [str(params[0])])
+					break;
+				case 0x40:
+					display(file, "*(int *)LevelStateBitfield = *(int *)LevelStateBitfield | %s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x41:
+					display(file, "WORD_807F6904 = 1",[])
+					break;
+				case 0x42:
+					display(file, "FUN_80634CC8(this->id,%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x43:
+					display(file, "if (%s == 1) {", [str(params[0])])
+					display(file, "*(int *)(behaviour + 0x8) = *(int *)(behaviour + %s)", [hex((params[1] * 4) + 0x14)])
+					display(file, "*(int *)(behaviour + 0xC) = *(int *)(behaviour + %s)", [hex((params[2] * 4) + 0x14)])
+					display(file, "}",[])
+					display(file, "else {",[])
+					display(file, "*(float *)(behaviour + 0x8) = %s", [str(params[1] / 10)])
+					display(file, "*(float *)(behaviour + 0xC) = %s", [str(params[2] / 10)])
+					display(file, "}",[])
+					break;
+				case 0x44:
+					display(file, "WORD_807F6906 = %s", [str(params[0])])
+					display(file, "WORD_807F6908 = %s", [str(params[1])])
+					break;
+				case 0x45:
+					display(file, "*(byte *)(behaviour + 0x60) = %s", [str(params[0])])
+					display(file, "*(ushort *)(behaviour + 0x62) = %s", [str(params[1])])
+					display(file, "*(byte *)(behaviour + 0x66) = %s", [str(params[2])])
+					break;
+				case 0x46:
+					display(file, "*(byte *)(behaviour + 0x70) = %s", [str(params[0])])
+					break;
+				case 0x47:
+					display(file, "*(byte *)(behaviour + 0x71) = %s", [str(params[0])])
+					break;
+				case 0x48:
+					display(file, "FUN_80604BE8(*(byte *)(behaviour + %s,%s,%s)", [hex((params[0] * 2) + 0x11), str(params[1] / 100), str(params[2])])
+					break;
+				case 0x49:
+					display(file, "createCollision(0,character_change_pointer[0]->character_pointer,%s,%s,%s,CutsceneX,CutsceneY,CutsceneZ)", [str(params[0] & 0xFF),str(params[1]),str(params[2])])
+					break;
+				case 0x4A:
+					display(file, "FUN_8063393C(this->id,1,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x4B:
+					display(file, "FUN_8072ED9C(this->id,%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x4C:
+					display(file, "x4C_temp = FUN_80650A70()",[])
+					display(file, "x4C_temp = (x4C_temp + %s)", [hex(params[1])])
+					display(file, "if (x4C_temp < 0) {",[])
+					display(file, "x4C_temp = 0",[])
+					display(file, "}",[])
+					display(file, "FUN_80650A04(this->id,%s,x4C_temp)", [str(params[0])])
+					break;
+				case 0x4D:
+					display(file, "x4D_svar12 = SpawnModelTwoObject(0,%s,FLOAT_807F690C,FLOAT_807F6910,FLOAT_807F6914)", [str(params[0])])
+					if (params[1] == 0) {
+						display(file, "FUN_80641B00(x4D_svar12,this->id,%s)", [str(params[2])])
+					}
+					break;
+				case 0x4E:
+					display(file, "FUN_807146A4(%s)", [str(params[0])])
+					display(file, "FUN_807149B8(1)",[])
+					display(file, "FUN_80714B84(0)",[])
+					break;
+				case 0x4F:
+					display(file, "if (BYTE_807F6938 != 0x10) {",[])
+					if (params[0] == -2) {
+						display(file, "(&WORD_807F6918)[BYTE_807F6938] = ObjectModel2ArrayPointer[id2index(this->id)]->id",[])
+					} else {
+						display(file, "(&WORD_807F6918)[BYTE_807F6938] = %s", [str(params[0])])
+					}
+					display(file, "BYTE_807F6938 = BYTE_807F6938 + 1",[])
+					break;
+				case 0x50:
+					display(file, "if ((&ModelTwoIDs)[%s] != -1) {", [str(params[0])])
+					display(file, "FUN_806335B0((&ModelTwoIDs)[%s],1,%s)", [str(params[0]), str(params[1])])
+					display(file, "}",[])
+					break;
+				case 0x51:
+					display(file, "FUN_806F4F50(this->id,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)",[])
+					break;
+				case 0x52:
+					display(file, "// Execution Type 0x52 stripped from final. Parameters: %s,%s,%s", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x53:
+					display(file, "// Execution Type 0x53 stripped from final. Parameters: %s,%s,%s", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x54:
+					display(file, "x54_ivar7 = id2index((&ModelTwoIDs)[%s])", [str(params[0])])
+					display(file, "if (x54_ivar7 != -1) {",[])
+					display(file, "setScriptRunState(ObjectModel2ArrayPointer[x54_ivar7].behaviour,%s,%s)", [str(params[1]), str(params[2])])
+					display(file, "}",[])
+					break;
+				case 0x55:
+					display(file, "FUN_8062B630(%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x56:
+					display(file, "FUN_80724994(1,%s,0,0)", [str(params[0])])
+					break;
+				case 0x57:
+					display(file, "FUN_80659620(&uStack52,&uStack56,&uStack60,WORD_807F693A)",[])
+					display(file, "FUN_80659670(%s + fStack32, %s + fStack56,extraout_a0,extraout_a1, %s + fStack60, WORD_807F693A)", [str(params[0] / 1000), str(params[1] / 1000), str(params[0] / 1000)])
+					break;
+				case 0x58:
+					display(file, "x58_temp = FUN_805FFE50(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					display(file, "if (x58_temp == 0) {",[])
+					display(file, "FUN_8063DB3C(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					display(file, "}",[])
+					break;
+				case 0x59:
+					display(file, "FUN_80724994(3,%s,%s,0)", [str(params[0]), str(params[1])])
+					break;
+				case 0x5A:
+					display(file, "*(ushort *)(behaviour + 0x68) = %s", [str(params[0])])
+					display(file, "*(ushort *)(behaviour + 0x6A) = %s", [str(params[1])])
+					display(file, "*(ushort *)(behaviour + 0x6C) = %s", [str(params[2])])
+					break;
+				case 0x5B:
+					display(file, "FUN_806C92C4(%s)", [str(params[0])])
+					break;
+				case 0x5C:
+					display(file, "FUN_80724A9C(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x5D:
+					display(file, "setNextTransitionType(%s)", [str(params[0])])
+					break;
+				case 0x5E:
+					display(file, "FUN_80641874(%s,%s)",[str(params[0]),str(params[1])])
+					break;
+				case 0x5F:
+					display(file, "*(uint *)(PlayerPointer->ExtraInfo->unk0x1F0) = *(uint *)(PlayerPointer->ExtraInfo->unk0x1F0 | %s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x60:
+					display(file, "FUN_8065F134()",[])
+					break;
+				case 0x61:
+					if (params[2] == 0) {
+						display(file, "playSong('%s', 1)", [getSongName(params[0])])
+					} else {
+						display(file, "playSong('%s', %s)", [getSongName(params[0]), str(params[2] / 255)])
+					}
+					break;
+				case 0x62:
+					display(file, "WORD_807F693A = %s", [str(params[0])])
+					break;
+				case 0x63:
+					display(file, "FUN_8068B830(%s,%s,%s)",[str(params[0]),str(params[1]),str(params[2])])
+					break;
+				case 0x64:
+					display(file, "FUN_8068B8FC()",[])
+					break;
+				case 0x65:
+					display(file, "*(byte *)(behaviour + %s) = (byte *)(behaviour + %s) + %s", [hex(params[1] + 0x4B), hex(params[1] + 0x4B), str(params[0])])
+					break;
+				case 0x66:
+					display(file, "if (BYTE_807F61F8 == 0) {",[])
+					display(file, "spawnActor(TimerController)",[])
+					display(file, "temp = CurrentActorPointer",[])
+					display(file, "WORD_807F61F4 = PTR_PTR_807FBB44",[])
+					display(file, "CurrentActorPointer = mainmemory.read_u32_be(0x7FBB44)",[])
+					display(file, "spawnTimer(0xDC,0x2A,%s)", [str(params[0])])
+					display(file, "BYTE_807F61F8 = 1",[])
+					display(file, "WORD_807F61F0 = PTR_PTR_807FBB44",[])
+					display(file, "CurrentActorPointer = temp",[])
+					display(file, "}",[])
+					break;
+				case 0x67:
+					display(file, "if (BYTE_807F61F8 != 0) {",[])
+					display(file, "FUN_806A2B08()",[])
+					display(file, "}",[])
+					break;
+				case 0x68:
+					display(file, "if (BYTE_807F61F8 != 0) {",[])
+					display(file, "deleteActorContainer(DWORD_807F61F0)",[])
+					display(file, "deleteActorContainer(DWORD_807F61F4)",[])
+					display(file, "}",[])
+					break;
+				case 0x69:
+					display(file, "setWaterHeight(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
+					break;
+				case 0x6A:
+					display(file, "increaseWaterHeight(%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
+					break;
+				case 0x6B:
+					display(file, "setFlag(%s>%s,%s,'Permanent')", [hex(Math.floor(params[0] / 8)), str(params[0] % 8), getTOrF(params[1])])
+					break;
+				case 0x6C:
+					display(file, "FUN_80631B8C(%s)", [str(params[0])])
+					break;
+				case 0x6D:
+					display(file, "FUN_8063A8C4(this->id,1,%s)", [str(params[0] / 100)])
+					break;
+				case 0x6E:
+					display(file, "BYTE_807F693F = %s", [str(params[0])])
+					break;
+				case 0x6F:
+					display(file, "?playMusic(%s,%s)", [str(params[0]), str(params[1] & 0xFF)])
+					break;
+				case 0x70:
+					display(file, "FUN_80602C6C(%s,%s)", [str(params[0]), str(params[1] / 255)])
+					break;
+				case 0x71:
+					display(file, "FUN_80602DC4()",[])
+					break;
+				case 0x72:
+					display(file, "getAndSetActorSpawnerControlStateFromActorSpawnerID(%s,%s,'%s')", [str(params[0]), str(params[1] & 0xFF), getSetOrNot(1)])
+					break;
+				case 0x73:
+					display(file, "FUN_806EB178(0,%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2])])
+					break;
+				case 0x74:
+					// Persistance of code running when not loaded
+					display(file, "*(byte *)(behaviour + 0x9B) = *(byte *)(behaviour + 0x9B) | %s", [hex(params[0])])
+					break;
+				case 0x75:
+					display(file, "changeTriggerActiveStateOfFirstInstanceOfType('%s',%s)", [getTriggerTypeName(params[0]), str(params[1])])
+					break;
+				case 0x76:
+					display(file, "x76_counter = 0",[])
+					display(file, "x76_focusedLoadedActorSlot = &loadedActorArray",[])
+					display(file, "if (loadedActorCount != 0) {",[])
+					display(file, "do {",[])
+					display(file, "x76_focusedLoadedActor = *x76_focusedLoadedActorSlot",[])
+					display(file, "if ((*(uint *)(x76_focusedLoadedActor->object_properties_bitfield) & 0x2000) == 0) {",[])
+					display(file, "if (x76_focusedLoadedActor->locked_to_pad == 1) {",[])
+					display(file, "if (this->id == *(short *)(x76_focusedLoadedActor->unk0x10c)) {",[])
+					display(file, "FUN_80679200(x76_focusedLoadedActor,0,8,0)",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "}",[])
+					display(file, "x76_counter = x76_counter + 1",[])
+					display(file, "x76_focusedLoadedActorSlot = x76_focusedLoadedActorSlot + 8",[])
+					display(file, "} while (x76_counter < loadedActorCount)",[])
+					display(file, "}",[])
+					break;
+				case 0x77:
+					display(file, "FUN_80650794(this->id,%s,%s,%s)", [str(params[0]), str(params[1] & 0xFF), str(params[2] / 1000)])
+					break;
+				case 0x78:
+					display(file, "FUN_806335B0(this->id,1,%s)", [str(params[0])])
+					display(file, "PlayerPointer->unk0x3A4 = uStack40",[])
+					display(file, "PlayerPointer->unk0x3A8 = uStack44",[])
+					display(file, "PlayerPointer->unk0x3AC = uStack48",[])
+					break;
+				case 0x79:
+					display(file, "setFlag(%s>%s,%s,'Temporary')", [hex(Math.floor(params[0] / 8)), str(params[0] % 8), getTOrF(params[1])])
+					break;
+				case 0x7A:
+					display(file, "FUN_80661264(%s,%s)", [str(params[0] & 0xFF), str(params[0] & 0xFF)])
+					break;
+				case 0x7B:
+					display(file, "FUN_806335B0(this->id, 1, %s, &x, &y, &z)", [str(params[1])])
+					display(file, "alterLZPosition(%s, x, y, z)", [str(params[0])])
+					break;
+				case 0x7C:
+					display(file, "BYTE_80748094 = %s", [str(params[0])])
+					break;
+				case 0x7D:
+					p1copy = params[1]
+					if (params[1] < 0) {
+						p1copy += 0x7F;
+					}
+					p1copy = (p1copy >> 7) & 0xFF;
+					p2copy = params[2]
+					if (params[2] < 0) {
+						p2copy += 0x7F;
+					}
+					p2copy = (p2copy >> 7) & 0xFF;
+					if (p1copy == 0) {
+						p1copy = 0x7F;
+					}
+					if (p2copy == 0) {
+						p2copy = 0xFF;
+					}
+					display(file, "if (*(short *)(behaviour + %s) < 0) {", [hex((2 * params[1]) + 0x10)])
+					display(file, "*(short *)(behaviour + %s) = FUN_80605044(this->id,%s,%s,%s,%s,%s,*(char*)(0x80748094))", [
+						hex((2 * params[1]) + 0x10), 
+						str(params[0]), 
+						str(params[2] & 0x7F), 
+						str(params[1] & 2),
+						str(p2copy),
+						str(p1copy / 127)
+					])
+					display(file, "}",[])
+					break;
+				case 0x7E:
+					x7e_ivar5 = params[1]
+					if (params[1] < 0) {
+						x7e_ivar5 = x7e_ivar5 + 0x7F
+					}
+					x7e_uvar9 = (x7e_ivar5 >> 7) & 0xFF
+					x7e_ivar5 = params[2]
+					if (params[2] < 0) {
+						x7e_ivar5 = x7e_ivar5 + 0x7F
+					}
+					x7e_uvar14 = (x7e_ivar5 >> 7) & 0xFF
+					x7e_bvar15 = x7e_uvar14
+					if (x7e_uvar9 == 0) {
+						x7e_uvar9 = 0x7F
+					}
+					if (x7e_uvar14 == 0) {
+						x7e_bvar15 = 0xFF
+					}
+					display(file, "if (BYTE_80748094 < 1) {",[])
+					display(file, "playSFX(%s,0x7FFF,0x427C0000,%s)", [str(params[0]), str(x7e_uvar9/127)])
+					display(file, "}",[])
+					display(file, "else {",[])
+					display(file, "FUN_806335B0(this->id,1,BYTE_80748094)",[])
+					display(file, "FUN_806086CC(%s,%s,%s,%s,0.3,0)", [str(x7e_bvar15), str(x7e_uvar9), str(params[1] & 0x7F), str(params[2] & 0x7F)])
+					display(file, "}",[])
+					break;
+				case 0x7F:
+					if (params[1] == 0) {
+						x7f_temp = 0
+					} else if (params[1] == 1) {
+						x7f_temp = 1
+					} else if (params[1] == 2) {
+						x7f_temp = 2
+					} else if (params[1] == 3) {
+						x7f_temp = 3
+					} else {
+						x7f_temp = 0
+					}
+					display(file, "FUN_8072EE0C(this->id,%s,%s)", [str(params[0]),str(x7f_temp)])
+					break;
+				case 0x80:
+					display(file, "save()")
+					break;
+				case 0x81:
+					display(file, "BYTE_807F693E = BYTE_807F693E | (1 << %s)", [str(params[0])])
+					break;
+				case 0x82:
+					display(file, "BYTE_807F693E = BYTE_807F693E & ~(1 << %s)", [str(params[0])])
+					break;
+				case 0x83:
+					_item = "Unknown " + hex(params[0])
+					if (hud_items.indexOf(params[0]) > -1) {
+						_item = hud_items[params[0]]
+					}
+					display(file, "setHUDItemAsInfinite(%s,%s,%s)", [_item, str(params[1]), getTOrF(params[2])])
+					break;
+				case 0x84:
+					display(file, "setFlag(%s>%s,%s,'Global')", [hex(Math.floor(params[0] / 8)), str(params[0] % 8), getTOrF(params[1])])
+					break;
+				case 0x85:
+					display(file, "FUN_8062D1A8()",[])
+					break;
+				case 0x86:
+					display(file, "FUN_806CF398(PlayerPointer)",[])
+					display(file, "InitMapChange_TransferredActor(0x2A,0,%s,2)", [str(params[0])])
+					break;
+				case 0x87:
+					display(file, "warpOutOfBonusGame()",[])
+					break;
+				case 0x88:
+					display(file, "DWORD_807FBB68 = DWORD_807FBB68 | %s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x89:
+					display(file, "DWORD_807FBB68 = DWORD_807FBB68 & ~%s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x8A:
+					display(file, "FUN_806417BC(%s,%s)", [str(params[0]), str(params[1])])
+					break;
+				case 0x8B:
+					display(file, "*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) & ~%s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x8C:
+					display(file, "*(uint *)(PlayerPointer->unk0x36C) = *(uint *)(PlayerPointer->unk0x36C) | %s", [hex((params[0] * 0x10000) + params[1])])
+					break;
+				case 0x8D:
+					display(file, "next_transition_type = 'Fade'",[])
+					display(file, "FUN_806CF398(PlayerPointer)",[])
+					display(file, "x8d_uvar5 = getWorld(CurrentMap,0)",[])
+					display(file, "x8d_ivar6 = isLobby(CurrentMap)",[])
+					display(file, "x8d_ivar7 = x8d_uvar5",[])
+					display(file, "if (x8d_ivar6 == 0) {",[])
+					display(file, "warpOutOfLevel(x8d_ivar7)",[])
+					display(file, "}",[])
+					display(file, "else {",[])
+					display(file, "x8d_svar12 = *(short *)(&DAT_8074809C + (x8d_ivar7 * 2))",[])
+					display(file, "x8d_dstack88 = (short)(&WORD_807480AC)[x8d_ivar7]",[])
+					display(file, "x8d_uvar9 = isFlagSet(*(short *)(&DAT_807480BC + (x8d_ivar7 * 2)),'Permanent')",[])
+					display(file, "if ((x8d_uvar9 == 0) && (x8d_svar12 == 0x57)) {",[])
+					display(file, "x8d_dstack88 = 0x15",[])
+					display(file, "}",[])
+					display(file, "x8d_ivar6 = DetermineLevel_NewLevel()",[])
+					display(file, "if (x8d_ivar6 == 0) {",[])
+					display(file, "InitMapChange(x8d_svar12,x8d_dstack88)",[])
+					display(file, "}",[])
+					break;
+				case 0x8E:
+					display(file, "FUN_8066C904(&ObjectModel2ArrayPointer[id2index(this->id)]->unk0x28)",[])
+					break;
+				case 0x8F:
+					display(file, "FUN_806348B4(&ObjectModel2ArrayPointer[id2index(this->id)]->unk0x48)",[])
+					break;
+				case 0x90:
+					display(file, "BYTE_807F6902 = %s", [str(params[0])])
+					break;
+				case 0x91:
+					display(file, "*(float *)(PlayerPointer->velocity) = %s", [str(params[0])])
+					break;
+				case 0x92:
+					display(file, "*(uint *)(PlayerPointer->unk0x368) = *(uint *)(PlayerPointer->unk0x368) | 0x40000800",[])
+					break;
+				case 0x93:
+					display(file, "FUN_8061F510(%s,%s)", [str(params[0] & 0xFF),str(params[1] & 0xFF)])
+					break;
+				case 0x94:
+					display(file, "FUN_80724994(2,%s,0,0)", [str(params[0])])
+					break;
+				case 0x95:
+					display(file, "WORD_807F693C = 0x80",[])
+					break;
+				case 0x96:
+					display(file, "BYTE_807F6903 = %s", [str(params[0])])
+					break;
+				default:
+					display(file, "[%s,%s,%s,%s]", [str(functionType),str(params[0]), str(params[1]), str(params[2])])
+					break;
+			*/
+		]
+
+		function grabHConditionalInternal(ScriptCommand, params) {
+			functionType = ScriptCommand & 0x7FFF
+			for (let s of statements) {
+				if (s.index == functionType && s.is_condition) {
+					if (s.condition === null || s.condition(params)) {
+						return s.get_function_print(params);
+					}
+				}
+			}
+			return `COND_${functionType}(${params.join(", ")})`
+		}
+
+		function grabHConditional(ScriptCommand, params) {
+			inverseFlag = ScriptCommand & 0x8000
+			const text =  grabHConditionalInternal(ScriptCommand, params);
+			if (inverseFlag) {
+				return `NOT(${text})`;
+			}
+			return text;
+		}
+
+		function grabHExecution(ScriptCommand, params) {
+			for (let s of statements) {
+				if (s.index == ScriptCommand && !s.is_condition) {
+					if (s.condition === null || s.condition(params)) {
+						return s.get_function_print(params);
+					}
+				}
+			}
+			return `EXEC_${functionType}(${params.join(", ")})`
+		}
 
 		function grabConditional(param_1, ScriptCommand,params,behaviour,param_3,file) {
 			functionType = ScriptCommand & 0x7FFF
@@ -1593,7 +2684,7 @@
 					display(file, "if (*(byte *)(PlayerPointer->unk0xD1) %s== %s) {", [inverseFlagChar, str(params[0])])
 					break;
 				case 49:
-					display(file, "x31_ivar10_4 = id2index(&WORD_807F6240[%s])", [str(params[0])])
+					display(file, "x31_ivar10_4 = id2index(&ModelTwoIDs[%s])", [str(params[0])])
 					display(file, "if (ObjectModel2ArrayPointer[x31_ivar10_4]->behaviour_pointer[%s] %s== %s) {", [hex(0x48 + params[2]), inverseFlagChar, str(params[1])])
 					break;
 				case 50:
@@ -1822,19 +2913,19 @@
 					display(file, "FUN_80650C98(this->id,%s,%s)", [str(params[0]), str(params[1])])
 					break;
 				case 0x19:
-					display(file, "setCharacterChangeParameters(%s,0,0)", [str(params[0])])
+					display(file, "setAction(%s,0,0)", [str(params[0])])
 					break;
 				case 0x1A:
 					display(file, "FUN_80650AD8(this->id,%s,%s,%s)", [str(params[0]), str(params[1]), str(params[2] / 100)])
 					break;
 				case 0x1B:
-					display(file, "if ((&WORD_807F6240)[%s] != -1) {", [str(params[0])])
-					display(file, "FUN_806335B0((&WORD_807F6240)[%s],1,%s, &CutsceneX, &CutsceneY, &CutsceneZ)", [str(params[0]), str(params[1])])
+					display(file, "if ((&ModelTwoIDs)[%s] != -1) {", [str(params[0])])
+					display(file, "FUN_806335B0((&ModelTwoIDs)[%s],1,%s, &CutsceneX, &CutsceneY, &CutsceneZ)", [str(params[0]), str(params[1])])
 					display(file, "}",[])
 					break;
 				case 0x1C:
-					display(file, "if ((&WORD_807F6240)[id2index(%s)] != -1) {", [str(params[0])])
-					display(file, "x1C_ivar7 = (&WORD_807F6240)[%s]", [str(params[0])])
+					display(file, "if ((&ModelTwoIDs)[id2index(%s)] != -1) {", [str(params[0])])
+					display(file, "x1C_ivar7 = (&ModelTwoIDs)[%s]", [str(params[0])])
 					display(file, "if ((x1C_ivar7 != -1) && (ObjectModel2ArrayPointer[x1C_ivar7].behaviour != 0)) {",[])
 					display(file, "x1C_puvar10 = ObjectModel2ArrayPointer[x1C_ivar7].behaviour + %s", [str(params[1])])
 					display(file, "x1C_puvar10[0x48] = x1C_puvar10[0x48] + %s", [str(params[2])])
@@ -1857,7 +2948,7 @@
 					display(file, "FUN_80723320(*(int *)(behaviour + 0x38),%s)", [str(params[0])])
 					break;
 				case 0x22:
-					display(file, "*(int *)(behaviour + 0x38) = FUN_80723020(FLOAT_807F6220,FLOAT_807F6224,%s)", [str(params[2])])
+					display(file, "*(int *)(behaviour + 0x38) = setPath(0, %s, %s)", [str(params[0]), str(params[1])])
 					break;
 				case 0x23:
 					display(file, "FUN_80723428(*(int *)(behaviour + 0x38))",[])
@@ -2060,8 +3151,8 @@
 					display(file, "BYTE_807F6938 = BYTE_807F6938 + 1",[])
 					break;
 				case 0x50:
-					display(file, "if ((&WORD_807F6240)[%s] != -1) {", [str(params[0])])
-					display(file, "FUN_806335B0((&WORD_807F6240)[%s],1,%s)", [str(params[0]), str(params[1])])
+					display(file, "if ((&ModelTwoIDs)[%s] != -1) {", [str(params[0])])
+					display(file, "FUN_806335B0((&ModelTwoIDs)[%s],1,%s)", [str(params[0]), str(params[1])])
 					display(file, "}",[])
 					break;
 				case 0x51:
@@ -2074,7 +3165,7 @@
 					display(file, "// Execution Type 0x53 stripped from final. Parameters: %s,%s,%s", [str(params[0]), str(params[1]), str(params[2])])
 					break;
 				case 0x54:
-					display(file, "x54_ivar7 = id2index((&WORD_807F6240)[%s])", [str(params[0])])
+					display(file, "x54_ivar7 = id2index((&ModelTwoIDs)[%s])", [str(params[0])])
 					display(file, "if (x54_ivar7 != -1) {",[])
 					display(file, "setScriptRunState(ObjectModel2ArrayPointer[x54_ivar7].behaviour,%s,%s)", [str(params[1]), str(params[2])])
 					display(file, "}",[])
@@ -2237,8 +3328,8 @@
 					display(file, "FUN_80661264(%s,%s)", [str(params[0] & 0xFF), str(params[0] & 0xFF)])
 					break;
 				case 0x7B:
-					display(file, "FUN_806335B0(this->id,%s)", [str(params[1])])
-					display(file, "FUN_8072ECFC(%s)", [str(params[0])])
+					display(file, "FUN_806335B0(this->id, 1, %s, &x, &y, &z)", [str(params[1])])
+					display(file, "alterLZPosition(%s, x, y, z)", [str(params[0])])
 					break;
 				case 0x7C:
 					display(file, "BYTE_80748094 = %s", [str(params[0])])
@@ -2445,6 +3536,94 @@
 				return false;
 			}))
 		}
+
+		function HSectorToRaw(output_indents = false) {
+			num_hook = document.getElementById("numeric_editor")
+			lines = num_hook.childNodes
+			let raw = [];
+			let indents = [];
+			let in_block = false;
+			let indent_level = 0;
+			for (let line_raw of lines) {
+				let line = line_raw.innerText;
+				if (line.length === 0) {
+					continue;
+				}
+				let command = null;
+				let command_index = null;
+				let is_condition = false;
+				let is_recognized = false;
+				let command_head = line.split("(")[0];
+				if (command_head == "NOT") {
+					command = "CONDINV";
+					command_head = line.substring(4).split("(")[0];
+				}
+				for (let s of statements) {
+					if (command_head == s.fn_name) {
+						if (command === null) {
+							// Not condinv
+							command = s.is_condition ? "COND" : "EXEC";
+						}
+						is_recognized = true;
+						is_condition = s.is_condition;
+						command_index = s.index;
+						break;
+					}
+				}
+				if (!is_recognized && command_head.length > 5 && command_head.split("_")[0].length == 4) {
+					const indicator = command_head.split("_")[0];
+					const num = parseInt(command_head.split("_")[1]);
+					if (indicator == "COND") {
+						is_condition = true;
+						command_index = num;
+						is_recognized = true;
+						if (command === null) {
+							command = "COND";
+						}
+					} else if (indicator == "EXEC") {
+						is_condition = false;
+						command_index = num;
+						is_recognized = true;
+						command = "EXEC";
+					}
+				}
+				if (!is_recognized) {
+					console.log(`Unrecognized Line: ${line}`);
+				}
+				if (is_recognized) {
+					if (in_block && is_condition) {
+						raw.push("ENDBLOCK");
+						in_block = false;
+						indent_level = 0;
+					}
+					if (line.includes(`${command_head}(`)) {
+						if (!in_block && !is_condition) {
+							in_block = true;
+						}
+						let params = [0, 0, 0];
+						const params_segment = line.split(`${command_head}(`)[1].split(")")[0].split(",").map(k => k.trim());
+						params_segment.forEach((p, i) => {
+							if (i > 2) {
+								return;
+							}
+							params[i] = p;
+						})
+						raw.push(`${command} ${command_index} | ${params.join(" ")}`)
+						indents.push(indent_level);
+						if (is_condition) {
+							indent_level++;
+						}
+					}
+				}
+			}
+			raw.push("ENDBLOCK");
+			if (output_indents) {
+				return indents;
+			}
+			return raw;
+		}
+
+
 		var scripts = [];
 		function parseFile() {
 			viewed_file = -1;
