@@ -352,6 +352,13 @@
                             <input type="number" id="loop-point" value="0" onkeyup="setPreloadState(false)"/>
                         </div>
                     </div>
+                    <h3>ROM Write Settings</h3>
+                    <div class="d-flex">
+                        <div class="sep" style="text-align:left">
+                            <label>ROM is DK64R 5.0+:</label>
+                            <input id="no_midi_compression" type="checkbox" onclick="setPreloadState(false)" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -796,7 +803,12 @@
             function preloadROMWrite() {
                 toBinary(false, current_midi_file, "file-selector")
                 const data = new Uint8Array(output_bin_file.slice());
-                compressed_midi = Array.from(pako.gzip(data, {"level": 9}));
+                const leave_uncompressed = document.getElementById("no_midi_compression").checked;
+                if (leave_uncompressed) {
+                    compressed_midi = Array.from(data);
+                } else {
+                    compressed_midi = Array.from(pako.gzip(data, {"level": 9}));
+                }
             }
 
             function writeToROM() {
