@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="dark">
 <head>
 	<title>Homebrew Header Swapper</title>
 	<style>
@@ -57,19 +57,31 @@
             }
         }
 	</style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
-<body>
+<body class="bg-dark">
     <div class="outer">
         <div class="middle">
             <div class="container">
                 <h1>Homebrew Header Swapper</h1>
-                <p>The homebrew header can cause problems on older everdrives. This tool toggles whether the header is there or not.</p>
-                <p style="color:red">This tool only works on Donkey Kong 64 US .z64 ROMs and ROM Hacks</p>
                 <label for="rom" class="custom-file-upload">
                     Upload ROM
                 </label>
                 <input id="rom" type="file" accept=".z64"/>
-                <p id="result"></p>
+                <div id="result" class="card bg-dark pb-3 px-3 mt-2 border-1" hidden>
+                    <div id="detection_result" class="mb-2 mt-1" style="color:white"></div>
+                    <div class="form-floating mb-2" id="game_list_wrapper">
+                        <select class="form-select" id="game_list" aria-label="Floating label select example">
+                           <option value="dk64_us">Donkey Kong 64 (US)</option>
+                            <option value="tooie_us">Banjo-Tooie (US)</option>
+                            <option value="add_header" hidden></option>
+                        </select>
+                        <label for="game_list">Selected Game</label>
+                    </div>
+                    <button class="btn btn-success" id="download_button">
+
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -81,6 +93,7 @@
             }
             return false;
         }
+        let file_bytes = null;
 
         function writeToFile(f, name) {
 			var write_bytes = new Uint8Array(f.length);
@@ -101,6 +114,27 @@
 			saveByteArray([write_bytes],name)
 		}
 
+        function setHeader(output) {
+            if (output == "add_header") {
+                file_bytes[0x3C] = 0x45;
+                file_bytes[0x3D] = 0x44;
+                file_bytes[0x3F] = 0x20;
+            } else if (output == "dk64_us") {
+                file_bytes[0x3C] = 0x44;
+                file_bytes[0x3D] = 0x4F;
+                file_bytes[0x3F] = 0x00;
+            } else if (output == "tooie_us") {
+                file_bytes[0x3C] = 0x42;
+                file_bytes[0x3D] = 0x37;
+                file_bytes[0x3F] = 0x00;
+            }
+            writeToFile(file_bytes, document.getElementById("rom").value.replace(/.*[\/\\]/, ''));
+        }
+
+        document.getElementById("download_button").addEventListener("click", () => {
+            setHeader(document.getElementById("game_list").value);
+        });
+
 		document.getElementById("rom").addEventListener("change", function() {
 			var fr = new FileReader();
 			fr.onload = function() {
@@ -109,19 +143,20 @@
 			    var array = new Uint8Array(data);
 			    file_bytes = array.slice()
                 const is_homebrew = checkHomebrew(file_bytes)
-                var result_hook = document.getElementById("result")
+                document.getElementById("result").removeAttribute("hidden");
+                // Detection
+                const detected = is_homebrew ? 'Homebrew Header' : 'Vanilla Header';
+                document.getElementById("detection_result").innerText = `Detected: ${detected}`;
+                const button_text = is_homebrew ? 'Remove Header' : 'Add Header';
+                document.getElementById("download_button").innerText = button_text;
+                // Hiding unimportant things
                 if (is_homebrew) {
-                    result_hook.innerText = "This ROM had a homebrew header"
-                    file_bytes[0x3C] = 0x44;
-                    file_bytes[0x3D] = 0x4F;
-                    file_bytes[0x3F] = 0x00;
+                    document.getElementById("game_list_wrapper").removeAttribute("hidden");
+                    document.getElementById("game_list").value = "dk64_us";
                 } else {
-                    result_hook.innerText = "This ROM did not have a homebrew header"
-                    file_bytes[0x3C] = 0x45;
-                    file_bytes[0x3D] = 0x44;
-                    file_bytes[0x3F] = 0x20;
+                    document.getElementById("game_list_wrapper").setAttribute("hidden", "hidden");
+                    document.getElementById("game_list").value = "add_header";
                 }
-                writeToFile(file_bytes, document.getElementById("rom").value.replace(/.*[\/\\]/, ''))
 			};
 			fr.readAsArrayBuffer(document.getElementById("rom").files[0]);
         })
