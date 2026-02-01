@@ -456,7 +456,7 @@
                     "switchAztecIce",
                     "switchClimbing",
                 ], 40, "Low", "Day");
-                static Beginner = new Preset("Beginner", "beginner", [
+                static Beginner = new Preset("Beginner (Master Branch)", "beginner", [
                     "switchAztec5DT",
                     "switchAztecLlama",
                     "switchFactoryProd",
@@ -543,6 +543,19 @@
                     "switchAztecIce",
                     "switchClimbing",
                 ], 50, "High", "Night");
+                static BeginnerDev = new Preset("Beginner Settings (Dev Branch)", "beginner_dev", [
+                    "switchJapesCoconut",
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchCavesWalls",
+                    "switchClimbing",
+                ], 35, "High", "Dusk");
 
                 constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
                     this.name = name;
@@ -561,6 +574,7 @@
                 //Preset.Season3CLO,
                 Preset.Season4,
                 Preset.Beginner,
+                Preset.BeginnerDev,
                 Preset.BLZR,
                 Preset.Vanilla,
                 Preset.TreasureHurry,
