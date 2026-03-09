@@ -16,7 +16,6 @@ if (!self.__WB_pmw) {
 } {
     let window = _____WB$wombat$assign$function_____("window");
     let document = _____WB$wombat$assign$function_____("document");
-    var WIDTH, HEIGHT, readoutElement, averageElement, holdMaxElement, textElement, loadingElement, loadingAnimationElement, averageLabelElement, holdMaxLabelElement;
     audioContext = null;
     mediaStreamSource = null;
     canvasContext = null;
@@ -32,45 +31,6 @@ if (!self.__WB_pmw) {
     nOfSelectedFiles = 0;
     fileAnalyzeIndex = 1;
     drawScaleIsDirty = !0;
-
-    function audioFromMic() {
-        window.AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioContext = new AudioContext;
-        try {
-            navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia;
-            var e = {};
-            e.googEchoCancellation = "false";
-            e.googAutoGainControl = "false";
-            e.googNoiseSuppression = "false";
-            e.googHighpassFilter = "false";
-            var t = {};
-            t.mandatory = e;
-            t.optional = [];
-            var a = {};
-            a.audio = t;
-            navigator.getUserMedia(a, gotStream, didntGetStream);
-        } catch (e) {
-            return void alert("getUserMedia threw exception :" + e)
-        }
-        document.getElementsByClassName("use-files")[0].style.visibility = "hidden";
-        document.getElementsByClassName("use-files")[0].style.transition = "all 0.0s";
-        document.getElementsByClassName("readout-group")[0].style.visibility = "visible";
-        document.getElementById("meter").style.visibility = "visible";
-        document.getElementById("settings_button").style.visibility = "visible";
-        document.getElementById("readout").style.visibility = "visible";
-        document.getElementById("beta_mic").style.visibility = "visible";
-        drawLoop();
-    }
-
-    function didntGetStream() {
-        alert("Could not get permission to use microphone.")
-    }
-
-    function gotStream(e) {
-        mediaStreamSource = audioContext.createMediaStreamSource(e);
-        var t = createAudioMeter(audioContext, !1);
-        mediaStreamSource.connect(t), drawLoop()
-    }
 
     function audioFromFile() {
         if (window.File && window.FileReader) {
@@ -122,9 +82,6 @@ if (!self.__WB_pmw) {
         var t = Number(values.momentaryLoudnessMax).toFixed(2),
             a = Number(values.shortTermLoudnessMax).toFixed(2),
             x = Number(values.integratedLoudness).toFixed(2);
-        if (nOfSelectedFiles > 1) {
-            textElement.value = textElement.value + fileAnalyzeIndex + ". ";
-        }
         document.getElementById("results_table").removeAttribute("hidden");
         document.getElementById("results-file").innerText = e.name;
         document.getElementById("results-mommax").innerText = `${t} LUFS`;
@@ -161,31 +118,6 @@ if (!self.__WB_pmw) {
         }
     }
 
-    function settingsPanel() {
-        !1 === SettingsPanelOpen ? (SettingsPanelOpen = !0, document.getElementsByClassName("settings-group")[0].style.visibility = "visible", document.getElementsByClassName("control__indicator")[0].style.transition = "all 0.5s", document.getElementsByClassName("control__indicator")[1].style.transition = "all 0.5s", document.getElementsByClassName("control__indicator")[2].style.transition = "all 0.5s", document.getElementsByClassName("control__indicator")[3].style.transition = "all 0.5s", document.getElementsByClassName("control__indicator")[4].style.transition = "all 0.5s") : (SettingsPanelOpen = !1, document.getElementsByClassName("settings-group")[0].style.visibility = "hidden", document.getElementsByClassName("control__indicator")[0].style.transition = "all 0.0s", document.getElementsByClassName("control__indicator")[1].style.transition = "all 0.0s", document.getElementsByClassName("control__indicator")[2].style.transition = "all 0.0s", document.getElementsByClassName("control__indicator")[3].style.transition = "all 0.0s", document.getElementsByClassName("control__indicator")[4].style.transition = "all 0.0s")
-    }
-
-    function setStandard(e) {
-        (usingStandard = e) === "volume" ? averageLabelElement.innerText = "AVG" : averageLabelElement.innerText = "INT", ResetAll()
-    }
-
-    function useSPLScale(e) {
-        usingSPLScale = e, drawScaleIsDirty = !0
-    }
-    window.onload = function() {
-        canvasContext = document.getElementById("meter").getContext("2d");
-        readoutElement = document.getElementById("readout");
-        averageElement = document.getElementById("average");
-        holdMaxElement = document.getElementById("hold-max");
-        averageLabelElement = document.getElementById("label-average");
-        holdMaxLabelElement = document.getElementById("label-hold-max");
-        textElement = document.getElementById("text-info");
-        WIDTH = canvasContext.canvas.width;
-        HEIGHT = canvasContext.canvas.height;
-        GuiScaling = window.devicePixelRatio;
-        addEvent(window, "resize", responsiveCanvas);
-        responsiveCanvas();
-    };
     var readFromBuffer;
     addEvent = function(e, t, a) {
         if (null != e && typeof e != "undefined") {
@@ -197,131 +129,6 @@ if (!self.__WB_pmw) {
             }
         }
     };
-
-    function responsiveCanvas() {
-        drawScaleIsDirty = !0;
-        document.getElementById("meter").getBoundingClientRect();
-        canvasContext.canvas.width = WIDTH * GuiScaling;
-        canvasContext.canvas.height = HEIGHT * GuiScaling;
-        canvasContext.canvas.style.width = `${WIDTH}px`;
-        canvasContext.canvas.style.height = `${HEIGHT}px`;
-        canvasContext.scale(GuiScaling, GuiScaling);
-    }
-
-    function mouseDown(e) {}
-
-    function drawMeterLines(e, t, a, x, s, n, i) {
-        canvasContext.lineWidth = lineWidth;
-        var r = (i - s - lineWidth) / meterRange;
-        if (!(r < .01))
-            for (var o = 0;;) {
-                var l = Math.round(-o + meterOffset),
-                    u = s + o * r;
-                if (u + lineWidth > i) break;
-                if (e >= l && t <= l && l % a == 0) {
-                    canvasContext.beginPath();
-                    canvasContext.moveTo(x, u);
-                    canvasContext.lineTo(n, u);
-                    canvasContext.stroke();
-                    o += a; 
-                } else {
-                    o++;
-                }
-            }
-    }
-
-    function drawMeterText(e, t, a, x, s, n, i, r) {
-        canvasContext.textAlign = "right";
-        var o = x / 2 * .7;
-        let l = (r - n - lineWidth) / meterRange;
-        if (!(l < .01)) {
-            for (var u = 0;;) {
-                var d = Math.round(-u + meterOffset),
-                    h = n + u * l;
-                if (h + 1 > r) break;
-                if (e >= d && t <= d && d % a == 0) {
-                    if (usingSPLScale) {
-                        d += 70;
-                    }
-                    canvasContext.fillText(Number(d).toFixed(0), i, h + o);
-                    u += a;
-                } else {
-                    u++;
-                }
-            }
-        }
-    }
-
-    function drawMeter(e, t, a, x, s) {
-        var n = (e - meterOffset) * (1 / meterRange * (s - a) * -1);
-        if (a + n <= s) {
-            canvasContext.fillRect(t, a + n, x - t, s - a - n);
-        }
-    }
-
-    function updateReadout(e, t, a) {
-        if (usingSPLScale) {
-            splCorrection = 70;
-            t += 70;
-        }
-        if (usingSPLScale && t < 0 || !usingSPLScale && t < -70) {
-            e.innerText = "-";
-        } else {
-            t = Number(t).toFixed(1);
-            if (a) {
-                if (usingStandard === "volume") {
-                    e.innerText = `${t} dB`;
-                } else if (usingStandard === "momentary") {
-                    e.innerText = `${t} LUFS M`;
-                } else {
-                    e.innerText = `${t} LUFS S`;
-                }
-            } else {
-                e.innerText = t;
-            }
-        }
-    }
-
-    function drawMainMeter(e, t, a, x, s, n, i) {
-        canvasContext.fillStyle = "white";
-        canvasContext.strokeStyle = "white";
-        canvasContext.font = `${t}px Lato`;
-        var r = x + 2 * t;
-        if (drawScaleIsDirty) {
-            drawMeterText(0, -65, 10, t, x, s, r, i);
-        }
-        var o = r + 2 * a;
-        if (drawScaleIsDirty) {
-            drawMeterLines(0, -65, 5, r + a, s, o, i);
-        }
-        canvasContext.fillStyle = "turquoise";
-        var l = n - 3 * a;
-        if (!drawScaleIsDirty) {
-            canvasContext.clearRect(o + a, s, l - (o + a), i - s);
-        }
-        drawMeter(e, o + a, s, l, i);
-        canvasContext.fillStyle = "white";
-        if (drawScaleIsDirty) {
-            drawMeterLines(0, -65, 5, l + a, s, n - a, i);
-            drawScaleIsDirty = !1;
-        }
-        canvasContext.fillStyle = "white";
-        canvasContext.beginPath();
-        canvasContext.moveTo(o + a, i);
-        canvasContext.lineTo(l, i);
-        canvasContext.stroke();
-    }
-
-    function drawITUMeter() {
-        var e = HEIGHT - 20;
-        if (usingStandard === "volume") {
-            drawMainMeter(values.volume, 16, 10, 0, 20, WIDTH, e);
-        } else if (usingStandard === "momentary") {
-            drawMainMeter(values.momentaryLoudness, 16, 10, 0, 20, WIDTH, e);
-        } else {
-            drawMainMeter(values.shortTermLoudness, 16, 10, 0, 20, WIDTH, e);
-        }
-    }
 
     function setSpinnerState(loading_state) {
         if (loading_state) {
@@ -343,36 +150,17 @@ if (!self.__WB_pmw) {
         } else alert("No valid files were selected!")
     }
 
-    function drawLoop() {
-        if (drawScaleIsDirty) {
-            canvasContext.clearRect(0, 0, WIDTH, HEIGHT);
-        }
-        drawITUMeter();
-        if (usingStandard === "volume") {
-            updateReadout(readoutElement, values.volume, !0);
-            updateReadout(holdMaxElement, values.volumeMax, !1);
-            updateReadout(averageElement, values.volumeAveraged, !1);
-        } else if (usingStandard === "momentary") {
-            updateReadout(readoutElement, values.momentaryLoudness, !0);
-            updateReadout(holdMaxElement, values.momentaryLoudnessMax, !1);
-            updateReadout(averageElement, values.integratedLoudness, !1);
-        } else if (usingStandard === "short") {
-            updateReadout(readoutElement, values.shortTermLoudness, !0);
-            updateReadout(holdMaxElement, values.shortTermLoudnessMax, !1);
-            updateReadout(averageElement, values.integratedLoudness, !1);
-        }
-        rafID = window.requestAnimationFrame(drawLoop);
-    }
     var envelopeObject, averageVolumeObject, loudnessObject, integratedObject, maxVolumeObject, maxMomentaryObject, maxShortObject, RefreshRate, fileProgress, MIN_VALUE = 1e-7,
-        RefreshCount = 0,
-        values = {};
-    values.momentaryLoudness = -200;
-    values.shortTermLoudness = -200;
-    values.integratedLoudness = -200;
-    values.volumeMax = -200;
-    values.momentaryLoudnessMax = -200;
-    values.shortTermLoudnessMax = -200;
-    values.volumeAveraged = -200;
+        RefreshCount = 0;
+    let values = {
+        momentaryLoudness: -200,
+        shortTermLoudness: -200,
+        integratedLoudness: -200,
+        volumeMax: -200,
+        momentaryLoudnessMax: -200,
+        shortTermLoudnessMax: -200,
+        volumeAveraged: -200,
+    };
     class Delay {
         constructor() {
             this.buffer = new Array;
@@ -768,22 +556,6 @@ if (!self.__WB_pmw) {
         values.volumeAveraged = -200;
         values.integratedLoudness = -200;
         RefreshCount = 0;
-    }
-
-    function ResetHoldMax() {
-        maxVolumeObject.reset();
-        maxMomentaryObject.reset();
-        maxShortObject.reset();
-        values.volumeMax = -200;
-        values.momentaryLoudnessMax = -200;
-        values.shortTermLoudnessMax = -200;
-    }
-
-    function ResetAverage() {
-        averageVolumeObject.reset();
-        integratedObject.reset();
-        values.volumeAveraged = -200;
-        values.integratedLoudness = -200;
     }
 
     function volumeAudioProcess(e) {
