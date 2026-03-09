@@ -61,6 +61,7 @@
                         <option value="nsak">NSAK</option>
                         <option value="blzr">Balanced LZR</option>
                         <option value="dkcs">Challenge Series</option>
+                        <option value="blank">Nothing</option>
                     </select>
                     <label for="logoImage">Randomizer Logo</label>
                 </div>
@@ -78,6 +79,7 @@
                         <option value="kevin blitz">KEVIN Blitz</option>
                         <option value="blzr">Balanced LZR</option>
                         <option value="challenge series">Challenge Series</option>
+                        <option value="blank">Nothing</option>
                     </select>
                     <label for="categoryTitle">Category Title</label>
                 </div>
@@ -167,8 +169,13 @@
             }
             
             // Logo Layer
-            logo_width = logoImage.width;
-            logo_height = logoImage.height;
+            if (logoImage) {
+                logo_width = logoImage.width;
+                logo_height = logoImage.height;
+            } else {
+                logo_width = 0;
+                logo_height = 0;
+            }
             const targ_width = 972;
             const targ_height = 650;
             w_scale = logo_width / targ_width;
@@ -176,15 +183,23 @@
             logo_scale = 1 / Math.max(w_scale, h_scale);
             logo_x = parseInt((canvas.width / 2) - ((logo_width * logo_scale) / 2))
             logo_y = 670 - (logo_height * logo_scale);
-            ctx.drawImage(logoImage, logo_x, logo_y, parseInt(logo_width * logo_scale), parseInt(logo_height * logo_scale));
+            if (logoImage) {
+                ctx.drawImage(logoImage, logo_x, logo_y, parseInt(logo_width * logo_scale), parseInt(logo_height * logo_scale));
+            }
             
             // Category Layer
-            cat_width = categoryImage.width;
-            cat_height = categoryImage.height;
+            cat_width = 0;
+            cat_height = 0;
+            if (categoryImage) {
+                cat_width = categoryImage.width;
+                cat_height = categoryImage.height;
+            }
             cat_x = parseInt((canvas.width / 2) - (cat_width / 2));
             
             cat_y = parseInt(init_cat_y - (cat_height / 2));
-            ctx.drawImage(categoryImage, cat_x, cat_y);
+            if (categoryImage) {
+                ctx.drawImage(categoryImage, cat_x, cat_y);
+            }
             
             const count = textCountInput.value;
 
@@ -245,6 +260,12 @@
             }
         });
         logoSelect.addEventListener("change", (e) => {
+            if (e.target.value === "blank") {
+                logoImage = null;
+                drawThumbnail();
+                return;
+            }
+
             logoImage = new Image();
             img = `assets/thumb_generator/logos/${e.target.value}.png`;
             console.log(`Loading: ${img}`)
@@ -252,12 +273,18 @@
             logoImage.onload = drawThumbnail;
         })
         categorySelect.addEventListener("change", (e) => {
+            if (e.target.value === "blank") {
+                categoryImage = null;
+                drawThumbnail();
+                return;
+            }
+
             categoryImage = new Image();
-            img = `assets/thumb_generator/categories/${e.target.value}.png`;
-            console.log(`Loading: ${img}`)
+            const img = `assets/thumb_generator/categories/${e.target.value}.png`;
+            console.log(`Loading: ${img}`);
             categoryImage.src = img;
             categoryImage.onload = drawThumbnail;
-        })
+        });
 
         canvas.addEventListener("mousedown", (e) => {
             isDragging = true;
