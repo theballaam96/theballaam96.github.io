@@ -15,32 +15,23 @@ if (!self.__WB_pmw) {
     }
 } {
     let window = _____WB$wombat$assign$function_____("window");
-    let self = _____WB$wombat$assign$function_____("self");
     let document = _____WB$wombat$assign$function_____("document");
-    let location = _____WB$wombat$assign$function_____("location");
-    let top = _____WB$wombat$assign$function_____("top");
-    let parent = _____WB$wombat$assign$function_____("parent");
-    let frames = _____WB$wombat$assign$function_____("frames");
-    let opens = _____WB$wombat$assign$function_____("opens");
-    var a = [];
-    var WIDTH, HEIGHT, readoutElement, averageElement, holdMaxElement, textElement, loadingElement, loadingAnimationElement, averageLabelElement, holdMaxLabelElement, b = function(e, t) {
-            return a[e -= 0]
-        },
-        audioContext = null,
-        mediaStreamSource = null,
-        canvasContext = null,
-        rafID = null,
-        MAIN_HEIGHT = 450,
-        GuiScaling = 1,
-        SettingsPanelOpen = !1,
-        lineWidth = 1,
-        meterRange = 70,
-        meterOffset = 0,
-        usingSPLScale = !0,
-        usingStandard = "momentary",
-        nOfSelectedFiles = 0,
-        fileAnalyzeIndex = 1,
-        drawScaleIsDirty = !0;
+    var WIDTH, HEIGHT, readoutElement, averageElement, holdMaxElement, textElement, loadingElement, loadingAnimationElement, averageLabelElement, holdMaxLabelElement;
+    audioContext = null;
+    mediaStreamSource = null;
+    canvasContext = null;
+    rafID = null;
+    MAIN_HEIGHT = 450;
+    GuiScaling = 1;
+    SettingsPanelOpen = !1;
+    lineWidth = 1;
+    meterRange = 70;
+    meterOffset = 0;
+    usingSPLScale = !0;
+    usingStandard = "momentary";
+    nOfSelectedFiles = 0;
+    fileAnalyzeIndex = 1;
+    drawScaleIsDirty = !0;
 
     function audioFromMic() {
         window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -122,14 +113,18 @@ if (!self.__WB_pmw) {
                 t = !0
             }
         }
-        t && alert("File extensions not supported: \n\n" + a)
+        if (t) {
+            alert("File extensions not supported: \n\n" + a);
+        }
     }
 
     function printLoudnessFromFile(e) {
-        var t = Number(values["momentaryLoudnessMax"])["toFixed"](2),
-            a = Number(values["shortTermLoudnessMax"])["toFixed"](2),
-            x = Number(values["integratedLoudness"])["toFixed"](2);
-        nOfSelectedFiles > 1 && (textElement["value"] = textElement["value"] + fileAnalyzeIndex + ". ");
+        var t = Number(values.momentaryLoudnessMax).toFixed(2),
+            a = Number(values.shortTermLoudnessMax).toFixed(2),
+            x = Number(values.integratedLoudness).toFixed(2);
+        if (nOfSelectedFiles > 1) {
+            textElement.value = textElement.value + fileAnalyzeIndex + ". ";
+        }
         document.getElementById("results_table").removeAttribute("hidden");
         document.getElementById("results-file").innerText = e.name;
         document.getElementById("results-mommax").innerText = `${t} LUFS`;
@@ -171,7 +166,7 @@ if (!self.__WB_pmw) {
     }
 
     function setStandard(e) {
-        (usingStandard = e) === "volume" ? averageLabelElement["innerText"] = "AVG" : averageLabelElement["innerText"] = "INT", ResetAll()
+        (usingStandard = e) === "volume" ? averageLabelElement.innerText = "AVG" : averageLabelElement.innerText = "INT", ResetAll()
     }
 
     function useSPLScale(e) {
@@ -186,13 +181,21 @@ if (!self.__WB_pmw) {
         holdMaxLabelElement = document.getElementById("label-hold-max");
         textElement = document.getElementById("text-info");
         WIDTH = canvasContext.canvas.width;
-        HEIGHT = canvasContext["canvas"]["height"];
+        HEIGHT = canvasContext.canvas.height;
         GuiScaling = window.devicePixelRatio;
         addEvent(window, "resize", responsiveCanvas);
         responsiveCanvas();
     };
-    var readFromBuffer, addEvent = function(e, t, a) {
-        null != e && typeof e != "undefined" && (e["addEventListener"] ? e["addEventListener"](t, a, !1) : e["attachEvent"] ? e["attachEvent"]("on" + t, a) : e["on" + t] = a)
+    var readFromBuffer;
+    addEvent = function(e, t, a) {
+        if (null != e && typeof e != "undefined") {
+            if (e.addEventListener) {
+                e.addEventListener(t, a, !1);
+            } else if (e.attachEvent) {
+                e.attachEvent(`on${t}`, a);
+                e[`on${t}`] = a;
+            }
+        }
     };
 
     function responsiveCanvas() {
@@ -215,30 +218,68 @@ if (!self.__WB_pmw) {
                 var l = Math.round(-o + meterOffset),
                     u = s + o * r;
                 if (u + lineWidth > i) break;
-                e >= l && t <= l && l % a == 0 ? (canvasContext["beginPath"](), canvasContext["moveTo"](x, u), canvasContext.lineTo(n, u), canvasContext["stroke"](), o += a) : o++
+                if (e >= l && t <= l && l % a == 0) {
+                    canvasContext.beginPath();
+                    canvasContext.moveTo(x, u);
+                    canvasContext.lineTo(n, u);
+                    canvasContext.stroke();
+                    o += a; 
+                } else {
+                    o++;
+                }
             }
     }
 
     function drawMeterText(e, t, a, x, s, n, i, r) {
         canvasContext.textAlign = "right";
-        var o = x / 2 * .7,
-            l = (r - n - lineWidth) / meterRange;
-        if (!(l < .01))
+        var o = x / 2 * .7;
+        let l = (r - n - lineWidth) / meterRange;
+        if (!(l < .01)) {
             for (var u = 0;;) {
                 var d = Math.round(-u + meterOffset),
                     h = n + u * l;
                 if (h + 1 > r) break;
-                e >= d && t <= d && d % a == 0 ? (usingSPLScale && (d += 70), canvasContext.fillText(Number(d).toFixed(0), i, h + o), u += a) : u++
+                if (e >= d && t <= d && d % a == 0) {
+                    if (usingSPLScale) {
+                        d += 70;
+                    }
+                    canvasContext.fillText(Number(d).toFixed(0), i, h + o);
+                    u += a;
+                } else {
+                    u++;
+                }
             }
+        }
     }
 
     function drawMeter(e, t, a, x, s) {
         var n = (e - meterOffset) * (1 / meterRange * (s - a) * -1);
-        a + n <= s && canvasContext.fillRect(t, a + n, x - t, s - a - n)
+        if (a + n <= s) {
+            canvasContext.fillRect(t, a + n, x - t, s - a - n);
+        }
     }
 
     function updateReadout(e, t, a) {
-        usingSPLScale && (splCorrection = 70, t += 70), usingSPLScale && t < 0 || !usingSPLScale && t < -70 ? e["innerText"] = "-" : (t = Number(t)["toFixed"](1), a ? usingStandard === "volume" ? e["innerText"] = t + " dB" : e["innerText"] = "momentary" === usingStandard ? t + " LUFS M" : t + " LUFS S" : e["innerText"] = t)
+        if (usingSPLScale) {
+            splCorrection = 70;
+            t += 70;
+        }
+        if (usingSPLScale && t < 0 || !usingSPLScale && t < -70) {
+            e.innerText = "-";
+        } else {
+            t = Number(t).toFixed(1);
+            if (a) {
+                if (usingStandard === "volume") {
+                    e.innerText = `${t} dB`;
+                } else if (usingStandard === "momentary") {
+                    e.innerText = `${t} LUFS M`;
+                } else {
+                    e.innerText = `${t} LUFS S`;
+                }
+            } else {
+                e.innerText = t;
+            }
+        }
     }
 
     function drawMainMeter(e, t, a, x, s, n, i) {
@@ -246,16 +287,40 @@ if (!self.__WB_pmw) {
         canvasContext.strokeStyle = "white";
         canvasContext.font = `${t}px Lato`;
         var r = x + 2 * t;
-        drawScaleIsDirty && drawMeterText(0, -65, 10, t, x, s, r, i);
+        if (drawScaleIsDirty) {
+            drawMeterText(0, -65, 10, t, x, s, r, i);
+        }
         var o = r + 2 * a;
-        drawScaleIsDirty && drawMeterLines(0, -65, 5, r + a, s, o, i), canvasContext.fillStyle = "turquoise";
+        if (drawScaleIsDirty) {
+            drawMeterLines(0, -65, 5, r + a, s, o, i);
+        }
+        canvasContext.fillStyle = "turquoise";
         var l = n - 3 * a;
-        drawScaleIsDirty || canvasContext["clearRect"](o + a, s, l - (o + a), i - s), drawMeter(e, o + a, s, l, i), canvasContext.fillStyle = "white", drawScaleIsDirty && (drawMeterLines(0, -65, 5, l + a, s, n - a, i), drawScaleIsDirty = !1), canvasContext["fillStyle"] = "white", canvasContext["beginPath"](), canvasContext["moveTo"](o + a, i), canvasContext["lineTo"](l, i), canvasContext["stroke"]()
+        if (!drawScaleIsDirty) {
+            canvasContext.clearRect(o + a, s, l - (o + a), i - s);
+        }
+        drawMeter(e, o + a, s, l, i);
+        canvasContext.fillStyle = "white";
+        if (drawScaleIsDirty) {
+            drawMeterLines(0, -65, 5, l + a, s, n - a, i);
+            drawScaleIsDirty = !1;
+        }
+        canvasContext.fillStyle = "white";
+        canvasContext.beginPath();
+        canvasContext.moveTo(o + a, i);
+        canvasContext.lineTo(l, i);
+        canvasContext.stroke();
     }
 
     function drawITUMeter() {
         var e = HEIGHT - 20;
-        "volume" === usingStandard ? drawMainMeter(values["volume"], 16, 10, 0, 20, WIDTH, e) : usingStandard === "momentary" ? drawMainMeter(values["momentaryLoudness"], 16, 10, 0, 20, WIDTH, e) : drawMainMeter(values["shortTermLoudness"], 16, 10, 0, 20, WIDTH, e)  // 0xb2
+        if (usingStandard === "volume") {
+            drawMainMeter(values.volume, 16, 10, 0, 20, WIDTH, e);
+        } else if (usingStandard === "momentary") {
+            drawMainMeter(values.momentaryLoudness, 16, 10, 0, 20, WIDTH, e);
+        } else {
+            drawMainMeter(values.shortTermLoudness, 16, 10, 0, 20, WIDTH, e);
+        }
     }
 
     function setSpinnerState(loading_state) {
@@ -279,28 +344,64 @@ if (!self.__WB_pmw) {
     }
 
     function drawLoop() {
-        drawScaleIsDirty && canvasContext["clearRect"](0, 0, WIDTH, HEIGHT), drawITUMeter(), usingStandard === "volume" ? (updateReadout(readoutElement, values["volume"], !0), updateReadout(holdMaxElement, values["volumeMax"], !1), updateReadout(averageElement, values["volumeAveraged"], !1)) : usingStandard === "momentary" ? (updateReadout(readoutElement, values["momentaryLoudness"], !0), updateReadout(holdMaxElement, values["momentaryLoudnessMax"], !1), updateReadout(averageElement, values.integratedLoudness, !1)) : usingStandard === "short" && (updateReadout(readoutElement, values["shortTermLoudness"], !0), updateReadout(holdMaxElement, values["shortTermLoudnessMax"], !1), updateReadout(averageElement, values.integratedLoudness, !1)), rafID = window["requestAnimationFrame"](drawLoop)
+        if (drawScaleIsDirty) {
+            canvasContext.clearRect(0, 0, WIDTH, HEIGHT);
+        }
+        drawITUMeter();
+        if (usingStandard === "volume") {
+            updateReadout(readoutElement, values.volume, !0);
+            updateReadout(holdMaxElement, values.volumeMax, !1);
+            updateReadout(averageElement, values.volumeAveraged, !1);
+        } else if (usingStandard === "momentary") {
+            updateReadout(readoutElement, values.momentaryLoudness, !0);
+            updateReadout(holdMaxElement, values.momentaryLoudnessMax, !1);
+            updateReadout(averageElement, values.integratedLoudness, !1);
+        } else if (usingStandard === "short") {
+            updateReadout(readoutElement, values.shortTermLoudness, !0);
+            updateReadout(holdMaxElement, values.shortTermLoudnessMax, !1);
+            updateReadout(averageElement, values.integratedLoudness, !1);
+        }
+        rafID = window.requestAnimationFrame(drawLoop);
     }
     var envelopeObject, averageVolumeObject, loudnessObject, integratedObject, maxVolumeObject, maxMomentaryObject, maxShortObject, RefreshRate, fileProgress, MIN_VALUE = 1e-7,
         RefreshCount = 0,
         values = {};
-    values["momentaryLoudness"] = -200, values.shortTermLoudness = -200, values["integratedLoudness"] = -200, values["volumeMax"] = -200, values.momentaryLoudnessMax = -200, values["shortTermLoudnessMax"] = -200, values["volumeAveraged"] = -200;
+    values.momentaryLoudness = -200;
+    values.shortTermLoudness = -200;
+    values.integratedLoudness = -200;
+    values.volumeMax = -200;
+    values.momentaryLoudnessMax = -200;
+    values.shortTermLoudnessMax = -200;
+    values.volumeAveraged = -200;
     class Delay {
         constructor() {
-            this.buffer = new Array, this.n = 0, this["prevDelaySize"] = 0
+            this.buffer = new Array;
+            this.n = 0;
+            this.prevDelaySize = 0;
         }
         resize_array(e, t) {
-            for (; e > this.buffer.length;) this["buffer"].push(t);
-            this.buffer.length = e
-        } ["delay_in_samples"](e, t) {
-            if (this["prevDelaySize"] != t) {
-                this["resize_array"](t, 0), this["prevDelaySize"] = t;
-                for (var a = 0; a < t; a++) this.buffer[a] = 0
+            for (; e > this.buffer.length;) this.buffer.push(t);
+            this.buffer.length = e;
+        }
+        delay_in_samples(e, t) {
+            if (this.prevDelaySize != t) {
+                this.resize_array(t, 0);
+                this.prevDelaySize = t;
+                for (var a = 0; a < t; a++) {
+                    this.buffer[a] = 0;
+                }
             }
-            return this["buffer"][this.n] = e, this.n++, this.n >= t && (this.n = 0), this["buffer"][this.n]
+            this.buffer[this.n] = e;
+            this.n++;
+            if (this.n >= t) {
+                this.n = 0;
+            }
+            return this.buffer[this.n];
         }
         reset() {
-            for (var e = 0; e < this.buffer.length; e++) this["buffer"][e] = 0
+            for (var e = 0; e < this.buffer.length; e++) {
+                this.buffer[e] = 0;
+            }
         }
     }
     class MovingAverage {
@@ -369,94 +470,209 @@ if (!self.__WB_pmw) {
             this._out = 0;
         }
         biquad_get_ps(e, t) {
-            var a = e.a1 - 2,
-                x = e.a1,
-                s = -e.a1 - 2,
-                n = e.a2 - 1,
-                i = e.a2 + 1,
-                r = 1 - e.a2,
-                o = i * a - x * n,
-                l = (i * s - x * r) / o,
-                u = (a * r - n * s) / o,
-                d = 1 + u + l;
-            t.k = Math.sqrt(l), t.q = t.k / u, t.vb = .5 * d * (e.b0 - e.b2) / u, t.vl = .25 * d * (e.b0 + e.b1 + e.b2) / l, t.vh = .25 * d * (e.b0 - e.b1 + e.b2)
+            var a = e.a1 - 2;
+            let x = e.a1;
+            let s = -e.a1 - 2;
+            let n = e.a2 - 1;
+            let i = e.a2 + 1;
+            let r = 1 - e.a2;
+            let o = i * a - x * n;
+            let l = (i * s - x * r) / o;
+            let u = (a * r - n * s) / o;
+            let d = 1 + u + l;
+            t.k = Math.sqrt(l);
+            t.q = t.k / u;
+            t.vb = .5 * d * (e.b0 - e.b2) / u;
+            t.vl = .25 * d * (e.b0 + e.b1 + e.b2) / l;
+            t.vh = .25 * d * (e.b0 - e.b1 + e.b2);
         }
         biquad_requantize(e, t) {
-            if (e.fs == t.fs) t.a1 = e.a1, t.a2 = e.a2, t.b0 = e.b0, t.b1 = e.b1, t.b2 = e.b2;
-            else {
+            if (e.fs == t.fs) {
+                t.a1 = e.a1;
+                t.a2 = e.a2;
+                t.b0 = e.b0;
+                t.b1 = e.b1;
+                t.b2 = e.b2;
+            } else {
                 var a, x, s, n, i = {};
-                i.k = 0, i.q = 0, i.vb = 0, i.vl = 0, i.vh = 0, this["biquad_get_ps"](e, i), x = (a = Math["tan"](e.fs / t.fs * Math["atan"](i.k))) * a, n = 1 + (s = a / i.q) + x, t.a1 = 2 * (x - 1) / n, t.a2 = (1 - s + x) / n, t.b0 = (i.vh + i.vb * s + i.vl * x) / n, t.b1 = 2 * (i.vl * x - i.vh) / n, t.b2 = (i.vh - i.vb * s + i.vl * x) / n
+                i.k = 0;
+                i.q = 0;
+                i.vb = 0;
+                i.vl = 0;
+                i.vh = 0;
+                this.biquad_get_ps(e, i);
+                x = (a = Math.tan(e.fs / t.fs * Math.atan(i.k))) * a;
+                n = 1 + (s = a / i.q) + x;
+                t.a1 = 2 * (x - 1) / n;
+                t.a2 = (1 - s + x) / n;
+                t.b0 = (i.vh + i.vb * s + i.vl * x) / n;
+                t.b1 = 2 * (i.vl * x - i.vh) / n;
+                t.b2 = (i.vh - i.vb * s + i.vl * x) / n;
             }
         }
         biquad_one(e, t) {
-            return this.out = e * t.b0 + this["in1"] * t.b1 + this.in2 * t.b2 - this["out1"] * t.a1 - this["out2"] * t.a2, this["out2"] = this["out1"], this["out1"] = this["out"], this["in2"] = this["in1"], this["in1"] = e, this["out"]
+            this.out = e * t.b0 + this.in1 * t.b1 + this.in2 * t.b2 - this.out1 * t.a1 - this.out2 * t.a2;
+            this.out2 = this.out1;
+            this.out1 = this.out;
+            this.in2 = this.in1;
+            this.in1 = e;
+            return this.out;
         }
         biquad_two(e, t) {
-            return this["_out"] = e * t.b0 + this._in1 * t.b1 + this["_in2"] * t.b2 - this["_out1"] * t.a1 - this._out2 * t.a2, this["_out2"] = this["_out1"], this["_out1"] = this["_out"], this._in2 = this["_in1"], this["_in1"] = e, this["_out"]
+            this._out = e * t.b0 + this._in1 * t.b1 + this._in2 * t.b2 - this._out1 * t.a1 - this._out2 * t.a2, this._out2 = this._out1;
+            this._out1 = this._out;
+            this._in2 = this._in1;
+            this._in1 = e;
+            return this._out;
         }
         perform_kweighting(e) {
-            return e = this["biquad_one"](e, this["biquad_one_coeffs"]), this["biquad_two"](e, this["biquad_two_coeffs"])
-        } ["setup_kweight_filter"](e) {
-            this["biquad_one_coeffs"].fs = e, this["biquad_two_coeffs"].fs = e, this.biquad_requantize(this.biquad_one_coeffs_48kHz, this.biquad_one_coeffs), this["biquad_requantize"](this["biquad_two_coeffs_48kHz"], this["biquad_two_coeffs"])
-        } ["reset"]() {
-            this["in1"] = 0, this["in2"] = 0, this["out1"] = 0, this["out2"] = 0, this["out"] = 0, this["_in1"] = 0, this["_in2"] = 0, this["_out1"] = 0, this["_out2"] = 0, this._out = 0
+            e = this.biquad_one(e, this.biquad_one_coeffs);
+            return this.biquad_two(e, this.biquad_two_coeffs);
+        }
+        setup_kweight_filter(e) {
+            this.biquad_one_coeffs.fs = e;
+            this.biquad_two_coeffs.fs = e;
+            this.biquad_requantize(this.biquad_one_coeffs_48kHz, this.biquad_one_coeffs);
+            this.biquad_requantize(this.biquad_two_coeffs_48kHz, this.biquad_two_coeffs);
+        }
+        reset() {
+            this.in1 = 0;
+            this.in2 = 0;
+            this.out1 = 0;
+            this.out2 = 0;
+            this.out = 0;
+            this._in1 = 0;
+            this._in2 = 0;
+            this._out1 = 0;
+            this._out2 = 0;
+            this._out = 0;
         }
     }
     class Loudness {
         constructor(e) {
-            this["maxChannels"] = e, this["momentary"] = 1e-10, this["short"] = 1e-10, this["kWeight"] = new Array, this["averageMomentary"] = new MovingAverage, this["averageShortTerm"] = new MovingAverage;
-            for (var t = 0; t < e; t++) this["kWeight"].push(new KWeightFilter);
-            for (this["channelWeights"] = new Array(5), t = 0; t < this.channelWeights.length; t++) this["channelWeights"][t] = new Array(6);
-            this["channelWeights"][0][0] = 1, this["channelWeights"][0][1] = 0, this["channelWeights"][0][2] = 0, this["channelWeights"][0][3] = 0, this["channelWeights"][0][4] = 0, this.channelWeights[0][5] = 0, this["channelWeights"][1][0] = 1, this["channelWeights"][1][1] = 1, this["channelWeights"][1][2] = 0, this["channelWeights"][1][3] = 0, this["channelWeights"][1][4] = 0, this["channelWeights"][1][5] = 0, this["channelWeights"][2][0] = 1, this["channelWeights"][2][1] = 1, this.channelWeights[2][2] = 1.4125375446227544, this["channelWeights"][2][3] = 1.4125375446227544, this["channelWeights"][2][4] = 1, this["channelWeights"][2][5] = 0, this["channelWeights"][3][0] = 1, this["channelWeights"][3][1] = 1, this["channelWeights"][3][2] = 1, this["channelWeights"][3][3] = 0, this["channelWeights"][3][4] = 1.4125375446227544, this["channelWeights"][3][5] = 1.4125375446227544, this["channelWeights"][4][0] = 1, this.channelWeights[4][1] = 1, this["channelWeights"][4][2] = 1, this["channelWeights"][4][3] = 1.4125375446227544, this.channelWeights[4][4] = 1.4125375446227544, this["channelWeights"][4][5] = 0
+            this.maxChannels = e;
+            this.momentary = 1e-10;
+            this.short = 1e-10;
+            this.kWeight = new Array;
+            this.averageMomentary = new MovingAverage;
+            this.averageShortTerm = new MovingAverage;
+            for (var t = 0; t < e; t++) {
+                this.kWeight.push(new KWeightFilter);
+            }
+            this.channelWeights = [
+                [1, 0, 0, 0, 0, 0],
+                [1, 1, 0, 0, 0, 0],
+                [1, 1, 1.4125375446227544, 1.4125375446227544, 1, 0],
+                [1, 1, 1, 0, 1.4125375446227544, 1.4125375446227544],
+                [1, 1, 1, 1.4125375446227544, 1.4125375446227544, 0],
+            ];
         }
         calculate(e, t, a) {
-            var x = 0,
-                s = 0;
-            s = a < 6 ? a - 1 : 3;
-            for (var n = 0; n < a; n++) x += Math.pow(this["kWeight"][n].perform_kweighting(e[n][t]) * this.channelWeights[s][n], 2);
-            this["momentary"] = .8529037030705663 * this["averageMomentary"]["average"](x), this["short"] = .8529037030705663 * this["averageShortTerm"].average(x)
-        } ["get_momentary"]() {
+            var x = 0;
+            let s = 0;
+            if (a < 6) {
+                s = a - 1;
+            } else {
+                s = 3;
+            }
+            for (var n = 0; n < a; n++) {
+                x += Math.pow(this.kWeight[n].perform_kweighting(e[n][t]) * this.channelWeights[s][n], 2);
+            }
+            this.momentary = .8529037030705663 * this.averageMomentary.average(x);
+            this.short = .8529037030705663 * this.averageShortTerm.average(x);
+        }
+        get_momentary() {
             return this.momentary
-        } ["get_short_term"]() {
-            return this["short"]
-        } ["set_samplerate"](e) {
-            this["averageMomentary"]["setup_moving_average"](400, e), this.averageShortTerm["setup_moving_average"](3e3, e);
-            for (var t = 0; t < this["maxChannels"]; t++) this["kWeight"][t]["setup_kweight_filter"](e)
-        } ["reset"]() {
-            for (var e = 0; e < this["maxChannels"]; e++) this.kWeight[e]["reset"]();
-            this["averageMomentary"]["reset"](), this["averageShortTerm"].reset()
+        }
+        get_short_term() {
+            return this.short
+        }
+        set_samplerate(e) {
+            this.averageMomentary.setup_moving_average(400, e), this.averageShortTerm.setup_moving_average(3e3, e);
+            for (var t = 0; t < this.maxChannels; t++) this.kWeight[t].setup_kweight_filter(e)
+        }
+        reset() {
+            for (var e = 0; e < this.maxChannels; e++) this.kWeight[e].reset();
+            this.averageMomentary.reset(), this.averageShortTerm.reset()
         }
     }
     class Integrated {
         constructor() {
-            this["buffer"] = new Array, this["integratedFirstThreshSum"] = 0, this.integratedFirstThreshCounter = 0
+            this.buffer = new Array;
+            this.integratedFirstThreshSum = 0;
+            this.integratedFirstThreshCounter = 0;
         }
         resize_array(e, t) {
-            for (; e > this.buffer.length;) this["buffer"].push(t);
-            this["buffer"].length = e
-        } ["get_relative_gate"](e) {
-            return this["integratedFirstThreshSum"] += e, this["integratedFirstThreshCounter"]++, this["integratedFirstThreshSum"] / this["integratedFirstThreshCounter"] * .1
-        } ["get_integrated"](e) {
+            for (; e > this.buffer.length;) this.buffer.push(t);
+            this.buffer.length = e;
+        }
+        get_relative_gate(e) {
+            this.integratedFirstThreshSum += e;
+            this.integratedFirstThreshCounter++;
+            return this.integratedFirstThreshSum / this.integratedFirstThreshCounter * .1
+        }
+        get_integrated(e) {
             this.buffer.push(e);
-            var t = this["get_relative_gate"](e);
-            return volumeToLUFS(this["get_average_above_relative_gate"](t))
-        } ["get_average_above_relative_gate"](e) {
-            for (var t = 0, a = 0, x = 0; x < this["buffer"].length; x++) this["buffer"][x] > e && (t += this.buffer[x], a++);
-            return a > 0 ? t / a : 0
-        } ["reset"]() {
-            for (var e = 0; e < this["buffer"].length; e++) this["buffer"][e] = 0;
-            this["resize_array"](0, 0), this["integratedFirstThreshSum"] = 0, this["integratedFirstThreshCounter"] = 0
+            var t = this.get_relative_gate(e);
+            return volumeToLUFS(this.get_average_above_relative_gate(t))
+        }
+        get_average_above_relative_gate(e) {
+            for (var t = 0, a = 0, x = 0; x < this.buffer.length; x++) {
+                if (this.buffer[x] > e) {
+                    t += this.buffer[x];
+                    a++;
+                }
+            }
+            if (a > 0) {
+                return t / a;
+            }
+            return 0;
+        }
+        reset() {
+            for (var e = 0; e < this.buffer.length; e++) {
+                this.buffer[e] = 0;
+            }
+            this.resize_array(0, 0);
+            this.integratedFirstThreshSum = 0;
+            this.integratedFirstThreshCounter = 0;
         }
     }
     class envelope_follower {
         constructor() {
-            this.out = 0, this["attack"] = 0, this["release"] = 0, this.lastAttack = 0, this["lastRelease"] = 0, this["lastSamplerate"] = 0
-        } ["coeffCalc"](e, t) {
-            return e < MIN_VALUE ? 0 : Math["exp"](-1 / (t * e * .001))
-        } ["envelope"](e, t, a, x) {
-            return e = Math.abs(e), a == this.lastAttack && x == this.lastRelease && this.lastSamplerate == t || (this["attack"] = this["coeffCalc"](a, t), this["release"] = this["coeffCalc"](x, t), this["lastAttack"] = a, this["lastRelease"] = x, this["lastSamplerate"] = t), e > this["out"] ? this["out"] = this["attack"] * (this.out - e) + e : this["out"] = this["release"] * (this["out"] - e) + e, this["out"]
-        } ["reset"]() {
-            this["out"] = 0
+            this.out = 0;
+            this.attack = 0;
+            this.release = 0;
+            this.lastAttack = 0;
+            this.lastRelease = 0;
+            this.lastSamplerate = 0;
+        }
+        coeffCalc(e, t) {
+            if (e < MIN_VALUE) {
+                return 0;
+            }
+            return Math.exp(-1 / (t * e * .001));
+        }
+        envelope(e, t, a, x) {
+            e = Math.abs(e);
+            if (a !== this.lastAttack || x !== this.lastRelease || t !== this.lastSamplerate) {
+
+                this.attack = this.coeffCalc(a, t);
+                this.release = this.coeffCalc(x, t);
+
+                this.lastAttack = a;
+                this.lastRelease = x;
+                this.lastSamplerate = t;
+            }
+
+            if (e > this.out) {
+                this.out = this.attack * (this.out - e) + e;
+            } else {
+                this.out = this.release * (this.out - e) + e;
+            }
+            return this.out;
+        }
+        reset() {
+            this.out = 0
         }
     }
     class AverageContinuous {
@@ -489,10 +705,37 @@ if (!self.__WB_pmw) {
 
     function createAudioMeter(e, t) {
         var a;
-        if (readFromBuffer = t, envelopeObject = new envelope_follower, loudnessObject = new Loudness(6), averageVolumeObject = new AverageContinuous, integratedObject = new Integrated, maxVolumeObject = new HoldMax, maxMomentaryObject = new HoldMax, maxShortObject = new HoldMax, fileProgress = new Array, readFromBuffer || ((a = e["createScriptProcessor"](256))["onaudioprocess"] = volumeAudioProcess, loudnessObject["set_samplerate"](e["sampleRate"])), RefreshRate = msToSamples(16.666667, e.sampleRate), values["volume"] = -200, values["momentaryLoudness"] = -200, values["shortTermLoudness"] = -200, values["integratedLoudness"] = -200, values["volumeMax"] = -200, values["momentaryLoudnessMax"] = -200, values["shortTermLoudnessMax"] = -200, values["volumeAveraged"] = -200, values["integratedLoudness"] = -200, !readFromBuffer) return a["connect"](e["destination"]), a["shutdown"] = function() {
-            this.disconnect();
-            this.onaudioprocess = null;
-        }, a
+        readFromBuffer = t;
+        envelopeObject = new envelope_follower;
+        loudnessObject = new Loudness(6);
+        averageVolumeObject = new AverageContinuous;
+        integratedObject = new Integrated;
+        maxVolumeObject = new HoldMax;
+        maxMomentaryObject = new HoldMax;
+        maxShortObject = new HoldMax;
+        fileProgress = new Array;
+        if (!readFromBuffer) {
+            (a = e.createScriptProcessor(256)).onaudioprocess = volumeAudioProcess;
+            loudnessObject.set_samplerate(e.sampleRate);
+        }
+        RefreshRate = msToSamples(16.666667, e.sampleRate);
+        values.volume = -200;
+        values.momentaryLoudness = -200;
+        values.shortTermLoudness = -200;
+        values.integratedLoudness = -200;
+        values.volumeMax = -200;
+        values.momentaryLoudnessMax = -200;
+        values.shortTermLoudnessMax = -200;
+        values.volumeAveraged = -200;
+        values.integratedLoudness = -200;
+        if (!readFromBuffer) {
+            a.connect(e.destination);
+            a.shutdown = function() {
+                this.disconnect();
+                this.onaudioprocess = null;
+            }
+            return a;
+        }
     }
 
     function volumeToDb(e) {
@@ -545,14 +788,44 @@ if (!self.__WB_pmw) {
 
     function volumeAudioProcess(e) {
         var t;
-        a, x = new Array;
-        readFromBuffer ? (t = e["numberOfChannels"], a = e["sampleRate"], loudnessObject["set_samplerate"](a)) : (t = e["inputBuffer"]["numberOfChannels"], a = e.inputBuffer["sampleRate"]);
-        for (var s = 0; s < t; s++) readFromBuffer ? x.push(e["getChannelData"](s)) : x.push(e.inputBuffer["getChannelData"](s));
+        var a, x = new Array;
+        if (readFromBuffer) {
+            t = e.numberOfChannels;
+            a = e.sampleRate;
+            loudnessObject.set_samplerate(a);
+        } else {
+            t = e.inputBuffer.numberOfChannels;
+            a = e.inputBuffer.sampleRate;
+        }
+        for (var s = 0; s < t; s++) {
+            if (readFromBuffer) {
+                x.push(e.getChannelData(s));
+            } else {
+                x.push(e.inputBuffer.getChannelData(s));
+            }
+        }
         var n = x[0].length;
         for (s = 0; s < n; s++) {
-            for (var i = 0, r = 0; r < t; r++) i = Math["max"](i, Math["abs"](x[r][s]));
-            var o, l, u = envelopeObject["envelope"](i, a, 0, 400);
-            loudnessObject["calculate"](x, s, t, a), o = loudnessObject["get_momentary"](), l = loudnessObject.get_short_term(), RefreshCount % RefreshRate == 0 && (values["volume"] = volumeToDb(u), values["momentaryLoudness"] = volumeToLUFS(o), values["shortTermLoudness"] = volumeToLUFS(l), values["volumeMax"] = maxVolumeObject.hold(values["volume"]), values["momentaryLoudnessMax"] = maxMomentaryObject["hold"](values["momentaryLoudness"]), values["shortTermLoudnessMax"] = maxShortObject["hold"](values.shortTermLoudness), values.momentaryLoudness > -70 && (values["integratedLoudness"] = integratedObject["get_integrated"](o)), values.volumeAveraged = averageVolumeObject["average"](values["volume"])), RefreshCount++
+            for (var i = 0, r = 0; r < t; r++) {
+                i = Math.max(i, Math.abs(x[r][s]));
+            }
+            var o, l, u = envelopeObject.envelope(i, a, 0, 400);
+            loudnessObject.calculate(x, s, t, a);
+            o = loudnessObject.get_momentary();
+            l = loudnessObject.get_short_term();
+            if (RefreshCount % RefreshRate == 0) {
+                values.volume = volumeToDb(u);
+                values.momentaryLoudness = volumeToLUFS(o);
+                values.shortTermLoudness = volumeToLUFS(l);
+                values.volumeMax = maxVolumeObject.hold(values.volume);
+                values.momentaryLoudnessMax = maxMomentaryObject.hold(values.momentaryLoudness);
+                values.shortTermLoudnessMax = maxShortObject.hold(values.shortTermLoudness);
+                if (values.momentaryLoudness > -70) {
+                    values.integratedLoudness = integratedObject.get_integrated(o);
+                }
+                values.volumeAveraged = averageVolumeObject.average(values.volume);
+            }
+            RefreshCount++;
         }
     }
 }
