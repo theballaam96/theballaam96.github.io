@@ -126,9 +126,9 @@ if (!self.__WB_pmw) {
 
     function analyzeFile(e) {
         var t = new FileReader;
-        t.readAsArrayBuffer(e), t["onload"] = function(t) {
-            decode(t.target["result"], e)
-        }, t["onerror"] = function(e) {
+        t.readAsArrayBuffer(e), t.onload = function(t) {
+            decode(t.target.result, e)
+        }, t.onerror = function(e) {
             alert("Reader error")
         }, t = null
     }

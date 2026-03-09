@@ -76,7 +76,9 @@
                 </button>
             </div>
             <textarea id="text-info" disabled style="visibility: hidden;" hidden></textarea>
-            <label class="fileContainer" style="visibility: hidden;" hidden> Select files (stereo only) <input id="the-file-input" type="file" name="file[]" multiple onchange="handleFiles(this.files)" />
+            <label class="fileContainer" style="visibility: hidden;" hidden>
+                Select files (stereo only)
+                <input id="the-file-input" type="file" name="file[]" multiple onchange="handleFiles(this.files)" accept="audio/*" />
             </label>
             <div id="results_table" hidden>
                 <table class="table table-striped table-hover">
