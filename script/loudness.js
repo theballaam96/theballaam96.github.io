@@ -20,6 +20,7 @@ if (!self.__WB_pmw) {
     MAIN_HEIGHT = 450;
     nOfSelectedFiles = 0;
     fileAnalyzeIndex = 1;
+    const refresh_rate_ms = 16.666667;
 
     function audioFromFile() {
         if (window.File && window.FileReader) {
@@ -141,8 +142,130 @@ if (!self.__WB_pmw) {
         } else alert("No valid files were selected!")
     }
 
+    class Graph {
+        constructor() {
+            this.historical_mom = [];
+            this.historical_st = [];
+            this.historical_int = [];
+            this.tied_chart = null;
+            this.interval = null;
+            this.tied_el = null;
+        }
+        
+        plot(mom, st, int) {
+            this.historical_mom.push(mom);
+            this.historical_st.push(st);
+            this.historical_int.push(int);
+        }
+
+        getseries() {
+            return [
+                {
+                    name: 'Momentary Max',
+                    type: 'line',
+                    data: this.historical_mom
+                },
+                {
+                    name: 'Short Term Max',
+                    type: 'line',
+                    data: this.historical_st
+                },
+                {
+                    name: 'Integrated Loudness',
+                    type: 'line',
+                    data: this.historical_int
+                },
+            ]
+        }
+
+        formatsample(s) {
+            const seconds = (s / (1000 / refresh_rate_ms)).toFixed(0);
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs.toString().padStart(2, "0")}`;
+        }
+
+        getmin() {
+            const arr = this.historical_st;
+            const subarr = arr.slice(2 * (1000 / refresh_rate_ms));
+            console.log(subarr);
+            console.log(Math.min(...subarr))
+            return parseInt(Math.min(...subarr));
+        }
+
+        toechart() {
+            return {
+                title: {
+                    text: 'LUFS Analysis'
+                },
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    data: ['Momentary Max', 'Short Term Max', 'Integrated Loudness']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                    saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: this.historical_mom.map((_, i) => this.formatsample(i)),
+                },
+                yAxis: {
+                    type: 'value',
+                    min: this.getmin(),
+                    name: 'LUFS',
+                },
+                series: this.getseries()
+            };
+        }
+
+        updateechart() {
+            this.tied_chart.setOption({
+                xAxis: {
+                    type: 'category',
+                    data: this.historical_mom.map((_, i) => this.formatsample(i)),
+                },
+                yAxis: {
+                    type: 'value',
+                    min: this.getmin(),
+                    name: 'LUFS',
+                },
+                series: this.getseries()
+            })
+        }
+
+        reset() {
+            this.historical_mom = [];
+            this.historical_st = [];
+            this.historical_int = [];
+        }
+
+        endinterval() {
+            if (this.interval !== null) {
+                clearInterval(this.interval);
+            }
+            this.interval = null;
+        }
+
+        initinterval() {
+            this.endinterval();
+            this.interval = setInterval(() => {
+                this.updateechart();
+            }, 33);
+        }
+    }
+
     var envelopeObject, averageVolumeObject, loudnessObject, integratedObject, maxVolumeObject, maxMomentaryObject, maxShortObject, RefreshRate, fileProgress, MIN_VALUE = 1e-7,
         RefreshCount = 0;
+    var graph = new Graph;
     let values = {
         momentaryLoudness: -200,
         shortTermLoudness: -200,
@@ -386,12 +509,18 @@ if (!self.__WB_pmw) {
             return this.short
         }
         set_samplerate(e) {
-            this.averageMomentary.setup_moving_average(400, e), this.averageShortTerm.setup_moving_average(3e3, e);
-            for (var t = 0; t < this.maxChannels; t++) this.kWeight[t].setup_kweight_filter(e)
+            this.averageMomentary.setup_moving_average(400, e);
+            this.averageShortTerm.setup_moving_average(3000, e);
+            for (var t = 0; t < this.maxChannels; t++) {
+                this.kWeight[t].setup_kweight_filter(e);
+            }
         }
         reset() {
-            for (var e = 0; e < this.maxChannels; e++) this.kWeight[e].reset();
-            this.averageMomentary.reset(), this.averageShortTerm.reset()
+            for (var e = 0; e < this.maxChannels; e++) {
+                this.kWeight[e].reset();
+            }
+            this.averageMomentary.reset();
+            this.averageShortTerm.reset();
         }
     }
     class Integrated {
@@ -516,7 +645,7 @@ if (!self.__WB_pmw) {
             (a = e.createScriptProcessor(256)).onaudioprocess = volumeAudioProcess;
             loudnessObject.set_samplerate(e.sampleRate);
         }
-        RefreshRate = msToSamples(16.666667, e.sampleRate);
+        RefreshRate = msToSamples(refresh_rate_ms, e.sampleRate);
         values.volume = -200;
         values.momentaryLoudness = -200;
         values.shortTermLoudness = -200;
@@ -571,6 +700,8 @@ if (!self.__WB_pmw) {
     function volumeAudioProcess(e) {
         var t;
         var a, x = new Array;
+        graph.reset()
+        graph.initinterval();
         if (readFromBuffer) {
             t = e.numberOfChannels;
             a = e.sampleRate;
@@ -605,9 +736,12 @@ if (!self.__WB_pmw) {
                 if (values.momentaryLoudness > -70) {
                     values.integratedLoudness = integratedObject.get_integrated(o);
                 }
+                graph.plot(values.momentaryLoudness, values.shortTermLoudness, values.integratedLoudness);
                 values.volumeAveraged = averageVolumeObject.average(values.volume);
             }
             RefreshCount++;
         }
+        graph.endinterval();
+        graph.updateechart();
     }
 }
