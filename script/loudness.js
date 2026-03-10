@@ -17,26 +17,15 @@ if (!self.__WB_pmw) {
     let window = _____WB$wombat$assign$function_____("window");
     let document = _____WB$wombat$assign$function_____("document");
     audioContext = null;
-    mediaStreamSource = null;
-    canvasContext = null;
-    rafID = null;
     MAIN_HEIGHT = 450;
-    GuiScaling = 1;
-    SettingsPanelOpen = !1;
-    lineWidth = 1;
-    meterRange = 70;
-    meterOffset = 0;
-    usingSPLScale = !0;
-    usingStandard = "momentary";
     nOfSelectedFiles = 0;
     fileAnalyzeIndex = 1;
-    drawScaleIsDirty = !0;
 
     function audioFromFile() {
         if (window.File && window.FileReader) {
             try {
                 window.AudioContext = window.AudioContext || window.webkitAudioContext;
-                createAudioMeter(audioContext = new AudioContext, !0);
+                createAudioMeter(audioContext = new AudioContext, true);
                 bufferSource = audioContext.createBufferSource();
             } catch (e) {
                 return void alert("Your browser doesn't support Web Audio API");
@@ -49,7 +38,9 @@ if (!self.__WB_pmw) {
             return;
         }
         nOfSelectedFiles = e.length, fileAnalyzeIndex = 1, fileProgress.length = 0;
-        for (var t = !1, a = "", x = 0; x < e.length; x++) {
+        var t = false;
+        a = "";
+        for (x = 0; x < e.length; x++) {
             const valid_types = [
                 "audio/wav",
                 "audio/mp3",
@@ -70,7 +61,7 @@ if (!self.__WB_pmw) {
             } else {
                 a += e[x].name + "\n";
                 nOfSelectedFiles--;
-                t = !0
+                t = true;
             }
         }
         if (t) {
@@ -122,7 +113,7 @@ if (!self.__WB_pmw) {
     addEvent = function(e, t, a) {
         if (null != e && typeof e != "undefined") {
             if (e.addEventListener) {
-                e.addEventListener(t, a, !1);
+                e.addEventListener(t, a, false);
             } else if (e.attachEvent) {
                 e.attachEvent(`on${t}`, a);
                 e[`on${t}`] = a;
@@ -168,7 +159,9 @@ if (!self.__WB_pmw) {
             this.prevDelaySize = 0;
         }
         resize_array(e, t) {
-            for (; e > this.buffer.length;) this.buffer.push(t);
+            while (e > this.buffer.length) {
+                this.buffer.push(t);
+            }
             this.buffer.length = e;
         }
         delay_in_samples(e, t) {
@@ -200,7 +193,7 @@ if (!self.__WB_pmw) {
         }
         average(e) {
             var t = this.delayObject.delay_in_samples(e, this.samplesize);
-            this.out = this.out + e - t;
+            this.out += (e - t);
             return this.out / this.samplesize;
         }
         setup_moving_average(e, t) {
@@ -299,19 +292,36 @@ if (!self.__WB_pmw) {
             }
         }
         biquad_one(e, t) {
-            this.out = e * t.b0 + this.in1 * t.b1 + this.in2 * t.b2 - this.out1 * t.a1 - this.out2 * t.a2;
-            this.out2 = this.out1;
-            this.out1 = this.out;
-            this.in2 = this.in1;
+            const b0 = t.b0, b1 = t.b1, b2 = t.b2;
+            const a1 = t.a1, a2 = t.a2;
+
+            const in1 = this.in1, in2 = this.in2;
+            const out1 = this.out1, out2 = this.out2;
+
+            const out = e * b0 + in1 * b1 + in2 * b2 - out1 * a1 - out2 * a2;
+
+            this.out2 = out1;
+            this.out1 = out;
+            this.in2 = in1;
             this.in1 = e;
-            return this.out;
+
+            return out;
         }
         biquad_two(e, t) {
-            this._out = e * t.b0 + this._in1 * t.b1 + this._in2 * t.b2 - this._out1 * t.a1 - this._out2 * t.a2, this._out2 = this._out1;
-            this._out1 = this._out;
-            this._in2 = this._in1;
+            const b0 = t.b0, b1 = t.b1, b2 = t.b2;
+            const a1 = t.a1, a2 = t.a2;
+
+            const in1 = this._in1, in2 = this._in2;
+            const out1 = this._out1, out2 = this._out2;
+
+            const out = e * b0 + in1 * b1 + in2 * b2 - out1 * a1 - out2 * a2;
+
+            this._out2 = out1;
+            this._out1 = out;
+            this._in2 = in1;
             this._in1 = e;
-            return this._out;
+
+            return out;
         }
         perform_kweighting(e) {
             e = this.biquad_one(e, this.biquad_one_coeffs);
@@ -337,14 +347,14 @@ if (!self.__WB_pmw) {
         }
     }
     class Loudness {
-        constructor(e) {
-            this.maxChannels = e;
+        constructor(max_channels) {
+            this.maxChannels = max_channels;
             this.momentary = 1e-10;
             this.short = 1e-10;
             this.kWeight = new Array;
             this.averageMomentary = new MovingAverage;
             this.averageShortTerm = new MovingAverage;
-            for (var t = 0; t < e; t++) {
+            for (var t = 0; t < max_channels; t++) {
                 this.kWeight.push(new KWeightFilter);
             }
             this.channelWeights = [
