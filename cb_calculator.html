@@ -604,6 +604,19 @@
                     "switchForestGreen",
                     "switchCavesIgloo",
                 ], 27, "High", "Day");
+                static S5RainbowBarrier = new Preset("Rainbow Barrier", "s5RainbowBarrier", [
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonTreasure",
+                    "switchForestYellow",
+                    "switchCavesWalls",
+                    "switchAllWarps",
+                ], 35, "High", "Day");
 
                 constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
                     this.name = name;
@@ -625,6 +638,7 @@
                 Preset.S5GetVial2,
                 Preset.S5BarrierSkip,
                 Preset.S5RainbowSlide,
+                Preset.S5RainbowBarrier,
                 Preset.Beginner,
                 Preset.BeginnerDev,
                 Preset.BLZR,
