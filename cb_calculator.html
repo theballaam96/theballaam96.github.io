@@ -369,6 +369,9 @@
                 static FreeDiddyGun = new Moves("Free Diddy Gun");
                 static CheckOfLegends = new Moves("All 5 Guns");
 
+                // Climbing
+                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true); // Had to move this above the Barriers since JapesCoconut requires climbing
+
                 // Barriers
                 static JapesCoconut = new Moves("Japes Coconut Gates", true, [Moves.FreeDiddyGun, Moves.ClimbingCheck], true); // No logic determined yet for this
                 static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
@@ -397,8 +400,6 @@
                 static CryptLankyEntry = new Moves("Castle Crypt Doors", true, [Moves.Grape], true);
                 static CryptTinyEntry = new Moves("Castle Crypt Doors", true, [Moves.Feather], true);
                 static CryptChunkyEntry = new Moves("Castle Crypt Doors", true, [Moves.Pineapple], true);
-                // Climbing
-                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true);
                 // Enable all warps
                 static AllWarps = new Moves("Preactivate All Warps");
 
