@@ -369,6 +369,9 @@
                 static FreeDiddyGun = new Moves("Free Diddy Gun");
                 static CheckOfLegends = new Moves("All 5 Guns");
 
+                // Climbing
+                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true); // Had to move this above the Barriers since JapesCoconut requires climbing
+
                 // Barriers
                 static JapesCoconut = new Moves("Japes Coconut Gates", true, [Moves.FreeDiddyGun, Moves.ClimbingCheck], true); // No logic determined yet for this
                 static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
@@ -397,10 +400,10 @@
                 static CryptLankyEntry = new Moves("Castle Crypt Doors", true, [Moves.Grape], true);
                 static CryptTinyEntry = new Moves("Castle Crypt Doors", true, [Moves.Feather], true);
                 static CryptChunkyEntry = new Moves("Castle Crypt Doors", true, [Moves.Pineapple], true);
-                // Climbing
-                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true);
                 // Enable all warps
                 static AllWarps = new Moves("Preactivate All Warps");
+                static IsDiddy = new Moves("Diddy");
+                static IsTiny = new Moves("Tiny");
 
 
                 constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
@@ -1121,6 +1124,13 @@
                         group.forEach(move_set => {
                             if (move_set == Moves.AllWarps) {
                                 // All Warps is off; this branch is unsatisfiable.
+                            } else if (move_set == Moves.IsDiddy || move_set == Moves.IsTiny) {
+                                // Since the Kong whose medal we're collecting is already assumed, these flags only represent using 
+                                // Diddy and Tiny's backlip to reach an area for another Kong. Currently this would only be used for 
+                                // Factory DK medal when climbing is shuffled, since you can skip the R&D ladders with the flippers
+                                // in order to reach the CBs in the power hut with DK.
+                                // But since there is no tag barrel between the R&D ladders and the Power Hut, this would break the 
+                                // Tag Anywhere assumption and is not actually in logic. So we can safely filter these out of the move list.
                             } else if (move_set.requires_moves) {
                                 if (!all_moves.includes(move_set)) {
                                     all_moves.push(move_set);
