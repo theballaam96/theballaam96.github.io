@@ -620,6 +620,17 @@
                     "switchCavesWalls",
                     "switchAllWarps",
                 ], 35, "High", "Day");
+              static Season5 = new Preset("Season 5", "s4", [
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonTreasure",
+                    "switchForestYellow",
+                    "switchAllWarps",
+                ], 35, "High", "Day");
 
                 constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
                     this.name = name;
@@ -636,12 +647,8 @@
                 //Preset.Season3,
                 //Preset.Season3Candidates,
                 //Preset.Season3CLO,
-                Preset.Season4,
-                Preset.S5GetVial,
-                Preset.S5GetVial2,
-                Preset.S5BarrierSkip,
-                Preset.S5RainbowSlide,
-                Preset.S5RainbowBarrier,
+                //Preset.Season4,
+                Preset.Season5,
                 Preset.Beginner,
                 Preset.BeginnerDev,
                 Preset.BLZR,
@@ -1218,7 +1225,7 @@
             }
 
             window.addEventListener('load', () => {
-                applySpecificPreset(Preset.Season4);
+                applySpecificPreset(Preset.Season5);
             });
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
