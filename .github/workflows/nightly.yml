@@ -1,0 +1,38 @@
+name: CB calculator
+on:
+  schedule:
+    - cron: '4 20 * * *' # Daily at 20:04 AM UTC
+  workflow_dispatch:
+  pull_request:
+
+jobs:
+  run:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-python@main
+
+    - name: Run the CB calculator
+      run: |
+      git clone https://github.com/2dos/DK64-Randomizer
+      cp -f cb_calc.py DK64-Randomizer
+      python -u DK64-Randomizer/cb_calc.py
+      cp -f DK64-Randomizer/requirement_data.js .
+
+    - name: Push requirement data changes
+      run: |
+        git add requirement_data.js
+        CHANGED_FILES=0
+        git diff --quiet --exit-code || CHANGED_FILES=$?
+        if [ $CHANGED_FILES -eq 0 ]; then exit 0; fi # If no unstaged files, exit the script
+
+        git config --global user.email "dk64cbcalculator@github.com"
+        git config --global user.name "DK64 CBCalc Nightly"
+        git commit -m "Updated CB requirement data"
+        git push
