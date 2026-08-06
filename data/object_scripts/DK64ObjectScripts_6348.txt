@@ -1,3 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-*(byte *)(behaviour + 0x4B) = 1
-}

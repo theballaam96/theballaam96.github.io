@@ -1,4 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-FUN_80634CC8(this->id,1,1,2)
-*(byte *)(behaviour + 0x4B) = 1
-}

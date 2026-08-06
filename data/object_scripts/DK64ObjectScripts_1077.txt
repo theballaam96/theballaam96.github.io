@@ -1,8 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-if (checkFlag(0x60>2,'Permanent') !== 0) {
-FUN_80650A04(this->id,1,25)
-FUN_80650BBC(this->id,1,1)
-FUN_806508B4(this->id,1,1)
-*(byte *)(behaviour + 0x4B) = 1
-}
-}

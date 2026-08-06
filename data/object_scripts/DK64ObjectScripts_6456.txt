@@ -1,9 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-*(byte *)(behaviour + 0x4B) = 10
-}
-if (*(byte *)(behaviour + 0x48) == 10) {
-if ((&WORD_807F6240)[7] != -1) {
-FUN_806335B0((&WORD_807F6240)[7],1,1)
-}
-FUN_806F4F50(this->id,FLOAT_807F621C,FLOAT_807F6220,FLOAT_807F6224)
-}

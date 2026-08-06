@@ -1,3 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 0) {
-*(code *)(0x80747F38)(behaviour,this->id,4,114)
-}

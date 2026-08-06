@@ -1,9 +1,0 @@
-if (*(byte *)(behaviour + 0x48) == 1) {
-FUN_80650BBC(this->id,1,0)
-FUN_806085DC(this->id,385,255,127)
-FUN_80650A04(this->id,1,6)
-FUN_806508B4(this->id,1,1)
-}
-if (*(byte *)(behaviour + 0x48) == 1) {
-*(byte *)(behaviour + 0x4B) = 2
-}

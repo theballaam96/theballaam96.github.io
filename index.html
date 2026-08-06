@@ -1,90 +1,1234 @@
-<html>
-	<head>
-		<title>Home - Donkey Kong 64 Speedruns</title>
-		<link rel="stylesheet" href="style/nav.css">
-		<link rel="stylesheet" href="style/main.css">
-		<link rel="stylesheet" href="style/home.css">
-		<link rel="stylesheet" href="style/maps.css">
-		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
-		<link rel="manifest" href="/site.webmanifest">
-		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
-		<meta name="msapplication-TileColor" content="#da532c">
-		<meta name="theme-color" content="#ffffff">
-		<meta name="description" content="" />
-		<style>
-			.homebox {
-				transition: 0.5s ease-in-out;
-			}
-			.homebox:hover {
-				border-color:red;
-			}
-		</style>
-	</head>
-	<body>
-		<nav id="navigation"></nav>
-		<div class="v_spacer">
-		</div>
-		<div class="flexsplitter">
-			<div class="homebox" onclick="goTo('./map_data.html')">
-				<div class="header">
-					<strong>Object Locations</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/home/object%20location.png')" class="home_image"></div>
-			</div>
-			<div class="homebox" onclick="goTo('./cutscene_data.html')">
-				<div class="header">
-					<strong>Cutscene Data</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/home/cutscene%20data.png')" class="home_image"></div>
-			</div>
-			<div class="homebox" onclick="goTo('./mj_luck_calculator.html')">
-				<div class="header">
-					<strong>Mad Jack Luck Calculator</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/home/jack%20calculator.png')" class="home_image"></div>
-			</div>
-		</div>
-		<div class="flexsplitter">
-			<div class="homebox" onclick="goTo('./next_rng_values.html')">
-				<div class="header">
-					<strong>List RNG Values</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/home/rng.png')" class="home_image"></div>
-			</div>
-			<div class="homebox" onclick="goTo('./menu_events.html')">
-				<div class="header">
-					<strong>Main Menu Event Calculator</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/events/legshake.png')" class="home_image"></div>
-			</div>
-			<div class="homebox" onclick="goTo('./pufftoss_viewer.html')">
-				<div class="header">
-					<strong>Pufftoss Viewer</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/home/pufftoss%20viewer.png');background-position:center bottom" class="home_image"></div>
-			</div>
-		</div>
-		<div class="flexsplitter">
-			<div class="homebox" style="flex:100%" onclick="goTo('./practicerom.html')">
-				<div class="header">
-					<strong>Donkey Kong 64 Practice ROM</strong>
-				</div>
-				<div style="background-image:url('https://raw.githubusercontent.com/theballaam96/theballaam96.github.io/master/assets/banner.png')" class="home_image"></div>
-			</div>
-			<div style="flex:100%">
-			</div>
-			<div style="flex:100%">
-			</div>
-		</div>
-	</body>
-	<script src="script/nav.js"></script>
-	<script>
-		function goTo(dest_url) {
-			window.location.href = dest_url;
-		}
-		//document.getElementsByClassName("navbar")[0].getElementsByTagName("ul")[0].innerHTML = ""
-	</script>
+<html data-bs-theme="dark">
+    <head>
+        <title>DK64 Randomizer Colored Banana Calculator</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Discord -->
+        <meta content="DK64 CB Calculator" property="og:title" />
+        <meta content="A calculator, primarily for Donkey Kong 64 Randomizer players, to determine the requirements to obtain a banana medal check in Donkey Kong 64 in a glitchless in-logic context." property="og:description" />
+        <meta content="DK64 Utils" property="og:site_name" />
+        <meta content="https://raw.githubusercontent.com/dk64cbcalculator/dk64cbcalculator.github.io/master/assets/head.png" property="og:image" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+        <style>
+            .container {
+                width: 70%;
+            }
+            .container-header {
+                padding: 20px;
+            }
+            .appl_preset_filled {
+                margin-top: -10px;
+                margin-bottom: 10px;
+            }
+            #preset_selector {
+                transition: 0.5s ease-in-out;
+            }
+            #preset_selector.pulse-select {
+                background-color: rgba(0, 255, 0, 0.1);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Toggles Modal -->
+        <div class="modal fade" id="barrierModal" tabindex="-1" aria-labelledby="barrierModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="barrierModalLabel">Select opened barriers</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h5>Jungle Japes</h5>
+                        <!-- Japes Coconut Gates -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesCoconut">
+                            <label class="form-check-label" for="switchJapesCoconut">Japes Coconut Gates</label>
+                        </div>
+                        <!-- Japes Shellhive Gates -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchJapesShellhive">
+                            <label class="form-check-label" for="switchJapesShellhive">Japes Shellhive Gate</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Angry Aztec</h5>
+                        </div>
+                        <!-- Aztec Tunnel Door -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecTunnel">
+                            <label class="form-check-label" for="switchAztecTunnel">Aztec Tunnel Door</label>
+                        </div>
+                        <!-- Aztec 5DT Switches -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztec5DT" checked>
+                            <label class="form-check-label" for="switchAztec5DT">Aztec 5-Door Temple Switches Spawned</label>
+                        </div>
+                        <!-- Aztec Llama Switches -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecLlama" checked>
+                            <label class="form-check-label" for="switchAztecLlama">Aztec Llama Temple Switches Spawned</label>
+                        </div>
+                        <!-- Aztec Tiny Temple Ice -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAztecIce" checked>
+                            <label class="form-check-label" for="switchAztecIce">
+                                Aztec Tiny Temple Ice Melted
+                            </label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Frantic Factory</h5>
+                        </div>
+                        <!-- Factory Production Room -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryProd" checked>
+                            <label class="form-check-label" for="switchFactoryProd">Factory Production Room On</label>
+                        </div>
+                        <!-- Factory Testing Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchFactoryTesting">
+                            <label class="form-check-label" for="switchFactoryTesting">Factory Testing Gate Open</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Gloomy Galleon</h5>
+                        </div>
+                        <!-- Galleon Lighthouse Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLighthouse">
+                            <label class="form-check-label" for="switchGalleonLighthouse">Galleon Lighthouse Side Open</label>
+                        </div>
+                        <!-- Galleon Shipyard Gate -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonShipyard" checked>
+                            <label class="form-check-label" for="switchGalleonShipyard">Galleon Shipyard Side Open</label>
+                        </div>
+                        <!-- Galleon Seasick Ship -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonSeasick" checked>
+                            <label class="form-check-label" for="switchGalleonSeasick">Galleon Seasick Ship Spawned</label>
+                        </div>
+                        <!-- Galleon Treasure Room -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonTreasure">
+                            <label class="form-check-label" for="switchGalleonTreasure">
+                                Galleon Treasure Room Opened
+                            </label>
+                        </div>
+                        <!-- Galleon Water -->
+                        <div class="small">
+                            Galleon Water Setting
+                        </div>
+                        <select class="form-select barrier-select" id="selectGalleonWater">
+                            <option value="Low" selected>Lowered</option>
+                            <option value="High">Raised</option>
+                        </select>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonLowered" checked>
+                            <label class="form-check-label" for="switchGalleonLowered">Galleon Low Water Access</label>
+                        </div>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchGalleonRaised">
+                            <label class="form-check-label" for="switchGalleonRaised">Galleon High Water Access</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Fungi Forest</h5>
+                        </div>
+                        <!-- Fungi Green Tunnel -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestGreen">
+                            <label class="form-check-label" for="switchForestGreen">Fungi Green Tunnel Open</label>
+                        </div>
+                        <!-- Fungi Yellow Tunnel -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestYellow">
+                            <label class="form-check-label" for="switchForestYellow">Fungi Yellow Tunnel Open</label>
+                        </div>
+                        <!-- Fungi Time of Day -->
+                        <div class="small">
+                            Fungi Time of Day Setting
+                        </div>
+                        <select class="form-select barrier-select" id="selectForestTime">
+                            <option value="Day" selected>Day Start</option>
+                            <option value="Night">Night Start</option>
+                            <option value="Dusk">Dusk</option>
+                            <option value="Progressive">Progressive</option>
+                        </select>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestDay" checked>
+                            <label class="form-check-label" for="switchForestDay">Fungi Daytime Access</label>
+                        </div>
+                        <div class="form-check form-switch" hidden>
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchForestNight">
+                            <label class="form-check-label" for="switchForestNight">Fungi Nighttime Access</label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Crystal Caves</h5>
+                        </div>
+                        <!-- Caves 5DI Pads -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesIgloo" checked>
+                            <label class="form-check-label" for="switchCavesIgloo">Caves Igloo Pads Spawned</label>
+                        </div>
+                        <!-- Caves Ice Walls -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCavesWalls">
+                            <label class="form-check-label" for="switchCavesWalls">
+                                Caves Ice Walls punched
+                            </label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Creepy Castle</h5>
+                        </div>
+                        <!-- Castle Crypt Doors -->
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchCryptDoors">
+                            <label class="form-check-label" for="switchCryptDoors">
+                                Castle Crypt Doors Opened
+                            </label>
+                        </div>
+                        <div class="mt-3">
+                            <h5>Global</h5>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchClimbing">
+                            <label class="form-check-label" for="switchClimbing">
+                                Start with Climbing
+                            </label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input barrier-switch" type="checkbox" role="switch" id="switchAllWarps">
+                            <label class="form-check-label" for="switchAllWarps">
+                                Preactivate All Warps
+                            </label>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Custom Presets Modal -->
+        <div class="modal fade" id="customPresetModal" tabindex="-1" aria-labelledby="customPresetModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="customPresetModalLabel">Alter custom presets</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="customPresetList"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="addCurrent()">Add new</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="container-header">
+                <h1>DK64 Randomizer Medal Move Requirement Calculator</h1>
+            </div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Medal Requirement</span>
+                            <input type="number" id="cb-req-medal" class="form-control recalculate" placeholder="Medal Requirement" aria-label="Medal Requirement" value="40" aria-describedby="basic-addon1"/>
+                        </div>
+                        <div class="ps-3 mb-3">
+                            <button type="button" class="btn btn-primary config-button" data-bs-toggle="modal" data-bs-target="#barrierModal" style="height:100%">
+                                <i class="fa-solid fa-gear"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-select recalculate" aria-label="Select Level" id="medal-level">
+                            <option selected value="default" disabled="disabled">Level</option>
+                            <option value="Japes">Japes</option>
+                            <option value="Aztec">Aztec</option>
+                            <option value="Factory">Factory</option>
+                            <option value="Galleon">Galleon</option>
+                            <option value="Fungi">Fungi</option>
+                            <option value="Caves">Caves</option>
+                            <option value="Castle">Castle</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <select class="form-select recalculate" aria-label="Select Kong" id="medal-kong">
+                            <option selected value="default" disabled="disabled">Kong</option>
+                            <option value="DK">DK</option>
+                            <option value="Diddy">Diddy</option>
+                            <option value="Lanky">Lanky</option>
+                            <option value="Tiny">Tiny</option>
+                            <option value="Chunky">Chunky</option>
+                        </select>
+                    </div>
+                    <hr />
+                    <h4>Presets</h4>
+                    <div class="small" id="applied_preset_indic"></div>
+                    <div class="d-flex">
+                        <select class="form-select" aria-label="Presets" id="preset_selector"></select>
+                        <div class="ps-3">
+                            <button type="button" class="btn btn-secondary" onclick="applyPreset()">
+                                Apply
+                            </button>
+                        </div>
+                        <div class="ps-1">
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#customPresetModal">
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="permutations"></div>
+        </div>
+        
+
+        <script>
+            getMedalRequirement = () => {
+                let interpretted_value = document.getElementById("cb-req-medal").value;
+                if (interpretted_value == "") {
+                    interpretted_value = "0";
+                }
+                return parseInt(interpretted_value);
+            }
+
+            class Level {
+                static Japes = new Level("Japes");
+                static Aztec = new Level("Aztec");
+                static Factory = new Level("Factory");
+                static Galleon = new Level("Galleon");
+                static Fungi = new Level("Fungi");
+                static Caves = new Level("Caves");
+                static Castle = new Level("Castle");
+
+                constructor (name) {
+                    this.name = name;
+                }
+            }
+
+            class Kong {
+                static DK = new Kong("DK");
+                static Diddy = new Kong("Diddy");
+                static Lanky = new Kong("Lanky");
+                static Tiny = new Kong("Tiny");
+                static Chunky = new Kong("Chunky");
+
+                constructor (name) {
+                    this.name = name;
+                }
+            }
+
+            class Moves {
+                static Moveless = new Moves("Nothing", false);
+                static LevelSlam = new Moves("Level Slam");
+                static Slam = new Moves("Green Slam");
+                // Kongs
+                static Diddy = new Moves("Diddy");
+                static Enguarde = new Moves("Enguarde");
+                // Special Moves
+                static Strong = new Moves("Strong Kong");
+                static Blast = new Moves("Baboon Blast");
+                static Grab = new Moves("Gorilla Grab");
+                static Rocket = new Moves("Rocketbarrel Boost");
+                static Spring = new Moves("Simian Spring");
+                static Charge = new Moves("Chimpy Charge");
+                static Orangstand = new Moves("Orangstand");
+                static Balloon = new Moves("Baboon Balloon");
+                static Sprint = new Moves("Sprint");
+                static Mini = new Moves("Mini Monkey");
+                static Twirl = new Moves("Ponytail Twirl");
+                static Monkeyport = new Moves("Monkeyport");
+                static Hunky = new Moves("Hunky Chunky");
+                static Punch = new Moves("Primate Punch");
+                static Gone = new Moves("Gorilla Gone");
+                // Training
+                static Diving = new Moves("Diving");
+                static Vines = new Moves("Vines");
+                static Barrels = new Moves("Barrels");
+                static Climbing = new Moves("Climbing");
+                static Oranges = new Moves("Oranges");
+                // Guns
+                static Coconut = new Moves("Coconut");
+                static Peanut = new Moves("Peanut");
+                static Grape = new Moves("Grape");
+                static Feather = new Moves("Feather");
+                static Pineapple = new Moves("Pineapple");
+                // Instruments
+                static Bongos = new Moves("Bongos");
+                static Guitar = new Moves("Guitar");
+                static Trombone = new Moves("Trombone");
+                static Sax = new Moves("Sax");
+                static Triangle = new Moves("Triangle");
+                // Misc Events
+                static AztecW5Bonus = new Moves("Aztec Warp 5 Bonus Barrel");
+                static CavesW3Bonus = new Moves("Caves Warp 3 Bonus Barrel");
+                static AnyGun = new Moves("Any Gun");
+                static FreeDiddyGun = new Moves("Free Diddy Gun");
+                static CheckOfLegends = new Moves("All 5 Guns");
+
+                // Climbing
+                static ClimbingCheck = new Moves("Climbing", true, [Moves.Climbing], true); // Had to move this above the Barriers since JapesCoconut requires climbing
+
+                // Barriers
+                static JapesCoconut = new Moves("Japes Coconut Gates", true, [Moves.FreeDiddyGun, Moves.ClimbingCheck], true); // No logic determined yet for this
+                static JapesShellhive = new Moves("Japes Shellhive Gate", true, [Moves.Feather], true);
+                static AztecTunnelDoor = new Moves("Aztec Tunnel Door", true, [Moves.Guitar, Moves.Vines], true);
+                static Aztec5DT = new Moves("Aztec 5DT Switches", true, [Moves.Rocket, Moves.Peanut], true);
+                static AztecLlama = new Moves("Aztec Llama Switch", true, [Moves.Blast], true);
+                static FactoryProduction = new Moves("Production Room On", true, [Moves.Grab, Moves.Coconut], true);
+                static FactoryTesting = new Moves("Testing Side Open", true, [Moves.Slam], true);
+                static GalleonLighthouse = new Moves("Lighthouse Side Open", true, [Moves.Coconut], true);
+                static GalleonPeanut = new Moves("Shipwreck Side Open", true, [Moves.Peanut], true);
+                static GalleonShipSpawned = new Moves("Ship Spawned", true, [Moves.LevelSlam, Moves.Grab], true);
+                static ForestGreenTunnelPineapple = new Moves("Green Tunnel Opened (Pineapple)", true, [Moves.Pineapple], true);
+                static ForestGreenTunnelFeather = new Moves("Green Tunnel Opened (Feather)", true, [Moves.Feather], true);
+                static ForestYellowTunnel = new Moves("Yellow Tunnel Opened", true, [Moves.Grape], true);
+                static CavesIglooPads = new Moves("Caves Igloo Pads Spawned", true, [Moves.Rocket], true);
+                static Night = new Moves("Fungi Night", true, [Moves.AnyGun], true);
+                static Day = new Moves("Fungi Day", true, [Moves.AnyGun], true);
+                static RaisedWater = new Moves("Galleon Raised Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
+                static LoweredWater = new Moves("Galleon Lowered Water", true, [Moves.GalleonLighthouse, Moves.Diving], true);
+                static TinyTempleIce = new Moves("Tiny Temple Ice Melted", true, [Moves.Guitar, Moves.LevelSlam, Moves.Peanut], true);
+                static GalleonTreasure = new Moves("Treasure Room Open", true, [Moves.Enguarde, Moves.RaisedWater], true);
+                static CavesIceWalls = new Moves("Caves Ice Walls", true, [Moves.Punch], true);
+                // Crypt Entry
+                static CryptDKEntry = new Moves("Castle Crypt Doors", true, [Moves.Coconut], true);
+                static CryptDiddyEntry = new Moves("Castle Crypt Doors", true, [Moves.Peanut], true);
+                static CryptLankyEntry = new Moves("Castle Crypt Doors", true, [Moves.Grape], true);
+                static CryptTinyEntry = new Moves("Castle Crypt Doors", true, [Moves.Feather], true);
+                static CryptChunkyEntry = new Moves("Castle Crypt Doors", true, [Moves.Pineapple], true);
+                // Enable all warps
+                static AllWarps = new Moves("Preactivate All Warps");
+                static IsDiddy = new Moves("Diddy");
+                static IsTiny = new Moves("Tiny");
+
+
+                constructor (name, requires_moves=true, barrier_moves=[], is_barrier=false) {
+                    this.name = name;
+                    this.requires_moves = requires_moves
+                    this.barrier_moves = barrier_moves
+                    this.is_barrier = is_barrier
+                }
+            }
+
+            class Requirement {
+                constructor (amount, requirements) {
+                    this.amount = amount;
+                    this.requirements = requirements;
+                    this.amount_copy = amount;
+                    this.requirements_copy = requirements.slice();
+                }
+
+                can_acquire(move_list) {
+                    let acquire = false;
+                    this.requirements.forEach(group => {
+                        let local_acquire = true;
+                        group.forEach(move => {
+                            if (!move_list.includes(move)) {
+                                local_acquire = false;
+                            }
+                        })
+                        if (local_acquire) {
+                            acquire = true;
+                        }
+                    })
+                    return acquire;
+                }
+
+                reset() {
+                    this.requirements = this.requirements_copy.slice();
+                    this.amount = this.amount_copy;
+                }
+            }
+
+            let opened_barriers = [];
+
+            function getBarrierRequirement(barrier) {
+                if (barrier.is_barrier) {
+                    if (opened_barriers.includes(barrier)) {
+                        return []
+                    }
+                    return barrier.barrier_moves;
+                }
+                return null
+            }
+
+            class Preset {
+                static Season2 = new Preset("Season 2", "s2", [
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 40, "Low", "Day");
+                static Beginner = new Preset("Beginner (Master Branch)", "beginner", [
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 30, "Low", "Day");
+                static BLZR = new Preset("Balanced LZR", "blzr", [
+                    "switchAztec5DT",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchAztecIce",
+                ], 40, "Low", "Dusk");
+                static TreasureHurry = new Preset("Treasure Hurry", "thurry", [
+                    "switchAztecLlama",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchAztecIce",
+                ], 50, "Low", "Day");
+                static Season3Candidates = new Preset("Season 3 Candidates (Excl. CLO)", "s3can", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 40, "High", "Dusk");
+                static Season3CLO = new Preset("Season 3 CLO Candidate", "s3clo", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 40, "Low", "Dusk");
+                static Vanilla = new Preset("Vanilla", "vanilla", ["switchClimbing"], 75, "Low", "Day");
+                static Hell = new Preset("Hell Mode", "hell", [], 80, "Low", "Progressive");
+                static Season3 = new Preset("Season 3", "s3", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 45, "High", "Day");
+                static KEVIN = new Preset("KEVIN", "kevin", [
+                    "switchJapesCoconut",
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchFactoryProd",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 40, "High", "Dusk");
+                static Season4 = new Preset("Season 4", "s4", [
+                    "switchJapesCoconut",
+                    "switchAztec5DT",
+                    "switchAztecTunnel",
+                    "switchFactoryTesting",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchForestGreen",
+                    "switchCavesWalls",
+                    "switchAztecIce",
+                    "switchClimbing",
+                ], 50, "High", "Night");
+                static BeginnerDev = new Preset("Beginner Settings (Dev Branch)", "beginner_dev", [
+                    "switchJapesCoconut",
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchFactoryProd",
+                    "switchGalleonShipyard",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                    "switchCavesWalls",
+                    "switchClimbing",
+                ], 35, "High", "Dusk");
+                static S5GetVial = new Preset("Get Vial Manipulation", "s5getvial", [
+                    "switchJapesCoconut",
+                    "switchAztecIce",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 40, "High", "Day");
+                static S5GetVial2 = new Preset("Get Vial Manipulation v2", "s5getvial2", [
+                    "switchJapesCoconut",
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchCavesIgloo",
+                ], 25, "High", "Day");
+                static S5BarrierSkip = new Preset("Barrier Skip", "s5barrierskip", [
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchForestYellow",
+                    "switchAllWarps",
+                ], 50, "High", "Day");
+                static S5RainbowSlide = new Preset("Rainbow Slide", "s5rainbowslide", [
+                    "switchJapesCoconut",
+                    "switchAztecIce",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonSeasick",
+                    "switchGalleonTreasure",
+                    "switchForestGreen",
+                    "switchCavesIgloo",
+                ], 27, "High", "Day");
+                static S5RainbowBarrier = new Preset("Rainbow Barrier", "s5RainbowBarrier", [
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchAztecLlama",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonTreasure",
+                    "switchForestYellow",
+                    "switchCavesWalls",
+                    "switchAllWarps",
+                ], 35, "High", "Day");
+              static Season5 = new Preset("Season 5", "s4", [
+                    "switchAztecIce",
+                    "switchAztecTunnel",
+                    "switchAztec5DT",
+                    "switchFactoryTesting",
+                    "switchGalleonLighthouse",
+                    "switchGalleonShipyard",
+                    "switchGalleonTreasure",
+                    "switchForestYellow",
+                    "switchAllWarps",
+                ], 35, "High", "Day");
+
+                constructor (name, key, barriers, cb_requirement, galleon_water, fungi_time) {
+                    this.name = name;
+                    this.key = key;
+                    this.barriers = barriers.slice();
+                    this.cb_requirement = cb_requirement;
+                    this.galleon_water = galleon_water;
+                    this.fungi_time = fungi_time;
+                }
+            }
+
+            const presets = [
+                //Preset.Season2,
+                //Preset.Season3,
+                //Preset.Season3Candidates,
+                //Preset.Season3CLO,
+                //Preset.Season4,
+                Preset.Season5,
+                Preset.Beginner,
+                Preset.BeginnerDev,
+                Preset.BLZR,
+                Preset.Vanilla,
+                Preset.TreasureHurry,
+                Preset.Hell,
+                Preset.KEVIN,
+            ]
+
+            // Function to set a cookie
+            function setCookie(name, value, days) {
+                var expires = "";
+                if (days) {
+                    var date = new Date();
+                    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+                    expires = "; expires=" + date.toUTCString();
+                }
+                document.cookie = name + "=" + (value || "") + expires + "; path=/";
+            }
+
+            // Function to get a cookie value
+            function getCookie(name) {
+                var nameEQ = name + "=";
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i];
+                    while (cookie.charAt(0) === ' ') {
+                        cookie = cookie.substring(1, cookie.length);
+                    }
+                    if (cookie.indexOf(nameEQ) === 0) {
+                        return cookie.substring(nameEQ.length, cookie.length);
+                    }
+                }
+                return null;
+            }
+
+            let custom_presets = [{
+                "key": "custom0",
+                "name": "Season 2 (Obsolete)",
+                "setstr": '32739|00|40'
+            }];
+
+            function updateCookie() {
+                setCookie("customPresets", JSON.stringify(custom_presets), 365);
+            }
+
+            function deleteCustom(index) {
+                custom_presets = custom_presets.filter((x, i) => i != index);
+                custom_presets.forEach((p, i) => {
+                    p.key = `custom${i}`
+                })
+                populatePresets();
+                updateCookie();
+            }
+
+            function addCurrent() {
+                custom_presets.push({
+                    "key": `${custom_presets.length}`,
+                    "name": "New Preset",
+                    "setstr": convertSettingsToString()
+                })
+                populatePresets();
+                updateCookie();
+            }
+
+            function updatePresetName(i) {
+                custom_presets[i].name = document.getElementById(`customPresetHandler${i}`).value;
+                populatePresets();
+                updateCookie();
+            }
+
+            function populateCustomPresets() {
+                document.getElementById("customPresetList").innerHTML = "";
+                if (custom_presets.length == 0) {
+                    document.getElementById("customPresetList").innerHTML = "<div class='text-center'>There's no custom presets here (yet!)</div>"
+                }
+                custom_presets.forEach((p, index) => {
+                    document.getElementById("preset_selector").innerHTML += `<option iscustom="true" value="${p.key}">${p.name}</option>`
+                    document.getElementById("customPresetList").innerHTML += `
+                        <div class="d-flex">
+                            <div class="flex-grow-1 input-group">
+                                <input type="text" class="mb-3 form-control" id="customPresetHandler${index}" onfocusout="updatePresetName(${index})" value="${p.name}" />
+                            </div>
+                            <div class="input-group px-2">
+                                <input type="text" class="mb-3 form-control" style="color:#888" value="${p.setstr}" disabled />
+                            </div>
+                            <div>
+                                <button class="btn btn-danger mb-3" onclick="deleteCustom(${index})">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    `
+                })
+            }
+
+            function convertSettingsToString() {
+                let switch_booleans = [];
+                let select_indexes = [];
+                let switch_str = 0;
+                const switches = document.getElementsByClassName("barrier-switch");
+                const selects = document.getElementsByClassName("barrier-select");
+                const cb_count = document.getElementById("cb-req-medal").value;
+                for (let s = 0; s < switches.length; s++) {
+                    let boolean_val = switches[s].checked;
+                    switch_booleans.push(boolean_val);
+                    if (boolean_val) {
+                        switch_str |= (1 << s);
+                    }
+                }
+                for (let k = 0; k < selects.length; k++) {
+                    select_indexes.push(0);
+                    const k_options = selects[k].getElementsByTagName("option");
+                    for (let j = 0; j < k_options.length; j++) {
+                        if (k_options[j].getAttribute("value") == selects[k].value) {
+                            select_indexes[k] = j;
+                        }
+                    }
+                }
+                return `${switch_str.toString(16)}|${select_indexes.join("")}|${cb_count}`
+            }
+
+            function applySettingsString(set_str) {
+                const segs = set_str.split("|");
+                // CB Count
+                cb_count = document.getElementById("cb-req-medal").value = parseInt(segs[2]);
+                // Selects
+                const selects = document.getElementsByClassName("barrier-select");
+                segs[1].split("").forEach((val, index) => {
+                    if (index < selects.length) {
+                        const k_selects = selects[index].getElementsByTagName("option");
+                        const sub_index = parseInt(val);
+                        if (sub_index < k_selects.length) {
+                            selects[index].value = k_selects[sub_index].getAttribute("value");
+                        }
+                    }
+                })
+                // Toggles
+                const switches = document.getElementsByClassName("barrier-switch");
+                const raw_val = parseInt(segs[0], 16);
+                for (let i = 0; i < switches.length; i++) {
+                    const check = 1 << i;
+                    if (raw_val & check) {
+                        switches[i].checked = true;
+                    } else {
+                        switches[i].checked = false;
+                    }
+                }
+            }
+
+            function populatePresets() {
+                document.getElementById("preset_selector").innerHTML = "";
+                presets.forEach((p, index) => {
+                    document.getElementById("preset_selector").innerHTML += `<option ${index == 0 ? 'selected' : ''} iscustom="false" value="${p.key}">${p.name}</option>`
+                })
+                populateCustomPresets();
+            }
+            let custom_preset_cookie = getCookie("customPresets");
+            if (custom_preset_cookie != null) {
+                custom_presets = JSON.parse(custom_preset_cookie)
+            }
+            populatePresets();
+
+            function updateSelects() {
+                // Galleon Water
+                const gal_water = document.getElementById("selectGalleonWater").value;
+                let gal_water_low = false;
+                let gal_water_high = false;
+                if (gal_water == "Low") {
+                    gal_water_low = true;
+                    gal_water_high = false;
+                } else if (gal_water == "High") {
+                    gal_water_low = false;
+                    gal_water_high = true;
+                }
+                document.getElementById("switchGalleonLowered").checked = gal_water_low;
+                document.getElementById("switchGalleonRaised").checked = gal_water_high;
+                // Fungi Time of Day
+                const fun_tod = document.getElementById("selectForestTime").value;
+                let fun_day = false;
+                let fun_night = false;
+                if (fun_tod == "Day") {
+                    fun_day = true;
+                    fun_night = false;
+                } else if (fun_tod == "Night") {
+                    fun_day = false;
+                    fun_night = true;
+                } else if (["Dusk", "Progressive"].includes(fun_tod)) {
+                    fun_day = true;
+                    fun_night = true;
+                }
+                document.getElementById("switchForestDay").checked = fun_day;
+                document.getElementById("switchForestNight").checked = fun_night;
+            }
+
+            function resetPresetHeader() {
+                const appl_preset = document.getElementById("applied_preset_indic");
+                appl_preset.innerText = "";
+                appl_preset.classList.remove("appl_preset_filled");
+            }
+
+            function pulseSelect() {
+                const select_el = document.getElementById("preset_selector");
+                select_el.classList.add("pulse-select");
+                setTimeout(() => {
+                    document.getElementById("preset_selector").classList.remove("pulse-select");
+                }, 500);
+            }
+
+            function updateDisplay(preset_name) {
+                updateSelects();
+                updateBarriers();
+                getRequiredMoves();
+                const appl_preset = document.getElementById("applied_preset_indic");
+                appl_preset.innerText = `Applied Preset: ${preset_name}`;
+                appl_preset.classList.add("appl_preset_filled");
+                pulseSelect();
+            }
+
+            function applySpecificPreset(p) {
+                const switches = document.getElementsByClassName("barrier-switch");
+                for (let s = 0; s < switches.length; s++) {
+                    switches[s].checked = false;
+                }
+                p.barriers.forEach(barrier => {
+                    document.getElementById(barrier).checked = true;
+                })
+                document.getElementById("cb-req-medal").value = p.cb_requirement;
+                document.getElementById("selectGalleonWater").value = p.galleon_water;
+                document.getElementById("selectForestTime").value = p.fungi_time;
+                updateDisplay(p.name);
+                return;
+            }
+
+            function applyPreset() {
+                presets.forEach(p => {
+                    if (p.key == document.getElementById("preset_selector").value) {
+                        const switches = document.getElementsByClassName("barrier-switch");
+                        for (let s = 0; s < switches.length; s++) {
+                            switches[s].checked = false;
+                        }
+                        p.barriers.forEach(barrier => {
+                            document.getElementById(barrier).checked = true;
+                        })
+                        document.getElementById("cb-req-medal").value = p.cb_requirement;
+                        document.getElementById("selectGalleonWater").value = p.galleon_water;
+                        document.getElementById("selectForestTime").value = p.fungi_time;
+                        updateDisplay(p.name);
+                        return;
+                    }
+                })
+                custom_presets.forEach(json => {
+                    if (json.key == document.getElementById("preset_selector").value) {
+                        applySettingsString(json.setstr);
+                        updateDisplay(json.name);
+                    }
+                })
+            }
+
+            function updateBarriers() {
+                barrier_data = {
+                    "switchJapesCoconut": [Moves.JapesCoconut],
+                    "switchJapesShellhive": [Moves.JapesShellhive],
+                    "switchAztecTunnel": [Moves.AztecTunnelDoor],
+                    "switchAztec5DT": [Moves.Aztec5DT],
+                    "switchAztecLlama": [Moves.AztecLlama],
+                    "switchFactoryProd": [Moves.FactoryProduction],
+                    "switchFactoryTesting": [Moves.FactoryTesting],
+                    "switchGalleonLighthouse": [Moves.GalleonLighthouse],
+                    "switchGalleonShipyard": [Moves.GalleonPeanut],
+                    "switchGalleonSeasick": [Moves.GalleonShipSpawned],
+                    "switchForestGreen": [Moves.ForestGreenTunnelFeather, Moves.ForestGreenTunnelPineapple],
+                    "switchForestYellow": [Moves.ForestYellowTunnel],
+                    "switchCavesIgloo": [Moves.CavesIglooPads],
+                    "switchForestDay": [Moves.Day],
+                    "switchForestNight": [Moves.Night],
+                    "switchGalleonLowered": [Moves.LoweredWater],
+                    "switchGalleonRaised": [Moves.RaisedWater],
+                    "switchAztecIce": [Moves.TinyTempleIce],
+                    "switchGalleonTreasure": [Moves.GalleonTreasure],
+                    "switchCavesWalls": [Moves.CavesIceWalls],
+                    "switchCryptDoors": [Moves.CryptDKEntry, Moves.CryptDiddyEntry, Moves.CryptLankyEntry, Moves.CryptTinyEntry, Moves.CryptChunkyEntry],
+                    "switchClimbing": [Moves.ClimbingCheck],
+                    "switchAllWarps": [Moves.AllWarps],
+                };
+                opened_barriers = []
+                Object.keys(barrier_data).forEach(id => {
+                    const doc = document.getElementById(id);
+                    if (doc.checked) {
+                        opened_barriers = opened_barriers.concat(barrier_data[id]);
+                    }
+                });
+            }
+            updateBarriers()
+
+            const barrier_toggles = document.getElementsByClassName("barrier-switch");
+            for (let b = 0; b < barrier_toggles.length; b++) {
+                barrier_toggles[b].addEventListener("change", (e) => {
+                    updateBarriers();
+                    getRequiredMoves();
+                    resetPresetHeader();
+                })
+            }
+            const barrier_selects = document.getElementsByClassName("barrier-select");
+            for (let b = 0; b < barrier_selects.length; b++) {
+                barrier_selects[b].addEventListener("change", (e) => {
+                    updateSelects();
+                    updateBarriers();
+                    getRequiredMoves();
+                    resetPresetHeader();
+                })
+            }
+
+            // The requirement_data structure (which used to live right here) is instead imported after this inline script, directly from the DK64-Randomizer repo.
+
+            // Verify that requirement_data has 100 CBs for each kong
+            window.addEventListener('load', () => {
+                Object.keys(requirement_data).forEach(level => {
+                    Object.keys(requirement_data[level]).forEach(kong => {
+                        sum = requirement_data[level][kong].map(item => item.amount).reduce((partialSum, a) => partialSum + a, 0);
+                        if (sum != 100) {
+                            console.log(`Total Error with ${level} ${kong}. Sum = ${sum}`)
+                        }
+                    })
+                })
+            })
+
+            let highlightedItem = "";
+            updateHighlightedItem = (itemName) => {
+                const oldItem = highlightedItem;
+                const newItem = itemName === oldItem ? "" : itemName;
+
+                if (oldItem !== "") {
+                    document.querySelectorAll(`span[data-item-name="${oldItem}"]`).forEach(el => {
+                        el.classList.replace("text-bg-warning", "text-bg-info");
+                    });
+                }
+
+                if (newItem !== "") {
+                    document.querySelectorAll(`span[data-item-name="${newItem}"]`).forEach(el => {
+                        el.classList.replace("text-bg-info", "text-bg-warning");
+                    });
+                }
+
+                highlightedItem = newItem;
+            }
+
+            movesToHTML = (list) => {
+                const container = document.createElement("div");
+                container.classList.add("card", "mb-3");
+
+                const header = document.createElement("div");
+                header.className = "card-header";
+                header.innerText = "Required Moves";
+                container.appendChild(header);
+
+                const ul = document.createElement("ul");
+                ul.className = "list-group";
+
+                list.forEach(perm => {
+                    const li = document.createElement("li");
+                    li.className = "list-group-item";
+
+                    perm.forEach(item => {
+                        const span = document.createElement("span");
+                        span.classList.add("badge", "text-bg-info");
+                        span.innerText = item.name;
+                        span.style.cursor = "pointer";
+
+                        span.dataset.itemName = item.name;
+
+                        span.addEventListener("click", () => updateHighlightedItem(item.name));
+
+                        li.appendChild(span);
+                        li.append(" ");
+                    });
+
+                    ul.appendChild(li);
+                });
+
+                container.appendChild(ul);
+
+                return container;
+            }
+
+            getRequiredMoves = () => {
+                const threshold = getMedalRequirement();
+                const level = document.getElementById("medal-level").value;
+                const kong = document.getElementById("medal-kong").value;
+                if (level == "default") {
+                    return;
+                }
+                if (kong == "default") {
+                    return;
+                }
+                if (threshold == 0) {
+                    return;
+                }
+                // Reset everything just in case
+                const levels = [
+                    "Japes",
+                    "Aztec",
+                    "Factory",
+                    "Galleon",
+                    "Fungi",
+                    "Caves",
+                    "Castle",
+                ]
+                const kongs = [
+                    "DK",
+                    "Diddy",
+                    "Lanky",
+                    "Tiny",
+                    "Chunky",
+                ]
+                updateHighlightedItem("");
+
+                levels.forEach(level => {
+                    kongs.forEach(kong => {
+                        requirement_data[level][kong].forEach(g => {
+                            g.reset();
+                        })
+                    })
+                })
+                let list = requirement_data[level][kong].slice();
+                // Precalcate list to handle barriers
+                for (let i = 0; i < 2; i++) {
+                    list.forEach(item => {
+                        let anyRequirementIsMoveless = false;
+                        item.requirements.forEach((group, index) => {
+                            // Get list of move extensions and removals
+                            let purged_moves = [];
+                            let extended_moves = [];
+                            group.forEach(move_set => {
+                                if (move_set == Moves.AllWarps) {
+                                    // If all warps are preactivated, purge the AllWarps move so that this move_set is free.
+                                    if (opened_barriers.includes(Moves.AllWarps)) {
+                                        purged_moves.push(move_set);
+                                    }
+                                } else if (move_set.is_barrier) {
+                                    replacement_moves = getBarrierRequirement(move_set);
+                                    if (replacement_moves != null) {
+                                        purged_moves.push(move_set);
+                                        extended_moves = extended_moves.concat(replacement_moves)
+                                    }
+                                }
+                            })
+                            // remove/extend group
+                            group = group.filter(k => !purged_moves.includes(k)).slice();
+                            group = group.concat(extended_moves).slice();
+                            // Correct moveless situations
+                            moveless_check = group.filter(k => k != Moves.Moveless)
+                            if (moveless_check.length > 0) {
+                                // If there's move requirements, filter out all "moveless" entries
+                                group = moveless_check.slice()
+                            } else if ((moveless_check.length == 0) && (group.length == 0)) {
+                                // No moves in here at all
+                                group = [Moves.Moveless].slice();
+                                anyRequirementIsMoveless = true;
+                            }
+                            item.requirements[index] = group.slice();
+                        })
+
+                        // Small bugfix: There may be multiple requirements to get an item. If one of those requirements
+                        // is completely satisfied by presets, it becomes moveless and should compleetely erase all other requirements.
+                        // For example, some Lanky CBs in Fungi require [[Climbing], [Balloon]], but when Climbing is in the preset,
+                        // we should never consider them to logically require Balloon.
+                        // Thus, if we detect that any requirement group became moveless, we remove all other requirements.
+                        if (anyRequirementIsMoveless) {
+                            item.requirements = [[Moves.Moveless]];
+                        }
+                    })
+                }
+
+                // Calculate all moves in this list
+                let updated_threshold = threshold;
+                let all_moves = [];
+                list.forEach(item => {
+                    item.requirements.forEach(group => {
+                        group.forEach(move_set => {
+                            if (move_set == Moves.AllWarps) {
+                                // All Warps is off; this branch is unsatisfiable.
+                            } else if (move_set == Moves.IsDiddy || move_set == Moves.IsTiny) {
+                                // Since the Kong whose medal we're collecting is already assumed, these flags only represent using 
+                                // Diddy and Tiny's backlip to reach an area for another Kong. Currently this would only be used for 
+                                // Factory DK medal when climbing is shuffled, since you can skip the R&D ladders with the flippers
+                                // in order to reach the CBs in the power hut with DK.
+                                // But since there is no tag barrel between the R&D ladders and the Power Hut, this would break the 
+                                // Tag Anywhere assumption and is not actually in logic. So we can safely filter these out of the move list.
+                            } else if (move_set.requires_moves) {
+                                if (!all_moves.includes(move_set)) {
+                                    all_moves.push(move_set);
+                                }
+                            } else {
+                                updated_threshold -= item.amount;
+                            }
+                        })
+                    })
+                })
+                const dump_hook = document.getElementById("permutations")
+                dump_hook.innerHTML = ""
+                if (updated_threshold > 0) {
+                    let beat_permutations = [];
+                    const perms = Math.pow(2, all_moves.length);
+                    for (let i = 0; i < perms; i++) {
+                        const local_moves = all_moves.filter((move, index) => (i & Math.pow(2, index)) != 0);
+                        // console.log(local_moves)
+                        local_total = updated_threshold;
+                        list.forEach(item => {
+                            if (item.can_acquire(local_moves)) {
+                                local_total -= item.amount;
+                            }
+                        })
+                        if (local_total <= 0) {
+                            beat_permutations.push(local_moves)
+                        }
+                    }
+                    beat_permutations.sort((a, b) => (a.length > b.length) ? 1 : ((b.length > a.length) ? -1 : 0));
+                    // console.log(beat_permutations)
+                    let filtered_permutations = []
+                    let checker = (arr, target) => target.every(v => arr.includes(v));
+                    beat_permutations.forEach((perm, index_a) => {
+                        let include = true;
+                        beat_permutations.forEach((previous_perm, index_b) => {
+                            if (index_b < index_a) {
+                                if (checker(perm, previous_perm)) {
+                                    include = false;
+                                }
+                            }
+                        })
+                        added = perm.slice();
+                        added.sort((a, b) => a.name.localeCompare(b.name));
+                        if (include) {
+                            filtered_permutations.push(added);
+                        }
+                    })
+                    //console.log(filtered_permutations)
+                    filtered_permutations.forEach(perm => {
+                        console.log(perm.map(item => item.name))
+                    })
+
+                    // Sort permutations before rendering for improved readability.
+                    // 1. Number of moves, ascending (fewer requirements listed first)
+                    // 2. Alphabetical by first move (ties broken by second move, etc)
+                    filtered_permutations.sort((a, b) => {
+                        if (a.length != b.length) return Math.sign(a.length - b.length);
+
+                        for (var i = 0; i < a.length; i++) {
+                            if (a[i].name != b[i].name) return a[i].name.localeCompare(b[i].name);
+                        }
+
+                        return 0;
+                    });
+                    dump_hook.appendChild(movesToHTML(filtered_permutations));
+                    return
+                }
+                dump_hook.appendChild(movesToHTML([[Moves.Moveless]]));
+            }
+
+            const recalculators = document.getElementsByClassName("recalculate");
+            for (let r = 0; r < recalculators.length; r++) {
+                let event_type = "change";
+                if (recalculators[r].tagName == "input") {
+                    if (recalculators[r].getAttribute("type") == "number") {
+                        event_type = "keyup";
+                        recalculators[r].addEventListener("mouseup", (e) => {
+                            getRequiredMoves();
+                        });
+                    }
+                }
+                recalculators[r].addEventListener(event_type, (e) => {
+                    getRequiredMoves();
+                });
+            }
+
+            window.addEventListener('load', () => {
+                applySpecificPreset(Preset.Season5);
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="https://dev.dk64randomizer.com/requirement_data.js"></script>
+    </body>
 </html>
